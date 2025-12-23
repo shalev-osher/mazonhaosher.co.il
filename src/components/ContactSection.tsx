@@ -1,5 +1,8 @@
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
+
+const WHATSAPP_NUMBER = "972546791198";
+const WHATSAPP_MESSAGE = "היי, אשמח להזמין עוגיות 🍪";
 
 const ContactSection = () => {
   return (
@@ -28,6 +31,21 @@ const ContactSection = () => {
                   <p className="text-primary-foreground/70">אשקלון</p>
                 </div>
               </div>
+
+              <a 
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 group cursor-pointer"
+              >
+                <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:bg-green-500/30 transition-colors">
+                  <MessageCircle className="w-6 h-6 text-green-500" />
+                </div>
+                <div>
+                  <p className="font-medium group-hover:text-accent transition-colors">וואטסאפ</p>
+                  <p className="text-primary-foreground/70" dir="ltr">054-679-1198</p>
+                </div>
+              </a>
 
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
