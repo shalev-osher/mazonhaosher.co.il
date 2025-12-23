@@ -3,6 +3,14 @@ import chocolateCookie from "@/assets/cookie-chocolate.jpg";
 import oatmealCookie from "@/assets/cookie-oatmeal.jpg";
 import peanutCookie from "@/assets/cookie-peanut.jpg";
 import snickerdoodleCookie from "@/assets/cookie-snickerdoodle.jpg";
+import doubleChocolateCookie from "@/assets/cookie-double-chocolate.jpg";
+import macadamiaCookie from "@/assets/cookie-macadamia.jpg";
+import redVelvetCookie from "@/assets/cookie-red-velvet.jpg";
+import lemonCookie from "@/assets/cookie-lemon.jpg";
+import sugarSprinklesCookie from "@/assets/cookie-sugar-sprinkles.jpg";
+import saltedCaramelCookie from "@/assets/cookie-salted-caramel.jpg";
+import matchaCookie from "@/assets/cookie-matcha.jpg";
+import tahiniCookie from "@/assets/cookie-tahini.jpg";
 
 const cookies = [
   {
@@ -28,6 +36,54 @@ const cookies = [
     name: "סניקרדודל",
     description: "רכה ואוורירית עם ציפוי סוכר-קינמון מתוק. נוסטלגיה טהורה מהילדות.",
     price: "₪10",
+  },
+  {
+    image: doubleChocolateCookie,
+    name: "דאבל שוקולד",
+    description: "עוגיית בראוני עשירה עם מרכז פאדג׳י ונתחי שוקולד מריר. לחובבי השוקולד.",
+    price: "₪14",
+  },
+  {
+    image: macadamiaCookie,
+    name: "שוקולד לבן ומקדמיה",
+    description: "שוקולד לבן קרמי עם אגוזי מקדמיה פריכים. שילוב מנצח ומפנק.",
+    price: "₪15",
+  },
+  {
+    image: redVelvetCookie,
+    name: "רד וולווט",
+    description: "עוגייה אדומה קטיפתית עם קרם גבינה מתוק. אלגנטית ומפתה.",
+    price: "₪14",
+  },
+  {
+    image: lemonCookie,
+    name: "לימון ואבקת סוכר",
+    description: "עוגייה רעננה וחמצמצה עם ציפוי אבקת סוכר. טעם קיצי מרענן.",
+    price: "₪11",
+  },
+  {
+    image: sugarSprinklesCookie,
+    name: "סוכריות צבעוניות",
+    description: "עוגיית חמאה רכה עם סוכריות צבעוניות. מושלמת לימי הולדת וחגיגות.",
+    price: "₪10",
+  },
+  {
+    image: saltedCaramelCookie,
+    name: "קרמל מלוח",
+    description: "קרמל זהוב עשיר עם גבישי מלח ים. השילוב המתוק-מלוח המושלם.",
+    price: "₪14",
+  },
+  {
+    image: matchaCookie,
+    name: "מאצ׳ה ושוקולד לבן",
+    description: "תה ירוק יפני משובח עם שוקולד לבן קרמי. טעם ייחודי ומרגיע.",
+    price: "₪15",
+  },
+  {
+    image: tahiniCookie,
+    name: "טחינה וחלווה",
+    description: "טחינה ישראלית משובחת עם פירורי חלווה ושומשום. הטעם של הבית.",
+    price: "₪13",
   },
 ];
 
