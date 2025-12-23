@@ -1,5 +1,9 @@
 import { Button } from "./ui/button";
+import { MessageCircle } from "lucide-react";
 import heroImage from "@/assets/hero-cookies.jpg";
+
+const WHATSAPP_NUMBER = "972546791198";
+const WHATSAPP_MESSAGE = "היי, אשמח להזמין עוגיות 🍪";
 
 const Hero = () => {
   return (
@@ -29,10 +33,15 @@ const Hero = () => {
             אספקה עד 3 ימי עסקים.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button variant="honey" size="xl">
-              הזמינו עוגיות טריות
+            <Button 
+              variant="honey" 
+              size="xl"
+              onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`, '_blank')}
+            >
+              <MessageCircle className="w-5 h-5 ml-2" />
+              הזמינו בוואטסאפ
             </Button>
-            <Button variant="outline" size="xl">
+            <Button variant="outline" size="xl" onClick={() => document.getElementById('cookies')?.scrollIntoView({ behavior: 'smooth' })}>
               צפו בתפריט
             </Button>
           </div>
