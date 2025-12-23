@@ -19,8 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Playfair Display", "serif"],
-        body: ["Lato", "sans-serif"],
+        display: ["Frank Ruhl Libre", "serif"],
+        body: ["Heebo", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

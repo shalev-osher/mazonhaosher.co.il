@@ -8,14 +8,14 @@ const ContactSection = () => {
         <div className="grid lg:grid-cols-2 gap-16">
           <div>
             <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-4">
-              Get in Touch
+              צרו קשר
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
-              Ready to Order?
+              מוכנים להזמין?
             </h2>
             <p className="text-primary-foreground/80 text-lg leading-relaxed mb-8">
-              Whether you're craving a dozen cookies for yourself or need catering 
-              for a special event, we'd love to hear from you.
+              בין אם אתם מתאווים לתריסר עוגיות לעצמכם או צריכים קייטרינג 
+              לאירוע מיוחד, נשמח לשמוע מכם.
             </p>
 
             <div className="space-y-6">
@@ -24,8 +24,8 @@ const ContactSection = () => {
                   <MapPin className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium">123 Baker Street</p>
-                  <p className="text-primary-foreground/70">Sweet Valley, CA 90210</p>
+                  <p className="font-medium">רחוב האופים 123</p>
+                  <p className="text-primary-foreground/70">תל אביב, ישראל</p>
                 </div>
               </div>
 
@@ -34,8 +34,8 @@ const ContactSection = () => {
                   <Phone className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium">(555) 123-4567</p>
-                  <p className="text-primary-foreground/70">Call for orders</p>
+                  <p className="font-medium">03-123-4567</p>
+                  <p className="text-primary-foreground/70">להזמנות בטלפון</p>
                 </div>
               </div>
 
@@ -44,8 +44,8 @@ const ContactSection = () => {
                   <Mail className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium">hello@crumblecookies.com</p>
-                  <p className="text-primary-foreground/70">We reply within 24 hours</p>
+                  <p className="font-medium">hello@crumble.co.il</p>
+                  <p className="text-primary-foreground/70">נענה תוך 24 שעות</p>
                 </div>
               </div>
 
@@ -54,8 +54,8 @@ const ContactSection = () => {
                   <Clock className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium">Tue - Sun: 8am - 6pm</p>
-                  <p className="text-primary-foreground/70">Closed Mondays</p>
+                  <p className="font-medium">א׳-ה׳: 8:00 - 18:00</p>
+                  <p className="text-primary-foreground/70">ו׳: 8:00 - 14:00</p>
                 </div>
               </div>
             </div>
@@ -63,35 +63,36 @@ const ContactSection = () => {
 
           <div className="bg-card text-card-foreground rounded-2xl p-8 shadow-elevated">
             <h3 className="font-display text-2xl font-semibold mb-6">
-              Send us a Message
+              שלחו לנו הודעה
             </h3>
             <form className="space-y-5">
               <div>
-                <label className="block text-sm font-medium mb-2">Name</label>
+                <label className="block text-sm font-medium mb-2">שם</label>
                 <input
                   type="text"
                   className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all"
-                  placeholder="Your name"
+                  placeholder="השם שלכם"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
+                <label className="block text-sm font-medium mb-2">אימייל</label>
                 <input
                   type="email"
                   className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all"
                   placeholder="your@email.com"
+                  dir="ltr"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Message</label>
+                <label className="block text-sm font-medium mb-2">הודעה</label>
                 <textarea
                   rows={4}
                   className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all resize-none"
-                  placeholder="Tell us about your order or question..."
+                  placeholder="ספרו לנו על ההזמנה או השאלה שלכם..."
                 />
               </div>
               <Button variant="honey" size="lg" className="w-full">
-                Send Message
+                שלחו הודעה
               </Button>
             </form>
           </div>
