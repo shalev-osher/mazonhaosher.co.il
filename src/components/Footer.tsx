@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="מזון האושר" className="h-10 w-auto" />
+            <img src={logo} alt="מזון האושר" className="h-14 w-auto" />
           </div>
 
           <p className="text-muted-foreground text-sm text-center">
