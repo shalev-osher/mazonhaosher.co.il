@@ -3,18 +3,18 @@ import { Heart, Leaf, Clock } from "lucide-react";
 const features = [
   {
     icon: Heart,
-    title: "Made with Love",
-    description: "Every batch is crafted with care and passion, just like grandma used to make.",
+    title: "מיוצר באהבה",
+    description: "כל אצווה מוכנת בקפידה ובתשוקה, בדיוק כמו שסבתא הייתה עושה.",
   },
   {
     icon: Leaf,
-    title: "Fresh Ingredients",
-    description: "We source only the finest, freshest ingredients from local suppliers.",
+    title: "מרכיבים טריים",
+    description: "אנחנו מקפידים רק על המרכיבים הטריים והמשובחים ביותר מספקים מקומיים.",
   },
   {
     icon: Clock,
-    title: "Baked Daily",
-    description: "Our cookies are baked fresh every morning for maximum deliciousness.",
+    title: "נאפה יומית",
+    description: "העוגיות שלנו נאפות טריות כל בוקר לטעם מושלם.",
   },
 ];
 
@@ -25,21 +25,20 @@ const AboutSection = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="animate-fade-in">
             <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-4">
-              Our Story
+              הסיפור שלנו
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Baking Happiness, One Cookie at a Time
+              אופים אושר, עוגייה אחת בכל פעם
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-              Crumble started in a small home kitchen with a simple dream: to share 
-              the warmth and comfort of homemade cookies with our community. What 
-              began as weekend baking sessions has grown into a beloved local bakery, 
-              but our heart remains the same.
+              קראמבל התחיל במטבח ביתי קטן עם חלום פשוט: לשתף את החום והנוחות 
+              של עוגיות ביתיות עם הקהילה שלנו. מה שהתחיל כאפייה בסופי שבוע 
+              הפך למאפייה מקומית אהובה, אבל הלב שלנו נשאר אותו הדבר.
             </p>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              We believe that the best cookies come from the best ingredients, 
-              time-honored techniques, and a whole lot of love. Every crumble 
-              tells our story—and now, it's part of yours.
+              אנחנו מאמינים שהעוגיות הטובות ביותר מגיעות מהמרכיבים הטובים ביותר, 
+              טכניקות מסורתיות, והמון אהבה. כל פירור מספר את הסיפור שלנו—ועכשיו, 
+              הוא חלק מהסיפור שלכם.
             </p>
           </div>
 
