@@ -21,12 +21,12 @@ const Hero = () => {
             מיוצר באהבה
           </span>
           <h1 className="font-display text-5xl md:text-7xl font-bold text-foreground leading-tight mb-6">
-            עוגיות ביתיות,{" "}
-            <span className="text-accent">קראמבל</span> לשלמות
+            <span className="text-accent">מזון האושר</span>{" "}
+            עוגיות ביתיות
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-lg">
-            כל עוגייה מספרת סיפור של מרכיבים טריים, מתכונים משפחתיים, 
-            והחום של אפייה ביתית אמיתית. טעמו את ההבדל.
+            עוגיות קראמבל אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד.
+            אספקה עד 3 ימי עסקים.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button variant="honey" size="xl">
