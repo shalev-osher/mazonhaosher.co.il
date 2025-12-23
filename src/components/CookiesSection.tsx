@@ -11,8 +11,36 @@ import sugarSprinklesCookie from "@/assets/cookie-sugar-sprinkles.jpg";
 import saltedCaramelCookie from "@/assets/cookie-salted-caramel.jpg";
 import matchaCookie from "@/assets/cookie-matcha.jpg";
 import tahiniCookie from "@/assets/cookie-tahini.jpg";
+import bambaCookie from "@/assets/cookie-bamba.jpg";
+import kinderCookie from "@/assets/cookie-kinder.jpg";
+import cornflakesCookie from "@/assets/cookie-cornflakes.jpg";
+import bigaleCookie from "@/assets/cookie-bigale.jpg";
 
 const cookies = [
+  {
+    image: bambaCookie,
+    name: "במבה אדומה",
+    description: "עוגייה מיוחדת עם קרם לבן וכדורי במבה אדומה פריכים. טעם ישראלי מקורי.",
+    price: "₪14",
+  },
+  {
+    image: kinderCookie,
+    name: "קינדר",
+    description: "עוגייה עם ממרח קינדר, חתיכות שוקולד וכדורי שוקולד צבעוניים. לחובבי הקינדר.",
+    price: "₪15",
+  },
+  {
+    image: cornflakesCookie,
+    name: "קורנפלקס",
+    description: "עוגייה עם שוקולד לבן מותך ופתיתי קורנפלקס פריכים. מתוקה ומפתה.",
+    price: "₪13",
+  },
+  {
+    image: bigaleCookie,
+    name: "ביגלה",
+    description: "עוגייה עם שוקולד לבן קרמי, שוקולד צ׳יפס וביגלה פריכה. שילוב מתוק-מלוח.",
+    price: "₪14",
+  },
   {
     image: chocolateCookie,
     name: "שוקולד צ'יפס קלאסית",
