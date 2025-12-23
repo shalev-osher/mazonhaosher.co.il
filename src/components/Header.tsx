@@ -8,24 +8,24 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <Cookie className="h-8 w-8 text-accent" />
           <span className="font-display text-2xl font-semibold text-foreground">
-            Crumble
+            קראמבל
           </span>
         </div>
         
         <nav className="hidden md:flex items-center gap-8">
           <a href="#cookies" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-            Our Cookies
+            העוגיות שלנו
           </a>
           <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-            Our Story
+            הסיפור שלנו
           </a>
           <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-            Contact
+            צרו קשר
           </a>
         </nav>
 
         <Button variant="honey" size="sm">
-          Order Now
+          הזמינו עכשיו
         </Button>
       </div>
     </header>
