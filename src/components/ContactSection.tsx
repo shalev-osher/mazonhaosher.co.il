@@ -24,8 +24,8 @@ const ContactSection = () => {
                   <MapPin className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium">רחוב האופים 123</p>
-                  <p className="text-primary-foreground/70">תל אביב, ישראל</p>
+                  <p className="font-medium">שדרות קדש 39</p>
+                  <p className="text-primary-foreground/70">אשקלון</p>
                 </div>
               </div>
 
@@ -34,18 +34,8 @@ const ContactSection = () => {
                   <Phone className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium">03-123-4567</p>
+                  <p className="font-medium" dir="ltr">054-679-1198</p>
                   <p className="text-primary-foreground/70">להזמנות בטלפון</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <p className="font-medium">hello@crumble.co.il</p>
-                  <p className="text-primary-foreground/70">נענה תוך 24 שעות</p>
                 </div>
               </div>
 
@@ -54,8 +44,8 @@ const ContactSection = () => {
                   <Clock className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium">א׳-ה׳: 8:00 - 18:00</p>
-                  <p className="text-primary-foreground/70">ו׳: 8:00 - 14:00</p>
+                  <p className="font-medium">בהזמנה מראש</p>
+                  <p className="text-primary-foreground/70">אספקה עד 3 ימי עסקים</p>
                 </div>
               </div>
             </div>

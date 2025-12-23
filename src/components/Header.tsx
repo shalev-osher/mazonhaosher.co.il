@@ -8,7 +8,7 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <Cookie className="h-8 w-8 text-accent" />
           <span className="font-display text-2xl font-semibold text-foreground">
-            קראמבל
+            מזון האושר
           </span>
         </div>
         

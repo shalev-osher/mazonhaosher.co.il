@@ -8,12 +8,12 @@ const Footer = () => {
           <div className="flex items-center gap-2">
             <Cookie className="h-6 w-6 text-accent" />
             <span className="font-display text-xl font-semibold text-foreground">
-              קראמבל
+              מזון האושר
             </span>
           </div>
 
           <p className="text-muted-foreground text-sm text-center">
-            © {new Date().getFullYear()} קראמבל עוגיות ביתיות. נאפה באהבה.
+            © {new Date().getFullYear()} מזון האושר. נאפה באהבה.
           </p>
 
           <div className="flex items-center gap-4">
