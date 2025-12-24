@@ -2,7 +2,6 @@ import CookieCard from "./CookieCard";
 import cookieOreo from "@/assets/cookie-oreo.jpg";
 import cookieLotus from "@/assets/cookie-lotus.jpg";
 import cookieToblerone from "@/assets/cookie-toblerone.jpg";
-import cookieTahini from "@/assets/cookie-tahini-new.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieConfetti from "@/assets/cookie-confetti.jpg";
@@ -27,12 +26,6 @@ const cookies = [
     price: "₪25",
   },
   {
-    image: cookieTahini,
-    name: "טחינה",
-    description: "עוגייה עם טחינה ישראלית, ציפוי שוקולד לבן וצ׳יפס שוקולד. הטעם של הבית.",
-    price: "₪25",
-  },
-  {
     image: cookieRedVelvet,
     name: "רד וולווט",
     description: "עוגייה אדומה קטיפתית עם ציפוי שוקולד לבן ופירורים אדומים. מפתה ויפהפייה.",
@@ -41,13 +34,13 @@ const cookies = [
   {
     image: cookieKinderBueno,
     name: "קינדר בואנו",
-    description: "עוגייה עם חתיכות קינדר בואנו, שוקולד חלב וכדורי שוקולד פריכים.",
+    description: "עוגייה עם אצבעות קינדר בואנו, שוקולד חלב וצ׳יפס שוקולד לבן.",
     price: "₪25",
   },
   {
     image: cookieConfetti,
     name: "קונפטי",
-    description: "עוגייה צבעונית ושמחה עם סוכריות, שוקולד חלב וסמארטיז. לכל חגיגה.",
+    description: "עוגייה צבעונית ושמחה עם סוכריות וסמארטיז. מושלמת לימי הולדת וחגיגות.",
     price: "₪25",
   },
 ];
@@ -57,7 +50,7 @@ const CookiesSection = () => {
     <section id="cookies" className="py-24 bg-secondary/30">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-4">
+          <span className="inline-block text-primary font-medium tracking-wider uppercase text-sm mb-4">
             הקולקציה המיוחדת שלנו
           </span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -69,7 +62,7 @@ const CookiesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {cookies.map((cookie, index) => (
             <CookieCard
               key={cookie.name}
