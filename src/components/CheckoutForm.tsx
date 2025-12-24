@@ -84,7 +84,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       }
 
       // שליחת וואטסאפ ללקוח
-      const customerMessage = `🍪 Cookie Shop - אישור הזמנה\n\nשלום ${formData.firstName}!\n\nקיבלנו את הזמנתך:\n${orderDetails}\n\nסה״כ: ₪${totalPrice}\n\nניצור איתך קשר בקרוב לתיאום משלוח.\nתודה רבה! 🍪`;
+      const customerMessage = `🍪 מזון האושר - אישור הזמנה\n\nשלום ${formData.firstName}!\n\nקיבלנו את הזמנתך:\n${orderDetails}\n\nסה״כ: ₪${totalPrice}\n\nניצור איתך קשר בקרוב לתיאום משלוח.\nתודה רבה! 🍪`;
       const customerWhatsappUrl = `https://wa.me/972${formData.phone.replace(/^0/, "")}?text=${encodeURIComponent(customerMessage)}`;
 
       // פתיחת וואטסאפ לבעלת העסק
