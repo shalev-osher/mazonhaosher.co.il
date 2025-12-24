@@ -61,7 +61,7 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
         </div>
 
         {showCheckout ? (
-          <CheckoutForm onBack={() => setShowCheckout(false)} onClose={handleClose} />
+          <CheckoutForm onBack={() => setShowCheckout(false)} onClose={handleClose} totalPrice={calculateTotalPrice()} />
         ) : (
           <>
             {/* Bundle Deal Banner */}
