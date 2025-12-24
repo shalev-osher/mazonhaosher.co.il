@@ -3,16 +3,10 @@ import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary/50 py-6">
+    <footer className="bg-secondary/50 py-8">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="מזון האושר" className="h-14 w-auto" />
-          </div>
-
-          <p className="text-muted-foreground text-xs text-center">
-            © {new Date().getFullYear()} מזון האושר. נאפה באהבה.
-          </p>
+        <div className="flex flex-col items-center gap-4">
+          <img src={logo} alt="מזון האושר" className="h-20 w-auto" />
 
           <div className="flex items-center gap-3">
             <a 
@@ -28,6 +22,10 @@ const Footer = () => {
               <Facebook className="w-4 h-4" />
             </a>
           </div>
+
+          <p className="text-muted-foreground text-xs text-center">
+            © {new Date().getFullYear()} מזון האושר. נאפה באהבה.
+          </p>
         </div>
       </div>
     </footer>
