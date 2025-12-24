@@ -19,12 +19,12 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-l from-background/90 via-background/60 to-transparent" />
       </div>
 
-      {/* Logo Watermark */}
-      <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none">
+      {/* Logo */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20">
         <img
           src={logo}
-          alt=""
-          className="w-[60%] max-w-xl opacity-15"
+          alt="מזון האושר"
+          className="h-24 md:h-32 w-auto opacity-90"
         />
       </div>
 
