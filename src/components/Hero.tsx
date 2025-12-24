@@ -7,7 +7,7 @@ const WHATSAPP_MESSAGE = "היי, אשמח להזמין עוגיות 🍪";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-16">
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
