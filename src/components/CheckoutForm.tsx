@@ -10,13 +10,14 @@ import { supabase } from "@/integrations/supabase/client";
 interface CheckoutFormProps {
   onBack: () => void;
   onClose: () => void;
+  totalPrice: number;
 }
 
 const WHATSAPP_NUMBER = "972546791198";
 const OWNER_WHATSAPP_NUMBER = "972546791198"; // מספר הוואטסאפ של בעלת העסק
 
-const CheckoutForm = ({ onBack, onClose }: CheckoutFormProps) => {
-  const { items, getTotalPrice, clearCart } = useCart();
+const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
+  const { items, clearCart } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -59,7 +60,7 @@ const CheckoutForm = ({ onBack, onClose }: CheckoutFormProps) => {
       .map((item) => `• ${item.name} x${item.quantity} (${parseInt(item.price.replace(/[^\d]/g, "")) * item.quantity}₪)`)
       .join("\n");
 
-    const totalPrice = getTotalPrice();
+    // totalPrice comes from props
     const customerFullName = `${formData.firstName} ${formData.lastName}`;
 
     try {
@@ -175,7 +176,7 @@ const CheckoutForm = ({ onBack, onClose }: CheckoutFormProps) => {
       <div className="bg-secondary/50 rounded-xl p-4 space-y-2">
         <div className="flex justify-between items-center">
           <span className="font-semibold">סה״כ לתשלום:</span>
-          <span className="font-bold text-primary text-2xl">₪{getTotalPrice()}</span>
+          <span className="font-bold text-primary text-2xl">₪{totalPrice}</span>
         </div>
         <p className="text-sm text-muted-foreground">💵 תשלום במזומן בעת המשלוח</p>
       </div>
