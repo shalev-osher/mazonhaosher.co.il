@@ -4,13 +4,14 @@ import cookieLotus from "@/assets/cookie-lotus.jpg";
 import cookieToblerone from "@/assets/cookie-toblerone.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
+import cookieKinderFingers from "@/assets/cookie-kinder-fingers.jpg";
 import cookieConfetti from "@/assets/cookie-confetti.jpg";
 
 const cookies = [
   {
     image: cookieOreo,
     name: "אוראו",
-    description: "עוגייה עם קרם לבן קטיפתי ועוגיית אוראו שלמה למעלה. פריכות ושוקולד בכל ביס.",
+    description: "עוגייה עם קרם לבן קטיפתי ועוגיית אוראו במרכז. פריכות ושוקולד בכל ביס.",
     price: "₪25",
   },
   {
@@ -34,7 +35,13 @@ const cookies = [
   {
     image: cookieKinderBueno,
     name: "קינדר בואנו",
-    description: "עוגייה עם אצבעות קינדר בואנו, שוקולד חלב וצ׳יפס שוקולד לבן.",
+    description: "עוגייה עם חתיכות קינדר בואנו, שוקולד חלב וצ׳יפס שוקולד לבן.",
+    price: "₪25",
+  },
+  {
+    image: cookieKinderFingers,
+    name: "אצבעות קינדר",
+    description: "עוגייה עם אצבעות שוקולד קינדר וציפוי שוקולד חלב מותך. לחובבי הקינדר.",
     price: "₪25",
   },
   {
@@ -62,7 +69,7 @@ const CookiesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {cookies.map((cookie, index) => (
             <CookieCard
               key={cookie.name}
