@@ -57,16 +57,9 @@ const CookiesSection = () => {
     <section id="cookies" className="py-24 bg-secondary/30">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <span className="inline-block text-primary font-medium tracking-wider uppercase text-sm mb-4">
+          <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-foreground">
             הקולקציה המיוחדת שלנו
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
-            טרי מהתנור
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            כל עוגייה נאפית טרייה מדי יום ממרכיבים משובחים 
-            ומתכונים שעברו מדור לדור.
-          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
