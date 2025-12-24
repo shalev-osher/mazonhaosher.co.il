@@ -1,13 +1,14 @@
 import { Button } from "./ui/button";
 import { MessageCircle } from "lucide-react";
 import heroImage from "@/assets/hero-cookies.jpg";
+import logo from "@/assets/logo.png";
 
 const WHATSAPP_NUMBER = "972546791198";
 const WHATSAPP_MESSAGE = "היי, אשמח להזמין עוגיות 🍪";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
@@ -15,7 +16,16 @@ const Hero = () => {
           alt="עוגיות קראמבל טריות מהתנור"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-background/95 via-background/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-l from-background/90 via-background/60 to-transparent" />
+      </div>
+
+      {/* Logo Watermark */}
+      <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none">
+        <img
+          src={logo}
+          alt=""
+          className="w-[60%] max-w-xl opacity-15"
+        />
       </div>
 
       {/* Content */}
