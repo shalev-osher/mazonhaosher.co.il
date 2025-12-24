@@ -4,12 +4,12 @@ const features = [
   {
     icon: Heart,
     title: "מיוצר באהבה",
-    description: "כל אצווה מוכנת בקפידה ובתשוקה, בדיוק כמו שסבתא הייתה עושה.",
+    description: "כל אצווה מוכנה בקפידה ובתשוקה, בדיוק כמו שסבתא הייתה עושה.",
   },
   {
     icon: Leaf,
     title: "מרכיבים טריים",
-    description: "אנחנו מקפידים רק על המרכיבים הטריים והמשובחים ביותר מספקים מקומיים.",
+    description: "אנחנו מקפידים רק על המרכיבים הטריים והמשובחים ביותר.",
   },
   {
     icon: Clock,
@@ -20,49 +20,39 @@ const features = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="animate-fade-in">
-            <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-4">
-              הסיפור שלנו
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-              אופים אושר, עוגייה אחת בכל פעם
-            </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-              קראמבל התחיל במטבח ביתי קטן עם חלום פשוט: לשתף את החום והנוחות 
-              של עוגיות ביתיות עם הקהילה שלנו. מה שהתחיל כאפייה בסופי שבוע 
-              הפך למאפייה מקומית אהובה, אבל הלב שלנו נשאר אותו הדבר.
-            </p>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              אנחנו מאמינים שהעוגיות הטובות ביותר מגיעות מהמרכיבים הטובים ביותר, 
-              טכניקות מסורתיות, והמון אהבה. כל פירור מספר את הסיפור שלנו—ועכשיו, 
-              הוא חלק מהסיפור שלכם.
-            </p>
-          </div>
+    <section id="about" className="py-12 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-8">
+          <span className="inline-block text-accent font-medium tracking-wider uppercase text-xs mb-2">
+            הסיפור שלנו
+          </span>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+            אופים אושר, עוגייה אחת בכל פעם
+          </h2>
+          <p className="text-muted-foreground text-base leading-relaxed max-w-2xl mx-auto">
+            קראמבל התחיל במטבח ביתי קטן עם חלום פשוט: לשתף את החום והנוחות 
+            של עוגיות ביתיות עם הקהילה שלנו.
+          </p>
+        </div>
 
-          <div className="space-y-6">
-            {features.map((feature, index) => (
-              <div 
-                key={feature.title}
-                className="flex gap-5 p-6 bg-card rounded-2xl shadow-soft animate-fade-in-up"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="flex-shrink-0 w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center">
-                  <feature.icon className="w-7 h-7 text-accent" />
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground">
-                    {feature.description}
-                  </p>
-                </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {features.map((feature, index) => (
+            <div 
+              key={feature.title}
+              className="flex flex-col items-center text-center p-5 bg-card rounded-xl shadow-soft animate-fade-in-up"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-3">
+                <feature.icon className="w-6 h-6 text-accent" />
               </div>
-            ))}
-          </div>
+              <h3 className="font-display text-lg font-semibold text-foreground mb-1">
+                {feature.title}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {feature.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
