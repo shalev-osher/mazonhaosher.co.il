@@ -1,45 +1,51 @@
 import CookieCard from "./CookieCard";
-import cookiesCollection from "@/assets/cookies-collection.jpg";
+import cookieOreo from "@/assets/cookie-oreo.jpg";
+import cookieLotus from "@/assets/cookie-lotus.jpg";
+import cookieToblerone from "@/assets/cookie-toblerone.jpg";
+import cookieTahini from "@/assets/cookie-tahini-new.jpg";
+import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
+import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
+import cookieSprinkles from "@/assets/cookie-sprinkles.jpg";
 
 const cookies = [
   {
-    image: cookiesCollection,
+    image: cookieOreo,
     name: "אוראו",
     description: "עוגייה עם קרם לבן קטיפתי ועוגיית אוראו שלמה למעלה. פריכות ושוקולד בכל ביס.",
     price: "₪25",
   },
   {
-    image: cookiesCollection,
+    image: cookieLotus,
     name: "לוטוס",
     description: "עוגייה עם ביסקוויט לוטוס מקורי וצ׳יפס שוקולד לבן. הטעם הקרמלי המושלם.",
     price: "₪25",
   },
   {
-    image: cookiesCollection,
+    image: cookieToblerone,
     name: "טובלרון",
     description: "עוגייה עם משולשי טובלרון ושוקולד חלב מותך. שוויצרית ומפנקת.",
     price: "₪25",
   },
   {
-    image: cookiesCollection,
+    image: cookieTahini,
     name: "טחינה",
     description: "עוגייה עם טחינה ישראלית, ציפוי שוקולד לבן וצ׳יפס שוקולד. הטעם של הבית.",
     price: "₪25",
   },
   {
-    image: cookiesCollection,
+    image: cookieRedVelvet,
     name: "רד וולווט",
     description: "עוגייה אדומה קטיפתית עם ציפוי שוקולד לבן ופירורים אדומים. מפתה ויפהפייה.",
     price: "₪25",
   },
   {
-    image: cookiesCollection,
+    image: cookieKinderBueno,
     name: "קינדר בואנו",
     description: "עוגייה עם חתיכות קינדר בואנו, שוקולד חלב וכדורי שוקולד פריכים.",
     price: "₪25",
   },
   {
-    image: cookiesCollection,
+    image: cookieSprinkles,
     name: "סוכריות",
     description: "עוגייה צבעונית ושמחה עם סוכריות, שוקולד חלב וסמארטיז. לכל חגיגה.",
     price: "₪25",
