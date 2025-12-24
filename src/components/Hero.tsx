@@ -16,7 +16,7 @@ const Hero = () => {
           alt="עוגיות קראמבל טריות מהתנור"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-background/90 via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-background/70" />
       </div>
 
       {/* Logo */}
@@ -24,13 +24,13 @@ const Hero = () => {
         <img
           src={logo}
           alt="מזון האושר"
-          className="h-24 md:h-32 w-auto opacity-90"
+          className="h-24 md:h-32 w-auto"
         />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-xl me-auto animate-fade-in-up">
+        <div className="max-w-xl mx-auto text-center animate-fade-in-up">
           <span className="inline-block text-accent font-medium tracking-wider uppercase text-xs mb-2">
             מיוצר באהבה
           </span>
@@ -38,11 +38,11 @@ const Hero = () => {
             <span className="text-accent">מזון האושר</span>{" "}
             עוגיות ביתיות
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-md">
+          <p className="text-base md:text-lg text-muted-foreground mb-6 mx-auto max-w-md">
             עוגיות קראמבל אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד.
             אספקה עד 3 ימי עסקים.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button 
               variant="honey" 
               size="lg"
