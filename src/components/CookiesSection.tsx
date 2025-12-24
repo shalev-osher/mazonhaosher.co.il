@@ -5,7 +5,7 @@ import cookieToblerone from "@/assets/cookie-toblerone.jpg";
 import cookieTahini from "@/assets/cookie-tahini-new.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
-import cookieSprinkles from "@/assets/cookie-sprinkles.jpg";
+import cookieConfetti from "@/assets/cookie-confetti.jpg";
 
 const cookies = [
   {
@@ -45,8 +45,8 @@ const cookies = [
     price: "₪25",
   },
   {
-    image: cookieSprinkles,
-    name: "סוכריות",
+    image: cookieConfetti,
+    name: "קונפטי",
     description: "עוגייה צבעונית ושמחה עם סוכריות, שוקולד חלב וסמארטיז. לכל חגיגה.",
     price: "₪25",
   },
