@@ -1,53 +1,53 @@
 import CookieCard from "./CookieCard";
-import cookieOreo from "@/assets/cookie-oreo.jpg";
-import cookieLotus from "@/assets/cookie-lotus.jpg";
-import cookieToblerone from "@/assets/cookie-toblerone.jpg";
-import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
+import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
-import cookieKinderFingers from "@/assets/cookie-kinder-fingers.jpg";
+import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
 import cookieConfetti from "@/assets/cookie-confetti.jpg";
+import cookieLotus from "@/assets/cookie-lotus.jpg";
+import cookiePistachio from "@/assets/cookie-pistachio.jpg";
+import cookiePretzel from "@/assets/cookie-pretzel.jpg";
 
 const cookies = [
   {
-    image: cookieOreo,
-    name: "אוראו",
-    description: "עוגייה עם קרם לבן קטיפתי ועוגיית אוראו במרכז. פריכות ושוקולד בכל ביס.",
-    price: "₪25",
-  },
-  {
     image: cookieLotus,
     name: "לוטוס",
-    description: "עוגייה עם ביסקוויט לוטוס מקורי וצ׳יפס שוקולד לבן. הטעם הקרמלי המושלם.",
+    description: "עוגייה עם ביסקוויט לוטוס מקורי וממרח קרמל. הטעם הקרמלי המושלם.",
     price: "₪25",
   },
   {
-    image: cookieToblerone,
-    name: "טובלרון",
-    description: "עוגייה עם משולשי טובלרון ושוקולד חלב מותך. שוויצרית ומפנקת.",
-    price: "₪25",
-  },
-  {
-    image: cookieRedVelvet,
-    name: "רד וולווט",
-    description: "עוגייה אדומה קטיפתית עם ציפוי שוקולד לבן ופירורים אדומים. מפתה ויפהפייה.",
+    image: cookieKinder,
+    name: "קינדר",
+    description: "עוגייה עם חפיסת שוקולד קינדר וכדורי שוקולד צבעוניים. פינוק לילדים ומבוגרים.",
     price: "₪25",
   },
   {
     image: cookieKinderBueno,
     name: "קינדר בואנו",
-    description: "עוגייה עם חתיכות קינדר בואנו, שוקולד חלב וצ׳יפס שוקולד לבן.",
+    description: "עוגייה עם חתיכות קינדר בואנו, שוקולד חלב וציפוי שוקולד מותך.",
     price: "₪25",
   },
   {
-    image: cookieKinderFingers,
-    name: "אצבעות קינדר",
-    description: "עוגייה עם אצבעות שוקולד קינדר וציפוי שוקולד חלב מותך. לחובבי הקינדר.",
+    image: cookieRedVelvet,
+    name: "רד וולווט",
+    description: "עוגייה אדומה קטיפתית עם ציפוי שוקולד לבן ופירורי פטל. מפתה ויפהפייה.",
     price: "₪25",
   },
   {
     image: cookieConfetti,
     name: "קונפטי",
     description: "עוגייה צבעונית ושמחה עם סוכריות וסמארטיז. מושלמת לימי הולדת וחגיגות.",
+    price: "₪25",
+  },
+  {
+    image: cookiePistachio,
+    name: "פיסטוק",
+    description: "עוגייה עם שוקולד לבן, פיסטוקים קלויים וגרגירי רימון. טעם מתוחכם ומיוחד.",
+    price: "₪25",
+  },
+  {
+    image: cookiePretzel,
+    name: "בייגלה",
+    description: "עוגייה עם בייגלה מלוח, שוקולד לבן וצ׳יפס שוקולד. השילוב המושלם של מתוק ומלוח.",
     price: "₪25",
   },
 ];
