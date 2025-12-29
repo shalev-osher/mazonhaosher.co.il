@@ -19,8 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Frank Ruhl Libre", "serif"],
-        body: ["Heebo", "sans-serif"],
+        display: ["Secular One", "sans-serif"],
+        body: ["Rubik", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
