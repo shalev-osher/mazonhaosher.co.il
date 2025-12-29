@@ -77,7 +77,7 @@ const Hero = () => {
         <img
           src={logo}
           alt="מזון האושר"
-          className="h-32 md:h-44 w-auto"
+          className="h-40 md:h-56 w-auto animate-sparkle"
         />
       </div>
 
