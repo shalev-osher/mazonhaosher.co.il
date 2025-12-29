@@ -1,8 +1,46 @@
 import { Button } from "./ui/button";
+import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 
+const useTypewriter = (text: string, speed: number = 50, delay: number = 500) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    
+    const startTyping = () => {
+      let currentIndex = 0;
+      
+      const typeNextChar = () => {
+        if (currentIndex < text.length) {
+          setDisplayedText(text.slice(0, currentIndex + 1));
+          currentIndex++;
+          timeout = setTimeout(typeNextChar, speed);
+        } else {
+          setIsComplete(true);
+        }
+      };
+      
+      typeNextChar();
+    };
+
+    timeout = setTimeout(startTyping, delay);
+
+    return () => clearTimeout(timeout);
+  }, [text, speed, delay]);
+
+  return { displayedText, isComplete };
+};
+
 const Hero = () => {
+  const { displayedText, isComplete } = useTypewriter(
+    "עוגיות קראמבל אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד. אספקה עד 3 ימי עסקים.",
+    40,
+    800
+  );
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -34,9 +72,9 @@ const Hero = () => {
             <span className="text-accent">מזון האושר</span>{" "}
             עוגיות ביתיות
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground mb-6 mx-auto max-w-md">
-            עוגיות קראמבל אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד.
-            אספקה עד 3 ימי עסקים.
+          <p className="text-base md:text-lg text-muted-foreground mb-6 mx-auto max-w-md min-h-[4rem]">
+            {displayedText}
+            {!isComplete && <span className="animate-pulse">|</span>}
           </p>
           <Button variant="honey" size="lg" onClick={() => document.getElementById('cookies')?.scrollIntoView({ behavior: 'smooth' })}>
             צפו בתפריט
