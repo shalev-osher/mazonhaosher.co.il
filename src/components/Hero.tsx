@@ -3,42 +3,61 @@ import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 
-const useTypewriter = (text: string, speed: number = 50, delay: number = 500) => {
+const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pauseTime: number = 2000) => {
   const [displayedText, setDisplayedText] = useState("");
-  const [isComplete, setIsComplete] = useState(false);
+  const [isTyping, setIsTyping] = useState(true);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
+    let currentIndex = 0;
+    let isDeleting = false;
     
-    const startTyping = () => {
-      let currentIndex = 0;
-      
-      const typeNextChar = () => {
+    const animate = () => {
+      if (!isDeleting) {
+        // Typing
         if (currentIndex < text.length) {
           setDisplayedText(text.slice(0, currentIndex + 1));
           currentIndex++;
-          timeout = setTimeout(typeNextChar, speed);
+          setIsTyping(true);
+          timeout = setTimeout(animate, speed);
         } else {
-          setIsComplete(true);
+          // Finished typing, pause then start deleting
+          setIsTyping(false);
+          timeout = setTimeout(() => {
+            isDeleting = true;
+            animate();
+          }, pauseTime);
         }
-      };
-      
-      typeNextChar();
+      } else {
+        // Deleting
+        if (currentIndex > 0) {
+          currentIndex--;
+          setDisplayedText(text.slice(0, currentIndex));
+          setIsTyping(true);
+          timeout = setTimeout(animate, speed / 2);
+        } else {
+          // Finished deleting, pause then start typing again
+          isDeleting = false;
+          setIsTyping(false);
+          timeout = setTimeout(animate, delay);
+        }
+      }
     };
 
-    timeout = setTimeout(startTyping, delay);
+    timeout = setTimeout(animate, delay);
 
     return () => clearTimeout(timeout);
-  }, [text, speed, delay]);
+  }, [text, speed, delay, pauseTime]);
 
-  return { displayedText, isComplete };
+  return { displayedText, isTyping };
 };
 
 const Hero = () => {
-  const { displayedText, isComplete } = useTypewriter(
+  const { displayedText, isTyping } = useTypewriter(
     "עוגיות קראמבל אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד. אספקה עד 3 ימי עסקים.",
     40,
-    800
+    800,
+    3000
   );
 
   return (
@@ -74,7 +93,7 @@ const Hero = () => {
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-6 mx-auto max-w-md min-h-[4rem]">
             {displayedText}
-            {!isComplete && <span className="animate-pulse">|</span>}
+            <span className={`${isTyping ? 'animate-pulse' : 'opacity-0'}`}>|</span>
           </p>
           <Button variant="honey" size="lg" onClick={() => document.getElementById('cookies')?.scrollIntoView({ behavior: 'smooth' })}>
             צפו בתפריט
