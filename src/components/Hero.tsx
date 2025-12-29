@@ -27,7 +27,7 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-xl mx-auto text-center animate-fade-in-up">
-          <span className="inline-block text-accent font-medium tracking-wider uppercase text-xs mb-2">
+          <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-2">
             מיוצר באהבה
           </span>
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4">
