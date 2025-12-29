@@ -9,7 +9,7 @@ const ContactSection = () => {
             צרו קשר
           </h2>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-primary-foreground/90 text-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-primary-foreground/90 text-base">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
               <span>שדרות קדש 39, אשקלון</span>

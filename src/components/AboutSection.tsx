@@ -23,7 +23,7 @@ const AboutSection = () => {
     <section id="about" className="py-12 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <span className="inline-block text-accent font-medium tracking-wider uppercase text-xs mb-2">
+          <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-2">
             הסיפור שלנו
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -48,7 +48,7 @@ const AboutSection = () => {
               <h3 className="font-display text-lg font-semibold text-foreground mb-1">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-base">
                 {feature.description}
               </p>
             </div>
