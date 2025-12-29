@@ -111,16 +111,16 @@
   }
 
   body {
-    @apply bg-background text-foreground font-body antialiased text-lg;
+    @apply bg-background text-foreground font-body antialiased text-xl;
   }
 
   html {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   @media (min-width: 768px) {
     html {
-      font-size: 20px;
+      font-size: 22px;
     }
   }
 
