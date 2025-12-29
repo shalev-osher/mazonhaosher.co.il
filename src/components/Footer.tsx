@@ -23,7 +23,7 @@ const Footer = () => {
             </a>
           </div>
 
-          <p className="text-muted-foreground text-xs text-center">
+          <p className="text-muted-foreground text-sm text-center">
             © {new Date().getFullYear()} מזון האושר. נאפה באהבה.
           </p>
         </div>
