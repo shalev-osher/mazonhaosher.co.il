@@ -20,7 +20,7 @@ const Hero = () => {
         <img
           src={logo}
           alt="מזון האושר"
-          className="h-24 md:h-32 w-auto"
+          className="h-32 md:h-44 w-auto"
         />
       </div>
 
