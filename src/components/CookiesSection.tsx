@@ -54,10 +54,10 @@ const cookies = [
 
 const CookiesSection = () => {
   return (
-    <section id="cookies" className="py-24 bg-secondary/30">
+    <section id="cookies" className="py-24 bg-secondary/30 overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-primary animate-fade-in">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-primary">
             הקולקציה המיוחדת שלנו
           </h2>
         </div>
