@@ -20,9 +20,9 @@ const features = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-12 bg-background">
+    <section id="about" className="py-12 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 animate-fade-in">
           <span className="inline-block text-accent font-medium tracking-wider uppercase text-base md:text-lg mb-2">
             הסיפור שלנו
           </span>
@@ -39,11 +39,11 @@ const AboutSection = () => {
           {features.map((feature, index) => (
             <div 
               key={feature.title}
-              className="flex flex-col items-center text-center p-5 bg-card rounded-xl shadow-soft animate-fade-in-up"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="flex flex-col items-center text-center p-5 bg-card rounded-xl shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-2 group animate-fade-in-up"
+              style={{ animationDelay: `${index * 150}ms` }}
             >
-              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-3">
-                <feature.icon className="w-6 h-6 text-accent" />
+              <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-accent/30 transition-all duration-300 group-hover:rotate-6">
+                <feature.icon className="w-7 h-7 text-accent group-hover:scale-110 transition-transform duration-300" />
               </div>
               <h3 className="font-display text-lg font-semibold text-foreground mb-1">
                 {feature.title}
