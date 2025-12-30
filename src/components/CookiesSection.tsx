@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List } from "lucide-react";
+import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List, Heart } from "lucide-react";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -22,6 +22,7 @@ import cookieTahini from "@/assets/cookie-tahini.jpg";
 type Category = "הכל" | "שוקולד" | "פירות" | "ממתקים" | "אגוזים" | "קלאסי";
 type SortOption = "default" | "name" | "price";
 type Tag = "מומלץ" | "חדש" | null;
+type TagFilter = Tag | "הכל" | "מועדפים";
 
 const cookies = [
   {
@@ -161,8 +162,31 @@ const CookiesSection = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("default");
-  const [activeTag, setActiveTag] = useState<Tag | "הכל">("הכל");
+  const [activeTag, setActiveTag] = useState<TagFilter>("הכל");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    const saved = localStorage.getItem("cookie-favorites");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const toggleFavorite = (cookieName: string) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(cookieName)
+        ? prev.filter(name => name !== cookieName)
+        : [...prev, cookieName];
+      localStorage.setItem("cookie-favorites", JSON.stringify(newFavorites));
+      return newFavorites;
+    });
+  };
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    if (mode === viewMode) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setViewMode(mode);
+      setIsTransitioning(false);
+    }, 200);
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -215,7 +239,9 @@ const CookiesSection = () => {
     .filter(cookie => {
       const matchesCategory = activeCategory === "הכל" || cookie.category === activeCategory;
       const matchesSearch = cookie.name.includes(searchQuery) || cookie.description.includes(searchQuery);
-      const matchesTag = activeTag === "הכל" || cookie.tag === activeTag;
+      const matchesTag = activeTag === "הכל" || 
+        activeTag === "מועדפים" ? favorites.includes(cookie.name) : 
+        activeTag === cookie.tag;
       return matchesCategory && matchesSearch && matchesTag;
     })
     .sort((a, b) => {
@@ -348,10 +374,29 @@ const CookiesSection = () => {
             ))}
           </div>
 
+          {/* Favorites Filter */}
+          <button
+            onClick={() => {
+              setIsTransitioning(true);
+              setTimeout(() => {
+                setActiveTag(activeTag === "מועדפים" ? "הכל" : "מועדפים");
+                setIsTransitioning(false);
+              }, 200);
+            }}
+            className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
+              activeTag === "מועדפים"
+                ? "bg-red-500 text-white shadow-md"
+                : "bg-card/80 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Heart className={`h-4 w-4 ${favorites.length > 0 ? "fill-current" : ""}`} />
+            מועדפים ({favorites.length})
+          </button>
+
           {/* View Mode Toggle */}
           <div className="flex items-center gap-2 bg-card/80 rounded-full px-2 py-1">
             <button
-              onClick={() => setViewMode("grid")}
+              onClick={() => handleViewModeChange("grid")}
               className={`p-2 rounded-full transition-all duration-200 ${
                 viewMode === "grid"
                   ? "bg-primary text-primary-foreground"
@@ -362,7 +407,7 @@ const CookiesSection = () => {
               <LayoutGrid className="h-4 w-4" />
             </button>
             <button
-              onClick={() => setViewMode("list")}
+              onClick={() => handleViewModeChange("list")}
               className={`p-2 rounded-full transition-all duration-200 ${
                 viewMode === "list"
                   ? "bg-primary text-primary-foreground"
@@ -406,6 +451,8 @@ const CookiesSection = () => {
               delay={index * 100}
               tag={cookie.tag}
               viewMode={viewMode}
+              isFavorite={favorites.includes(cookie.name)}
+              onToggleFavorite={() => toggleFavorite(cookie.name)}
             />
           ))}
         </div>
