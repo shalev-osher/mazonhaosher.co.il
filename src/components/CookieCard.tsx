@@ -29,7 +29,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
       className="group transition-all duration-500 hover:-translate-y-3 animate-fade-in-up"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="aspect-square overflow-hidden relative rounded-full">
+      <div className="w-3/4 mx-auto aspect-square overflow-hidden relative rounded-full">
         <img
           src={image}
           alt={name}
