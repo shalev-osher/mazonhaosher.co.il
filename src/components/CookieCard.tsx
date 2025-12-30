@@ -63,7 +63,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
             <button
               type="button"
               aria-label={`קרא עוד על ${name}`}
-              className="w-full text-right text-muted-foreground text-base leading-relaxed mb-4 h-12 line-clamp-2 hover:text-foreground transition-colors"
+              className="w-full text-right text-muted-foreground text-sm leading-relaxed mb-4 h-10 line-clamp-2 hover:text-foreground transition-colors"
             >
               {description}
             </button>
