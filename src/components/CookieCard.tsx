@@ -50,13 +50,14 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
     >
       {/* Image section - fixed height */}
       <div className="p-6 pb-0">
-        <div className="aspect-square overflow-hidden relative rounded-full">
+        <div className="aspect-square overflow-hidden relative rounded-full group/image">
           <img
             src={image}
             alt={name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out rounded-full"
+            className="w-full h-full object-cover group-hover:scale-110 group-hover/image:rotate-3 transition-all duration-700 ease-out rounded-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+          <div className="absolute inset-0 rounded-full ring-4 ring-primary/0 group-hover:ring-primary/30 transition-all duration-500" />
         </div>
       </div>
       
