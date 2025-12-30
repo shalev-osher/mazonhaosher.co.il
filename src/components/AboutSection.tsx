@@ -21,9 +21,10 @@ const features = [
 const AboutSection = () => {
   return (
     <section id="about" className="py-12 relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/40 to-accent/10" />
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, hsl(var(--accent) / 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, hsl(var(--primary) / 0.1) 0%, transparent 40%), radial-gradient(circle at 40% 80%, hsl(var(--golden-honey) / 0.1) 0%, transparent 45%)' }} />
+      {/* Decorative background - stronger pink gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-secondary to-accent/25" />
+      <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, hsl(var(--accent) / 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, hsl(var(--primary) / 0.35) 0%, transparent 40%), radial-gradient(circle at 40% 80%, hsl(var(--golden-honey) / 0.25) 0%, transparent 45%)' }} />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNlODVkOGYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxLjUiLz48L2c+PC9nPjwvc3ZnPg==')]" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8 animate-fade-in">
