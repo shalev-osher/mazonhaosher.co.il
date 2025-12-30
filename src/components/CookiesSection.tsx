@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, X, ArrowUpDown, Star, Sparkles } from "lucide-react";
+import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw } from "lucide-react";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -197,6 +197,19 @@ const CookiesSection = () => {
     return cookies.filter(c => c.category === category).length;
   };
 
+  const hasActiveFilters = activeCategory !== "הכל" || activeTag !== "הכל" || searchQuery !== "" || sortBy !== "default";
+
+  const resetAllFilters = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActiveCategory("הכל");
+      setActiveTag("הכל");
+      setSearchQuery("");
+      setSortBy("default");
+      setIsTransitioning(false);
+    }, 200);
+  };
+
   const filteredCookies = cookies
     .filter(cookie => {
       const matchesCategory = activeCategory === "הכל" || cookie.category === activeCategory;
@@ -268,9 +281,9 @@ const CookiesSection = () => {
                 }`}
               >
                 {category}
-                <span className={`mr-2 text-xs px-2 py-0.5 rounded-full ${
+                <span className={`mr-2 text-xs px-2 py-0.5 rounded-full transition-all duration-300 ${
                   activeCategory === category
-                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    ? "bg-primary-foreground/20 text-primary-foreground scale-110"
                     : "bg-primary/20 text-primary"
                 }`}>
                   {getCategoryCount(category)}
@@ -333,6 +346,18 @@ const CookiesSection = () => {
               </button>
             ))}
           </div>
+
+          {/* Reset Button */}
+          {hasActiveFilters && (
+            <Button
+              onClick={resetAllFilters}
+              variant="outline"
+              className="rounded-full gap-2 bg-card/80 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 transition-all duration-300 animate-fade-in"
+            >
+              <RotateCcw className="h-4 w-4" />
+              איפוס סינונים
+            </Button>
+          )}
         </div>
 
         <div 
