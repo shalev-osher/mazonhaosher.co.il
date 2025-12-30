@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, X, ArrowUpDown } from "lucide-react";
+import { Search, X, ArrowUpDown, Star, Sparkles } from "lucide-react";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -161,6 +161,7 @@ const CookiesSection = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("default");
+  const [activeTag, setActiveTag] = useState<Tag | "הכל">("הכל");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -195,7 +196,8 @@ const CookiesSection = () => {
     .filter(cookie => {
       const matchesCategory = activeCategory === "הכל" || cookie.category === activeCategory;
       const matchesSearch = cookie.name.includes(searchQuery) || cookie.description.includes(searchQuery);
-      return matchesCategory && matchesSearch;
+      const matchesTag = activeTag === "הכל" || cookie.tag === activeTag;
+      return matchesCategory && matchesSearch && matchesTag;
     })
     .sort((a, b) => {
       if (sortBy === "name") {
@@ -265,6 +267,42 @@ const CookiesSection = () => {
             ))}
           </div>
           
+          {/* Tag Filter */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveTag("הכל")}
+              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
+                activeTag === "הכל"
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "bg-card/80 text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              הכל
+            </button>
+            <button
+              onClick={() => setActiveTag("מומלץ")}
+              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
+                activeTag === "מומלץ"
+                  ? "bg-accent text-accent-foreground shadow-md"
+                  : "bg-card/80 text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Star className="h-4 w-4" />
+              מומלץ
+            </button>
+            <button
+              onClick={() => setActiveTag("חדש")}
+              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
+                activeTag === "חדש"
+                  ? "bg-green-500 text-white shadow-md"
+                  : "bg-card/80 text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Sparkles className="h-4 w-4" />
+              חדש
+            </button>
+          </div>
+
           {/* Sort Options */}
           <div className="flex items-center gap-2 bg-card/80 rounded-full px-4 py-2">
             <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
