@@ -51,7 +51,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
           </h3>
           <span className="text-primary font-bold text-lg group-hover:scale-110 transition-transform duration-300">{price}</span>
         </div>
-        <p className="text-muted-foreground text-base leading-relaxed mb-4 flex-grow">
+        <p className="text-muted-foreground text-base leading-relaxed mb-4 h-12 line-clamp-2">
           {description}
         </p>
         <Button
