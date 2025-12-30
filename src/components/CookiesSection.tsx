@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -198,8 +198,16 @@ const CookiesSection = () => {
               placeholder="חיפוש עוגיה..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-12 pl-4 py-3 rounded-full bg-card/90 border-primary/30 focus:border-primary text-right"
+              className="pr-12 pl-10 py-3 rounded-full bg-card/90 border-primary/30 focus:border-primary text-right"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
           </div>
         </div>
 
