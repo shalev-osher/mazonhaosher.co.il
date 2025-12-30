@@ -1,0 +1,283 @@
+import { useState, useEffect } from "react";
+import { Star, Send, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+
+const cookieOptions = [
+  "לוטוס", "קינדר", "קינדר בואנו", "רד וולווט", "קונפטי", "פיסטוק",
+  "בייגלה", "שוקולד צ׳יפס", "אוראו", "חמאת בוטנים", "לימון", "מקדמיה",
+  "שיבולת שועל", "קרמל מלוח", "טחינה"
+];
+
+interface Review {
+  id: string;
+  cookie_name: string;
+  rating: number;
+  review_text: string | null;
+  created_at: string;
+}
+
+const ReviewsSection = () => {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [selectedCookie, setSelectedCookie] = useState("");
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [filterCookie, setFilterCookie] = useState<string>("all");
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const fetchReviews = async () => {
+    const { data, error } = await supabase
+      .from("cookie_reviews")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    if (data && !error) {
+      setReviews(data);
+    }
+  };
+
+  const handleSubmitReview = async () => {
+    if (!selectedCookie) {
+      toast({
+        title: "שגיאה",
+        description: "נא לבחור עוגיה",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (rating === 0) {
+      toast({
+        title: "שגיאה",
+        description: "נא לדרג את העוגיה",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("cookie_reviews").insert({
+        cookie_name: selectedCookie,
+        rating,
+        review_text: reviewText || null,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "תודה על הביקורת! 🍪",
+        description: "הביקורת שלך נוספה בהצלחה",
+      });
+
+      setSelectedCookie("");
+      setRating(0);
+      setReviewText("");
+      fetchReviews();
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      toast({
+        title: "שגיאה",
+        description: "אירעה שגיאה, נסו שוב",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const filteredReviews = filterCookie === "all" 
+    ? reviews 
+    : reviews.filter(r => r.cookie_name === filterCookie);
+
+  const averageRating = reviews.length > 0
+    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
+    : "0";
+
+  return (
+    <section id="reviews" className="py-20 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary/20 via-background to-secondary/20" />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-12">
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-primary mb-4">
+            מה הלקוחות אומרים
+          </h2>
+          <div className="flex items-center justify-center gap-2 text-lg">
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`h-6 w-6 ${
+                    star <= Math.round(Number(averageRating))
+                      ? "text-accent fill-accent"
+                      : "text-muted"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="font-bold text-primary">{averageRating}</span>
+            <span className="text-muted-foreground">({reviews.length} ביקורות)</span>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Add Review Form */}
+          <div className="bg-card/80 backdrop-blur-sm rounded-3xl p-8 border border-primary/10">
+            <h3 className="font-display text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+              <Star className="h-6 w-6 text-accent" />
+              הוסיפו ביקורת
+            </h3>
+
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">בחרו עוגיה</label>
+                <Select value={selectedCookie} onValueChange={setSelectedCookie}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="בחרו עוגיה..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cookieOptions.map((cookie) => (
+                      <SelectItem key={cookie} value={cookie}>
+                        {cookie}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">דירוג</label>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onMouseEnter={() => setHoverRating(star)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      onClick={() => setRating(star)}
+                      className="p-1 transition-transform hover:scale-125"
+                    >
+                      <Star
+                        className={`h-8 w-8 transition-colors ${
+                          star <= (hoverRating || rating)
+                            ? "text-accent fill-accent"
+                            : "text-muted hover:text-accent/50"
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">הביקורת שלכם (אופציונלי)</label>
+                <Textarea
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  placeholder="ספרו לנו מה חשבתם על העוגיה..."
+                  className="min-h-[100px] text-right"
+                />
+              </div>
+
+              <Button
+                onClick={handleSubmitReview}
+                disabled={isSubmitting}
+                className="w-full bg-accent hover:bg-accent/90"
+              >
+                {isSubmitting ? "שולח..." : (
+                  <>
+                    <Send className="h-4 w-4 ml-2" />
+                    לשלוח ביקורת
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {/* Reviews List */}
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="font-display text-2xl font-bold text-primary">ביקורות אחרונות</h3>
+              <Select value={filterCookie} onValueChange={setFilterCookie}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="סנן לפי עוגיה" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">כל העוגיות</SelectItem>
+                  {cookieOptions.map((cookie) => (
+                    <SelectItem key={cookie} value={cookie}>
+                      {cookie}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+              {filteredReviews.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">
+                  אין עדיין ביקורות. היו הראשונים לכתוב ביקורת!
+                </p>
+              ) : (
+                filteredReviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="bg-card/60 backdrop-blur-sm rounded-2xl p-4 border border-primary/10"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-semibold text-primary">{review.cookie_name}</span>
+                          <div className="flex">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`h-4 w-4 ${
+                                  star <= review.rating
+                                    ? "text-accent fill-accent"
+                                    : "text-muted"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        {review.review_text && (
+                          <p className="text-muted-foreground text-sm">{review.review_text}</p>
+                        )}
+                        <span className="text-xs text-muted-foreground mt-2 block">
+                          {new Date(review.created_at).toLocaleDateString("he-IL")}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ReviewsSection;
