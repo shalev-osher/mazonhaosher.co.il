@@ -56,22 +56,27 @@ const cookies = [
 const CookiesSection = () => {
   const fullText = "הקולקציה המיוחדת שלנו";
   const [displayedText, setDisplayedText] = useState("");
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    let currentIndex = 0;
-    const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setDisplayedText(fullText.slice(0, currentIndex));
-        currentIndex++;
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        if (displayedText.length < fullText.length) {
+          setDisplayedText(fullText.slice(0, displayedText.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
       } else {
-        clearInterval(typingInterval);
-        setIsTypingComplete(true);
+        if (displayedText.length > 0) {
+          setDisplayedText(fullText.slice(0, displayedText.length - 1));
+        } else {
+          setIsDeleting(false);
+        }
       }
-    }, 100);
+    }, isDeleting ? 50 : 100);
 
-    return () => clearInterval(typingInterval);
-  }, []);
+    return () => clearTimeout(timeout);
+  }, [displayedText, isDeleting]);
 
   return (
     <section id="cookies" className="py-24 bg-secondary/30 overflow-hidden">
@@ -79,7 +84,7 @@ const CookiesSection = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-primary">
             {displayedText}
-            <span className={`inline-block w-1 h-12 md:h-16 bg-primary mr-1 ${isTypingComplete ? 'animate-pulse' : 'animate-blink'}`} />
+            <span className="inline-block w-1 h-12 md:h-16 bg-primary mr-1 animate-blink" />
           </h2>
         </div>
 
