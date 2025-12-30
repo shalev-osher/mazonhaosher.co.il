@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List, Heart } from "lucide-react";
+import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List, Heart, Trash2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -171,11 +172,31 @@ const CookiesSection = () => {
 
   const toggleFavorite = (cookieName: string) => {
     setFavorites(prev => {
-      const newFavorites = prev.includes(cookieName)
+      const isRemoving = prev.includes(cookieName);
+      const newFavorites = isRemoving
         ? prev.filter(name => name !== cookieName)
         : [...prev, cookieName];
       localStorage.setItem("cookie-favorites", JSON.stringify(newFavorites));
+      
+      toast({
+        title: isRemoving ? "הוסר מהמועדפים" : "נוסף למועדפים",
+        description: isRemoving ? `${cookieName} הוסר מרשימת המועדפים` : `${cookieName} נוסף לרשימת המועדפים`,
+      });
+      
       return newFavorites;
+    });
+  };
+
+  const clearAllFavorites = () => {
+    if (favorites.length === 0) return;
+    setFavorites([]);
+    localStorage.removeItem("cookie-favorites");
+    if (activeTag === "מועדפים") {
+      setActiveTag("הכל");
+    }
+    toast({
+      title: "המועדפים נוקו",
+      description: "כל העוגיות הוסרו מרשימת המועדפים",
     });
   };
 
@@ -378,23 +399,34 @@ const CookiesSection = () => {
           </div>
 
           {/* Favorites Filter */}
-          <button
-            onClick={() => {
-              setIsTransitioning(true);
-              setTimeout(() => {
-                setActiveTag(activeTag === "מועדפים" ? "הכל" : "מועדפים");
-                setIsTransitioning(false);
-              }, 200);
-            }}
-            className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
-              activeTag === "מועדפים"
-                ? "bg-red-500 text-white shadow-md"
-                : "bg-card/80 text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Heart className={`h-4 w-4 ${favorites.length > 0 ? "fill-current" : ""}`} />
-            מועדפים ({favorites.length})
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setIsTransitioning(true);
+                setTimeout(() => {
+                  setActiveTag(activeTag === "מועדפים" ? "הכל" : "מועדפים");
+                  setIsTransitioning(false);
+                }, 200);
+              }}
+              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
+                activeTag === "מועדפים"
+                  ? "bg-red-500 text-white shadow-md"
+                  : "bg-card/80 text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Heart className={`h-4 w-4 ${favorites.length > 0 ? "fill-current" : ""}`} />
+              מועדפים ({favorites.length})
+            </button>
+            {favorites.length > 0 && (
+              <button
+                onClick={clearAllFavorites}
+                className="flex items-center gap-1 text-sm px-3 py-2 rounded-full bg-card/80 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+                title="נקה את כל המועדפים"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            )}
+          </div>
 
           {/* View Mode Toggle */}
           <div className="flex items-center gap-2 bg-card/80 rounded-full px-2 py-1">
