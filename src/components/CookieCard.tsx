@@ -82,6 +82,26 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
               </DialogHeader>
               <p className="text-muted-foreground leading-relaxed">{description}</p>
               <span className="text-primary font-bold text-xl">{price}</span>
+              <Button
+                onClick={handleAddToCart}
+                className={`w-full gap-2 transition-all duration-300 ${
+                  justAdded 
+                    ? "bg-green-500 hover:bg-green-500" 
+                    : "bg-primary hover:bg-primary/90"
+                }`}
+              >
+                {justAdded ? (
+                  <>
+                    <Check className="w-4 h-4 animate-scale-in" />
+                    נוסף לעגלה!
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4" />
+                    הוסף לעגלה
+                  </>
+                )}
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
