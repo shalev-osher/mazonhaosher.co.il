@@ -2,6 +2,12 @@ import { Plus, Check } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CookieCardProps {
   image: string;
@@ -51,9 +57,18 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
           </h3>
           <span className="text-primary font-bold text-lg group-hover:scale-110 transition-transform duration-300">{price}</span>
         </div>
-        <p className="text-muted-foreground text-base leading-relaxed mb-4 h-12 line-clamp-2">
-          {description}
-        </p>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <p className="text-muted-foreground text-base leading-relaxed mb-4 h-12 line-clamp-2 cursor-pointer hover:text-foreground transition-colors">
+                {description}
+              </p>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-xs text-sm">
+              {description}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <Button
           onClick={handleAddToCart}
           className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
