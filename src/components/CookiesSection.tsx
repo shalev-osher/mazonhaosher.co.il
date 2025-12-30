@@ -192,6 +192,11 @@ const CookiesSection = () => {
     }, 200);
   };
 
+  const getCategoryCount = (category: Category) => {
+    if (category === "הכל") return cookies.length;
+    return cookies.filter(c => c.category === category).length;
+  };
+
   const filteredCookies = cookies
     .filter(cookie => {
       const matchesCategory = activeCategory === "הכל" || cookie.category === activeCategory;
@@ -263,6 +268,13 @@ const CookiesSection = () => {
                 }`}
               >
                 {category}
+                <span className={`mr-2 text-xs px-2 py-0.5 rounded-full ${
+                  activeCategory === category
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "bg-primary/20 text-primary"
+                }`}>
+                  {getCategoryCount(category)}
+                </span>
               </Button>
             ))}
           </div>
