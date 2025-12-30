@@ -109,7 +109,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
                   >
                     {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
                   </Button>
-                  <span className="flex-1 text-center font-bold text-lg">{quantity} בעגלה</span>
+                  <span className="flex-1 text-center font-bold text-lg">{quantity}</span>
                   <Button
                     onClick={handleIncrement}
                     size="icon"
@@ -144,8 +144,8 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
             >
               {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
             </Button>
-            <div className="flex-1 text-center font-bold text-foreground">
-              {quantity} בעגלה
+            <div className="flex-1 text-center font-bold text-lg text-foreground">
+              {quantity}
             </div>
             <Button
               onClick={handleIncrement}
