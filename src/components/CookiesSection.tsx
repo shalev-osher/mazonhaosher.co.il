@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
@@ -53,12 +54,32 @@ const cookies = [
 ];
 
 const CookiesSection = () => {
+  const fullText = "הקולקציה המיוחדת שלנו";
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setDisplayedText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+        setIsTypingComplete(true);
+      }
+    }, 100);
+
+    return () => clearInterval(typingInterval);
+  }, []);
+
   return (
     <section id="cookies" className="py-24 bg-secondary/30 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-primary">
-            הקולקציה המיוחדת שלנו
+            {displayedText}
+            <span className={`inline-block w-1 h-12 md:h-16 bg-primary mr-1 ${isTypingComplete ? 'animate-pulse' : 'animate-blink'}`} />
           </h2>
         </div>
 
