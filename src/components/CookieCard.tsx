@@ -26,7 +26,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
 
   return (
     <div 
-      className="group bg-card rounded-[3rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 animate-fade-in-up"
+      className="group transition-all duration-500 hover:-translate-y-3 animate-fade-in-up"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="aspect-square overflow-hidden relative">
