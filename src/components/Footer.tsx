@@ -6,11 +6,22 @@ const Footer = () => {
     <footer className="bg-secondary/50 py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-6 animate-fade-in">
-          <img 
-            src={logo} 
-            alt="מזון האושר" 
-            className="h-40 md:h-48 w-auto hover:scale-105 transition-transform duration-300" 
-          />
+          <div className="relative animate-float">
+            {/* Sparkle particles */}
+            <div className="absolute -inset-4 pointer-events-none">
+              <div className="absolute top-0 left-1/4 w-2 h-2 bg-golden-honey rounded-full animate-sparkle-particle opacity-80" style={{ animationDelay: '0s' }} />
+              <div className="absolute top-1/3 right-0 w-1.5 h-1.5 bg-accent rounded-full animate-sparkle-particle opacity-70" style={{ animationDelay: '0.5s' }} />
+              <div className="absolute bottom-1/4 left-0 w-2 h-2 bg-golden-honey rounded-full animate-sparkle-particle opacity-90" style={{ animationDelay: '1s' }} />
+              <div className="absolute bottom-0 right-1/4 w-1 h-1 bg-primary rounded-full animate-sparkle-particle opacity-60" style={{ animationDelay: '1.5s' }} />
+            </div>
+            <img 
+              src={logo} 
+              alt="מזון האושר" 
+              className="h-36 md:h-44 w-auto object-contain animate-sparkle drop-shadow-2xl hover:scale-105 transition-transform duration-300" 
+              style={{ imageRendering: 'crisp-edges' }}
+              loading="lazy"
+            />
+          </div>
 
           <div className="flex items-center gap-4">
             <a 
