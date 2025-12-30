@@ -16,9 +16,10 @@ interface CookieCardProps {
   description: string;
   price: string;
   delay?: number;
+  tag?: "מומלץ" | "חדש" | null;
 }
 
-const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardProps) => {
+const CookieCard = ({ image, name, description, price, delay = 0, tag }: CookieCardProps) => {
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   
@@ -49,7 +50,16 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
       style={{ animationDelay: `${delay}ms` }}
     >
       {/* Image section - fixed height */}
-      <div className="p-6 pb-0">
+      <div className="p-6 pb-0 relative">
+        {tag && (
+          <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold shadow-lg ${
+            tag === "מומלץ" 
+              ? "bg-accent text-accent-foreground" 
+              : "bg-green-500 text-white"
+          }`}>
+            {tag === "מומלץ" ? "⭐ מומלץ" : "✨ חדש"}
+          </div>
+        )}
         <div className="aspect-square overflow-hidden relative rounded-full group/image">
           <img
             src={image}
