@@ -1,4 +1,4 @@
-import { Plus, Minus, Trash2, Check, Info } from "lucide-react";
+import { Plus, Minus, Trash2, Check, Info, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -24,9 +24,11 @@ interface CookieCardProps {
   delay?: number;
   tag?: "מומלץ" | "חדש" | null;
   viewMode?: "grid" | "list";
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }
 
-const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode = "grid" }: CookieCardProps) => {
+const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode = "grid", isFavorite = false, onToggleFavorite }: CookieCardProps) => {
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   
@@ -102,6 +104,20 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           <p className="text-muted-foreground text-sm truncate">{description}</p>
         </div>
 
+        {/* Favorite Button */}
+        {onToggleFavorite && (
+          <button
+            onClick={onToggleFavorite}
+            className={`shrink-0 p-2 rounded-full transition-all duration-300 ${
+              isFavorite 
+                ? "text-red-500 hover:text-red-600" 
+                : "text-muted-foreground hover:text-red-500"
+            }`}
+          >
+            <Heart className={`h-5 w-5 transition-transform duration-300 hover:scale-125 ${isFavorite ? "fill-current" : ""}`} />
+          </button>
+        )}
+
         {/* Price */}
         <span className="text-primary font-bold text-lg shrink-0">{price}</span>
 
@@ -162,6 +178,19 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
     >
       {/* Image section - fixed height */}
       <div className="p-6 pb-0 relative">
+        {/* Favorite Button */}
+        {onToggleFavorite && (
+          <button
+            onClick={onToggleFavorite}
+            className={`absolute top-4 right-4 z-10 p-2 rounded-full bg-card/80 backdrop-blur-sm shadow-lg transition-all duration-300 hover:scale-110 ${
+              isFavorite 
+                ? "text-red-500" 
+                : "text-muted-foreground hover:text-red-500"
+            }`}
+          >
+            <Heart className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`} />
+          </button>
+        )}
         {tag && (
           <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold shadow-lg ${
             tag === "מומלץ" 
