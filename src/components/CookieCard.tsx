@@ -57,11 +57,6 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out rounded-full"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
-          {quantity > 0 && (
-            <div className="absolute top-3 right-3 bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-lg animate-scale-in">
-              {quantity}
-            </div>
-          )}
         </div>
       </div>
       
