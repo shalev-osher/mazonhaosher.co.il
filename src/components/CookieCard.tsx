@@ -33,9 +33,10 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
 
   return (
     <div 
-      className="group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 animate-fade-in-up flex flex-col h-full"
+      className="group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 animate-fade-in-up flex flex-col"
       style={{ animationDelay: `${delay}ms` }}
     >
+      {/* Image section - fixed height */}
       <div className="p-6 pb-0">
         <div className="aspect-square overflow-hidden relative rounded-full">
           <img
@@ -51,7 +52,9 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
           )}
         </div>
       </div>
-      <div className="p-6 pt-4 flex flex-col flex-grow">
+      
+      {/* Content section - fixed height */}
+      <div className="p-6 pt-4 h-28">
         <div className="flex items-start justify-between mb-2">
           <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
             {name}
@@ -63,7 +66,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
             <button
               type="button"
               aria-label={`קרא עוד על ${name}`}
-              className="w-full text-right text-muted-foreground text-sm leading-relaxed mb-4 h-10 line-clamp-2 hover:text-foreground transition-colors"
+              className="w-full text-right text-muted-foreground text-sm leading-relaxed line-clamp-2 hover:text-foreground transition-colors"
             >
               {description}
             </button>
@@ -105,29 +108,30 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
             </div>
           </DialogContent>
         </Dialog>
-        <div className="flex-grow" />
-        <div className="border-t border-border pt-4">
-          <Button
-            onClick={handleAddToCart}
-            className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-              justAdded 
-                ? "bg-green-500 hover:bg-green-500" 
-                : "bg-primary hover:bg-primary/90"
-            }`}
-          >
-            {justAdded ? (
-              <>
-                <Check className="w-4 h-4 animate-scale-in" />
-                נוסף לעגלה!
-              </>
-            ) : (
-              <>
-                <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-                הוסף לעגלה
-              </>
-            )}
-          </Button>
-        </div>
+      </div>
+      
+      {/* Button section - always at bottom */}
+      <div className="px-6 pb-6 border-t border-border mx-6 pt-4">
+        <Button
+          onClick={handleAddToCart}
+          className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
+            justAdded 
+              ? "bg-green-500 hover:bg-green-500" 
+              : "bg-primary hover:bg-primary/90"
+          }`}
+        >
+          {justAdded ? (
+            <>
+              <Check className="w-4 h-4 animate-scale-in" />
+              נוסף לעגלה!
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
+              הוסף לעגלה
+            </>
+          )}
+        </Button>
       </div>
     </div>
   );
