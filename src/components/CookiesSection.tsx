@@ -8,8 +8,16 @@ import cookieConfetti from "@/assets/cookie-confetti.jpg";
 import cookieLotus from "@/assets/cookie-lotus.jpg";
 import cookiePistachio from "@/assets/cookie-pistachio.jpg";
 import cookiePretzel from "@/assets/cookie-pretzel.jpg";
+import cookieChocolate from "@/assets/cookie-chocolate.jpg";
+import cookieOreo from "@/assets/cookie-oreo.jpg";
+import cookiePeanut from "@/assets/cookie-peanut.jpg";
+import cookieLemon from "@/assets/cookie-lemon.jpg";
+import cookieMacadamia from "@/assets/cookie-macadamia.jpg";
+import cookieOatmeal from "@/assets/cookie-oatmeal.jpg";
+import cookieSaltedCaramel from "@/assets/cookie-salted-caramel.jpg";
+import cookieTahini from "@/assets/cookie-tahini.jpg";
 
-type Category = "הכל" | "שוקולד" | "פירות" | "ממתקים" | "אגוזים";
+type Category = "הכל" | "שוקולד" | "פירות" | "ממתקים" | "אגוזים" | "קלאסי";
 
 const cookies = [
   {
@@ -61,15 +69,72 @@ const cookies = [
     price: "₪25",
     category: "שוקולד" as Category,
   },
+  {
+    image: cookieChocolate,
+    name: "שוקולד צ׳יפס",
+    description: "צ׳יפס שוקולד בלגי מריר ושוקולד חלב",
+    price: "₪25",
+    category: "שוקולד" as Category,
+  },
+  {
+    image: cookieOreo,
+    name: "אוראו",
+    description: "פירורי אוראו, שוקולד לבן וקרם וניל",
+    price: "₪25",
+    category: "ממתקים" as Category,
+  },
+  {
+    image: cookiePeanut,
+    name: "חמאת בוטנים",
+    description: "חמאת בוטנים, בוטנים קלויים ושוקולד",
+    price: "₪25",
+    category: "אגוזים" as Category,
+  },
+  {
+    image: cookieLemon,
+    name: "לימון",
+    description: "גרידת לימון טרי וציפוי סוכר",
+    price: "₪25",
+    category: "פירות" as Category,
+  },
+  {
+    image: cookieMacadamia,
+    name: "מקדמיה",
+    description: "אגוזי מקדמיה ושוקולד לבן",
+    price: "₪25",
+    category: "אגוזים" as Category,
+  },
+  {
+    image: cookieOatmeal,
+    name: "שיבולת שועל",
+    description: "שיבולת שועל, צימוקים וקינמון",
+    price: "₪25",
+    category: "קלאסי" as Category,
+  },
+  {
+    image: cookieSaltedCaramel,
+    name: "קרמל מלוח",
+    description: "קרמל ביתי וקריסטלי מלח ים",
+    price: "₪25",
+    category: "קלאסי" as Category,
+  },
+  {
+    image: cookieTahini,
+    name: "טחינה",
+    description: "טחינה גולמית, שומשום ודבש",
+    price: "₪25",
+    category: "קלאסי" as Category,
+  },
 ];
 
-const categories: Category[] = ["הכל", "שוקולד", "פירות", "ממתקים", "אגוזים"];
+const categories: Category[] = ["הכל", "שוקולד", "פירות", "ממתקים", "אגוזים", "קלאסי"];
 
 const CookiesSection = () => {
   const fullText = "הקולקציה המיוחדת שלנו";
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>("הכל");
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -90,6 +155,15 @@ const CookiesSection = () => {
 
     return () => clearTimeout(timeout);
   }, [displayedText, isDeleting]);
+
+  const handleCategoryChange = (category: Category) => {
+    if (category === activeCategory) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActiveCategory(category);
+      setIsTransitioning(false);
+    }, 200);
+  };
 
   const filteredCookies = activeCategory === "הכל" 
     ? cookies 
@@ -115,7 +189,7 @@ const CookiesSection = () => {
           {categories.map((category) => (
             <Button
               key={category}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => handleCategoryChange(category)}
               variant={activeCategory === category ? "default" : "outline"}
               className={`rounded-full px-6 transition-all duration-300 ${
                 activeCategory === category 
@@ -128,7 +202,11 @@ const CookiesSection = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div 
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 transition-all duration-300 ${
+            isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          }`}
+        >
           {filteredCookies.map((cookie, index) => (
             <CookieCard
               key={cookie.name}
