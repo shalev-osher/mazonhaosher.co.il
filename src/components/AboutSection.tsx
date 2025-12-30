@@ -20,8 +20,12 @@ const features = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-12 bg-background overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section id="about" className="py-12 relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/40 to-accent/10" />
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, hsl(var(--accent) / 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, hsl(var(--primary) / 0.1) 0%, transparent 40%), radial-gradient(circle at 40% 80%, hsl(var(--golden-honey) / 0.1) 0%, transparent 45%)' }} />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8 animate-fade-in">
           <span className="inline-block text-accent font-medium tracking-wider uppercase text-base md:text-lg mb-2">
             הסיפור שלנו
