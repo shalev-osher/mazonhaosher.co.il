@@ -51,7 +51,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
           )}
         </div>
       </div>
-      <div className="p-6 flex flex-col flex-grow">
+      <div className="p-6 pt-4 flex flex-col flex-grow">
         <div className="flex items-start justify-between mb-2">
           <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
             {name}
@@ -105,26 +105,29 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
             </div>
           </DialogContent>
         </Dialog>
-        <Button
-          onClick={handleAddToCart}
-          className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-            justAdded 
-              ? "bg-green-500 hover:bg-green-500" 
-              : "bg-primary hover:bg-primary/90"
-          }`}
-        >
-          {justAdded ? (
-            <>
-              <Check className="w-4 h-4 animate-scale-in" />
-              נוסף לעגלה!
-            </>
-          ) : (
-            <>
-              <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-              הוסף לעגלה
-            </>
-          )}
-        </Button>
+        <div className="flex-grow" />
+        <div className="border-t border-border pt-4">
+          <Button
+            onClick={handleAddToCart}
+            className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
+              justAdded 
+                ? "bg-green-500 hover:bg-green-500" 
+                : "bg-primary hover:bg-primary/90"
+            }`}
+          >
+            {justAdded ? (
+              <>
+                <Check className="w-4 h-4 animate-scale-in" />
+                נוסף לעגלה!
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
+                הוסף לעגלה
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );
