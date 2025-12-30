@@ -26,7 +26,7 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
 
   return (
     <div 
-      className="group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 animate-fade-in-up"
+      className="group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 animate-fade-in-up flex flex-col h-full"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="p-6 pb-0">
@@ -44,14 +44,14 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
           )}
         </div>
       </div>
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-grow">
         <div className="flex items-start justify-between mb-2">
           <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
             {name}
           </h3>
           <span className="text-primary font-bold text-lg group-hover:scale-110 transition-transform duration-300">{price}</span>
         </div>
-        <p className="text-muted-foreground text-base leading-relaxed mb-4">
+        <p className="text-muted-foreground text-base leading-relaxed mb-4 flex-grow">
           {description}
         </p>
         <Button
