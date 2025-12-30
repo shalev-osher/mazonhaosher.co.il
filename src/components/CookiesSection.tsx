@@ -239,9 +239,12 @@ const CookiesSection = () => {
     .filter(cookie => {
       const matchesCategory = activeCategory === "הכל" || cookie.category === activeCategory;
       const matchesSearch = cookie.name.includes(searchQuery) || cookie.description.includes(searchQuery);
-      const matchesTag = activeTag === "הכל" || 
-        activeTag === "מועדפים" ? favorites.includes(cookie.name) : 
-        activeTag === cookie.tag;
+      let matchesTag = true;
+      if (activeTag === "מועדפים") {
+        matchesTag = favorites.includes(cookie.name);
+      } else if (activeTag !== "הכל") {
+        matchesTag = cookie.tag === activeTag;
+      }
       return matchesCategory && matchesSearch && matchesTag;
     })
     .sort((a, b) => {
