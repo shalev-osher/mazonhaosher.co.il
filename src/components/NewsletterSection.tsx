@@ -1,0 +1,157 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Bell, Mail, Phone, Check, Sparkles } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+
+const NewsletterSection = () => {
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = async () => {
+    if (!email && !phone) {
+      toast({
+        title: "שגיאה",
+        description: "נא להזין מייל או טלפון",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (email && !email.includes("@")) {
+      toast({
+        title: "שגיאה",
+        description: "נא להזין כתובת מייל תקינה",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.from("newsletter_subscriptions").insert({
+        email: email || null,
+        phone: phone || null,
+      });
+
+      if (error) {
+        if (error.code === "23505") {
+          toast({
+            title: "כבר רשום",
+            description: "כתובת המייל או הטלפון כבר רשומים לניוזלטר",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        setSubscribed(true);
+        toast({
+          title: "נרשמת בהצלחה! 🎉",
+          description: "תקבל/י עדכונים על מבצעים וחדשות",
+        });
+      }
+    } catch (error) {
+      console.error("Error subscribing:", error);
+      toast({
+        title: "שגיאה",
+        description: "אירעה שגיאה, נסו שוב מאוחר יותר",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (subscribed) {
+    return (
+      <section className="py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-2xl mx-auto text-center bg-card/80 backdrop-blur-sm rounded-3xl p-12 border border-primary/20">
+            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Check className="h-10 w-10 text-white" />
+            </div>
+            <h3 className="font-display text-3xl font-bold text-primary mb-4">
+              תודה שנרשמת! 🍪
+            </h3>
+            <p className="text-muted-foreground text-lg">
+              נעדכן אותך על מבצעים מיוחדים, עוגיות חדשות והפתעות מתוקות
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-16 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAzMGMwLTUuNTIzIDQuNDc3LTEwIDEwLTEwczEwIDQuNDc3IDEwIDEwLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEweiIgZmlsbD0iI2U4NWQ4ZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9nPjwvc3ZnPg==')] opacity-30" />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-2xl mx-auto text-center bg-card/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-primary/20 shadow-xl">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Bell className="h-8 w-8 text-primary animate-bounce" />
+            <Sparkles className="h-6 w-6 text-accent" />
+          </div>
+          
+          <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mb-4">
+            לא לפספס מבצעים!
+          </h3>
+          <p className="text-muted-foreground text-lg mb-8">
+            הירשמו לניוזלטר וקבלו עדכונים על מבצעים מיוחדים, עוגיות חדשות והפתעות מתוקות
+          </p>
+
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-full">
+                <Mail className="h-5 w-5 text-primary" />
+              </div>
+              <Input
+                type="email"
+                placeholder="כתובת המייל שלך"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 text-left"
+                dir="ltr"
+              />
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-full">
+                <Phone className="h-5 w-5 text-primary" />
+              </div>
+              <Input
+                type="tel"
+                placeholder="מספר טלפון (אופציונלי)"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="flex-1 text-left"
+                dir="ltr"
+              />
+            </div>
+
+            <Button
+              onClick={handleSubscribe}
+              disabled={isLoading}
+              size="lg"
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold"
+            >
+              {isLoading ? "שולח..." : "להירשם לעדכונים 🍪"}
+            </Button>
+          </div>
+
+          <p className="text-xs text-muted-foreground mt-4">
+            אנחנו מבטיחים לא לשלוח ספאם. רק עוגיות. 🍪
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default NewsletterSection;
