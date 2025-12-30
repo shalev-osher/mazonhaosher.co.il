@@ -1,4 +1,4 @@
-import { Plus, Check } from "lucide-react";
+import { Plus, Minus, Trash2, Check } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -19,7 +19,7 @@ interface CookieCardProps {
 }
 
 const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardProps) => {
-  const { addToCart, items } = useCart();
+  const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   
   const itemInCart = items.find((i) => i.name === name);
@@ -29,6 +29,18 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
     addToCart({ name, price, image });
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1000);
+  };
+
+  const handleIncrement = () => {
+    updateQuantity(name, quantity + 1);
+  };
+
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      updateQuantity(name, quantity - 1);
+    } else {
+      removeFromCart(name);
+    }
   };
 
   return (
@@ -85,26 +97,36 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
               </DialogHeader>
               <p className="text-muted-foreground leading-relaxed">{description}</p>
               <span className="text-primary font-bold text-xl">{price}</span>
-              <Button
-                onClick={handleAddToCart}
-                className={`w-full gap-2 transition-all duration-300 ${
-                  justAdded 
-                    ? "bg-green-500 hover:bg-green-500" 
-                    : "bg-primary hover:bg-primary/90"
-                }`}
-              >
-                {justAdded ? (
-                  <>
-                    <Check className="w-4 h-4 animate-scale-in" />
-                    נוסף לעגלה!
-                  </>
-                ) : (
-                  <>
+              
+              {/* Quantity controls in dialog */}
+              {quantity > 0 ? (
+                <div className="flex items-center gap-3 w-full">
+                  <Button
+                    onClick={handleDecrement}
+                    variant="outline"
+                    size="icon"
+                    className="h-10 w-10 rounded-full"
+                  >
+                    {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
+                  </Button>
+                  <span className="flex-1 text-center font-bold text-lg">{quantity} בעגלה</span>
+                  <Button
+                    onClick={handleIncrement}
+                    size="icon"
+                    className="h-10 w-10 rounded-full bg-primary hover:bg-primary/90"
+                  >
                     <Plus className="w-4 h-4" />
-                    הוסף לעגלה
-                  </>
-                )}
-              </Button>
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  onClick={handleAddToCart}
+                  className="w-full gap-2 bg-primary hover:bg-primary/90"
+                >
+                  <Plus className="w-4 h-4" />
+                  הוסף לעגלה
+                </Button>
+              )}
             </div>
           </DialogContent>
         </Dialog>
@@ -112,26 +134,49 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
       
       {/* Button section - always at bottom */}
       <div className="px-6 pb-6 border-t border-border mx-6 pt-4">
-        <Button
-          onClick={handleAddToCart}
-          className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-            justAdded 
-              ? "bg-green-500 hover:bg-green-500" 
-              : "bg-primary hover:bg-primary/90"
-          }`}
-        >
-          {justAdded ? (
-            <>
-              <Check className="w-4 h-4 animate-scale-in" />
-              נוסף לעגלה!
-            </>
-          ) : (
-            <>
-              <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-              הוסף לעגלה
-            </>
-          )}
-        </Button>
+        {quantity > 0 ? (
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleDecrement}
+              variant="outline"
+              size="icon"
+              className="h-10 w-10 rounded-full shrink-0"
+            >
+              {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
+            </Button>
+            <div className="flex-1 text-center font-bold text-foreground">
+              {quantity} בעגלה
+            </div>
+            <Button
+              onClick={handleIncrement}
+              size="icon"
+              className="h-10 w-10 rounded-full shrink-0 bg-primary hover:bg-primary/90"
+            >
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={handleAddToCart}
+            className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
+              justAdded 
+                ? "bg-green-500 hover:bg-green-500" 
+                : "bg-primary hover:bg-primary/90"
+            }`}
+          >
+            {justAdded ? (
+              <>
+                <Check className="w-4 h-4 animate-scale-in" />
+                נוסף לעגלה!
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
+                הוסף לעגלה
+              </>
+            )}
+          </Button>
+        )}
       </div>
     </div>
   );
