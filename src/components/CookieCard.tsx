@@ -1,4 +1,4 @@
-import { Plus, Minus, Trash2, Check } from "lucide-react";
+import { Plus, Minus, Trash2, Check, Info } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -9,6 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CookieCardProps {
   image: string;
@@ -17,9 +23,10 @@ interface CookieCardProps {
   price: string;
   delay?: number;
   tag?: "מומלץ" | "חדש" | null;
+  viewMode?: "grid" | "list";
 }
 
-const CookieCard = ({ image, name, description, price, delay = 0, tag }: CookieCardProps) => {
+const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode = "grid" }: CookieCardProps) => {
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   
@@ -44,6 +51,110 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag }: CookieC
     }
   };
 
+  // List view layout
+  if (viewMode === "list") {
+    return (
+      <div 
+        className="group bg-card rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 animate-fade-in flex items-center gap-4 p-4"
+        style={{ animationDelay: `${delay}ms` }}
+      >
+        {/* Image */}
+        <div className="relative shrink-0">
+          {tag && (
+            <div className={`absolute -top-1 -right-1 z-10 px-2 py-0.5 rounded-full text-xs font-bold shadow-lg ${
+              tag === "מומלץ" 
+                ? "bg-accent text-accent-foreground" 
+                : "bg-green-500 text-white"
+            }`}>
+              {tag === "מומלץ" ? "⭐" : "✨"}
+            </div>
+          )}
+          <div className="w-20 h-20 overflow-hidden rounded-full">
+            <img
+              src={image}
+              alt={name}
+              className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
+            />
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+              {name}
+            </h3>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="text-muted-foreground hover:text-primary transition-colors">
+                    <Info className="h-4 w-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
+                  <p className="font-medium">{name}</p>
+                  <p className="text-sm text-muted-foreground">{description}</p>
+                  <p className="text-sm text-primary font-bold mt-1">{price}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <p className="text-muted-foreground text-sm truncate">{description}</p>
+        </div>
+
+        {/* Price */}
+        <span className="text-primary font-bold text-lg shrink-0">{price}</span>
+
+        {/* Actions */}
+        <div className="shrink-0">
+          {quantity > 0 ? (
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleDecrement}
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full"
+              >
+                {quantity === 1 ? <Trash2 className="w-3 h-3" /> : <Minus className="w-3 h-3" />}
+              </Button>
+              <span className="w-6 text-center font-bold">{quantity}</span>
+              <Button
+                onClick={handleIncrement}
+                size="icon"
+                className="h-8 w-8 rounded-full bg-primary hover:bg-primary/90"
+              >
+                <Plus className="w-3 h-3" />
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={handleAddToCart}
+              size="sm"
+              className={`gap-1 transition-all duration-300 ${
+                justAdded 
+                  ? "bg-green-500 hover:bg-green-500" 
+                  : "bg-primary hover:bg-primary/90"
+              }`}
+            >
+              {justAdded ? (
+                <>
+                  <Check className="w-3 h-3" />
+                  נוסף!
+                </>
+              ) : (
+                <>
+                  <Plus className="w-3 h-3" />
+                  הוסף
+                </>
+              )}
+            </Button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Grid view layout (original)
   return (
     <div 
       className="group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 animate-fade-in-up flex flex-col"
@@ -60,15 +171,37 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag }: CookieC
             {tag === "מומלץ" ? "⭐ מומלץ" : "✨ חדש"}
           </div>
         )}
-        <div className="aspect-square overflow-hidden relative rounded-full group/image">
-          <img
-            src={image}
-            alt={name}
-            className="w-full h-full object-cover group-hover:scale-110 group-hover/image:rotate-3 transition-all duration-700 ease-out rounded-full"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
-          <div className="absolute inset-0 rounded-full ring-4 ring-primary/0 group-hover:ring-primary/30 transition-all duration-500" />
-        </div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="aspect-square overflow-hidden relative rounded-full group/image cursor-pointer">
+                <img
+                  src={image}
+                  alt={name}
+                  className="w-full h-full object-cover group-hover:scale-110 group-hover/image:rotate-3 transition-all duration-700 ease-out rounded-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+                <div className="absolute inset-0 rounded-full ring-4 ring-primary/0 group-hover:ring-primary/30 transition-all duration-500" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
+              <p className="font-medium text-base">{name}</p>
+              <p className="text-sm text-muted-foreground mt-1">{description}</p>
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
+                <span className="text-primary font-bold">{price}</span>
+                {tag && (
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${
+                    tag === "מומלץ" 
+                      ? "bg-accent/20 text-accent-foreground" 
+                      : "bg-green-500/20 text-green-700"
+                  }`}>
+                    {tag === "מומלץ" ? "⭐ מומלץ" : "✨ חדש"}
+                  </span>
+                )}
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       
       {/* Content section - fixed height */}
