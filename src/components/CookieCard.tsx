@@ -3,11 +3,12 @@ import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface CookieCardProps {
   image: string;
@@ -57,18 +58,23 @@ const CookieCard = ({ image, name, description, price, delay = 0 }: CookieCardPr
           </h3>
           <span className="text-primary font-bold text-lg group-hover:scale-110 transition-transform duration-300">{price}</span>
         </div>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <p className="text-muted-foreground text-base leading-relaxed mb-4 h-12 line-clamp-2 cursor-pointer hover:text-foreground transition-colors">
-                {description}
-              </p>
-            </TooltipTrigger>
-            <TooltipContent side="top" className="max-w-xs text-sm">
+        <Dialog>
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              aria-label={`קרא עוד על ${name}`}
+              className="w-full text-right text-muted-foreground text-base leading-relaxed mb-4 h-12 line-clamp-2 hover:text-foreground transition-colors"
+            >
               {description}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md text-right">
+            <DialogHeader>
+              <DialogTitle className="font-display">{name}</DialogTitle>
+            </DialogHeader>
+            <div className="text-muted-foreground leading-relaxed">{description}</div>
+          </DialogContent>
+        </Dialog>
         <Button
           onClick={handleAddToCart}
           className={`w-full gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
