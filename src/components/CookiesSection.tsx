@@ -203,7 +203,7 @@ const CookiesSection = () => {
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground hover:text-primary hover:rotate-90 hover:scale-125 transition-all duration-300"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -247,8 +247,23 @@ const CookiesSection = () => {
         </div>
 
         {filteredCookies.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">אין עוגיות בקטגוריה זו</p>
+          <div className="text-center py-16 animate-fade-in">
+            <div className="text-6xl mb-4">🍪</div>
+            <p className="text-foreground text-xl font-medium mb-2">
+              {searchQuery ? `לא מצאנו עוגיות עבור "${searchQuery}"` : "אין עוגיות בקטגוריה זו"}
+            </p>
+            <p className="text-muted-foreground">
+              {searchQuery ? "נסו לחפש משהו אחר או לנקות את החיפוש" : "נסו לבחור קטגוריה אחרת"}
+            </p>
+            {searchQuery && (
+              <Button
+                onClick={() => setSearchQuery("")}
+                variant="outline"
+                className="mt-4 rounded-full"
+              >
+                נקה חיפוש
+              </Button>
+            )}
           </div>
         )}
       </div>
