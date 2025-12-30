@@ -3,8 +3,12 @@ import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary/50 py-12">
-      <div className="container mx-auto px-4">
+    <footer className="relative py-12 overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/70 to-background" />
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 50% 100%, hsl(var(--primary) / 0.2) 0%, transparent 50%), radial-gradient(circle at 20% 30%, hsl(var(--accent) / 0.15) 0%, transparent 40%)' }} />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center gap-6 animate-fade-in">
           <div className="relative animate-float">
             {/* Sparkle particles */}
