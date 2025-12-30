@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -135,6 +137,7 @@ const CookiesSection = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>("הכל");
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -165,9 +168,11 @@ const CookiesSection = () => {
     }, 200);
   };
 
-  const filteredCookies = activeCategory === "הכל" 
-    ? cookies 
-    : cookies.filter(cookie => cookie.category === activeCategory);
+  const filteredCookies = cookies.filter(cookie => {
+    const matchesCategory = activeCategory === "הכל" || cookie.category === activeCategory;
+    const matchesSearch = cookie.name.includes(searchQuery) || cookie.description.includes(searchQuery);
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <section id="cookies" className="py-24 relative overflow-hidden">
@@ -182,6 +187,20 @@ const CookiesSection = () => {
             {displayedText}
             <span className="inline-block w-1 h-12 md:h-16 bg-primary mr-1 animate-blink" />
           </h2>
+        </div>
+
+        {/* Search */}
+        <div className="flex justify-center mb-8">
+          <div className="relative w-full max-w-md">
+            <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="חיפוש עוגיה..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pr-12 pl-4 py-3 rounded-full bg-card/90 border-primary/30 focus:border-primary text-right"
+            />
+          </div>
         </div>
 
         {/* Category Filter */}
