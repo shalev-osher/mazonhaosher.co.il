@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw } from "lucide-react";
+import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List } from "lucide-react";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -162,6 +162,7 @@ const CookiesSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("default");
   const [activeTag, setActiveTag] = useState<Tag | "הכל">("הכל");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -347,6 +348,32 @@ const CookiesSection = () => {
             ))}
           </div>
 
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-2 bg-card/80 rounded-full px-2 py-1">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-2 rounded-full transition-all duration-200 ${
+                viewMode === "grid"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="תצוגת גריד"
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`p-2 rounded-full transition-all duration-200 ${
+                viewMode === "list"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="תצוגת רשימה"
+            >
+              <List className="h-4 w-4" />
+            </button>
+          </div>
+
           {/* Reset Button */}
           {hasActiveFilters && (
             <Button
@@ -361,8 +388,12 @@ const CookiesSection = () => {
         </div>
 
         <div 
-          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 transition-all duration-300 ${
+          className={`transition-all duration-300 ${
             isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          } ${
+            viewMode === "grid" 
+              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+              : "flex flex-col gap-4 max-w-3xl mx-auto"
           }`}
         >
           {filteredCookies.map((cookie, index) => (
@@ -374,6 +405,7 @@ const CookiesSection = () => {
               price={cookie.price}
               delay={index * 100}
               tag={cookie.tag}
+              viewMode={viewMode}
             />
           ))}
         </div>
