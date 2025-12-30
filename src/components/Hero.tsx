@@ -87,6 +87,8 @@ const Hero = () => {
             src={logo}
             alt="מזון האושר"
             className="h-28 md:h-48 w-auto object-contain animate-sparkle drop-shadow-2xl"
+            style={{ imageRendering: 'crisp-edges' }}
+            loading="eager"
           />
         </div>
       </div>
