@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
+import { Button } from "@/components/ui/button";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -8,55 +9,67 @@ import cookieLotus from "@/assets/cookie-lotus.jpg";
 import cookiePistachio from "@/assets/cookie-pistachio.jpg";
 import cookiePretzel from "@/assets/cookie-pretzel.jpg";
 
+type Category = "הכל" | "שוקולד" | "פירות" | "ממתקים" | "אגוזים";
+
 const cookies = [
   {
     image: cookieLotus,
     name: "לוטוס",
     description: "ביסקוויט לוטוס וממרח קרמל",
     price: "₪25",
+    category: "ממתקים" as Category,
   },
   {
     image: cookieKinder,
     name: "קינדר",
     description: "שוקולד קינדר וכדורי שוקולד צבעוניים",
     price: "₪25",
+    category: "שוקולד" as Category,
   },
   {
     image: cookieKinderBueno,
     name: "קינדר בואנו",
     description: "קינדר בואנו, שוקולד חלב וציפוי שוקולד",
     price: "₪25",
+    category: "שוקולד" as Category,
   },
   {
     image: cookieRedVelvet,
     name: "רד וולווט",
     description: "בצק רד וולווט, שוקולד לבן ופירורי פטל",
     price: "₪25",
+    category: "פירות" as Category,
   },
   {
     image: cookieConfetti,
     name: "קונפטי",
     description: "סוכריות צבעוניות וסמארטיז",
     price: "₪25",
+    category: "ממתקים" as Category,
   },
   {
     image: cookiePistachio,
     name: "פיסטוק",
     description: "שוקולד לבן, פיסטוקים קלויים וגרגירי רימון",
     price: "₪25",
+    category: "אגוזים" as Category,
   },
   {
     image: cookiePretzel,
     name: "בייגלה",
     description: "בייגלה מלוח, שוקולד לבן וצ׳יפס שוקולד",
     price: "₪25",
+    category: "שוקולד" as Category,
   },
 ];
+
+const categories: Category[] = ["הכל", "שוקולד", "פירות", "ממתקים", "אגוזים"];
 
 const CookiesSection = () => {
   const fullText = "הקולקציה המיוחדת שלנו";
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<Category>("הכל");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -78,6 +91,10 @@ const CookiesSection = () => {
     return () => clearTimeout(timeout);
   }, [displayedText, isDeleting]);
 
+  const filteredCookies = activeCategory === "הכל" 
+    ? cookies 
+    : cookies.filter(cookie => cookie.category === activeCategory);
+
   return (
     <section id="cookies" className="py-24 relative overflow-hidden">
       {/* Decorative background - rich pink tones */}
@@ -86,22 +103,49 @@ const CookiesSection = () => {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAzMGMwLTUuNTIzIDQuNDc3LTEwIDEwLTEwczEwIDQuNDc3IDEwIDEwLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEweiIgZmlsbD0iI2U4NWQ4ZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9nPjwvc3ZnPg==')] opacity-60" />
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center mb-12 animate-fade-in">
           <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-primary">
             {displayedText}
             <span className="inline-block w-1 h-12 md:h-16 bg-primary mr-1 animate-blink" />
           </h2>
         </div>
 
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {categories.map((category) => (
+            <Button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              variant={activeCategory === category ? "default" : "outline"}
+              className={`rounded-full px-6 transition-all duration-300 ${
+                activeCategory === category 
+                  ? "bg-primary text-primary-foreground shadow-lg scale-105" 
+                  : "bg-card/80 hover:bg-card hover:scale-105"
+              }`}
+            >
+              {category}
+            </Button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {cookies.map((cookie, index) => (
+          {filteredCookies.map((cookie, index) => (
             <CookieCard
               key={cookie.name}
-              {...cookie}
+              image={cookie.image}
+              name={cookie.name}
+              description={cookie.description}
+              price={cookie.price}
               delay={index * 100}
             />
           ))}
         </div>
+
+        {filteredCookies.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-lg">אין עוגיות בקטגוריה זו</p>
+          </div>
+        )}
       </div>
     </section>
   );
