@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, ArrowRight } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Mail, ArrowRight, User } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
+import { useProfile } from "@/contexts/ProfileContext";
 import { supabase } from "@/integrations/supabase/client";
 
 interface CheckoutFormProps {
@@ -13,8 +15,7 @@ interface CheckoutFormProps {
   totalPrice: number;
 }
 
-const WHATSAPP_NUMBER = "972546791198";
-const OWNER_WHATSAPP_NUMBER = "972546791198"; // מספר הוואטסאפ של בעלת העסק
+const OWNER_WHATSAPP_NUMBER = "972546791198";
 
 const WhatsAppIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={`fill-current ${className}`}>
@@ -24,26 +25,39 @@ const WhatsAppIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 
 const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
   const { items, clearCart } = useCart();
+  const { profile, setProfile } = useProfile();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    fullName: "",
     email: "",
     phone: "",
+    address: "",
+    city: "",
+    notes: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Pre-fill form with profile data
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        fullName: profile.full_name || "",
+        email: "",
+        phone: profile.phone || "",
+        address: profile.address || "",
+        city: profile.city || "",
+        notes: profile.notes || "",
+      });
+    }
+  }, [profile]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const validateForm = () => {
-    if (!formData.firstName.trim()) {
-      toast.error("נא להזין שם פרטי");
-      return false;
-    }
-    if (!formData.lastName.trim()) {
-      toast.error("נא להזין שם משפחה");
+    if (!formData.fullName.trim()) {
+      toast.error("נא להזין שם מלא");
       return false;
     }
     if (!formData.email.trim() || !formData.email.includes("@")) {
@@ -52,6 +66,14 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
     }
     if (!formData.phone.trim() || formData.phone.length < 9) {
       toast.error("נא להזין מספר טלפון תקין");
+      return false;
+    }
+    if (!formData.address.trim()) {
+      toast.error("נא להזין כתובת למשלוח");
+      return false;
+    }
+    if (!formData.city.trim()) {
+      toast.error("נא להזין עיר");
       return false;
     }
     return true;
@@ -66,18 +88,101 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       .map((item) => `• ${item.name} x${item.quantity} (${parseInt(item.price.replace(/[^\d]/g, "")) * item.quantity}₪)`)
       .join("\n");
 
-    // totalPrice comes from props
-    const customerFullName = `${formData.firstName} ${formData.lastName}`;
-
     try {
+      // Find or create profile by phone
+      let profileId = profile?.id;
+      
+      if (!profileId) {
+        // Check if profile exists
+        const { data: existingProfile } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("phone", formData.phone)
+          .maybeSingle();
+
+        if (existingProfile) {
+          profileId = existingProfile.id;
+          setProfile(existingProfile);
+        } else {
+          // Create new profile
+          const { data: newProfile, error: profileError } = await supabase
+            .from("profiles")
+            .insert({
+              phone: formData.phone,
+              full_name: formData.fullName,
+              address: formData.address,
+              city: formData.city,
+              notes: formData.notes,
+            })
+            .select()
+            .single();
+
+          if (profileError) {
+            console.error("Error creating profile:", profileError);
+          } else if (newProfile) {
+            profileId = newProfile.id;
+            setProfile(newProfile);
+          }
+        }
+      } else {
+        // Update existing profile
+        const { data: updatedProfile } = await supabase
+          .from("profiles")
+          .update({
+            full_name: formData.fullName,
+            address: formData.address,
+            city: formData.city,
+            notes: formData.notes,
+          })
+          .eq("id", profileId)
+          .select()
+          .single();
+
+        if (updatedProfile) {
+          setProfile(updatedProfile);
+        }
+      }
+
+      // Create order
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          profile_id: profileId,
+          phone: formData.phone,
+          full_name: formData.fullName,
+          address: formData.address,
+          city: formData.city,
+          notes: formData.notes,
+          total_amount: totalPrice,
+        })
+        .select()
+        .single();
+
+      if (orderError) {
+        console.error("Error creating order:", orderError);
+        throw orderError;
+      }
+
+      // Create order items
+      if (order) {
+        const orderItems = items.map((item) => ({
+          order_id: order.id,
+          cookie_name: item.name,
+          quantity: item.quantity,
+          price: parseInt(item.price.replace(/[^\d]/g, "")),
+        }));
+
+        await supabase.from("order_items").insert(orderItems);
+      }
+
       // שליחת הודעה לוואטסאפ של בעלת העסק
-      const ownerMessage = `🍪 הזמנה חדשה!\n\n👤 פרטי לקוח:\nשם: ${customerFullName}\nטלפון: ${formData.phone}\nמייל: ${formData.email}\n\n📦 ההזמנה:\n${orderDetails}\n\n💰 סה״כ: ₪${totalPrice}\n\n💵 תשלום במזומן`;
+      const ownerMessage = `🍪 הזמנה חדשה!\n\n👤 פרטי לקוח:\nשם: ${formData.fullName}\nטלפון: ${formData.phone}\nמייל: ${formData.email}\nכתובת: ${formData.address}, ${formData.city}\n${formData.notes ? `הערות: ${formData.notes}\n` : ""}\n📦 ההזמנה:\n${orderDetails}\n\n💰 סה״כ: ₪${totalPrice}\n\n💵 תשלום במזומן`;
       const ownerWhatsappUrl = `https://wa.me/${OWNER_WHATSAPP_NUMBER}?text=${encodeURIComponent(ownerMessage)}`;
 
       // שליחת מייל ללקוח
       const { error: emailError } = await supabase.functions.invoke("send-order-confirmation", {
         body: {
-          customerName: customerFullName,
+          customerName: formData.fullName,
           customerEmail: formData.email,
           customerPhone: formData.phone,
           orderDetails,
@@ -90,7 +195,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       }
 
       // שליחת וואטסאפ ללקוח
-      const customerMessage = `🍪 מזון האושר - אישור הזמנה\n\nשלום ${formData.firstName}!\n\nקיבלנו את הזמנתך:\n${orderDetails}\n\nסה״כ: ₪${totalPrice}\n\nניצור איתך קשר בקרוב לתיאום משלוח.\nתודה רבה! 🍪`;
+      const customerMessage = `🍪 מזון האושר - אישור הזמנה\n\nשלום ${formData.fullName}!\n\nקיבלנו את הזמנתך:\n${orderDetails}\n\nסה״כ: ₪${totalPrice}\n\nניצור איתך קשר בקרוב לתיאום משלוח.\nתודה רבה! 🍪`;
       const customerWhatsappUrl = `https://wa.me/972${formData.phone.replace(/^0/, "")}?text=${encodeURIComponent(customerMessage)}`;
 
       // פתיחת וואטסאפ לבעלת העסק
@@ -113,7 +218,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(85vh-80px)]">
       <button
         onClick={onBack}
         className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -122,32 +227,28 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         חזרה לעגלה
       </button>
 
+      {profile && (
+        <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/30 rounded-xl">
+          <User className="w-5 h-5 text-primary" />
+          <span className="text-sm text-foreground">
+            מחובר כ: <strong>{profile.full_name || profile.phone}</strong>
+          </span>
+        </div>
+      )}
+
       <div className="space-y-4">
         <h3 className="text-xl font-display font-bold text-foreground">פרטי הזמנה</h3>
         
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="firstName">שם פרטי</Label>
-            <Input
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              placeholder="ישראל"
-              className="text-right"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">שם משפחה</Label>
-            <Input
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              placeholder="ישראלי"
-              className="text-right"
-            />
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="fullName">שם מלא</Label>
+          <Input
+            id="fullName"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleInputChange}
+            placeholder="ישראל ישראלי"
+            className="text-right"
+          />
         </div>
 
         <div className="space-y-2">
@@ -175,6 +276,44 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             placeholder="0501234567"
             className="text-left"
             dir="ltr"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="city">עיר</Label>
+            <Input
+              id="city"
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              placeholder="תל אביב"
+              className="text-right"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="address">כתובת</Label>
+            <Input
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
+              placeholder="רחוב הרצל 1"
+              className="text-right"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="notes">הערות למשלוח (אופציונלי)</Label>
+          <Textarea
+            id="notes"
+            name="notes"
+            value={formData.notes}
+            onChange={handleInputChange}
+            placeholder="קומה, דירה, הוראות מיוחדות..."
+            className="text-right resize-none"
+            rows={2}
           />
         </div>
       </div>

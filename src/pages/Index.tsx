@@ -7,6 +7,7 @@ import GiftPackageBuilder from "@/components/GiftPackageBuilder";
 import ReviewsSection from "@/components/ReviewsSection";
 import FAQSection from "@/components/FAQSection";
 import NewsletterSection from "@/components/NewsletterSection";
+import OrderHistory from "@/components/OrderHistory";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -29,6 +30,7 @@ const Index = () => {
             <CookieOfTheWeek />
             <CookiesSection />
             <GiftPackageBuilder />
+            <OrderHistory />
             <ReviewsSection />
             <FAQSection />
             <NewsletterSection />
