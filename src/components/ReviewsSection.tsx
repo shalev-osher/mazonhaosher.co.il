@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Star, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { reviewTextSchema, getValidationError } from "@/lib/validation";
 
 const cookieOptions = [
   "לוטוס", "קינדר", "קינדר בואנו", "רד וולווט", "קונפטי", "פיסטוק",
@@ -52,14 +52,14 @@ const ReviewsSection = () => {
     }
   };
 
-  const handleSubmitReview = async () => {
+  const validateReview = (): boolean => {
     if (!selectedCookie) {
       toast({
         title: "שגיאה",
         description: "נא לבחור עוגיה",
         variant: "destructive",
       });
-      return;
+      return false;
     }
 
     if (rating === 0) {
@@ -68,8 +68,29 @@ const ReviewsSection = () => {
         description: "נא לדרג את העוגיה",
         variant: "destructive",
       });
-      return;
+      return false;
     }
+
+    // Validate review text length
+    if (reviewText) {
+      try {
+        reviewTextSchema.parse(reviewText);
+      } catch (error) {
+        const message = getValidationError(error);
+        toast({
+          title: "שגיאה",
+          description: message || "הביקורת ארוכה מדי",
+          variant: "destructive",
+        });
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const handleSubmitReview = async () => {
+    if (!validateReview()) return;
 
     setIsSubmitting(true);
 
@@ -77,7 +98,7 @@ const ReviewsSection = () => {
       const { error } = await supabase.from("cookie_reviews").insert({
         cookie_name: selectedCookie,
         rating,
-        review_text: reviewText || null,
+        review_text: reviewText.trim() || null,
       });
 
       if (error) throw error;
@@ -187,13 +208,19 @@ const ReviewsSection = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">הביקורת שלכם (אופציונלי)</label>
+                <label className="block text-sm font-medium mb-2">
+                  הביקורת שלכם (אופציונלי, עד 500 תווים)
+                </label>
                 <Textarea
                   value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value)}
+                  onChange={(e) => setReviewText(e.target.value.slice(0, 500))}
                   placeholder="ספרו לנו מה חשבתם על העוגיה..."
                   className="min-h-[100px] text-right"
+                  maxLength={500}
                 />
+                <p className="text-xs text-muted-foreground mt-1 text-left">
+                  {reviewText.length}/500
+                </p>
               </div>
 
               <Button
