@@ -15,35 +15,32 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import CartButton from "@/components/CartButton";
 import CartModal from "@/components/CartModal";
 import { CartProvider } from "@/contexts/CartContext";
-import { ProfileProvider } from "@/contexts/ProfileContext";
 
 const Index = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
-    <ProfileProvider>
-      <CartProvider>
-        <div className="min-h-screen bg-background">
-          <Header />
-          <main>
-            <Hero />
-            <CookieOfTheWeek />
-            <CookiesSection />
-            <GiftPackageBuilder />
-            <OrderHistory />
-            <ReviewsSection />
-            <FAQSection />
-            <NewsletterSection />
-            <AboutSection />
-            <ContactSection />
-          </main>
-          <Footer />
-          <FloatingWhatsApp />
-          <CartButton onClick={() => setIsCartOpen(true)} />
-          <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-        </div>
-      </CartProvider>
-    </ProfileProvider>
+    <CartProvider>
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main>
+          <Hero />
+          <CookieOfTheWeek />
+          <CookiesSection />
+          <GiftPackageBuilder />
+          <OrderHistory />
+          <ReviewsSection />
+          <FAQSection />
+          <NewsletterSection />
+          <AboutSection />
+          <ContactSection />
+        </main>
+        <Footer />
+        <FloatingWhatsApp />
+        <CartButton onClick={() => setIsCartOpen(true)} />
+        <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      </div>
+    </CartProvider>
   );
 };
 

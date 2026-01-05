@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, ArrowRight, User } from "lucide-react";
+import { Mail, ArrowRight, User, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import { useProfile } from "@/contexts/ProfileContext";
@@ -24,8 +25,9 @@ const WhatsAppIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 );
 
 const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
+  const navigate = useNavigate();
   const { items, clearCart } = useCart();
-  const { profile, setProfile } = useProfile();
+  const { profile, setProfile, isLoggedIn, user, refreshProfile } = useProfile();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -41,14 +43,21 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
     if (profile) {
       setFormData({
         fullName: profile.full_name || "",
-        email: "",
+        email: user?.email || "",
         phone: profile.phone || "",
         address: profile.address || "",
         city: profile.city || "",
         notes: profile.notes || "",
       });
+    } else if (user) {
+      setFormData(prev => ({
+        ...prev,
+        email: user.email || "",
+        fullName: user.user_metadata?.full_name || "",
+        phone: user.user_metadata?.phone || "",
+      }));
     }
-  }, [profile]);
+  }, [profile, user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -89,63 +98,55 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       .join("\n");
 
     try {
-      // Find or create profile by phone using secure RPC
       let profileId = profile?.id;
-      
-      if (!profileId) {
-        // Check if profile exists using secure RPC
-        const { data: existingProfileData } = await supabase.rpc("get_profile_by_phone", {
-          phone_number: formData.phone,
+
+      // If logged in and no profile, create one via RPC
+      if (isLoggedIn && !profileId) {
+        const { data: profileData, error: profileError } = await supabase.rpc("upsert_my_profile", {
+          p_phone: formData.phone,
+          p_full_name: formData.fullName,
+          p_address: formData.address,
+          p_city: formData.city,
+          p_notes: formData.notes,
         });
 
-        if (existingProfileData && existingProfileData.length > 0) {
-          const existingProfile = existingProfileData[0];
-          profileId = existingProfile.id;
-          setProfile({
-            id: existingProfile.id,
-            phone: existingProfile.phone,
-            full_name: existingProfile.full_name,
-            address: existingProfile.address,
-            city: existingProfile.city,
-            notes: existingProfile.notes,
-          });
-        } else {
-          // Create new profile
-          const { data: newProfile, error: profileError } = await supabase
-            .from("profiles")
-            .insert({
-              phone: formData.phone,
-              full_name: formData.fullName,
-              address: formData.address,
-              city: formData.city,
-              notes: formData.notes,
-            })
-            .select()
-            .single();
+        if (profileError) {
+          console.error("Error creating profile:", profileError);
+        } else if (profileData && profileData.length > 0) {
+          profileId = profileData[0].id;
+          setProfile(profileData[0]);
+        }
+      } else if (isLoggedIn && profileId) {
+        // Update existing profile via RPC
+        const { data: updatedProfile } = await supabase.rpc("upsert_my_profile", {
+          p_phone: formData.phone,
+          p_full_name: formData.fullName,
+          p_address: formData.address,
+          p_city: formData.city,
+          p_notes: formData.notes,
+        });
 
-          if (profileError) {
-            console.error("Error creating profile:", profileError);
-          } else if (newProfile) {
-            profileId = newProfile.id;
-            setProfile(newProfile);
-          }
+        if (updatedProfile && updatedProfile.length > 0) {
+          setProfile(updatedProfile[0]);
         }
       } else {
-        // Update existing profile - use direct update since we have the ID
-        const { data: updatedProfile } = await supabase
+        // Guest checkout - create profile without user_id
+        const { data: newProfile, error: profileError } = await supabase
           .from("profiles")
-          .update({
+          .insert({
+            phone: formData.phone,
             full_name: formData.fullName,
             address: formData.address,
             city: formData.city,
             notes: formData.notes,
           })
-          .eq("id", profileId)
           .select()
           .single();
 
-        if (updatedProfile) {
-          setProfile(updatedProfile);
+        if (profileError) {
+          console.error("Error creating profile:", profileError);
+        } else if (newProfile) {
+          profileId = newProfile.id;
         }
       }
 
@@ -223,6 +224,11 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
     }
   };
 
+  const handleLoginRedirect = () => {
+    onClose();
+    navigate("/auth");
+  };
+
   return (
     <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(85vh-80px)]">
       <button
@@ -233,14 +239,24 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         חזרה לעגלה
       </button>
 
-      {profile && (
+      {isLoggedIn && profile ? (
         <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/30 rounded-xl">
           <User className="w-5 h-5 text-primary" />
           <span className="text-sm text-foreground">
-            מחובר כ: <strong>{profile.full_name || profile.phone}</strong>
+            מחובר כ: <strong>{profile.full_name || user?.email}</strong>
           </span>
         </div>
-      )}
+      ) : !isLoggedIn ? (
+        <div className="flex items-center justify-between gap-2 p-3 bg-secondary/50 border border-border rounded-xl">
+          <span className="text-sm text-muted-foreground">
+            התחבר כדי לשמור את פרטיך להזמנות הבאות
+          </span>
+          <Button size="sm" variant="outline" onClick={handleLoginRedirect}>
+            <LogIn className="w-4 h-4 ml-1" />
+            התחברות
+          </Button>
+        </div>
+      ) : null}
 
       <div className="space-y-4">
         <h3 className="text-xl font-display font-bold text-foreground">פרטי הזמנה</h3>
