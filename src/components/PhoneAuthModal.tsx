@@ -62,17 +62,16 @@ const PhoneAuthModal = ({ isOpen, onClose, onProfileLoaded }: PhoneAuthModalProp
     setIsLoading(true);
 
     try {
-      // Check if profile exists
-      const { data: existingProfiles, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("phone", phone);
+      // Use secure RPC function to get profile by phone
+      const { data: profileData, error } = await supabase.rpc("get_profile_by_phone", {
+        phone_number: phone,
+      });
 
       if (error) throw error;
 
-      if (existingProfiles && existingProfiles.length > 0) {
+      if (profileData && profileData.length > 0) {
         // Profile exists - load it
-        const profile = existingProfiles[0];
+        const profile = profileData[0] as Profile;
         setExistingProfile(profile);
         setFormData({
           full_name: profile.full_name || "",
