@@ -89,20 +89,26 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       .join("\n");
 
     try {
-      // Find or create profile by phone
+      // Find or create profile by phone using secure RPC
       let profileId = profile?.id;
       
       if (!profileId) {
-        // Check if profile exists
-        const { data: existingProfile } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("phone", formData.phone)
-          .maybeSingle();
+        // Check if profile exists using secure RPC
+        const { data: existingProfileData } = await supabase.rpc("get_profile_by_phone", {
+          phone_number: formData.phone,
+        });
 
-        if (existingProfile) {
+        if (existingProfileData && existingProfileData.length > 0) {
+          const existingProfile = existingProfileData[0];
           profileId = existingProfile.id;
-          setProfile(existingProfile);
+          setProfile({
+            id: existingProfile.id,
+            phone: existingProfile.phone,
+            full_name: existingProfile.full_name,
+            address: existingProfile.address,
+            city: existingProfile.city,
+            notes: existingProfile.notes,
+          });
         } else {
           // Create new profile
           const { data: newProfile, error: profileError } = await supabase
@@ -125,7 +131,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
           }
         }
       } else {
-        // Update existing profile
+        // Update existing profile - use direct update since we have the ID
         const { data: updatedProfile } = await supabase
           .from("profiles")
           .update({
