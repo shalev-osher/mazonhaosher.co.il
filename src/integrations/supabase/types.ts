@@ -258,9 +258,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      check_profile_exists: { Args: { phone_number: string }; Returns: boolean }
-      get_order_items_by_order: {
-        Args: { order_uuid: string; phone_number: string }
+      get_my_order_items: {
+        Args: { order_uuid: string }
         Returns: {
           cookie_name: string
           id: string
@@ -268,8 +267,8 @@ export type Database = {
           quantity: number
         }[]
       }
-      get_orders_by_phone: {
-        Args: { phone_number: string }
+      get_my_orders: {
+        Args: never
         Returns: {
           address: string
           city: string
@@ -280,8 +279,25 @@ export type Database = {
           total_amount: number
         }[]
       }
-      get_profile_by_phone: {
-        Args: { phone_number: string }
+      get_my_profile: {
+        Args: never
+        Returns: {
+          address: string
+          city: string
+          full_name: string
+          id: string
+          notes: string
+          phone: string
+        }[]
+      }
+      upsert_my_profile: {
+        Args: {
+          p_address?: string
+          p_city?: string
+          p_full_name?: string
+          p_notes?: string
+          p_phone: string
+        }
         Returns: {
           address: string
           city: string

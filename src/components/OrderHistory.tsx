@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Package, ChevronDown, ChevronUp, RotateCcw, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useProfile } from "@/contexts/ProfileContext";
 import { useCart } from "@/contexts/CartContext";
@@ -25,39 +26,40 @@ interface Order {
 }
 
 const OrderHistory = () => {
-  const { profile, isLoggedIn } = useProfile();
+  const navigate = useNavigate();
+  const { isLoggedIn, session } = useProfile();
   const { addToCart } = useCart();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isLoggedIn && profile?.phone) {
+    if (isLoggedIn && session) {
       fetchOrders();
     }
-  }, [isLoggedIn, profile?.phone]);
+  }, [isLoggedIn, session]);
 
   const fetchOrders = async () => {
-    if (!profile?.phone) return;
-    
     setIsLoading(true);
     try {
-      // Use secure RPC function to get orders by phone
-      const { data: ordersData, error: ordersError } = await supabase.rpc(
-        "get_orders_by_phone",
-        { phone_number: profile.phone }
-      );
+      // Use secure RPC function that validates auth.uid()
+      const { data: ordersData, error: ordersError } = await supabase.rpc("get_my_orders");
 
-      if (ordersError) throw ordersError;
+      if (ordersError) {
+        if (ordersError.message.includes("Not authenticated")) {
+          setOrders([]);
+          return;
+        }
+        throw ordersError;
+      }
 
       if (ordersData && ordersData.length > 0) {
         const ordersWithItems = await Promise.all(
           ordersData.map(async (order: any) => {
             // Use secure RPC function to get order items
-            const { data: itemsData } = await supabase.rpc(
-              "get_order_items_by_order",
-              { order_uuid: order.id, phone_number: profile.phone }
-            );
+            const { data: itemsData } = await supabase.rpc("get_my_order_items", {
+              order_uuid: order.id,
+            });
 
             return {
               ...order,
@@ -82,7 +84,7 @@ const OrderHistory = () => {
       addToCart({
         name: item.cookie_name,
         price: `₪${item.price}`,
-        image: "", // Will be filled by cart context
+        image: "",
       });
     });
     toast.success("הפריטים נוספו לעגלה!");
@@ -120,9 +122,12 @@ const OrderHistory = () => {
             <h2 className="text-2xl font-display font-bold text-foreground mb-2">
               היסטוריית הזמנות
             </h2>
-            <p className="text-muted-foreground">
-              התחברו עם מספר הטלפון שלכם כדי לראות את ההזמנות הקודמות
+            <p className="text-muted-foreground mb-4">
+              התחברו כדי לראות את ההזמנות הקודמות
             </p>
+            <Button onClick={() => navigate("/auth")} variant="outline">
+              התחברות
+            </Button>
           </div>
         </div>
       </section>
