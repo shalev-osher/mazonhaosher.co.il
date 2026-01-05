@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Bell, Mail, Phone, Check, Sparkles } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { emailSchema, optionalPhoneSchema, getValidationError } from "@/lib/validation";
+import { z } from "zod";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
@@ -11,31 +13,67 @@ const NewsletterSection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
-  const handleSubscribe = async () => {
-    if (!email && !phone) {
+  const validateInputs = (): boolean => {
+    // At least one field required
+    if (!email.trim() && !phone.trim()) {
       toast({
         title: "שגיאה",
         description: "נא להזין מייל או טלפון",
         variant: "destructive",
       });
-      return;
+      return false;
     }
 
-    if (email && !email.includes("@")) {
-      toast({
-        title: "שגיאה",
-        description: "נא להזין כתובת מייל תקינה",
-        variant: "destructive",
-      });
-      return;
+    // Validate email if provided
+    if (email.trim()) {
+      try {
+        emailSchema.parse(email.trim());
+      } catch (error) {
+        const message = getValidationError(error);
+        toast({
+          title: "שגיאה",
+          description: message || "כתובת מייל לא תקינה",
+          variant: "destructive",
+        });
+        return false;
+      }
     }
+
+    // Validate phone if provided
+    if (phone.trim()) {
+      try {
+        // Phone must match Israeli format
+        const phoneRegex = /^0(5[0-9]|7[0-9])[0-9]{7}$/;
+        if (!phoneRegex.test(phone.trim())) {
+          throw new z.ZodError([{
+            code: "custom",
+            message: "מספר טלפון לא תקין (נדרש פורמט ישראלי)",
+            path: ["phone"],
+          }]);
+        }
+      } catch (error) {
+        const message = getValidationError(error);
+        toast({
+          title: "שגיאה",
+          description: message || "מספר טלפון לא תקין",
+          variant: "destructive",
+        });
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const handleSubscribe = async () => {
+    if (!validateInputs()) return;
 
     setIsLoading(true);
 
     try {
       const { error } = await supabase.from("newsletter_subscriptions").insert({
-        email: email || null,
-        phone: phone || null,
+        email: email.trim() || null,
+        phone: phone.trim() || null,
       });
 
       if (error) {
@@ -118,6 +156,7 @@ const NewsletterSection = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 text-left"
                 dir="ltr"
+                maxLength={255}
               />
             </div>
             
@@ -132,6 +171,7 @@ const NewsletterSection = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 className="flex-1 text-left"
                 dir="ltr"
+                maxLength={10}
               />
             </div>
 
