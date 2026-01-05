@@ -9,6 +9,15 @@ import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import { useProfile } from "@/contexts/ProfileContext";
 import { supabase } from "@/integrations/supabase/client";
+import { 
+  nameSchema, 
+  emailSchema, 
+  phoneSchema, 
+  addressSchema, 
+  citySchema, 
+  notesSchema,
+  getValidationError 
+} from "@/lib/validation";
 
 interface CheckoutFormProps {
   onBack: () => void;
@@ -27,7 +36,7 @@ const WhatsAppIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
   const navigate = useNavigate();
   const { items, clearCart } = useCart();
-  const { profile, setProfile, isLoggedIn, user, refreshProfile } = useProfile();
+  const { profile, setProfile, isLoggedIn, user } = useProfile();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -64,27 +73,63 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateForm = () => {
-    if (!formData.fullName.trim()) {
-      toast.error("נא להזין שם מלא");
+  const validateForm = (): boolean => {
+    // Validate name
+    try {
+      nameSchema.parse(formData.fullName.trim());
+    } catch (error) {
+      const message = getValidationError(error);
+      toast.error(message || "נא להזין שם מלא תקין");
       return false;
     }
-    if (!formData.email.trim() || !formData.email.includes("@")) {
-      toast.error("נא להזין כתובת מייל תקינה");
+
+    // Validate email
+    try {
+      emailSchema.parse(formData.email.trim());
+    } catch (error) {
+      const message = getValidationError(error);
+      toast.error(message || "נא להזין כתובת מייל תקינה");
       return false;
     }
-    if (!formData.phone.trim() || formData.phone.length < 9) {
-      toast.error("נא להזין מספר טלפון תקין");
+
+    // Validate phone
+    try {
+      phoneSchema.parse(formData.phone.trim());
+    } catch (error) {
+      const message = getValidationError(error);
+      toast.error(message || "נא להזין מספר טלפון תקין");
       return false;
     }
-    if (!formData.address.trim()) {
-      toast.error("נא להזין כתובת למשלוח");
+
+    // Validate address
+    try {
+      addressSchema.parse(formData.address.trim());
+    } catch (error) {
+      const message = getValidationError(error);
+      toast.error(message || "נא להזין כתובת תקינה");
       return false;
     }
-    if (!formData.city.trim()) {
-      toast.error("נא להזין עיר");
+
+    // Validate city
+    try {
+      citySchema.parse(formData.city.trim());
+    } catch (error) {
+      const message = getValidationError(error);
+      toast.error(message || "נא להזין עיר");
       return false;
     }
+
+    // Validate notes (optional)
+    if (formData.notes) {
+      try {
+        notesSchema.parse(formData.notes);
+      } catch (error) {
+        const message = getValidationError(error);
+        toast.error(message || "ההערות ארוכות מדי");
+        return false;
+      }
+    }
+
     return true;
   };
 
@@ -103,11 +148,11 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       // If logged in and no profile, create one via RPC
       if (isLoggedIn && !profileId) {
         const { data: profileData, error: profileError } = await supabase.rpc("upsert_my_profile", {
-          p_phone: formData.phone,
-          p_full_name: formData.fullName,
-          p_address: formData.address,
-          p_city: formData.city,
-          p_notes: formData.notes,
+          p_phone: formData.phone.trim(),
+          p_full_name: formData.fullName.trim(),
+          p_address: formData.address.trim(),
+          p_city: formData.city.trim(),
+          p_notes: formData.notes.trim() || null,
         });
 
         if (profileError) {
@@ -119,11 +164,11 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       } else if (isLoggedIn && profileId) {
         // Update existing profile via RPC
         const { data: updatedProfile } = await supabase.rpc("upsert_my_profile", {
-          p_phone: formData.phone,
-          p_full_name: formData.fullName,
-          p_address: formData.address,
-          p_city: formData.city,
-          p_notes: formData.notes,
+          p_phone: formData.phone.trim(),
+          p_full_name: formData.fullName.trim(),
+          p_address: formData.address.trim(),
+          p_city: formData.city.trim(),
+          p_notes: formData.notes.trim() || null,
         });
 
         if (updatedProfile && updatedProfile.length > 0) {
@@ -134,11 +179,11 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         const { data: newProfile, error: profileError } = await supabase
           .from("profiles")
           .insert({
-            phone: formData.phone,
-            full_name: formData.fullName,
-            address: formData.address,
-            city: formData.city,
-            notes: formData.notes,
+            phone: formData.phone.trim(),
+            full_name: formData.fullName.trim(),
+            address: formData.address.trim(),
+            city: formData.city.trim(),
+            notes: formData.notes.trim() || null,
           })
           .select()
           .single();
@@ -155,11 +200,11 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         .from("orders")
         .insert({
           profile_id: profileId,
-          phone: formData.phone,
-          full_name: formData.fullName,
-          address: formData.address,
-          city: formData.city,
-          notes: formData.notes,
+          phone: formData.phone.trim(),
+          full_name: formData.fullName.trim(),
+          address: formData.address.trim(),
+          city: formData.city.trim(),
+          notes: formData.notes.trim() || null,
           total_amount: totalPrice,
         })
         .select()
@@ -183,15 +228,15 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       }
 
       // שליחת הודעה לוואטסאפ של בעלת העסק
-      const ownerMessage = `🍪 הזמנה חדשה!\n\n👤 פרטי לקוח:\nשם: ${formData.fullName}\nטלפון: ${formData.phone}\nמייל: ${formData.email}\nכתובת: ${formData.address}, ${formData.city}\n${formData.notes ? `הערות: ${formData.notes}\n` : ""}\n📦 ההזמנה:\n${orderDetails}\n\n💰 סה״כ: ₪${totalPrice}\n\n💵 תשלום במזומן`;
+      const ownerMessage = `🍪 הזמנה חדשה!\n\n👤 פרטי לקוח:\nשם: ${formData.fullName.trim()}\nטלפון: ${formData.phone.trim()}\nמייל: ${formData.email.trim()}\nכתובת: ${formData.address.trim()}, ${formData.city.trim()}\n${formData.notes ? `הערות: ${formData.notes.trim()}\n` : ""}\n📦 ההזמנה:\n${orderDetails}\n\n💰 סה״כ: ₪${totalPrice}\n\n💵 תשלום במזומן`;
       const ownerWhatsappUrl = `https://wa.me/${OWNER_WHATSAPP_NUMBER}?text=${encodeURIComponent(ownerMessage)}`;
 
       // שליחת מייל ללקוח
       const { error: emailError } = await supabase.functions.invoke("send-order-confirmation", {
         body: {
-          customerName: formData.fullName,
-          customerEmail: formData.email,
-          customerPhone: formData.phone,
+          customerName: formData.fullName.trim(),
+          customerEmail: formData.email.trim(),
+          customerPhone: formData.phone.trim(),
           orderDetails,
           totalPrice,
         },
@@ -202,8 +247,8 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       }
 
       // שליחת וואטסאפ ללקוח
-      const customerMessage = `🍪 מזון האושר - אישור הזמנה\n\nשלום ${formData.fullName}!\n\nקיבלנו את הזמנתך:\n${orderDetails}\n\nסה״כ: ₪${totalPrice}\n\nניצור איתך קשר בקרוב לתיאום משלוח.\nתודה רבה! 🍪`;
-      const customerWhatsappUrl = `https://wa.me/972${formData.phone.replace(/^0/, "")}?text=${encodeURIComponent(customerMessage)}`;
+      const customerMessage = `🍪 מזון האושר - אישור הזמנה\n\nשלום ${formData.fullName.trim()}!\n\nקיבלנו את הזמנתך:\n${orderDetails}\n\nסה״כ: ₪${totalPrice}\n\nניצור איתך קשר בקרוב לתיאום משלוח.\nתודה רבה! 🍪`;
+      const customerWhatsappUrl = `https://wa.me/972${formData.phone.trim().replace(/^0/, "")}?text=${encodeURIComponent(customerMessage)}`;
 
       // פתיחת וואטסאפ לבעלת העסק
       window.open(ownerWhatsappUrl, "_blank");
@@ -270,6 +315,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             onChange={handleInputChange}
             placeholder="ישראל ישראלי"
             className="text-right"
+            maxLength={100}
           />
         </div>
 
@@ -284,6 +330,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             placeholder="example@email.com"
             className="text-left"
             dir="ltr"
+            maxLength={255}
           />
         </div>
 
@@ -298,6 +345,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             placeholder="0501234567"
             className="text-left"
             dir="ltr"
+            maxLength={10}
           />
         </div>
 
@@ -311,6 +359,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
               onChange={handleInputChange}
               placeholder="תל אביב"
               className="text-right"
+              maxLength={50}
             />
           </div>
           <div className="space-y-2">
@@ -322,12 +371,13 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
               onChange={handleInputChange}
               placeholder="רחוב הרצל 1"
               className="text-right"
+              maxLength={200}
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="notes">הערות למשלוח (אופציונלי)</Label>
+          <Label htmlFor="notes">הערות למשלוח (אופציונלי, עד 500 תווים)</Label>
           <Textarea
             id="notes"
             name="notes"
@@ -336,6 +386,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             placeholder="קומה, דירה, הוראות מיוחדות..."
             className="text-right resize-none"
             rows={2}
+            maxLength={500}
           />
         </div>
       </div>
