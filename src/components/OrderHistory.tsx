@@ -18,6 +18,9 @@ interface Order {
   created_at: string;
   total_amount: number;
   status: string;
+  full_name: string;
+  address: string;
+  city: string;
   items: OrderItem[];
 }
 
@@ -29,31 +32,32 @@ const OrderHistory = () => {
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isLoggedIn && profile?.id) {
+    if (isLoggedIn && profile?.phone) {
       fetchOrders();
     }
-  }, [isLoggedIn, profile?.id]);
+  }, [isLoggedIn, profile?.phone]);
 
   const fetchOrders = async () => {
-    if (!profile?.id) return;
+    if (!profile?.phone) return;
     
     setIsLoading(true);
     try {
-      const { data: ordersData, error: ordersError } = await supabase
-        .from("orders")
-        .select("*")
-        .eq("profile_id", profile.id)
-        .order("created_at", { ascending: false });
+      // Use secure RPC function to get orders by phone
+      const { data: ordersData, error: ordersError } = await supabase.rpc(
+        "get_orders_by_phone",
+        { phone_number: profile.phone }
+      );
 
       if (ordersError) throw ordersError;
 
-      if (ordersData) {
+      if (ordersData && ordersData.length > 0) {
         const ordersWithItems = await Promise.all(
-          ordersData.map(async (order) => {
-            const { data: itemsData } = await supabase
-              .from("order_items")
-              .select("*")
-              .eq("order_id", order.id);
+          ordersData.map(async (order: any) => {
+            // Use secure RPC function to get order items
+            const { data: itemsData } = await supabase.rpc(
+              "get_order_items_by_order",
+              { order_uuid: order.id, phone_number: profile.phone }
+            );
 
             return {
               ...order,
@@ -63,6 +67,8 @@ const OrderHistory = () => {
         );
 
         setOrders(ordersWithItems);
+      } else {
+        setOrders([]);
       }
     } catch (error) {
       console.error("Error fetching orders:", error);

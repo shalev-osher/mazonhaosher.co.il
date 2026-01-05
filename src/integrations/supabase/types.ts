@@ -258,7 +258,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_profile_exists: { Args: { phone_number: string }; Returns: boolean }
+      get_order_items_by_order: {
+        Args: { order_uuid: string; phone_number: string }
+        Returns: {
+          cookie_name: string
+          id: string
+          price: number
+          quantity: number
+        }[]
+      }
+      get_orders_by_phone: {
+        Args: { phone_number: string }
+        Returns: {
+          address: string
+          city: string
+          created_at: string
+          full_name: string
+          id: string
+          status: string
+          total_amount: number
+        }[]
+      }
+      get_profile_by_phone: {
+        Args: { phone_number: string }
+        Returns: {
+          address: string
+          city: string
+          full_name: string
+          id: string
+          notes: string
+          phone: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
