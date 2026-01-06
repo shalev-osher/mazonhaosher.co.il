@@ -77,11 +77,16 @@ const NewsletterSection = () => {
       });
 
       if (error) {
+        // Use generic error message to prevent enumeration attacks
+        // Don't reveal if email/phone already exists
         if (error.code === "23505") {
+          // Treat duplicate as success to prevent enumeration
+          setSubscribed(true);
           toast({
-            title: "כבר רשום",
-            description: "כתובת המייל או הטלפון כבר רשומים לניוזלטר",
+            title: "תודה! 🎉",
+            description: "תקבל/י עדכונים על מבצעים וחדשות",
           });
+          return;
         } else {
           throw error;
         }
