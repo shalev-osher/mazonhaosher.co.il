@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useProfile } from "@/contexts/ProfileContext";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -28,17 +29,20 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   return (
-    <header className="fixed top-4 left-4 right-4 z-50">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-background/80 backdrop-blur-md rounded-2xl border border-border/50 shadow-lg px-4 py-2">
-          <div className="flex items-center justify-between">
-            {/* Logo / Brand */}
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="font-display text-xl font-bold text-primary hover:text-primary/80 transition-colors"
-            >
-              מזון האושר
-            </button>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 py-2">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
+            <img
+              src={logo}
+              alt="מזון האושר"
+              className="h-10 md:h-12 w-auto object-contain"
+            />
+          </button>
 
             {/* Navigation - Desktop */}
             <nav className="hidden md:flex items-center gap-6">
@@ -110,7 +114,6 @@ const Header = () => {
                 <span className="hidden sm:inline">התחברות</span>
               </Button>
             )}
-          </div>
         </div>
       </div>
     </header>
