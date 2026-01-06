@@ -189,7 +189,9 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
           .single();
 
         if (profileError) {
-          console.error("Error creating profile:", profileError);
+          // Use generic error - don't reveal if phone already exists
+          // to prevent phone enumeration attacks
+          console.error("Error creating profile");
         } else if (newProfile) {
           profileId = newProfile.id;
         }
