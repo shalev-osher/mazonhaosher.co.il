@@ -3,13 +3,14 @@ import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="relative py-12 overflow-hidden">
+    <footer className="relative overflow-hidden">
       {/* Decorative background - warm pink base */}
       <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-secondary to-accent/15" />
       <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 50% 100%, hsl(var(--primary) / 0.5) 0%, transparent 50%), radial-gradient(circle at 20% 30%, hsl(var(--accent) / 0.4) 0%, transparent 40%)' }} />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIxIiBmaWxsPSIjZTg1ZDhmIiBmaWxsLW9wYWNpdHk9IjAuMTUiLz48L2c+PC9zdmc+')] opacity-70" />
       
-      <div className="container mx-auto px-4 relative z-10">
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="flex flex-col items-center gap-6 animate-fade-in">
           <div className="relative animate-float">
             {/* Sparkle particles */}
@@ -42,10 +43,22 @@ const Footer = () => {
               <Facebook className="w-5 h-5" />
             </a>
           </div>
+        </div>
+      </div>
 
-          <p className="text-muted-foreground text-sm text-center">
-            © {new Date().getFullYear()} מזון האושר. נאפה באהבה.
-          </p>
+      {/* Bottom Bar - Same style as header */}
+      <div className="bg-background/95 backdrop-blur-md border-t border-border/50">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <img 
+              src={logo} 
+              alt="מזון האושר" 
+              className="h-10 md:h-12 w-auto object-contain" 
+            />
+            <p className="text-muted-foreground text-sm">
+              © {new Date().getFullYear()} מזון האושר. נאפה באהבה.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
