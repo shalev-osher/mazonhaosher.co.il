@@ -61,7 +61,7 @@ const Hero = () => {
   );
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
@@ -70,27 +70,6 @@ const Hero = () => {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-background/70" />
-      </div>
-
-      {/* Logo with effects */}
-      <div className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 z-20">
-        <div className="relative animate-float">
-          {/* Sparkle particles */}
-          <div className="absolute -inset-4 pointer-events-none">
-            <div className="absolute top-0 left-1/4 w-2 h-2 bg-golden-honey rounded-full animate-sparkle-particle opacity-80" style={{ animationDelay: '0s' }} />
-            <div className="absolute top-1/3 right-0 w-1.5 h-1.5 bg-accent rounded-full animate-sparkle-particle opacity-70" style={{ animationDelay: '0.5s' }} />
-            <div className="absolute bottom-1/4 left-0 w-2 h-2 bg-golden-honey rounded-full animate-sparkle-particle opacity-90" style={{ animationDelay: '1s' }} />
-            <div className="absolute bottom-0 right-1/4 w-1 h-1 bg-primary rounded-full animate-sparkle-particle opacity-60" style={{ animationDelay: '1.5s' }} />
-            <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 bg-golden-honey rounded-full animate-sparkle-particle opacity-75" style={{ animationDelay: '2s' }} />
-          </div>
-          <img
-            src={logo}
-            alt="מזון האושר"
-            className="h-28 md:h-48 w-auto object-contain animate-sparkle drop-shadow-2xl"
-            style={{ imageRendering: 'crisp-edges' }}
-            loading="eager"
-          />
-        </div>
       </div>
 
       {/* Content */}
