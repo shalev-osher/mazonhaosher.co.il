@@ -71,34 +71,38 @@ const NewsletterSection = () => {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.from("newsletter_subscriptions").insert({
-        email: email.trim() || null,
-        phone: phone.trim() || null,
+      // Use edge function with rate limiting
+      const { data, error } = await supabase.functions.invoke("newsletter-subscribe", {
+        body: {
+          email: email.trim() || null,
+          phone: phone.trim() || null,
+        },
       });
 
       if (error) {
-        // Use generic error message to prevent enumeration attacks
-        // Don't reveal if email/phone already exists
-        if (error.code === "23505") {
-          // Treat duplicate as success to prevent enumeration
-          setSubscribed(true);
+        throw error;
+      }
+
+      if (data?.error) {
+        // Handle rate limiting
+        if (data.error.includes("יותר מדי")) {
           toast({
-            title: "תודה! 🎉",
-            description: "תקבל/י עדכונים על מבצעים וחדשות",
+            title: "יותר מדי בקשות",
+            description: "נסו שוב מאוחר יותר",
+            variant: "destructive",
           });
           return;
-        } else {
-          throw error;
         }
-      } else {
-        setSubscribed(true);
-        toast({
-          title: "נרשמת בהצלחה! 🎉",
-          description: "תקבל/י עדכונים על מבצעים וחדשות",
-        });
+        throw new Error(data.error);
       }
+
+      setSubscribed(true);
+      toast({
+        title: "נרשמת בהצלחה! 🎉",
+        description: "תקבל/י עדכונים על מבצעים וחדשות",
+      });
     } catch (error) {
-      console.error("Error subscribing:", error);
+      console.error("Error subscribing");
       toast({
         title: "שגיאה",
         description: "אירעה שגיאה, נסו שוב מאוחר יותר",
