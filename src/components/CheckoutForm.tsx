@@ -145,7 +145,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
     try {
       let profileId = profile?.id;
 
-      // If logged in and no profile, create one via RPC
+      // If logged in, use RPC for profile management
       if (isLoggedIn && !profileId) {
         const { data: profileData, error: profileError } = await supabase.rpc("upsert_my_profile", {
           p_phone: formData.phone.trim(),
@@ -156,7 +156,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         });
 
         if (profileError) {
-          console.error("Error creating profile:", profileError);
+          console.error("Error creating profile");
         } else if (profileData && profileData.length > 0) {
           profileId = profileData[0].id;
           setProfile(profileData[0]);
@@ -174,59 +174,72 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         if (updatedProfile && updatedProfile.length > 0) {
           setProfile(updatedProfile[0]);
         }
-      } else {
-        // Guest checkout - create profile without user_id
-        const { data: newProfile, error: profileError } = await supabase
-          .from("profiles")
+
+        // For logged in users, create order directly
+        const { data: order, error: orderError } = await supabase
+          .from("orders")
           .insert({
+            profile_id: profileId,
             phone: formData.phone.trim(),
             full_name: formData.fullName.trim(),
             address: formData.address.trim(),
             city: formData.city.trim(),
             notes: formData.notes.trim() || null,
+            total_amount: totalPrice,
           })
           .select()
           .single();
 
-        if (profileError) {
-          // Use generic error - don't reveal if phone already exists
-          // to prevent phone enumeration attacks
-          console.error("Error creating profile");
-        } else if (newProfile) {
-          profileId = newProfile.id;
+        if (orderError) {
+          console.error("Error creating order:", orderError);
+          throw orderError;
         }
-      }
 
-      // Create order
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .insert({
-          profile_id: profileId,
-          phone: formData.phone.trim(),
-          full_name: formData.fullName.trim(),
-          address: formData.address.trim(),
-          city: formData.city.trim(),
-          notes: formData.notes.trim() || null,
-          total_amount: totalPrice,
-        })
-        .select()
-        .single();
+        // Create order items
+        if (order) {
+          const orderItems = items.map((item) => ({
+            order_id: order.id,
+            cookie_name: item.name,
+            quantity: item.quantity,
+            price: parseInt(item.price.replace(/[^\d]/g, "")),
+          }));
 
-      if (orderError) {
-        console.error("Error creating order:", orderError);
-        throw orderError;
-      }
+          await supabase.from("order_items").insert(orderItems);
+        }
+      } else {
+        // Guest checkout - use edge function with rate limiting
+        const { data, error: checkoutError } = await supabase.functions.invoke("guest-checkout", {
+          body: {
+            fullName: formData.fullName.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            address: formData.address.trim(),
+            city: formData.city.trim(),
+            notes: formData.notes.trim() || null,
+            items: items.map((item) => ({
+              name: item.name,
+              quantity: item.quantity,
+              price: parseInt(item.price.replace(/[^\d]/g, "")),
+            })),
+            totalPrice,
+          },
+        });
 
-      // Create order items
-      if (order) {
-        const orderItems = items.map((item) => ({
-          order_id: order.id,
-          cookie_name: item.name,
-          quantity: item.quantity,
-          price: parseInt(item.price.replace(/[^\d]/g, "")),
-        }));
+        if (checkoutError) {
+          throw checkoutError;
+        }
 
-        await supabase.from("order_items").insert(orderItems);
+        if (data?.error) {
+          // Handle rate limiting
+          if (data.error.includes("יותר מדי")) {
+            toast.error("יותר מדי הזמנות. נסו שוב מאוחר יותר.");
+            setIsLoading(false);
+            return;
+          }
+          throw new Error(data.error);
+        }
+
+        profileId = data?.profileId;
       }
 
       // שליחת הודעה לוואטסאפ של בעלת העסק
@@ -245,7 +258,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       });
 
       if (emailError) {
-        console.error("Error sending email:", emailError);
+        console.error("Error sending email");
       }
 
       // שליחת וואטסאפ ללקוח
@@ -264,7 +277,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       clearCart();
       onClose();
     } catch (error) {
-      console.error("Error submitting order:", error);
+      console.error("Error submitting order");
       toast.error("שגיאה בשליחת ההזמנה, נסו שוב");
     } finally {
       setIsLoading(false);
