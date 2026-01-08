@@ -46,17 +46,18 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar - Same style as header */}
-      <div className="bg-background/95 backdrop-blur-md border-t border-border/50">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
+      {/* Bottom Bar - Elegant centered design */}
+      <div className="bg-gradient-to-r from-primary/10 via-background/95 to-primary/10 backdrop-blur-md border-t border-primary/20">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col items-center gap-3">
             <img 
               src={logo} 
               alt="מזון האושר" 
-              className="h-10 md:h-12 w-auto object-contain" 
+              className="h-10 md:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" 
             />
-            <p className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} מזון האושר. נאפה באהבה.
+            <div className="h-px w-24 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <p className="text-muted-foreground text-sm text-center">
+              © {new Date().getFullYear()} מזון האושר. נאפה באהבה 💕
             </p>
           </div>
         </div>
