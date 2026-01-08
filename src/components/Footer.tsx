@@ -4,11 +4,7 @@ const Footer = () => {
   return (
     <footer className="py-12 bg-card/30">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center gap-8">
-          {/* Decorative line */}
-          <div className="w-16 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-          
-          {/* Social icons with elegant hover */}
+        <div className="flex flex-col items-center gap-6">
           <div className="flex items-center gap-8">
             <a 
               href="https://instagram.com" 
