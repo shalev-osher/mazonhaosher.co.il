@@ -2,28 +2,40 @@ import { Instagram, Facebook } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border/50 bg-background py-6">
+    <footer className="py-12 bg-card/30">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-center gap-6">
-          <a 
-            href="https://instagram.com" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Instagram className="w-5 h-5" />
-          </a>
-          <span className="text-muted-foreground/50 text-sm">
-            © {new Date().getFullYear()}
-          </span>
-          <a 
-            href="https://facebook.com" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Facebook className="w-5 h-5" />
-          </a>
+        <div className="flex flex-col items-center gap-8">
+          {/* Decorative line */}
+          <div className="w-16 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          
+          {/* Social icons with elegant hover */}
+          <div className="flex items-center gap-8">
+            <a 
+              href="https://instagram.com" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300">
+                <Instagram className="w-5 h-5 text-primary/60 group-hover:text-primary transition-colors" />
+              </div>
+            </a>
+            <a 
+              href="https://facebook.com" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300">
+                <Facebook className="w-5 h-5 text-primary/60 group-hover:text-primary transition-colors" />
+              </div>
+            </a>
+          </div>
+          
+          {/* Copyright with style */}
+          <p className="text-muted-foreground/40 text-xs tracking-widest uppercase">
+            © {new Date().getFullYear()} מזון האושר
+          </p>
         </div>
       </div>
     </footer>
