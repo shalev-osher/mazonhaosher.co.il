@@ -18,6 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -92,8 +93,10 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Right side - Auth + Mobile Menu Button */}
-          <div className="flex items-center gap-3">
+          {/* Right side - Theme Toggle + Auth + Mobile Menu Button */}
+          <div className="flex items-center gap-2">
+            {/* Theme Toggle */}
+            <ThemeToggle />
             {/* Auth Button */}
             {isLoggedIn ? (
               <DropdownMenu>

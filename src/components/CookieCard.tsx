@@ -1,7 +1,7 @@
 import { Plus, Minus, Trash2, Check, Info, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface CookieCardProps {
   image: string;
@@ -31,9 +32,31 @@ interface CookieCardProps {
 const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode = "grid", isFavorite = false, onToggleFavorite }: CookieCardProps) => {
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   
   const itemInCart = items.find((i) => i.name === name);
   const quantity = itemInCart?.quantity || 0;
+
+  // Intersection Observer for scroll reveal
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleAddToCart = () => {
     addToCart({ name, price, image });
@@ -57,10 +80,17 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   if (viewMode === "list") {
     return (
       <div 
-        className="group bg-card rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 animate-fade-in flex items-center gap-4 p-4"
-        style={{ animationDelay: `${delay}ms` }}
+        ref={cardRef}
+        className={cn(
+          "group bg-card rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4",
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        )}
+        style={{ 
+          transitionDelay: `${delay}ms`,
+          transitionProperty: 'opacity, transform'
+        }}
       >
-        {/* Image */}
+        {/* Image with lazy loading */}
         <div className="relative shrink-0">
           {tag && (
             <div className={`absolute -top-1 -right-1 z-10 px-2 py-0.5 rounded-full text-xs font-bold shadow-lg ${
@@ -71,11 +101,20 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
               {tag === "מומלץ" ? "⭐" : "✨"}
             </div>
           )}
-          <div className="w-20 h-20 overflow-hidden rounded-full">
+          <div className="w-20 h-20 overflow-hidden rounded-full relative">
+            <div className={cn(
+              "absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 animate-pulse rounded-full transition-opacity duration-500",
+              imageLoaded ? "opacity-0" : "opacity-100"
+            )} />
             <img
               src={image}
               alt={name}
-              className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+              className={cn(
+                "w-full h-full object-cover group-hover:scale-110 transition-all duration-500",
+                imageLoaded ? "opacity-100" : "opacity-0"
+              )}
             />
           </div>
         </div>
@@ -173,8 +212,15 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   // Grid view layout (original)
   return (
     <div 
-      className="group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 animate-fade-in-up flex flex-col"
-      style={{ animationDelay: `${delay}ms` }}
+      ref={cardRef}
+      className={cn(
+        "group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 flex flex-col",
+        isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
+      )}
+      style={{ 
+        transitionDelay: `${delay}ms`,
+        transitionProperty: 'opacity, transform'
+      }}
     >
       {/* Image section - fixed height */}
       <div className="p-6 pb-0 relative">
@@ -204,10 +250,20 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="aspect-square overflow-hidden relative rounded-full group/image cursor-pointer">
+                {/* Skeleton placeholder */}
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 animate-pulse rounded-full transition-opacity duration-500",
+                  imageLoaded ? "opacity-0" : "opacity-100"
+                )} />
                 <img
                   src={image}
                   alt={name}
-                  className="w-full h-full object-cover group-hover:scale-110 group-hover/image:rotate-3 transition-all duration-700 ease-out rounded-full"
+                  loading="lazy"
+                  onLoad={() => setImageLoaded(true)}
+                  className={cn(
+                    "w-full h-full object-cover group-hover:scale-110 group-hover/image:rotate-3 transition-all duration-700 ease-out rounded-full",
+                    imageLoaded ? "opacity-100" : "opacity-0"
+                  )}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
                 <div className="absolute inset-0 rounded-full ring-4 ring-primary/0 group-hover:ring-primary/30 transition-all duration-500" />
