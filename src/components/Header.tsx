@@ -58,8 +58,8 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       scrolled 
-        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-lg py-2" 
-        : "bg-background/80 backdrop-blur-md py-3"
+        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-lg py-1" 
+        : "bg-background/80 backdrop-blur-md py-1.5"
     }`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between">
