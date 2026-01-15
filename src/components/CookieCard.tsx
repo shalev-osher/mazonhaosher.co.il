@@ -1,7 +1,8 @@
 import { Plus, Minus, Trash2, Check, Info, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -34,10 +35,31 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   const [justAdded, setJustAdded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
   const itemInCart = items.find((i) => i.name === name);
   const quantity = itemInCart?.quantity || 0;
+
+  // 3D tilt effect handler
+  const handleMouseMove = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const tiltX = (y - centerY) / 8;
+    const tiltY = (centerX - x) / 8;
+    setTilt({ x: tiltX, y: tiltY });
+  }, []);
+
+  const handleMouseEnter = () => setIsHovering(true);
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    setTilt({ x: 0, y: 0 });
+  };
 
   // Intersection Observer for scroll reveal
   useEffect(() => {
@@ -213,13 +235,22 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   return (
     <div 
       ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cn(
-        "group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-3 flex flex-col",
+        "group bg-card rounded-[2rem] overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer",
         isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
       )}
       style={{ 
-        transitionDelay: `${delay}ms`,
-        transitionProperty: 'opacity, transform'
+        transitionDelay: isVisible ? '0ms' : `${delay}ms`,
+        transitionProperty: 'opacity, transform, box-shadow',
+        transform: isHovering 
+          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(10px) scale(1.02)` 
+          : isVisible 
+            ? 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)' 
+            : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(0.95)',
+        transformStyle: 'preserve-3d',
       }}
     >
       {/* Image section - fixed height */}
