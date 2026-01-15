@@ -58,8 +58,8 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       scrolled 
-        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-lg py-1" 
-        : "bg-background/80 backdrop-blur-md py-1.5"
+        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-lg py-0.5" 
+        : "bg-background/80 backdrop-blur-md py-1"
     }`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between">
@@ -71,7 +71,7 @@ const Header = () => {
             <img
               src={logo}
               alt="מזון האושר"
-              className={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-9 md:h-10" : "h-10 md:h-12"}`}
+              className={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-7 md:h-8" : "h-8 md:h-9"}`}
             />
           </button>
 
