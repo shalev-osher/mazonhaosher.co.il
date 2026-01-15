@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 
@@ -52,6 +52,23 @@ const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pa
   return { displayedText, isTyping };
 };
 
+const useParallax = (speed: number = 0.5) => {
+  const [offset, setOffset] = useState(0);
+
+  const handleScroll = useCallback(() => {
+    requestAnimationFrame(() => {
+      setOffset(window.scrollY * speed);
+    });
+  }, [speed]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  return offset;
+};
+
 const Hero = () => {
   const { displayedText, isTyping } = useTypewriter(
     "עוגיות קראמבל אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד. אספקה עד 3 ימי עסקים.",
@@ -60,10 +77,19 @@ const Hero = () => {
     3000
   );
 
+  const parallaxOffset = useParallax(0.4);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Image with Parallax */}
+      <div 
+        className="absolute inset-0 z-0 will-change-transform"
+        style={{ 
+          transform: `translateY(${parallaxOffset}px) scale(1.1)`,
+          top: '-5%',
+          height: '110%'
+        }}
+      >
         <img
           src={heroImage}
           alt="עוגיות קראמבל טריות מהתנור"
