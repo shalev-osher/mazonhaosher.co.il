@@ -1,4 +1,4 @@
-import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle } from "lucide-react";
+import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle, Gift } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -49,10 +49,11 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   const navItems = [
-    { id: "cookies", label: "העוגיות", icon: Cookie },
+    { id: "cookies", label: "עוגיות", icon: Cookie },
+    { id: "gift-packages", label: "מארזים", icon: Gift },
     { id: "reviews", label: "ביקורות", icon: Star },
-    { id: "faq", label: "שאלות נפוצות", icon: HelpCircle },
-    { id: "contact", label: "צור קשר", icon: MessageCircle },
+    { id: "faq", label: "שאלות", icon: HelpCircle },
+    { id: "contact", label: "קשר", icon: MessageCircle },
   ];
 
   return (
@@ -76,21 +77,21 @@ const Header = () => {
           </button>
 
           {/* Navigation - Desktop */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((item, index) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="relative px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-full hover:bg-primary/10 group"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <span className="flex items-center gap-2">
-                  <item.icon className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  {item.label}
-                </span>
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-3/4 transition-all duration-300 rounded-full" />
-              </button>
-            ))}
+          <nav className="hidden md:flex items-center gap-0.5">
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="relative p-2 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10 group"
+                  title={item.label}
+                >
+                  <IconComponent className="w-5 h-5" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 rounded-full" />
+                </button>
+              );
+            })}
           </nav>
 
           {/* Right side - Theme Toggle + Auth + Mobile Menu Button */}
@@ -161,21 +162,24 @@ const Header = () => {
                 </SheetHeader>
                 
                 <nav className="flex flex-col gap-2">
-                  {navItems.map((item, index) => (
-                    <button
-                      key={item.id}
-                      onClick={() => scrollToSection(item.id)}
-                      className="flex items-center justify-end gap-3 px-4 py-4 text-right rounded-xl transition-all duration-300 hover:bg-primary/10 group animate-fade-in"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                      <span className="text-lg font-medium text-foreground group-hover:text-primary transition-colors">
-                        {item.label}
-                      </span>
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                        <item.icon className="w-5 h-5 text-primary" />
-                      </div>
-                    </button>
-                  ))}
+                  {navItems.map((item, index) => {
+                    const IconComponent = item.icon;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => scrollToSection(item.id)}
+                        className="flex items-center justify-end gap-3 px-4 py-3 text-right rounded-xl transition-all duration-300 hover:bg-primary/10 group animate-fade-in"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <span className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                          {item.label}
+                        </span>
+                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                          <IconComponent className="w-4 h-4 text-primary" />
+                        </div>
+                      </button>
+                    );
+                  })}
                 </nav>
 
                 {/* Decorative bottom */}
