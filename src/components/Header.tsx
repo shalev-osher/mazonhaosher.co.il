@@ -131,13 +131,13 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={() => navigate("/auth")}
-                className="gap-2 rounded-full border-primary/30 hover:border-primary hover:bg-primary/10 transition-all duration-300"
+                className="p-2 rounded-full hover:bg-primary/10 transition-all duration-300"
+                title="התחברות"
               >
-                <LogIn className="w-4 h-4" />
-                <span className="hidden sm:inline">התחברות</span>
+                <LogIn className="w-5 h-5 text-muted-foreground hover:text-primary" />
               </Button>
             )}
 
