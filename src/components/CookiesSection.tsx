@@ -295,99 +295,104 @@ const CookiesSection = () => {
           </h2>
         </div>
 
-        {/* Search */}
-        <div className="flex justify-center mb-8">
-          <div className="relative w-full max-w-md">
-            <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        {/* All Controls - Compact Layout */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
+          {/* Search */}
+          <div className="relative w-48">
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="חיפוש עוגיה..."
+              placeholder="חיפוש..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-12 pl-10 py-3 rounded-full bg-card/90 border-primary/30 focus:border-primary text-right"
+              className="pr-8 pl-7 py-1.5 h-8 text-sm rounded-full bg-card/90 border-primary/30 focus:border-primary text-right"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground hover:text-primary hover:rotate-90 hover:scale-125 transition-all duration-300"
+                className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-primary transition-all"
               >
-                <X className="h-5 w-5" />
+                <X className="h-3.5 w-3.5" />
               </button>
             )}
           </div>
-        </div>
 
-        {/* Category Filter & Sort */}
-        <div className="flex flex-col items-center gap-4 mb-12">
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                variant={activeCategory === category ? "default" : "outline"}
-                className={`rounded-full px-6 transition-all duration-300 ${
-                  activeCategory === category 
-                    ? "bg-primary text-primary-foreground shadow-lg scale-105" 
-                    : "bg-card/80 hover:bg-card hover:scale-105"
-                }`}
-              >
-                {category}
-                <span className={`mr-2 text-xs px-2 py-0.5 rounded-full transition-all duration-300 ${
-                  activeCategory === category
-                    ? "bg-primary-foreground/20 text-primary-foreground scale-110"
-                    : "bg-primary/20 text-primary"
-                }`}>
-                  {getCategoryCount(category)}
-                </span>
-              </Button>
-            ))}
-          </div>
-          
-          {/* Tag Filter */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveTag("הכל")}
-              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
-                activeTag === "הכל"
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "bg-card/80 text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              הכל
-            </button>
-            <button
-              onClick={() => setActiveTag("מומלץ")}
-              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
-                activeTag === "מומלץ"
-                  ? "bg-accent text-accent-foreground shadow-md"
-                  : "bg-card/80 text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Star className="h-4 w-4" />
-              מומלץ
-            </button>
-            <button
-              onClick={() => setActiveTag("חדש")}
-              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
-                activeTag === "חדש"
-                  ? "bg-green-500 text-white shadow-md"
-                  : "bg-card/80 text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Sparkles className="h-4 w-4" />
-              חדש
-            </button>
-          </div>
+          {/* Divider */}
+          <div className="w-px h-6 bg-border/50" />
 
-          {/* Sort Options */}
-          <div className="flex items-center gap-2 bg-card/80 rounded-full px-4 py-2">
-            <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">מיון:</span>
+          {/* Category Filter */}
+          {categories.map((category) => (
+            <Button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              variant={activeCategory === category ? "default" : "ghost"}
+              size="sm"
+              className={`rounded-full px-3 h-7 text-xs transition-all duration-200 ${
+                activeCategory === category 
+                  ? "bg-primary text-primary-foreground" 
+                  : "hover:bg-card"
+              }`}
+            >
+              {category}
+              <span className="mr-1 text-[10px] opacity-70">
+                {getCategoryCount(category)}
+              </span>
+            </Button>
+          ))}
+
+          {/* Divider */}
+          <div className="w-px h-6 bg-border/50" />
+
+          {/* Tags */}
+          <button
+            onClick={() => setActiveTag("מומלץ")}
+            className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
+              activeTag === "מומלץ"
+                ? "bg-accent text-accent-foreground"
+                : "bg-card/80 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Star className="h-3 w-3" />
+          </button>
+          <button
+            onClick={() => setActiveTag("חדש")}
+            className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
+              activeTag === "חדש"
+                ? "bg-green-500 text-white"
+                : "bg-card/80 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Sparkles className="h-3 w-3" />
+          </button>
+          <button
+            onClick={() => {
+              setIsTransitioning(true);
+              setTimeout(() => {
+                setActiveTag(activeTag === "מועדפים" ? "הכל" : "מועדפים");
+                setIsTransitioning(false);
+              }, 200);
+            }}
+            className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
+              activeTag === "מועדפים"
+                ? "bg-red-500 text-white"
+                : "bg-card/80 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Heart className={`h-3 w-3 ${favorites.length > 0 ? "fill-current" : ""}`} />
+            {favorites.length > 0 && <span>{favorites.length}</span>}
+          </button>
+
+          {/* Divider */}
+          <div className="w-px h-6 bg-border/50" />
+
+          {/* Sort */}
+          <div className="flex items-center gap-1 bg-card/80 rounded-full px-2 py-1 h-7">
+            <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
             {sortOptions.map((option) => (
               <button
                 key={option.value}
                 onClick={() => setSortBy(option.value)}
-                className={`text-sm px-3 py-1 rounded-full transition-all duration-200 ${
+                className={`text-xs px-2 py-0.5 rounded-full transition-all ${
                   sortBy === option.value
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground"
@@ -398,72 +403,38 @@ const CookiesSection = () => {
             ))}
           </div>
 
-          {/* Favorites Filter */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                setIsTransitioning(true);
-                setTimeout(() => {
-                  setActiveTag(activeTag === "מועדפים" ? "הכל" : "מועדפים");
-                  setIsTransitioning(false);
-                }, 200);
-              }}
-              className={`flex items-center gap-1 text-sm px-4 py-2 rounded-full transition-all duration-200 ${
-                activeTag === "מועדפים"
-                  ? "bg-red-500 text-white shadow-md"
-                  : "bg-card/80 text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Heart className={`h-4 w-4 ${favorites.length > 0 ? "fill-current" : ""}`} />
-              מועדפים ({favorites.length})
-            </button>
-            {favorites.length > 0 && (
-              <button
-                onClick={clearAllFavorites}
-                className="flex items-center gap-1 text-sm px-3 py-2 rounded-full bg-card/80 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
-                title="נקה את כל המועדפים"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-
-          {/* View Mode Toggle */}
-          <div className="flex items-center gap-2 bg-card/80 rounded-full px-2 py-1">
+          {/* View Toggle */}
+          <div className="flex items-center bg-card/80 rounded-full p-0.5 h-7">
             <button
               onClick={() => handleViewModeChange("grid")}
-              className={`p-2 rounded-full transition-all duration-200 ${
+              className={`p-1.5 rounded-full transition-all ${
                 viewMode === "grid"
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               }`}
-              title="תצוגת גריד"
             >
-              <LayoutGrid className="h-4 w-4" />
+              <LayoutGrid className="h-3 w-3" />
             </button>
             <button
               onClick={() => handleViewModeChange("list")}
-              className={`p-2 rounded-full transition-all duration-200 ${
+              className={`p-1.5 rounded-full transition-all ${
                 viewMode === "list"
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               }`}
-              title="תצוגת רשימה"
             >
-              <List className="h-4 w-4" />
+              <List className="h-3 w-3" />
             </button>
           </div>
 
-          {/* Reset Button */}
+          {/* Reset */}
           {hasActiveFilters && (
-            <Button
+            <button
               onClick={resetAllFilters}
-              variant="outline"
-              className="rounded-full gap-2 bg-card/80 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 transition-all duration-300 animate-fade-in"
+              className="flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full bg-card/80 text-muted-foreground hover:text-primary transition-all"
             >
-              <RotateCcw className="h-4 w-4" />
-              איפוס סינונים
-            </Button>
+              <RotateCcw className="h-3 w-3" />
+            </button>
           )}
         </div>
 

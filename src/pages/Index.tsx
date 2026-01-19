@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import CookieOfTheWeek from "@/components/CookieOfTheWeek";
@@ -14,32 +13,38 @@ import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import CartButton from "@/components/CartButton";
 import CartModal from "@/components/CartModal";
-import { CartProvider } from "@/contexts/CartContext";
+import { CartProvider, useCart } from "@/contexts/CartContext";
 
-const Index = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
+const IndexContent = () => {
+  const { isCartOpen, setIsCartOpen } = useCart();
 
   return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main>
+        <Hero />
+        <CookieOfTheWeek />
+        <CookiesSection />
+        <GiftPackageBuilder />
+        <OrderHistory />
+        <ReviewsSection />
+        <FAQSection />
+        <NewsletterSection />
+        <AboutSection />
+        <ContactSection />
+      </main>
+      <Footer />
+      <FloatingWhatsApp />
+      <CartButton onClick={() => setIsCartOpen(true)} />
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+    </div>
+  );
+};
+
+const Index = () => {
+  return (
     <CartProvider>
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main>
-          <Hero />
-          <CookieOfTheWeek />
-          <CookiesSection />
-          <GiftPackageBuilder />
-          <OrderHistory />
-          <ReviewsSection />
-          <FAQSection />
-          <NewsletterSection />
-          <AboutSection />
-          <ContactSection />
-        </main>
-        <Footer />
-        <FloatingWhatsApp />
-        <CartButton onClick={() => setIsCartOpen(true)} />
-        <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-      </div>
+      <IndexContent />
     </CartProvider>
   );
 };
