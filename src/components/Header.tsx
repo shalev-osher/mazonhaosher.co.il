@@ -1,4 +1,5 @@
-import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle, Gift } from "lucide-react";
+import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle, Gift, ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -94,8 +95,10 @@ const Header = () => {
             })}
           </nav>
 
-          {/* Right side - Theme Toggle + Auth + Mobile Menu Button */}
-          <div className="flex items-center gap-2">
+          {/* Right side - Cart + Theme Toggle + Auth + Mobile Menu Button */}
+          <div className="flex items-center gap-1.5">
+            {/* Cart Button */}
+            <CartHeaderButton />
             {/* Theme Toggle */}
             <ThemeToggle />
             {/* Auth Button */}
@@ -203,6 +206,26 @@ const Header = () => {
         </div>
       </div>
     </header>
+  );
+};
+
+const CartHeaderButton = () => {
+  const { getTotalItems, setIsCartOpen } = useCart();
+  const totalItems = getTotalItems();
+
+  return (
+    <button
+      onClick={() => setIsCartOpen(true)}
+      className="relative p-2 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10"
+      title="עגלת קניות"
+    >
+      <ShoppingCart className="w-5 h-5" />
+      {totalItems > 0 && (
+        <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold">
+          {totalItems}
+        </span>
+      )}
+    </button>
   );
 };
 
