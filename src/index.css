@@ -34,7 +34,7 @@
     --input: 340 20% 88%;
     --ring: 340 60% 55%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     /* Custom tokens - Pink theme */
     --warm-cream: 340 30% 97%;
@@ -111,16 +111,22 @@
   }
 
   body {
-    @apply bg-background text-foreground font-body antialiased text-lg;
+    @apply bg-background text-foreground font-body antialiased text-sm;
   }
 
   html {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   @media (min-width: 768px) {
     html {
-      font-size: 20px;
+      font-size: 15px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    html {
+      font-size: 16px;
     }
   }
 
