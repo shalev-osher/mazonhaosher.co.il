@@ -253,23 +253,23 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         transformStyle: 'preserve-3d',
       }}
     >
-      {/* Image section - compact */}
-      <div className="p-3 pb-0 relative">
+      {/* Image section - mini */}
+      <div className="p-2 pb-0 relative">
         {/* Favorite Button */}
         {onToggleFavorite && (
           <button
             onClick={onToggleFavorite}
-            className={`absolute top-2 right-2 z-10 p-1.5 rounded-full bg-card/80 backdrop-blur-sm shadow-md transition-all duration-300 hover:scale-110 ${
+            className={`absolute top-1 right-1 z-10 p-1 rounded-full bg-card/80 backdrop-blur-sm shadow-sm transition-all duration-300 hover:scale-110 ${
               isFavorite 
                 ? "text-red-500" 
                 : "text-muted-foreground hover:text-red-500"
             }`}
           >
-            <Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
+            <Heart className={`h-3 w-3 ${isFavorite ? "fill-current" : ""}`} />
           </button>
         )}
         {tag && (
-          <div className={`absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md ${
+          <div className={`absolute top-1 left-1 z-10 px-1.5 py-0.5 rounded-full text-[8px] font-bold shadow-sm ${
             tag === "מומלץ" 
               ? "bg-accent text-accent-foreground" 
               : "bg-green-500 text-white"
@@ -280,7 +280,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="aspect-[4/3] overflow-hidden relative rounded-lg group/image cursor-pointer">
+              <div className="aspect-square overflow-hidden relative rounded-md group/image cursor-pointer">
                 <div className={cn(
                   "absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 animate-pulse rounded-lg transition-opacity duration-500",
                   imageLoaded ? "opacity-0" : "opacity-100"
@@ -318,20 +318,20 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         </TooltipProvider>
       </div>
       
-      {/* Content section - compact */}
-      <div className="p-3 pt-2 flex-1">
-        <div className="flex items-start justify-between gap-1 mb-1">
-          <h3 className="font-display text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1">
+      {/* Content section - mini */}
+      <div className="p-2 pt-1 flex-1">
+        <div className="flex items-center justify-between gap-1 mb-0.5">
+          <h3 className="font-display text-[11px] font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1">
             {name}
           </h3>
-          <span className="text-primary font-bold text-sm shrink-0">{price}</span>
+          <span className="text-primary font-bold text-[11px] shrink-0">{price}</span>
         </div>
         <Dialog>
           <DialogTrigger asChild>
             <button
               type="button"
               aria-label={`קרא עוד על ${name}`}
-              className="w-full text-right text-muted-foreground text-xs leading-relaxed line-clamp-1 hover:text-foreground transition-colors"
+              className="w-full text-right text-muted-foreground text-[10px] leading-tight line-clamp-1 hover:text-foreground transition-colors"
             >
               {description}
             </button>
@@ -385,34 +385,34 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         </Dialog>
       </div>
       
-      {/* Button section - compact */}
-      <div className="px-3 pb-3 pt-2 border-t border-border/50 mx-3">
+      {/* Button section - mini */}
+      <div className="px-2 pb-2 pt-1 border-t border-border/50 mx-2">
         {quantity > 0 ? (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5">
             <Button
               onClick={handleDecrement}
               variant="outline"
               size="icon"
-              className="h-7 w-7 rounded-full shrink-0"
+              className="h-5 w-5 rounded-full shrink-0"
             >
-              {quantity === 1 ? <Trash2 className="w-3 h-3" /> : <Minus className="w-3 h-3" />}
+              {quantity === 1 ? <Trash2 className="w-2.5 h-2.5" /> : <Minus className="w-2.5 h-2.5" />}
             </Button>
-            <div className="flex-1 text-center font-bold text-sm text-foreground">
+            <div className="flex-1 text-center font-bold text-[11px] text-foreground">
               {quantity}
             </div>
             <Button
               onClick={handleIncrement}
               size="icon"
-              className="h-7 w-7 rounded-full shrink-0 bg-primary hover:bg-primary/90"
+              className="h-5 w-5 rounded-full shrink-0 bg-primary hover:bg-primary/90"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="w-2.5 h-2.5" />
             </Button>
           </div>
         ) : (
           <Button
             onClick={handleAddToCart}
             size="sm"
-            className={`w-full gap-1 text-xs h-7 transition-all duration-300 ${
+            className={`w-full gap-0.5 text-[10px] h-5 transition-all duration-300 ${
               justAdded 
                 ? "bg-green-500 hover:bg-green-500" 
                 : "bg-primary hover:bg-primary/90"
@@ -420,12 +420,12 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           >
             {justAdded ? (
               <>
-                <Check className="w-3 h-3" />
+                <Check className="w-2.5 h-2.5" />
                 נוסף!
               </>
             ) : (
               <>
-                <Plus className="w-3 h-3" />
+                <Plus className="w-2.5 h-2.5" />
                 הוסף
               </>
             )}
