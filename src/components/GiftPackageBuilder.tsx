@@ -128,21 +128,21 @@ const GiftPackageBuilder = () => {
   };
 
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-accent/10 via-background to-accent/10" />
       
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-primary mb-4">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-6">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
             חבילות מתנה
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto">
             בנו חבילת מתנה מושלמת עם העוגיות האהובות עליכם
           </p>
         </div>
 
         {/* Package Size Cards */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
+        <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-6">
           {packageSizes.map((pkg) => (
             <Dialog key={pkg.name} open={isOpen && selectedSize.name === pkg.name} onOpenChange={(open) => {
               if (open) {
@@ -153,15 +153,15 @@ const GiftPackageBuilder = () => {
             }}>
               <DialogTrigger asChild>
                 <button
-                  className="bg-card/80 backdrop-blur-sm rounded-3xl p-8 border border-primary/10 hover:border-primary/30 hover:shadow-xl transition-all duration-300 text-center group"
+                  className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border border-primary/10 hover:border-primary/30 hover:shadow-lg transition-all duration-300 text-center group"
                 >
-                  <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <Gift className="h-10 w-10 text-accent" />
+                  <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                    <Gift className="h-6 w-6 text-accent" />
                   </div>
-                  <h3 className="font-display text-2xl font-bold text-primary mb-2">{pkg.name}</h3>
-                  <p className="text-muted-foreground mb-4">{pkg.description}</p>
+                  <h3 className="font-display text-lg font-bold text-primary mb-1">{pkg.name}</h3>
+                  <p className="text-muted-foreground text-xs mb-2">{pkg.description}</p>
                   <div className="flex items-center justify-center gap-2">
-                    <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-bold">
+                    <span className="bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs font-bold">
                       {pkg.discount}% הנחה
                     </span>
                   </div>

@@ -115,17 +115,17 @@ const NewsletterSection = () => {
 
   if (subscribed) {
     return (
-      <section className="py-16 relative overflow-hidden">
+      <section className="py-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-2xl mx-auto text-center bg-card/80 backdrop-blur-sm rounded-3xl p-12 border border-primary/20">
-            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Check className="h-10 w-10 text-white" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-md mx-auto text-center bg-card/80 backdrop-blur-sm rounded-2xl p-6 border border-primary/20">
+            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Check className="h-6 w-6 text-white" />
             </div>
-            <h3 className="font-display text-3xl font-bold text-primary mb-4">
+            <h3 className="font-display text-xl font-bold text-primary mb-2">
               תודה שנרשמת! 🍪
             </h3>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-sm">
               נעדכן אותך על מבצעים מיוחדים, עוגיות חדשות והפתעות מתוקות
             </p>
           </div>
@@ -135,25 +135,25 @@ const NewsletterSection = () => {
   }
 
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAzMGMwLTUuNTIzIDQuNDc3LTEwIDEwLTEwczEwIDQuNDc3IDEwIDEwLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEweiIgZmlsbD0iI2U4NWQ4ZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9nPjwvc3ZnPg==')] opacity-30" />
       
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-2xl mx-auto text-center bg-card/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-primary/20 shadow-xl">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Bell className="h-8 w-8 text-primary animate-bounce" />
-            <Sparkles className="h-6 w-6 text-accent" />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-md mx-auto text-center bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-primary/20 shadow-lg">
+          <div className="flex items-center justify-center gap-1 mb-2">
+            <Bell className="h-5 w-5 text-primary animate-bounce" />
+            <Sparkles className="h-4 w-4 text-accent" />
           </div>
           
-          <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mb-4">
+          <h3 className="font-display text-xl font-bold text-primary mb-1">
             לא לפספס מבצעים!
           </h3>
-          <p className="text-muted-foreground text-lg mb-8">
-            הירשמו לניוזלטר וקבלו עדכונים על מבצעים מיוחדים, עוגיות חדשות והפתעות מתוקות
+          <p className="text-muted-foreground text-sm mb-4">
+            הירשמו לניוזלטר וקבלו עדכונים על מבצעים מיוחדים
           </p>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-full">
                 <Mail className="h-5 w-5 text-primary" />
