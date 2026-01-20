@@ -100,19 +100,19 @@ const Hero = () => {
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-xl mx-auto text-center animate-fade-in-up">
-          <span className="inline-block text-accent font-medium tracking-wider uppercase text-base md:text-lg mb-2">
+        <div className="max-w-md mx-auto text-center animate-fade-in-up">
+          <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-1">
             מיוצר באהבה
           </span>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4">
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground leading-tight mb-2">
             <span className="text-accent">מזון האושר</span>{" "}
             עוגיות ביתיות
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground mb-6 mx-auto max-w-md min-h-[4rem]">
+          <p className="text-sm text-muted-foreground mb-4 mx-auto max-w-sm min-h-[3rem]">
             {displayedText}
             <span className={`${isTyping ? 'animate-pulse' : 'opacity-0'}`}>|</span>
           </p>
-          <Button variant="honey" size="lg" onClick={() => document.getElementById('cookies')?.scrollIntoView({ behavior: 'smooth' })}>
+          <Button variant="honey" size="sm" onClick={() => document.getElementById('cookies')?.scrollIntoView({ behavior: 'smooth' })}>
             צפו בתפריט
           </Button>
         </div>
