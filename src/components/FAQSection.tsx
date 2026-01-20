@@ -41,36 +41,36 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section id="faq" className="py-20 relative overflow-hidden">
+    <section id="faq" className="py-10 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
       
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-primary mb-4">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-6">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
             שאלות נפוצות
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto">
             כאן תמצאו תשובות לשאלות הנפוצות ביותר. לא מצאתם מה שחיפשתם? צרו איתנו קשר!
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
+        <div className="max-w-2xl mx-auto">
+          <Accordion type="single" collapsible className="space-y-2">
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="bg-card/80 backdrop-blur-sm border border-primary/10 rounded-2xl px-6 overflow-hidden"
+                className="bg-card/80 backdrop-blur-sm border border-primary/10 rounded-xl px-4 overflow-hidden"
               >
-                <AccordionTrigger className="text-right hover:no-underline py-6 gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-primary/10 rounded-full">
-                      <faq.icon className="h-5 w-5 text-primary" />
+                <AccordionTrigger className="text-right hover:no-underline py-3 gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary/10 rounded-full">
+                      <faq.icon className="h-4 w-4 text-primary" />
                     </div>
-                    <span className="font-semibold text-lg">{faq.question}</span>
+                    <span className="font-semibold text-sm">{faq.question}</span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-6 pr-14 text-base leading-relaxed">
+                <AccordionContent className="text-muted-foreground pb-3 pr-10 text-sm leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

@@ -133,20 +133,20 @@ const ReviewsSection = () => {
     : "0";
 
   return (
-    <section id="reviews" className="py-20 relative overflow-hidden">
+    <section id="reviews" className="py-10 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/20 via-background to-secondary/20" />
       
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-primary mb-4">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-6">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
             מה הלקוחות אומרים
           </h2>
-          <div className="flex items-center justify-center gap-2 text-lg">
+          <div className="flex items-center justify-center gap-2 text-sm">
             <div className="flex">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  className={`h-6 w-6 ${
+                  className={`h-4 w-4 ${
                     star <= Math.round(Number(averageRating))
                       ? "text-accent fill-accent"
                       : "text-muted"
@@ -159,15 +159,15 @@ const ReviewsSection = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-6">
           {/* Add Review Form */}
-          <div className="bg-card/80 backdrop-blur-sm rounded-3xl p-8 border border-primary/10">
-            <h3 className="font-display text-2xl font-bold text-primary mb-6 flex items-center gap-2">
-              <Star className="h-6 w-6 text-accent" />
+          <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-primary/10">
+            <h3 className="font-display text-lg font-bold text-primary mb-4 flex items-center gap-2">
+              <Star className="h-4 w-4 text-accent" />
               הוסיפו ביקורת
             </h3>
 
-            <div className="space-y-6">
+            <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium mb-2">בחרו עוגיה</label>
                 <Select value={selectedCookie} onValueChange={setSelectedCookie}>
