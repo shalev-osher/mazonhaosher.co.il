@@ -13,12 +13,12 @@ const CartButton = ({ onClick }: CartButtonProps) => {
   return (
     <Button
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 bg-primary hover:bg-primary/90"
+      className="fixed bottom-4 right-4 z-50 w-11 h-11 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 bg-primary hover:bg-primary/90"
       size="icon"
     >
-      <ShoppingCart className="w-6 h-6" />
+      <ShoppingCart className="w-5 h-5" />
       {totalItems > 0 && (
-        <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">
+        <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold">
           {totalItems}
         </span>
       )}
