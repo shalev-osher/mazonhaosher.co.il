@@ -60,43 +60,43 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       scrolled 
-        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-lg py-0.5" 
-        : "bg-background/80 backdrop-blur-md py-1"
+        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-md py-0" 
+        : "bg-background/80 backdrop-blur-md py-0.5"
     }`}>
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-2 hover:scale-105 transition-transform duration-300"
+            className="flex items-center gap-1.5 hover:scale-105 transition-transform duration-300"
           >
             <img
               src={logo}
               alt="מזון האושר"
-              className={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-7 md:h-8" : "h-8 md:h-9"}`}
+              className={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-5 md:h-6" : "h-6 md:h-7"}`}
             />
           </button>
 
           {/* Navigation - Desktop */}
-          <nav className="hidden md:flex items-center gap-0.5">
+          <nav className="hidden md:flex items-center gap-0">
             {navItems.map((item) => {
               const IconComponent = item.icon;
               return (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="relative p-2 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10 group"
+                  className="relative p-1.5 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10 group"
                   title={item.label}
                 >
-                  <IconComponent className="w-5 h-5" />
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 rounded-full" />
+                  <IconComponent className="w-4 h-4" />
+                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 rounded-full" />
                 </button>
               );
             })}
           </nav>
 
           {/* Right side - Cart + Theme Toggle + Auth + Mobile Menu Button */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1">
             {/* Cart Button */}
             <CartHeaderButton />
             {/* Theme Toggle */}
@@ -105,29 +105,29 @@ const Header = () => {
             {isLoggedIn ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2 rounded-full border-primary/30 hover:border-primary hover:bg-primary/10 transition-all duration-300">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-                      <User className="w-3.5 h-3.5 text-primary" />
+                  <Button variant="outline" size="sm" className="gap-1.5 rounded-full border-primary/30 hover:border-primary hover:bg-primary/10 transition-all duration-300 h-7 px-2 text-xs">
+                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                      <User className="w-3 h-3 text-primary" />
                     </div>
-                    <span className="hidden sm:inline max-w-[100px] truncate">
+                    <span className="hidden sm:inline max-w-[80px] truncate">
                       {displayName}
                     </span>
-                    <ChevronDown className="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown className="w-2.5 h-2.5 transition-transform duration-300 group-hover:rotate-180" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-52 rounded-xl shadow-xl border-primary/20 animate-scale-in">
-                  <div className="px-3 py-2 bg-primary/5 rounded-t-lg">
-                    <p className="text-sm font-medium text-foreground">{displayName || "שלום!"}</p>
-                    <p className="text-xs text-muted-foreground">{user?.email}</p>
+                <DropdownMenuContent align="end" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm">
+                  <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg">
+                    <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
+                    <p className="text-[10px] text-muted-foreground">{user?.email}</p>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => scrollToSection("order-history")} className="gap-2 cursor-pointer hover:bg-primary/10">
-                    <Package className="w-4 h-4 text-primary" />
+                  <DropdownMenuItem onClick={() => scrollToSection("order-history")} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
+                    <Package className="w-3.5 h-3.5 text-primary" />
                     ההזמנות שלי
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10">
-                    <LogOut className="w-4 h-4" />
+                  <DropdownMenuItem onClick={handleLogout} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
+                    <LogOut className="w-3.5 h-3.5" />
                     התנתקות
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -137,10 +137,10 @@ const Header = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/auth")}
-                className="p-2 rounded-full hover:bg-primary/10 transition-all duration-300"
+                className="p-1.5 rounded-full hover:bg-primary/10 transition-all duration-300"
                 title="התחברות"
               >
-                <LogIn className="w-5 h-5 text-muted-foreground hover:text-primary" />
+                <LogIn className="w-4 h-4 text-muted-foreground hover:text-primary" />
               </Button>
             )}
 
@@ -150,35 +150,35 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="md:hidden relative w-10 h-10 rounded-full hover:bg-primary/10 transition-all duration-300"
+                  className="md:hidden relative w-8 h-8 rounded-full hover:bg-primary/10 transition-all duration-300"
                 >
-                  <Menu className={`w-5 h-5 absolute transition-all duration-300 ${mobileMenuOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"}`} />
-                  <X className={`w-5 h-5 absolute transition-all duration-300 ${mobileMenuOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"}`} />
+                  <Menu className={`w-4 h-4 absolute transition-all duration-300 ${mobileMenuOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"}`} />
+                  <X className={`w-4 h-4 absolute transition-all duration-300 ${mobileMenuOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"}`} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-background/98 backdrop-blur-xl border-primary/20">
-                <SheetHeader className="text-right border-b border-border/50 pb-4 mb-4">
-                  <SheetTitle className="font-display text-xl text-primary flex items-center gap-2 justify-end">
+              <SheetContent side="right" className="w-72 bg-background/98 backdrop-blur-xl border-primary/20">
+                <SheetHeader className="text-right border-b border-border/50 pb-3 mb-3">
+                  <SheetTitle className="font-display text-base text-primary flex items-center gap-2 justify-end">
                     <span>תפריט</span>
-                    <Cookie className="w-5 h-5" />
+                    <Cookie className="w-4 h-4" />
                   </SheetTitle>
                 </SheetHeader>
                 
-                <nav className="flex flex-col gap-2">
+                <nav className="flex flex-col gap-1">
                   {navItems.map((item, index) => {
                     const IconComponent = item.icon;
                     return (
                       <button
                         key={item.id}
                         onClick={() => scrollToSection(item.id)}
-                        className="flex items-center justify-end gap-3 px-4 py-3 text-right rounded-xl transition-all duration-300 hover:bg-primary/10 group animate-fade-in"
+                        className="flex items-center justify-end gap-2.5 px-3 py-2 text-right rounded-lg transition-all duration-300 hover:bg-primary/10 group animate-fade-in"
                         style={{ animationDelay: `${index * 100}ms` }}
                       >
-                        <span className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                           {item.label}
                         </span>
-                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                          <IconComponent className="w-4 h-4 text-primary" />
+                        <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                          <IconComponent className="w-3.5 h-3.5 text-primary" />
                         </div>
                       </button>
                     );
@@ -186,17 +186,17 @@ const Header = () => {
                 </nav>
 
                 {/* Decorative bottom */}
-                <div className="absolute bottom-8 left-4 right-4">
-                  <div className="flex justify-center gap-2">
+                <div className="absolute bottom-6 left-3 right-3">
+                  <div className="flex justify-center gap-1.5">
                     {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
-                        className="w-2 h-2 rounded-full bg-primary/30 animate-pulse"
+                        className="w-1.5 h-1.5 rounded-full bg-primary/30 animate-pulse"
                         style={{ animationDelay: `${i * 200}ms` }}
                       />
                     ))}
                   </div>
-                  <p className="text-center text-xs text-muted-foreground mt-4">
+                  <p className="text-center text-[10px] text-muted-foreground mt-3">
                     עוגיות ביתיות עם אהבה 🍪
                   </p>
                 </div>
@@ -216,12 +216,12 @@ const CartHeaderButton = () => {
   return (
     <button
       onClick={() => setIsCartOpen(true)}
-      className="relative p-2 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10"
+      className="relative p-1.5 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10"
       title="עגלת קניות"
     >
-      <ShoppingCart className="w-5 h-5" />
+      <ShoppingCart className="w-4 h-4" />
       {totalItems > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold">
+        <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold">
           {totalItems}
         </span>
       )}
