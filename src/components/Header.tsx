@@ -1,6 +1,5 @@
 import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle, Gift, ShoppingCart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +19,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import ThemeToggle from "./ThemeToggle";
-
+import AuthModal from "./AuthModal";
 const Header = () => {
-  const navigate = useNavigate();
   const { profile, isLoggedIn, logout, user } = useProfile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -136,7 +135,7 @@ const Header = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/auth")}
+                onClick={() => setAuthModalOpen(true)}
                 className="p-1.5 rounded-full hover:bg-primary/10 transition-all duration-300"
                 title="התחברות"
               >
@@ -144,7 +143,9 @@ const Header = () => {
               </Button>
             )}
 
-            {/* Mobile Menu Button - Sheet */}
+            {/* Auth Modal */}
+            <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button
