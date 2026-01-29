@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List, Heart, Trash2 } from "lucide-react";
+import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List, Heart, Trash2, Cookie } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -169,6 +170,23 @@ const CookiesSection = () => {
     const saved = localStorage.getItem("cookie-favorites");
     return saved ? JSON.parse(saved) : [];
   });
+  
+  // Scroll reveal for section entrance
+  const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
+  
+  // Floating decorative elements
+  const [floatingElements, setFloatingElements] = useState<Array<{ id: number; x: number; y: number; delay: number; size: number }>>([]);
+  
+  useEffect(() => {
+    const elements = Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 2,
+      size: 12 + Math.random() * 16,
+    }));
+    setFloatingElements(elements);
+  }, []);
 
   const toggleFavorite = (cookieName: string) => {
     setFavorites(prev => {
@@ -281,18 +299,64 @@ const CookiesSection = () => {
     });
 
   return (
-    <section id="cookies" className="py-24 relative overflow-hidden">
+    <section id="cookies" ref={sectionRef} className="py-24 relative overflow-hidden">
       {/* Decorative background - rich pink tones */}
       <div className="absolute inset-0 bg-gradient-to-b from-secondary via-primary/20 to-accent/30" />
       <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 10% 20%, hsl(var(--primary) / 0.45) 0%, transparent 40%), radial-gradient(circle at 90% 80%, hsl(var(--accent) / 0.4) 0%, transparent 45%), radial-gradient(circle at 50% 50%, hsl(var(--golden-honey) / 0.2) 0%, transparent 60%)' }} />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAzMGMwLTUuNTIzIDQuNDc3LTEwIDEwLTEwczEwIDQuNDc3IDEwIDEwLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEweiIgZmlsbD0iI2U4NWQ4ZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9nPjwvc3ZnPg==')] opacity-60" />
       
+      {/* Floating cookie decorations */}
+      {floatingElements.map((el) => (
+        <div
+          key={el.id}
+          className="absolute pointer-events-none opacity-20"
+          style={{
+            left: `${el.x}%`,
+            top: `${el.y}%`,
+            animation: `float ${3 + el.delay}s ease-in-out infinite`,
+            animationDelay: `${el.delay}s`,
+          }}
+        >
+          <Cookie 
+            className="text-primary" 
+            style={{ width: el.size, height: el.size }}
+          />
+        </div>
+      ))}
+      
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-12 animate-fade-in">
-          <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-primary">
-            {displayedText}
+        {/* Animated title section */}
+        <div 
+          className={`text-center mb-12 transition-all duration-1000 ${
+            sectionVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-16'
+          }`}
+        >
+          {/* Decorative top element */}
+          <div className={`flex items-center justify-center gap-3 mb-4 transition-all duration-700 delay-200 ${
+            sectionVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+          }`}>
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-primary to-transparent" />
+            <Cookie className="h-6 w-6 text-primary animate-bounce" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-primary to-transparent" />
+          </div>
+          
+          <h2 className={`font-display text-5xl md:text-6xl lg:text-7xl font-bold transition-all duration-1000 delay-300 ${
+            sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
+              {displayedText}
+            </span>
             <span className="inline-block w-1 h-12 md:h-16 bg-primary mr-1 animate-blink" />
           </h2>
+          
+          {/* Decorative subtitle */}
+          <p className={`mt-4 text-muted-foreground text-lg transition-all duration-700 delay-500 ${
+            sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
+            עוגיות אמיתיות, אפויות באהבה 🍪
+          </p>
         </div>
 
         {/* All Controls - Compact Layout */}
