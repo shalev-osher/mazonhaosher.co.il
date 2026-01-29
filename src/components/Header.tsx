@@ -1,4 +1,4 @@
-import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle, Gift, ShoppingCart, Smartphone } from "lucide-react";
+import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Sparkles, Star, MessageCircle, HelpCircle, Gift, ShoppingCart, Smartphone } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -52,11 +52,11 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   const navItems = [
-    { id: "cookies", label: "עוגיות", icon: Cookie },
+    { id: "cookies", label: "מוצרים", icon: Sparkles },
     { id: "gift-packages", label: "מארזים", icon: Gift },
     { id: "reviews", label: "ביקורות", icon: Star },
     { id: "faq", label: "שאלות", icon: HelpCircle },
-    { id: "contact", label: "קשר", icon: MessageCircle },
+    { id: "about", label: "עלינו", icon: MessageCircle },
   ];
 
   return (
@@ -166,7 +166,7 @@ const Header = () => {
                 <SheetHeader className="text-right border-b border-border/50 pb-3 mb-3">
                   <SheetTitle className="font-display text-base text-primary flex items-center gap-2 justify-end">
                     <span>תפריט</span>
-                    <Cookie className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4" />
                   </SheetTitle>
                 </SheetHeader>
                 
@@ -203,7 +203,7 @@ const Header = () => {
                     ))}
                   </div>
                   <p className="text-center text-[10px] text-muted-foreground mt-3">
-                    עוגיות ביתיות עם אהבה 🍪
+                    מיוצר באהבה ✨
                   </p>
                 </div>
               </SheetContent>
