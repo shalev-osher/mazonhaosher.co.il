@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +8,7 @@ import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import { useProfile } from "@/contexts/ProfileContext";
 import { supabase } from "@/integrations/supabase/client";
+import AuthModal from "./AuthModal";
 import { 
   nameSchema, 
   emailSchema, 
@@ -34,10 +34,10 @@ const WhatsAppIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 );
 
 const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
-  const navigate = useNavigate();
   const { items, clearCart } = useCart();
   const { profile, setProfile, isLoggedIn, user } = useProfile();
   const [isLoading, setIsLoading] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -285,8 +285,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
   };
 
   const handleLoginRedirect = () => {
-    onClose();
-    navigate("/auth");
+    setShowAuthModal(true);
   };
 
   return (
@@ -428,11 +427,12 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
           </>
         )}
       </Button>
-
       <p className="text-xs text-center text-muted-foreground">
         <Mail className="w-3 h-3 inline ml-1" />
         נשלח אישור למייל ולוואטסאפ
       </p>
+
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </div>
   );
 };

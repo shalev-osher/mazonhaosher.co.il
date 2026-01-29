@@ -124,7 +124,7 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
                               </button>
                             </TooltipTrigger>
                             {item.quantity >= 6 && (
-                              <TooltipContent side="top" className="bg-background/90 border border-destructive/50 text-foreground">
+                              <TooltipContent side="top" className="bg-background/90 border border-primary/50 text-foreground">
                                 <p>מקסימום 6 יחידות לפריט</p>
                               </TooltipContent>
                             )}
