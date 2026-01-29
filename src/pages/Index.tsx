@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import CartButton from "@/components/CartButton";
 import CartModal from "@/components/CartModal";
+import ScrollToTop from "@/components/ScrollToTop";
 import { CartProvider, useCart } from "@/contexts/CartContext";
 
 const IndexContent = () => {
@@ -35,6 +36,7 @@ const IndexContent = () => {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <ScrollToTop />
       <CartButton onClick={() => setIsCartOpen(true)} />
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>

@@ -157,7 +157,7 @@ const sortOptions: { value: SortOption; label: string }[] = [
 ];
 
 const CookiesSection = () => {
-  const fullText = "הקולקציה המיוחדת שלנו";
+  const fullText = "הקולקציה שלנו";
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>("הכל");
@@ -214,7 +214,7 @@ const CookiesSection = () => {
     }
     toast({
       title: "המועדפים נוקו",
-      description: "כל העוגיות הוסרו מרשימת המועדפים",
+      description: "כל המוצרים הוסרו מרשימת המועדפים",
     });
   };
 
@@ -355,7 +355,7 @@ const CookiesSection = () => {
           <p className={`mt-4 text-muted-foreground text-lg transition-all duration-700 delay-500 ${
             sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}>
-            עוגיות אמיתיות, אפויות באהבה 🍪
+            מיוצר באהבה, במיוחד בשבילכם ✨
           </p>
         </div>
 
@@ -529,9 +529,9 @@ const CookiesSection = () => {
 
         {filteredCookies.length === 0 && (
           <div className="text-center py-16 animate-fade-in">
-            <div className="text-6xl mb-4">🍪</div>
+            <div className="text-6xl mb-4">✨</div>
             <p className="text-foreground text-xl font-medium mb-2">
-              {searchQuery ? `לא מצאנו עוגיות עבור "${searchQuery}"` : "אין עוגיות בקטגוריה זו"}
+              {searchQuery ? `לא מצאנו מוצרים עבור "${searchQuery}"` : "אין מוצרים בקטגוריה זו"}
             </p>
             <p className="text-muted-foreground">
               {searchQuery ? "נסו לחפש משהו אחר או לנקות את החיפוש" : "נסו לבחור קטגוריה אחרת"}
