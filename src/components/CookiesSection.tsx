@@ -195,12 +195,6 @@ const CookiesSection = () => {
         ? prev.filter(name => name !== cookieName)
         : [...prev, cookieName];
       localStorage.setItem("cookie-favorites", JSON.stringify(newFavorites));
-      
-      toast({
-        title: isRemoving ? "הוסר מהמועדפים" : "נוסף למועדפים",
-        description: isRemoving ? `${cookieName} הוסר מרשימת המועדפים` : `${cookieName} נוסף לרשימת המועדפים`,
-      });
-      
       return newFavorites;
     });
   };
@@ -212,10 +206,6 @@ const CookiesSection = () => {
     if (activeTag === "מועדפים") {
       setActiveTag("הכל");
     }
-    toast({
-      title: "המועדפים נוקו",
-      description: "כל המוצרים הוסרו מרשימת המועדפים",
-    });
   };
 
   const handleViewModeChange = (mode: "grid" | "list") => {
@@ -507,7 +497,7 @@ const CookiesSection = () => {
             isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
           } ${
             viewMode === "grid" 
-              ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"
+              ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4"
               : "flex flex-col gap-4 max-w-3xl mx-auto"
           }`}
         >
