@@ -26,7 +26,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showDevicesModal, setShowDevicesModal] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
+  const [activeSection, setActiveSection] = useState<string>("hero");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,8 +88,8 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       scrolled 
-        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-md py-1" 
-        : "bg-background/80 backdrop-blur-md py-1.5"
+        ? "bg-background/90 border-b border-border/30 shadow-sm py-1" 
+        : "bg-transparent py-1.5"
     }`}>
       <div className="max-w-7xl mx-auto px-3">
         <div className="flex items-center justify-between">
@@ -105,16 +105,13 @@ const Header = () => {
                     <TooltipTrigger asChild>
                       <button
                         onClick={() => scrollToSection(item.id)}
-                        className={`relative p-1.5 transition-all duration-300 rounded-full group ${
+                        className={`relative p-2 transition-all duration-300 rounded-lg group border ${
                           isActive 
-                            ? "text-primary bg-primary/15 shadow-sm shadow-primary/20" 
-                            : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                            ? "text-primary bg-primary/15 shadow-sm shadow-primary/20 border-primary/20" 
+                            : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20 bg-card/50"
                         }`}
                       >
                         <IconComponent className={`w-4 h-4 transition-transform duration-300 ${isActive ? "scale-110" : "group-hover:scale-110"}`} />
-                        <span className={`absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50 transition-all duration-300 rounded-full ${
-                          isActive ? "w-full" : "w-0 group-hover:w-full"
-                        }`} />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent 
@@ -140,9 +137,8 @@ const Header = () => {
               {isLoggedIn ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="relative p-1.5 transition-all duration-300 rounded-full group text-primary bg-primary/15 shadow-sm shadow-primary/20 border border-primary/20">
+                    <button className="relative p-2 transition-all duration-300 rounded-lg group text-primary bg-primary/15 shadow-sm shadow-primary/20 border border-primary/20">
                       <User className="w-4 h-4 transition-transform duration-300 scale-110" />
-                      <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-full bg-gradient-to-r from-primary/50 via-primary to-primary/50 rounded-full" />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm">
@@ -171,10 +167,13 @@ const Header = () => {
                   <TooltipTrigger asChild>
                     <button
                       onClick={() => setAuthModalOpen(true)}
-                      className="relative p-1.5 transition-all duration-300 rounded-full group text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20"
+                      className={`relative p-2 transition-all duration-300 rounded-lg group border ${
+                        authModalOpen
+                          ? "text-primary bg-primary/15 shadow-sm shadow-primary/20 border-primary/20"
+                          : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20 bg-card/50"
+                      }`}
                     >
-                      <KeyRound className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
-                      <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50 transition-all duration-300 rounded-full w-0 group-hover:w-full" />
+                      <KeyRound className={`w-4 h-4 transition-transform duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-110"}`} />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent 
@@ -214,21 +213,18 @@ const CartHeaderButton = () => {
       <TooltipTrigger asChild>
         <button
           onClick={() => setIsCartOpen(true)}
-          className={`relative p-1.5 transition-all duration-300 rounded-full group border ${
+          className={`relative p-2 transition-all duration-300 rounded-lg group border ${
             isCartOpen || totalItems > 0
               ? "text-primary bg-primary/15 shadow-sm shadow-primary/20 border-primary/20"
-              : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20"
+              : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20 bg-card/50"
           }`}
         >
           <ShoppingBag className={`w-4 h-4 transition-transform duration-300 ${isCartOpen || totalItems > 0 ? "scale-110" : "group-hover:scale-110"}`} />
           {totalItems > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold animate-pulse">
+            <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold animate-pulse">
               {totalItems}
             </span>
           )}
-          <span className={`absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50 transition-all duration-300 rounded-full ${
-            isCartOpen || totalItems > 0 ? "w-full" : "w-0 group-hover:w-full"
-          }`} />
         </button>
       </TooltipTrigger>
       <TooltipContent 
