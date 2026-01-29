@@ -253,8 +253,8 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         transformStyle: 'preserve-3d',
       }}
     >
-      {/* Image section - mini */}
-      <div className="p-2 pb-0 relative">
+      {/* Image section */}
+      <div className="p-3 pb-0 relative">
         {/* Favorite Button */}
         {onToggleFavorite && (
           <button
@@ -318,18 +318,18 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         </TooltipProvider>
       </div>
       
-      {/* Content section - mini */}
-      <div className="p-2 pt-2 flex-1 text-center">
-        <h3 className="font-display text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1 mb-1">
+      {/* Content section */}
+      <div className="p-3 pt-3 flex-1 text-center">
+        <h3 className="font-display text-base font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1 mb-2">
           {name}
         </h3>
-        <span className="text-primary font-bold text-sm block mb-1">{price}</span>
+        <span className="text-primary font-bold text-base block mb-2">{price}</span>
         <Dialog>
           <DialogTrigger asChild>
             <button
               type="button"
               aria-label={`קרא עוד על ${name}`}
-              className="w-full text-center text-muted-foreground text-xs leading-tight line-clamp-2 hover:text-foreground transition-colors"
+              className="w-full text-center text-muted-foreground text-sm leading-relaxed line-clamp-2 hover:text-foreground transition-colors"
             >
               {description}
             </button>
