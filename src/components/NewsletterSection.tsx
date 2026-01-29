@@ -163,7 +163,7 @@ const NewsletterSection = () => {
                 placeholder="כתובת המייל שלך"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 text-left"
+                className="flex-1 text-center"
                 dir="ltr"
                 maxLength={255}
               />
@@ -178,7 +178,7 @@ const NewsletterSection = () => {
                 placeholder="מספר טלפון (אופציונלי)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="flex-1 text-left"
+                className="flex-1 text-center"
                 dir="ltr"
                 maxLength={10}
               />

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Package, ChevronDown, ChevronUp, RotateCcw, Clock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Package, ChevronDown, ChevronUp, RotateCcw, Clock, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProfile } from "@/contexts/ProfileContext";
 import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import AuthModal from "./AuthModal";
 
 interface OrderItem {
   id: string;
@@ -26,12 +26,12 @@ interface Order {
 }
 
 const OrderHistory = () => {
-  const navigate = useNavigate();
   const { isLoggedIn, session } = useProfile();
   const { addToCart } = useCart();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn && session) {
@@ -115,22 +115,26 @@ const OrderHistory = () => {
 
   if (!isLoggedIn) {
     return (
-      <section id="order-history" className="py-16 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-md mx-auto">
-            <Clock className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
-            <h2 className="text-2xl font-display font-bold text-foreground mb-2">
-              היסטוריית הזמנות
-            </h2>
-            <p className="text-muted-foreground mb-4">
-              התחברו כדי לראות את ההזמנות הקודמות
-            </p>
-            <Button onClick={() => navigate("/auth")} variant="outline">
-              התחברות
-            </Button>
+      <>
+        <section id="order-history" className="py-16 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-md mx-auto">
+              <Clock className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
+              <h2 className="text-2xl font-display font-bold text-foreground mb-2">
+                היסטוריית הזמנות
+              </h2>
+              <p className="text-muted-foreground mb-4">
+                התחברו כדי לראות את ההזמנות הקודמות
+              </p>
+              <Button onClick={() => setAuthModalOpen(true)} variant="outline" className="gap-2">
+                <KeyRound className="w-4 h-4" />
+                התחברות
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+        <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+      </>
     );
   }
 
