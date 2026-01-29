@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone, X } from "lucide-react";
+import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { z } from "zod";
+import logo from "@/assets/logo.png";
 
 // Validation schemas
 const emailSchema = z.string().email("כתובת אימייל לא תקינה");
@@ -588,7 +589,20 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="sm:max-w-[360px] p-4" dir="rtl">
+      <DialogContent variant="luxury" className="sm:max-w-[380px] p-6" dir="rtl">
+        {/* Decorative sparkles */}
+        <Sparkles className="absolute top-4 left-12 h-4 w-4 auth-sparkle" />
+        <Sparkles className="absolute top-8 right-12 h-3 w-3 auth-sparkle" style={{ animationDelay: '0.5s' }} />
+        
+        {/* Logo */}
+        <div className="flex justify-center -mt-2 mb-1">
+          <img 
+            src={logo} 
+            alt="מזון האושר" 
+            className="h-14 w-auto auth-logo-glow"
+          />
+        </div>
+
         <DialogHeader className="pb-2">
           <DialogTitle className="text-lg font-display text-primary text-center flex items-center justify-center gap-2">
             {mode === "otp" && <Shield className="h-5 w-5" />}
@@ -597,7 +611,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         </DialogHeader>
 
         {mode === "otp" ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 auth-stagger">
             <p className="text-sm text-center text-muted-foreground">
               שלחנו קוד אימות בן 6 ספרות ל-
               <br />
@@ -615,7 +629,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   value={digit}
                   onChange={(e) => handleOtpChange(index, e.target.value)}
                   onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                  className="w-10 h-12 text-center text-lg font-bold"
+                  className="w-11 h-12 text-center text-lg font-bold auth-input-luxury"
                   autoFocus={index === 0}
                   disabled={isLockedOut}
                 />
@@ -641,16 +655,16 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             <Button
               type="submit"
               disabled={isLoading || otpCode.join("").length !== 6 || isLockedOut}
-              className="w-full h-8 text-sm"
+              className="w-full h-9 text-sm auth-btn-primary"
               size="sm"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin" />
-                  מאמת...
+                  <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
+                  <span className="relative z-10">מאמת...</span>
                 </>
               ) : (
-                "אמת והמשך"
+                <span className="relative z-10">אמת והמשך</span>
               )}
             </Button>
 
@@ -684,7 +698,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             </button>
           </form>
         ) : (
-          <>
+          <div className="auth-stagger">
             {mode !== "forgot" && (
               <>
                 <div className="flex gap-2">
@@ -693,7 +707,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     variant="outline"
                     onClick={handleGoogleSignIn}
                     disabled={isGoogleLoading || isAppleLoading}
-                    className="flex-1 h-8 text-sm gap-2"
+                    className="flex-1 h-9 text-sm gap-2 auth-oauth-btn border-0"
                   >
                     {isGoogleLoading ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -708,7 +722,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     variant="outline"
                     onClick={handleAppleSignIn}
                     disabled={isAppleLoading || isGoogleLoading}
-                    className="flex-1 h-8 text-sm gap-2"
+                    className="flex-1 h-9 text-sm gap-2 auth-oauth-btn border-0"
                   >
                     {isAppleLoading ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -719,12 +733,9 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   </Button>
                 </div>
                 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">או</span>
+                <div className="relative my-4 auth-divider">
+                  <div className="relative flex justify-center text-xs">
+                    <span className="bg-transparent px-3 text-muted-foreground">או</span>
                   </div>
                 </div>
               </>
@@ -733,25 +744,25 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             <form onSubmit={handleSubmit} className="space-y-3">
               {mode === "register" && (
                 <>
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium flex items-center gap-1.5">
-                      <User className="h-3 w-3" />
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
+                      <User className="h-3 w-3 text-primary" />
                       שם מלא *
                     </label>
                     <Input
                       value={formData.fullName}
                       onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
                       placeholder="ישראל ישראלי"
-                      className="text-right h-8 text-sm"
+                      className="text-right h-9 text-sm auth-input-luxury"
                     />
                     {errors.fullName && (
                       <p className="text-[10px] text-destructive">{errors.fullName}</p>
                     )}
                   </div>
                   
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium flex items-center gap-1.5">
-                      <Phone className="h-3 w-3" />
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
+                      <Phone className="h-3 w-3 text-primary" />
                       טלפון
                     </label>
                     <Input
@@ -759,7 +770,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                       value={formData.phone}
                       onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="0501234567"
-                      className="text-left h-8 text-sm"
+                      className="text-left h-9 text-sm auth-input-luxury"
                       dir="ltr"
                     />
                     {errors.phone && (
@@ -769,9 +780,9 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 </>
               )}
               
-              <div className="space-y-1">
-                <label className="block text-xs font-medium flex items-center gap-1.5">
-                  <Mail className="h-3 w-3" />
+              <div className="space-y-1.5">
+                <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
+                  <Mail className="h-3 w-3 text-primary" />
                   אימייל *
                 </label>
                 <Input
@@ -779,7 +790,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   placeholder="email@example.com"
-                  className="text-left h-8 text-sm"
+                  className="text-left h-9 text-sm auth-input-luxury"
                   dir="ltr"
                 />
                 {errors.email && (
@@ -788,9 +799,9 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               </div>
               
               {mode !== "forgot" && (
-                <div className="space-y-1">
-                  <label className="block text-xs font-medium flex items-center gap-1.5">
-                    <Lock className="h-3 w-3" />
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
+                    <Lock className="h-3 w-3 text-primary" />
                     סיסמה *
                   </label>
                   <div className="relative">
@@ -799,13 +810,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       placeholder="לפחות 6 תווים"
-                      className="text-left pl-8 h-8 text-sm"
+                      className="text-left pl-8 h-9 text-sm auth-input-luxury"
                       dir="ltr"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                     </button>
@@ -834,21 +845,25 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-8 text-sm"
+                className="w-full h-9 text-sm auth-btn-primary mt-2"
                 size="sm"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin" />
-                    {mode === "login" ? "מתחבר..." : mode === "register" ? "נרשם..." : "שולח..."}
+                    <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
+                    <span className="relative z-10">
+                      {mode === "login" ? "מתחבר..." : mode === "register" ? "נרשם..." : "שולח..."}
+                    </span>
                   </>
                 ) : (
-                  mode === "login" ? "התחברות" : mode === "register" ? "הרשמה" : "שלח קישור לאיפוס"
+                  <span className="relative z-10">
+                    {mode === "login" ? "התחברות" : mode === "register" ? "הרשמה" : "שלח קישור לאיפוס"}
+                  </span>
                 )}
               </Button>
             </form>
             
-            <div className="text-center pt-1">
+            <div className="text-center pt-2">
               {mode === "forgot" ? (
                 <button
                   onClick={() => {
@@ -875,7 +890,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 </p>
               )}
             </div>
-          </>
+          </div>
         )}
       </DialogContent>
     </Dialog>
