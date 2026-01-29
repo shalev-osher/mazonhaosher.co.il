@@ -3,6 +3,13 @@ import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import CheckoutForm from "./CheckoutForm";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface CartModalProps {
   isOpen: boolean;
@@ -97,12 +104,32 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
                           <Minus className="w-4 h-4" />
                         </button>
                         <span className="w-8 text-center font-semibold">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.name, item.quantity + 1)}
-                          className="p-1 hover:bg-secondary rounded-full transition-colors"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                onClick={() => {
+                                  if (item.quantity < 6) {
+                                    updateQuantity(item.name, item.quantity + 1);
+                                  }
+                                }}
+                                className={cn(
+                                  "p-1 rounded-full transition-colors",
+                                  item.quantity >= 6
+                                    ? "opacity-50 cursor-not-allowed text-muted-foreground"
+                                    : "hover:bg-secondary"
+                                )}
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                            </TooltipTrigger>
+                            {item.quantity >= 6 && (
+                              <TooltipContent side="top" className="bg-background/90 border border-destructive/50 text-foreground">
+                                <p>מקסימום 6 יחידות לפריט</p>
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </TooltipProvider>
                         <button
                           onClick={() => removeFromCart(item.name)}
                           className="p-1 hover:bg-destructive/20 text-destructive rounded-full transition-colors mr-2"
