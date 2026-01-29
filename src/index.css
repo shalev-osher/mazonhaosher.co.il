@@ -482,17 +482,28 @@
 
 /* ===== Luxury Auth Modal Styles - Apple Liquid Glass ===== */
 .auth-modal-luxury {
-  background: hsl(var(--background) / 0.25);
+  background: hsl(var(--background) / 0.85);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-radius: 1.75rem !important;
   box-shadow: 
-    0 0 0 1px hsl(var(--foreground) / 0.05),
-    inset 0 0 0 1px hsl(0 0% 100% / 0.1),
+    0 0 0 1px hsl(var(--foreground) / 0.08),
+    inset 0 0 0 1px hsl(0 0% 100% / 0.15),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.2),
     0 25px 50px -12px hsl(var(--foreground) / 0.25),
-    0 0 80px -20px hsl(var(--primary) / 0.15);
+    0 0 100px -20px hsl(var(--primary) / 0.2);
   overflow: hidden;
   position: relative;
+}
+
+.dark .auth-modal-luxury {
+  background: hsl(var(--background) / 0.75);
+  box-shadow: 
+    0 0 0 1px hsl(0 0% 100% / 0.1),
+    inset 0 0 0 1px hsl(0 0% 100% / 0.08),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.15),
+    0 25px 50px -12px hsl(0 0% 0% / 0.5),
+    0 0 100px -20px hsl(var(--primary) / 0.25);
 }
 
 /* Inner glow/reflection effect */
