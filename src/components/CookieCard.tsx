@@ -319,19 +319,17 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       </div>
       
       {/* Content section - mini */}
-      <div className="p-2 pt-1 flex-1">
-        <div className="flex items-center justify-between gap-1 mb-0.5">
-          <h3 className="font-display text-[11px] font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1">
-            {name}
-          </h3>
-          <span className="text-primary font-bold text-[11px] shrink-0">{price}</span>
-        </div>
+      <div className="p-2 pt-2 flex-1 text-center">
+        <h3 className="font-display text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1 mb-1">
+          {name}
+        </h3>
+        <span className="text-primary font-bold text-sm block mb-1">{price}</span>
         <Dialog>
           <DialogTrigger asChild>
             <button
               type="button"
               aria-label={`קרא עוד על ${name}`}
-              className="w-full text-right text-muted-foreground text-[10px] leading-tight line-clamp-1 hover:text-foreground transition-colors"
+              className="w-full text-center text-muted-foreground text-xs leading-tight line-clamp-2 hover:text-foreground transition-colors"
             >
               {description}
             </button>
