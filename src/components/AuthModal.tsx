@@ -589,7 +589,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent variant="luxury" className="sm:max-w-[380px] p-6" dir="rtl">
+      <DialogContent variant="luxury" overlayVariant="glass" className="sm:max-w-[380px] p-6" dir="rtl">
         {/* Decorative sparkles */}
         <Sparkles className="absolute top-4 left-12 h-4 w-4 auth-sparkle" />
         <Sparkles className="absolute top-8 right-12 h-3 w-3 auth-sparkle" style={{ animationDelay: '0.5s' }} />
