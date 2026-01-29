@@ -87,7 +87,9 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   };
 
   const handleIncrement = () => {
-    updateQuantity(name, quantity + 1);
+    if (quantity < 6) {
+      updateQuantity(name, quantity + 1);
+    }
   };
 
   const handleDecrement = () => {
