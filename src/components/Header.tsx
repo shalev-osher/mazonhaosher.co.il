@@ -1,4 +1,4 @@
-import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Sparkles, Star, MessageCircle, HelpCircle, Gift, ShoppingCart, Smartphone } from "lucide-react";
+import { User, LogIn, LogOut, Package, ChevronDown, Sparkles, Star, MessageCircle, HelpCircle, Gift, ShoppingCart, Smartphone } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -11,20 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useProfile } from "@/contexts/ProfileContext";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import ThemeToggle from "./ThemeToggle";
 import AuthModal from "./AuthModal";
 import TrustedDevicesModal from "./TrustedDevicesModal";
 
 const Header = () => {
   const { profile, isLoggedIn, logout, user } = useProfile();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showDevicesModal, setShowDevicesModal] = useState(false);
@@ -46,7 +38,6 @@ const Header = () => {
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
     }
-    setMobileMenuOpen(false);
   };
 
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
@@ -68,8 +59,8 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-3">
         <div className="flex items-center justify-between">
 
-          {/* Navigation - Desktop */}
-          <nav className="hidden md:flex items-center gap-0">
+          {/* Navigation - All devices */}
+          <nav className="flex items-center gap-0.5">
             {navItems.map((item) => {
               const IconComponent = item.icon;
               return (
@@ -151,63 +142,6 @@ const Header = () => {
               />
             )}
 
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="md:hidden relative w-8 h-8 rounded-full hover:bg-primary/10 transition-all duration-300"
-                >
-                  <Menu className={`w-4 h-4 absolute transition-all duration-300 ${mobileMenuOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"}`} />
-                  <X className={`w-4 h-4 absolute transition-all duration-300 ${mobileMenuOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"}`} />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-72 bg-background/98 backdrop-blur-xl border-primary/20">
-                <SheetHeader className="text-right border-b border-border/50 pb-3 mb-3">
-                  <SheetTitle className="font-display text-base text-primary flex items-center gap-2 justify-end">
-                    <span>תפריט</span>
-                    <Sparkles className="w-4 h-4" />
-                  </SheetTitle>
-                </SheetHeader>
-                
-                <nav className="flex flex-col gap-1">
-                  {navItems.map((item, index) => {
-                    const IconComponent = item.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => scrollToSection(item.id)}
-                        className="flex items-center justify-end gap-2.5 px-3 py-2 text-right rounded-lg transition-all duration-300 hover:bg-primary/10 group animate-fade-in"
-                        style={{ animationDelay: `${index * 100}ms` }}
-                      >
-                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                          {item.label}
-                        </span>
-                        <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                          <IconComponent className="w-3.5 h-3.5 text-primary" />
-                        </div>
-                      </button>
-                    );
-                  })}
-                </nav>
-
-                {/* Decorative bottom */}
-                <div className="absolute bottom-6 left-3 right-3">
-                  <div className="flex justify-center gap-1.5">
-                    {[...Array(5)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-1.5 h-1.5 rounded-full bg-primary/30 animate-pulse"
-                        style={{ animationDelay: `${i * 200}ms` }}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-center text-[10px] text-muted-foreground mt-3">
-                    מיוצר באהבה ✨
-                  </p>
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
         </div>
       </div>
