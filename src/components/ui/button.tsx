@@ -9,17 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft hover:shadow-warm",
+        default: "bg-background/80 border border-primary text-primary hover:bg-primary hover:text-primary-foreground shadow-soft",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-background/80 border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground",
         outline:
-          "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground",
+          "border-2 border-primary bg-background/80 text-primary hover:bg-primary hover:text-primary-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+          "bg-background/80 border border-secondary-foreground/30 text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent/50 hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        honey: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-warm hover:shadow-elevated font-semibold",
-        warm: "bg-caramel/30 text-foreground border border-caramel/50 hover:bg-caramel/50 backdrop-blur-sm",
+        honey: "bg-background/80 border border-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground shadow-warm font-semibold",
+        warm: "bg-background/80 text-foreground border border-caramel/50 hover:bg-caramel/50",
       },
       size: {
         default: "h-10 px-6 py-2",
