@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,7 +23,7 @@ interface AuthModalProps {
   onClose: () => void;
 }
 
-type AuthMode = "login" | "register" | "forgot";
+type AuthMode = "login" | "register" | "forgot" | "otp";
 
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="w-4 h-4">
@@ -51,6 +51,11 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
+  const [otpResendTimer, setOtpResendTimer] = useState(0);
+  const [pendingAction, setPendingAction] = useState<"login" | "register" | null>(null);
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   
   const [formData, setFormData] = useState({
     email: "",
@@ -61,11 +66,22 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Timer for resend OTP
+  useEffect(() => {
+    if (otpResendTimer > 0) {
+      const timer = setTimeout(() => setOtpResendTimer(otpResendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [otpResendTimer]);
+
   const resetForm = () => {
     setFormData({ email: "", password: "", fullName: "", phone: "" });
     setErrors({});
     setMode("login");
     setShowPassword(false);
+    setOtpSent(false);
+    setOtpCode(["", "", "", "", "", ""]);
+    setPendingAction(null);
   };
 
   const handleClose = () => {
@@ -81,7 +97,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       newErrors.email = emailResult.error.errors[0].message;
     }
     
-    if (mode !== "forgot") {
+    if (mode !== "forgot" && mode !== "otp") {
       const passwordResult = passwordSchema.safeParse(formData.password);
       if (!passwordResult.success) {
         newErrors.password = passwordResult.error.errors[0].message;
@@ -159,80 +175,26 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (mode === "forgot") {
-      await handleForgotPassword();
-      return;
-    }
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+  const sendOTP = async () => {
     setIsLoading(true);
-    
     try {
-      if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-        
-        if (error) {
-          if (error.message.includes("Invalid login credentials")) {
-            throw new Error("אימייל או סיסמה שגויים");
-          }
-          throw error;
-        }
-        
-        toast({
-          title: "התחברת בהצלחה! 🎉",
-          description: "ברוך הבא",
-        });
-        handleClose();
-      } else {
-        const redirectUrl = `${window.location.origin}/`;
-        
-        const { error } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-          options: {
-            emailRedirectTo: redirectUrl,
-            data: {
-              full_name: formData.fullName,
-              phone: formData.phone,
-            },
-          },
-        });
-        
-        if (error) {
-          if (error.message.includes("already registered")) {
-            throw new Error("כתובת האימייל כבר רשומה במערכת");
-          }
-          throw error;
-        }
-        
-        // Create profile for the user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          await supabase.rpc("upsert_my_profile", {
-            p_phone: formData.phone || "",
-            p_full_name: formData.fullName,
-          });
-        }
-        
-        toast({
-          title: "נרשמת בהצלחה! 🎉",
-          description: "ברוך הבא למשפחת מזון האושר",
-        });
-        handleClose();
-      }
+      const response = await supabase.functions.invoke("send-otp", {
+        body: { email: formData.email, action: "send" },
+      });
+
+      if (response.error) throw new Error(response.error.message);
+      if (response.data?.error) throw new Error(response.data.error);
+
+      setOtpSent(true);
+      setOtpResendTimer(60);
+      toast({
+        title: "קוד נשלח! 📧",
+        description: "בדוק את תיבת המייל שלך",
+      });
     } catch (error: any) {
       toast({
         title: "שגיאה",
-        description: error.message || "אירעה שגיאה, נסו שוב",
+        description: error.message || "אירעה שגיאה בשליחת הקוד",
         variant: "destructive",
       });
     } finally {
@@ -240,11 +202,161 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   };
 
+  const verifyOTP = async (): Promise<boolean> => {
+    const code = otpCode.join("");
+    if (code.length !== 6) {
+      setErrors({ otp: "יש להזין 6 ספרות" });
+      return false;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await supabase.functions.invoke("send-otp", {
+        body: { email: formData.email, action: "verify", code },
+      });
+
+      if (response.error) throw new Error(response.error.message);
+      if (response.data?.error) throw new Error(response.data.error);
+
+      return true;
+    } catch (error: any) {
+      setErrors({ otp: error.message || "קוד אימות שגוי" });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (!/^\d*$/.test(value)) return;
+    
+    const newOtp = [...otpCode];
+    newOtp[index] = value.slice(-1);
+    setOtpCode(newOtp);
+    setErrors({});
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !otpCode[index] && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    const newOtp = [...otpCode];
+    for (let i = 0; i < 6; i++) {
+      newOtp[i] = pasted[i] || "";
+    }
+    setOtpCode(newOtp);
+    if (pasted.length === 6) {
+      otpInputRefs.current[5]?.focus();
+    }
+  };
+
+  const completeAuth = async () => {
+    if (pendingAction === "login") {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+      
+      if (error) {
+        if (error.message.includes("Invalid login credentials")) {
+          throw new Error("אימייל או סיסמה שגויים");
+        }
+        throw error;
+      }
+      
+      toast({
+        title: "התחברת בהצלחה! 🎉",
+        description: "ברוך הבא",
+      });
+    } else if (pendingAction === "register") {
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: formData.fullName,
+            phone: formData.phone,
+          },
+        },
+      });
+      
+      if (error) {
+        if (error.message.includes("already registered")) {
+          throw new Error("כתובת האימייל כבר רשומה במערכת");
+        }
+        throw error;
+      }
+      
+      // Create profile for the user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase.rpc("upsert_my_profile", {
+          p_phone: formData.phone || "",
+          p_full_name: formData.fullName,
+        });
+      }
+      
+      toast({
+        title: "נרשמת בהצלחה! 🎉",
+        description: "ברוך הבא למשפחת מזון האושר",
+      });
+    }
+    handleClose();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (mode === "forgot") {
+      await handleForgotPassword();
+      return;
+    }
+
+    if (mode === "otp") {
+      const isValid = await verifyOTP();
+      if (isValid) {
+        try {
+          await completeAuth();
+        } catch (error: any) {
+          toast({
+            title: "שגיאה",
+            description: error.message || "אירעה שגיאה, נסו שוב",
+            variant: "destructive",
+          });
+        }
+      }
+      return;
+    }
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    // Send OTP for 2FA
+    setPendingAction(mode as "login" | "register");
+    setMode("otp");
+    await sendOTP();
+  };
+
   const getTitle = () => {
     switch (mode) {
       case "login": return "התחברות";
       case "register": return "הרשמה";
       case "forgot": return "שכחתי סיסמה";
+      case "otp": return "אימות דו-שלבי";
     }
   };
 
@@ -252,184 +364,263 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-[360px] p-4" dir="rtl">
         <DialogHeader className="pb-2">
-          <DialogTitle className="text-lg font-display text-primary text-center">
+          <DialogTitle className="text-lg font-display text-primary text-center flex items-center justify-center gap-2">
+            {mode === "otp" && <Shield className="h-5 w-5" />}
             {getTitle()}
           </DialogTitle>
         </DialogHeader>
-        
-        {mode !== "forgot" && (
-          <>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleGoogleSignIn}
-              disabled={isGoogleLoading}
-              className="w-full h-8 text-sm gap-2"
-            >
-              {isGoogleLoading ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <GoogleIcon />
-              )}
-              המשך עם Google
-            </Button>
+
+        {mode === "otp" ? (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <p className="text-sm text-center text-muted-foreground">
+              שלחנו קוד אימות בן 6 ספרות ל-
+              <br />
+              <span className="font-medium text-foreground" dir="ltr">{formData.email}</span>
+            </p>
             
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">או</span>
-              </div>
-            </div>
-          </>
-        )}
-        
-        <form onSubmit={handleSubmit} className="space-y-3">
-          {mode === "register" && (
-            <>
-              <div className="space-y-1">
-                <label className="block text-xs font-medium flex items-center gap-1.5">
-                  <User className="h-3 w-3" />
-                  שם מלא *
-                </label>
+            <div className="flex justify-center gap-2" dir="ltr" onPaste={handleOtpPaste}>
+              {otpCode.map((digit, index) => (
                 <Input
-                  value={formData.fullName}
-                  onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                  placeholder="ישראל ישראלי"
-                  className="text-right h-8 text-sm"
+                  key={index}
+                  ref={(el) => (otpInputRefs.current[index] = el)}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                  onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                  className="w-10 h-12 text-center text-lg font-bold"
+                  autoFocus={index === 0}
                 />
-                {errors.fullName && (
-                  <p className="text-[10px] text-destructive">{errors.fullName}</p>
-                )}
-              </div>
+              ))}
+            </div>
+
+            {errors.otp && (
+              <p className="text-[10px] text-destructive text-center">{errors.otp}</p>
+            )}
+
+            <Button
+              type="submit"
+              disabled={isLoading || otpCode.join("").length !== 6}
+              className="w-full h-8 text-sm"
+              size="sm"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin" />
+                  מאמת...
+                </>
+              ) : (
+                "אמת והמשך"
+              )}
+            </Button>
+
+            <div className="text-center">
+              {otpResendTimer > 0 ? (
+                <p className="text-xs text-muted-foreground">
+                  שלח שוב בעוד {otpResendTimer} שניות
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  onClick={sendOTP}
+                  disabled={isLoading}
+                  className="text-xs text-primary hover:underline"
+                >
+                  שלח קוד חדש
+                </button>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMode(pendingAction || "login");
+                setOtpSent(false);
+                setOtpCode(["", "", "", "", "", ""]);
+              }}
+              className="w-full text-xs text-muted-foreground hover:underline"
+            >
+              חזרה
+            </button>
+          </form>
+        ) : (
+          <>
+            {mode !== "forgot" && (
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleGoogleSignIn}
+                  disabled={isGoogleLoading}
+                  className="w-full h-8 text-sm gap-2"
+                >
+                  {isGoogleLoading ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <GoogleIcon />
+                  )}
+                  המשך עם Google
+                </Button>
+                
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">או</span>
+                  </div>
+                </div>
+              </>
+            )}
+            
+            <form onSubmit={handleSubmit} className="space-y-3">
+              {mode === "register" && (
+                <>
+                  <div className="space-y-1">
+                    <label className="block text-xs font-medium flex items-center gap-1.5">
+                      <User className="h-3 w-3" />
+                      שם מלא *
+                    </label>
+                    <Input
+                      value={formData.fullName}
+                      onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                      placeholder="ישראל ישראלי"
+                      className="text-right h-8 text-sm"
+                    />
+                    {errors.fullName && (
+                      <p className="text-[10px] text-destructive">{errors.fullName}</p>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <label className="block text-xs font-medium flex items-center gap-1.5">
+                      <Phone className="h-3 w-3" />
+                      טלפון
+                    </label>
+                    <Input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                      placeholder="0501234567"
+                      className="text-left h-8 text-sm"
+                      dir="ltr"
+                    />
+                    {errors.phone && (
+                      <p className="text-[10px] text-destructive">{errors.phone}</p>
+                    )}
+                  </div>
+                </>
+              )}
               
               <div className="space-y-1">
                 <label className="block text-xs font-medium flex items-center gap-1.5">
-                  <Phone className="h-3 w-3" />
-                  טלפון
+                  <Mail className="h-3 w-3" />
+                  אימייל *
                 </label>
                 <Input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  placeholder="0501234567"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  placeholder="email@example.com"
                   className="text-left h-8 text-sm"
                   dir="ltr"
                 />
-                {errors.phone && (
-                  <p className="text-[10px] text-destructive">{errors.phone}</p>
+                {errors.email && (
+                  <p className="text-[10px] text-destructive">{errors.email}</p>
                 )}
               </div>
-            </>
-          )}
-          
-          <div className="space-y-1">
-            <label className="block text-xs font-medium flex items-center gap-1.5">
-              <Mail className="h-3 w-3" />
-              אימייל *
-            </label>
-            <Input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-              placeholder="email@example.com"
-              className="text-left h-8 text-sm"
-              dir="ltr"
-            />
-            {errors.email && (
-              <p className="text-[10px] text-destructive">{errors.email}</p>
-            )}
-          </div>
-          
-          {mode !== "forgot" && (
-            <div className="space-y-1">
-              <label className="block text-xs font-medium flex items-center gap-1.5">
-                <Lock className="h-3 w-3" />
-                סיסמה *
-              </label>
-              <div className="relative">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  placeholder="לפחות 6 תווים"
-                  className="text-left pl-8 h-8 text-sm"
-                  dir="ltr"
-                />
+              
+              {mode !== "forgot" && (
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium flex items-center gap-1.5">
+                    <Lock className="h-3 w-3" />
+                    סיסמה *
+                  </label>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                      placeholder="לפחות 6 תווים"
+                      className="text-left pl-8 h-8 text-sm"
+                      dir="ltr"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-[10px] text-destructive">{errors.password}</p>
+                  )}
+                </div>
+              )}
+              
+              {mode === "login" && (
+                <div className="text-left">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode("forgot");
+                      setErrors({});
+                    }}
+                    className="text-xs text-primary hover:underline"
+                  >
+                    שכחתי סיסמה
+                  </button>
+                </div>
+              )}
+              
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-8 text-sm"
+                size="sm"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin" />
+                    {mode === "login" ? "מתחבר..." : mode === "register" ? "נרשם..." : "שולח..."}
+                  </>
+                ) : (
+                  mode === "login" ? "התחברות" : mode === "register" ? "הרשמה" : "שלח קישור לאיפוס"
+                )}
+              </Button>
+            </form>
+            
+            <div className="text-center pt-1">
+              {mode === "forgot" ? (
                 <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  onClick={() => {
+                    setMode("login");
+                    setErrors({});
+                  }}
+                  className="text-xs text-primary hover:underline"
                 >
-                  {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                  חזרה להתחברות
                 </button>
-              </div>
-              {errors.password && (
-                <p className="text-[10px] text-destructive">{errors.password}</p>
+              ) : (
+                <p className="text-muted-foreground text-xs">
+                  {mode === "login" ? "אין לך חשבון?" : "כבר יש לך חשבון?"}
+                  {" "}
+                  <button
+                    onClick={() => {
+                      setMode(mode === "login" ? "register" : "login");
+                      setErrors({});
+                    }}
+                    className="text-primary hover:underline font-medium"
+                  >
+                    {mode === "login" ? "הירשם" : "התחבר"}
+                  </button>
+                </p>
               )}
             </div>
-          )}
-          
-          {mode === "login" && (
-            <div className="text-left">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode("forgot");
-                  setErrors({});
-                }}
-                className="text-xs text-primary hover:underline"
-              >
-                שכחתי סיסמה
-              </button>
-            </div>
-          )}
-          
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="w-full h-8 text-sm"
-            size="sm"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin" />
-                {mode === "login" ? "מתחבר..." : mode === "register" ? "נרשם..." : "שולח..."}
-              </>
-            ) : (
-              mode === "login" ? "התחברות" : mode === "register" ? "הרשמה" : "שלח קישור לאיפוס"
-            )}
-          </Button>
-        </form>
-        
-        <div className="text-center pt-1">
-          {mode === "forgot" ? (
-            <button
-              onClick={() => {
-                setMode("login");
-                setErrors({});
-              }}
-              className="text-xs text-primary hover:underline"
-            >
-              חזרה להתחברות
-            </button>
-          ) : (
-            <p className="text-muted-foreground text-xs">
-              {mode === "login" ? "אין לך חשבון?" : "כבר יש לך חשבון?"}
-              {" "}
-              <button
-                onClick={() => {
-                  setMode(mode === "login" ? "register" : "login");
-                  setErrors({});
-                }}
-                className="text-primary hover:underline font-medium"
-              >
-                {mode === "login" ? "הירשם" : "התחבר"}
-              </button>
-            </p>
-          )}
-        </div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
