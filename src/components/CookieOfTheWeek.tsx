@@ -99,10 +99,6 @@ const CookieOfTheWeek = () => {
       price: `₪${discountedPrice}`,
       image,
     });
-    toast({
-      title: "נוסף לעגלה!",
-      description: `${cookieOfWeek.cookie_name} במחיר מבצע נוסף לעגלה`,
-    });
   };
 
   return (
