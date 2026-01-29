@@ -486,20 +486,21 @@
   max-width: 360px !important;
   width: 90% !important;
   
-  /* Solid background - no flickering */
-  background: hsl(var(--background) / 0.97) !important;
+  /* Transparent glass background */
+  background: hsl(var(--background) / 0.75) !important;
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   
   /* Rounded glass appearance */
   border-radius: 1.5rem !important;
-  border: 1px solid hsl(var(--foreground) / 0.08) !important;
+  border: 1px solid hsl(var(--foreground) / 0.1) !important;
   
-  /* Elegant shadow */
+  /* Elegant shadow with glass glow */
   box-shadow: 
-    0 0 0 1px hsl(0 0% 100% / 0.1),
-    0 25px 60px -15px hsl(var(--foreground) / 0.3),
-    0 0 40px -10px hsl(var(--primary) / 0.25);
+    0 0 0 1px hsl(0 0% 100% / 0.15),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.1),
+    0 25px 60px -15px hsl(var(--foreground) / 0.25),
+    0 0 40px -10px hsl(var(--primary) / 0.2);
   
   /* Smooth border glow - no flicker */
   transition: box-shadow 0.4s ease;
@@ -507,25 +508,28 @@
 
 .auth-modal-luxury:hover {
   box-shadow: 
-    0 0 0 1px hsl(var(--primary) / 0.2),
-    0 25px 60px -15px hsl(var(--foreground) / 0.35),
-    0 0 50px -10px hsl(var(--primary) / 0.35);
+    0 0 0 1px hsl(var(--primary) / 0.25),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.15),
+    0 25px 60px -15px hsl(var(--foreground) / 0.3),
+    0 0 50px -10px hsl(var(--primary) / 0.3);
 }
 
 .dark .auth-modal-luxury {
-  background: hsl(var(--background) / 0.95) !important;
-  border-color: hsl(0 0% 100% / 0.1) !important;
+  background: hsl(var(--background) / 0.7) !important;
+  border-color: hsl(0 0% 100% / 0.12) !important;
   box-shadow: 
-    0 0 0 1px hsl(0 0% 100% / 0.08),
-    0 25px 60px -15px hsl(0 0% 0% / 0.6),
-    0 0 40px -10px hsl(var(--primary) / 0.3);
+    0 0 0 1px hsl(0 0% 100% / 0.1),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.08),
+    0 25px 60px -15px hsl(0 0% 0% / 0.5),
+    0 0 40px -10px hsl(var(--primary) / 0.25);
 }
 
 .dark .auth-modal-luxury:hover {
   box-shadow: 
-    0 0 0 1px hsl(var(--primary) / 0.3),
-    0 25px 60px -15px hsl(0 0% 0% / 0.7),
-    0 0 50px -10px hsl(var(--primary) / 0.4);
+    0 0 0 1px hsl(var(--primary) / 0.35),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.12),
+    0 25px 60px -15px hsl(0 0% 0% / 0.6),
+    0 0 50px -10px hsl(var(--primary) / 0.35);
 }
 
 /* Auth modal logo glow */
