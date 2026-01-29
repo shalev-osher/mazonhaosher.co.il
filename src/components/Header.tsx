@@ -129,59 +129,53 @@ const Header = () => {
             </nav>
           </TooltipProvider>
 
-          {/* Right side - Cart + Theme Toggle + Auth + Mobile Menu Button */}
-          <div className="flex items-center gap-1">
-            {/* Cart Button */}
-            <CartHeaderButton />
-            {/* Theme Toggle */}
-            <ThemeToggle />
-            {/* Auth Button */}
-            {isLoggedIn ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-1.5 rounded-full border-primary/30 hover:border-primary hover:bg-primary/10 transition-all duration-300 h-7 px-2 text-xs">
-                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
-                      <User className="w-3 h-3 text-primary" />
+          {/* Right side - Cart + Theme Toggle + Auth */}
+          <TooltipProvider delayDuration={100}>
+            <div className="flex items-center gap-0.5">
+              {/* Cart Button */}
+              <CartHeaderButton />
+              {/* Theme Toggle */}
+              <ThemeToggle />
+              {/* Auth Button */}
+              {isLoggedIn ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="relative p-1.5 transition-all duration-300 rounded-full group text-primary bg-primary/15 shadow-sm shadow-primary/20 border border-primary/20">
+                      <User className="w-4 h-4 transition-transform duration-300 scale-110" />
+                      <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-full bg-gradient-to-r from-primary/50 via-primary to-primary/50 rounded-full" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm">
+                    <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg">
+                      <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
+                      <p className="text-[10px] text-muted-foreground">{user?.email}</p>
                     </div>
-                    <span className="hidden sm:inline max-w-[80px] truncate">
-                      {displayName}
-                    </span>
-                    <ChevronDown className="w-2.5 h-2.5 transition-transform duration-300 group-hover:rotate-180" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm">
-                  <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg">
-                    <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
-                    <p className="text-[10px] text-muted-foreground">{user?.email}</p>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => scrollToSection("order-history")} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
-                    <Package className="w-3.5 h-3.5 text-primary" />
-                    ההזמנות שלי
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowDevicesModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
-                    <Smartphone className="w-3.5 h-3.5 text-primary" />
-                    מכשירים מהימנים
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
-                    <LogOut className="w-3.5 h-3.5" />
-                    התנתקות
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <TooltipProvider delayDuration={100}>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => scrollToSection("order-history")} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
+                      <Package className="w-3.5 h-3.5 text-primary" />
+                      ההזמנות שלי
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setShowDevicesModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
+                      <Smartphone className="w-3.5 h-3.5 text-primary" />
+                      מכשירים מהימנים
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
+                      <LogOut className="w-3.5 h-3.5" />
+                      התנתקות
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
+                    <button
                       onClick={() => setAuthModalOpen(true)}
-                      className="p-1.5 rounded-full hover:bg-primary/10 transition-all duration-300"
+                      className="relative p-1.5 transition-all duration-300 rounded-full group text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20"
                     >
-                      <KeyRound className="w-4 h-4 text-muted-foreground hover:text-primary" />
-                    </Button>
+                      <KeyRound className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
+                      <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50 transition-all duration-300 rounded-full w-0 group-hover:w-full" />
+                    </button>
                   </TooltipTrigger>
                   <TooltipContent 
                     side="bottom" 
@@ -190,22 +184,21 @@ const Header = () => {
                     התחברות
                   </TooltipContent>
                 </Tooltip>
-              </TooltipProvider>
-            )}
+              )}
+            </div>
+          </TooltipProvider>
 
-            {/* Auth Modal */}
-            <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
-            
-            {/* Trusted Devices Modal */}
-            {user?.email && (
-              <TrustedDevicesModal 
-                isOpen={showDevicesModal} 
-                onClose={() => setShowDevicesModal(false)} 
-                userEmail={user.email}
-              />
-            )}
-
-          </div>
+          {/* Auth Modal */}
+          <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+          
+          {/* Trusted Devices Modal */}
+          {user?.email && (
+            <TrustedDevicesModal 
+              isOpen={showDevicesModal} 
+              onClose={() => setShowDevicesModal(false)} 
+              userEmail={user.email}
+            />
+          )}
         </div>
       </div>
     </header>
@@ -213,33 +206,38 @@ const Header = () => {
 };
 
 const CartHeaderButton = () => {
-  const { getTotalItems, setIsCartOpen } = useCart();
+  const { getTotalItems, setIsCartOpen, isCartOpen } = useCart();
   const totalItems = getTotalItems();
 
   return (
-    <TooltipProvider delayDuration={100}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="relative p-1.5 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            {totalItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold animate-pulse">
-                {totalItems}
-              </span>
-            )}
-          </button>
-        </TooltipTrigger>
-        <TooltipContent 
-          side="bottom" 
-          className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          onClick={() => setIsCartOpen(true)}
+          className={`relative p-1.5 transition-all duration-300 rounded-full group border ${
+            isCartOpen || totalItems > 0
+              ? "text-primary bg-primary/15 shadow-sm shadow-primary/20 border-primary/20"
+              : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20"
+          }`}
         >
-          עגלת קניות {totalItems > 0 && `(${totalItems})`}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+          <ShoppingBag className={`w-4 h-4 transition-transform duration-300 ${isCartOpen || totalItems > 0 ? "scale-110" : "group-hover:scale-110"}`} />
+          {totalItems > 0 && (
+            <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold animate-pulse">
+              {totalItems}
+            </span>
+          )}
+          <span className={`absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50 transition-all duration-300 rounded-full ${
+            isCartOpen || totalItems > 0 ? "w-full" : "w-0 group-hover:w-full"
+          }`} />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent 
+        side="bottom" 
+        className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+      >
+        עגלת קניות {totalItems > 0 && `(${totalItems})`}
+      </TooltipContent>
+    </Tooltip>
   );
 };
 
