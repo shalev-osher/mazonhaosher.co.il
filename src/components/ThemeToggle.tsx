@@ -15,28 +15,26 @@ const ThemeToggle = () => {
     <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={toggleTheme}
-            className="relative w-8 h-8 rounded-full hover:bg-primary/10 transition-all duration-300 overflow-hidden p-1.5"
+            className="relative p-2 transition-all duration-300 rounded-lg group border text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20 bg-card/50 overflow-hidden"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             <Sunrise 
-              className={`w-4 h-4 absolute transition-all duration-500 text-muted-foreground ${
+              className={`w-4 h-4 transition-all duration-500 ${
                 theme === 'dark' 
-                  ? 'rotate-90 scale-0 opacity-0' 
+                  ? 'rotate-90 scale-0 opacity-0 absolute' 
                   : 'rotate-0 scale-100 opacity-100'
               }`}
             />
             <MoonStar 
-              className={`w-4 h-4 absolute transition-all duration-500 text-muted-foreground ${
+              className={`w-4 h-4 transition-all duration-500 ${
                 theme === 'dark' 
                   ? 'rotate-0 scale-100 opacity-100' 
-                  : '-rotate-90 scale-0 opacity-0'
+                  : '-rotate-90 scale-0 opacity-0 absolute'
               }`}
             />
-          </Button>
+          </button>
         </TooltipTrigger>
         <TooltipContent 
           side="bottom" 
