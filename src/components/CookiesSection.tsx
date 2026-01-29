@@ -369,7 +369,7 @@ const CookiesSection = () => {
               placeholder="חיפוש..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-8 pl-7 py-1.5 h-8 text-sm rounded-full bg-card/90 border-primary/30 focus:border-primary text-right"
+              className="pr-8 pl-7 py-1.5 h-8 text-sm rounded-full bg-background/50 border-primary/30 focus:border-primary text-right"
             />
             {searchQuery && (
               <button
