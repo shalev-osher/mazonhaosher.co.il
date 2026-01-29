@@ -14,14 +14,14 @@ const ThemeToggle = () => {
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <Sun 
-        className={`w-5 h-5 absolute transition-all duration-500 text-foreground/70 ${
+        className={`w-5 h-5 absolute transition-all duration-500 text-muted-foreground ${
           theme === 'dark' 
             ? 'rotate-90 scale-0 opacity-0' 
             : 'rotate-0 scale-100 opacity-100'
         }`}
       />
       <Moon 
-        className={`w-5 h-5 absolute transition-all duration-500 text-foreground/70 ${
+        className={`w-5 h-5 absolute transition-all duration-500 text-muted-foreground ${
           theme === 'dark' 
             ? 'rotate-0 scale-100 opacity-100' 
             : '-rotate-90 scale-0 opacity-0'
