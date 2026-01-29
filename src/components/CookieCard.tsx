@@ -426,7 +426,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                   </Button>
                 </TooltipTrigger>
                 {quantity >= 6 && (
-                  <TooltipContent side="top" className="bg-destructive text-destructive-foreground">
+                  <TooltipContent side="top" className="bg-background/90 border border-destructive/50 text-destructive">
                     <p>מקסימום 6 יחידות לפריט</p>
                   </TooltipContent>
                 )}
