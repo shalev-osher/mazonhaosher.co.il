@@ -43,10 +43,10 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div 
-        className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-black/30"
         onClick={handleClose}
       />
-      <div className="relative bg-background/75 dark:bg-background/70 rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[85vh] flex flex-col animate-scale-in border border-foreground/10">
+      <div className="relative bg-background/85 dark:bg-background/80 rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[85vh] flex flex-col animate-scale-in border border-foreground/10">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border/50">
           <h2 className="text-2xl font-display font-bold text-foreground">
