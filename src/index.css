@@ -486,8 +486,8 @@
   max-width: 360px !important;
   width: 90% !important;
   
-  /* Transparent glass background - no blur */
-  background: hsl(var(--background) / 0.35) !important;
+  /* Semi-transparent glass background */
+  background: hsl(var(--background) / 0.75) !important;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   
@@ -515,7 +515,7 @@
 }
 
 .dark .auth-modal-luxury {
-  background: hsl(var(--background) / 0.25) !important;
+  background: hsl(var(--background) / 0.7) !important;
   border-color: hsl(0 0% 100% / 0.12) !important;
   box-shadow: 
     0 0 0 1px hsl(0 0% 100% / 0.1),
