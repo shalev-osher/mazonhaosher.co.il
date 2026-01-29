@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Plus, Minus, Trash2, ShoppingBag, Gift } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import CheckoutForm from "./CheckoutForm";
@@ -43,18 +43,18 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div 
-        className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"
         onClick={handleClose}
       />
-      <div className="relative bg-background rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[85vh] flex flex-col animate-scale-in">
+      <div className="relative bg-background/50 backdrop-blur-[40px] saturate-150 rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[85vh] flex flex-col animate-scale-in border border-foreground/10">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-6 border-b border-border/50">
           <h2 className="text-2xl font-display font-bold text-foreground">
             {showCheckout ? "השלמת הזמנה" : "העגלה שלי"}
           </h2>
           <button 
             onClick={handleClose}
-            className="p-2 hover:bg-secondary rounded-full transition-colors"
+            className="p-2 hover:bg-primary/10 rounded-full transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -64,14 +64,6 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
           <CheckoutForm onBack={() => setShowCheckout(false)} onClose={handleClose} totalPrice={calculateTotalPrice()} />
         ) : (
           <>
-            {/* Bundle Deal Banner */}
-            <div className="mx-6 mt-4 p-3 bg-primary/10 border border-primary/30 rounded-xl flex items-center gap-3">
-              <Gift className="w-6 h-6 text-primary flex-shrink-0" />
-              <div className="text-sm">
-                <span className="font-bold text-primary">מבצע! </span>
-                <span className="text-foreground">4 עוגיות ב-₪80 במקום ₪100</span>
-              </div>
-            </div>
 
             {/* Items */}
             <div className="flex-1 overflow-y-auto p-6">
