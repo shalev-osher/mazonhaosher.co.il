@@ -1,4 +1,4 @@
-import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home } from "lucide-react";
+import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home, Trash2 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -20,12 +20,14 @@ import { useProfile } from "@/contexts/ProfileContext";
 import ThemeToggle from "./ThemeToggle";
 import AuthModal from "./AuthModal";
 import TrustedDevicesModal from "./TrustedDevicesModal";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 const Header = () => {
   const { profile, isLoggedIn, logout, user } = useProfile();
   const [scrolled, setScrolled] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showDevicesModal, setShowDevicesModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("hero");
 
   useEffect(() => {
@@ -153,6 +155,10 @@ const Header = () => {
                       <Smartphone className="w-3.5 h-3.5 text-primary" />
                       מכשירים מהימנים
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setShowDeleteModal(true)} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
+                      <Trash2 className="w-3.5 h-3.5" />
+                      מחיקת חשבון
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
                       <LogOut className="w-3.5 h-3.5" />
@@ -196,6 +202,12 @@ const Header = () => {
               userEmail={user.email}
             />
           )}
+
+          {/* Delete Account Modal */}
+          <DeleteAccountModal 
+            isOpen={showDeleteModal} 
+            onClose={() => setShowDeleteModal(false)} 
+          />
         </div>
       </div>
     </header>
