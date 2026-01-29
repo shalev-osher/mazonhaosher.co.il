@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield } from "lucide-react";
+import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import { z } from "zod";
 
 // Validation schemas
@@ -18,12 +20,81 @@ const passwordSchema = z.string().min(6, "סיסמה חייבת להכיל לפ�
 const phoneSchema = z.string().min(9, "מספר טלפון לא תקין").max(15, "מספר טלפון ארוך מדי");
 const nameSchema = z.string().min(2, "שם חייב להכיל לפחות 2 תווים").max(100, "שם ארוך מדי");
 
+// Trusted devices storage key
+const TRUSTED_DEVICES_KEY = "mazon_haosher_trusted_devices";
+const MAX_OTP_ATTEMPTS = 5;
+const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 type AuthMode = "login" | "register" | "forgot" | "otp";
+
+// Device fingerprint helpers
+const getDeviceId = (): string => {
+  const stored = localStorage.getItem("device_id");
+  if (stored) return stored;
+  const newId = crypto.randomUUID();
+  localStorage.setItem("device_id", newId);
+  return newId;
+};
+
+const getTrustedDevices = (): Record<string, number> => {
+  try {
+    return JSON.parse(localStorage.getItem(TRUSTED_DEVICES_KEY) || "{}");
+  } catch {
+    return {};
+  }
+};
+
+const isDeviceTrusted = (email: string): boolean => {
+  const devices = getTrustedDevices();
+  const deviceId = getDeviceId();
+  const key = `${email}_${deviceId}`;
+  const trustedUntil = devices[key];
+  return trustedUntil && trustedUntil > Date.now();
+};
+
+const trustDevice = (email: string) => {
+  const devices = getTrustedDevices();
+  const deviceId = getDeviceId();
+  const key = `${email}_${deviceId}`;
+  // Trust for 30 days
+  devices[key] = Date.now() + 30 * 24 * 60 * 60 * 1000;
+  localStorage.setItem(TRUSTED_DEVICES_KEY, JSON.stringify(devices));
+};
+
+// Rate limiting for OTP attempts
+const getOtpAttempts = (email: string): { count: number; lockedUntil: number | null } => {
+  try {
+    const data = JSON.parse(sessionStorage.getItem(`otp_attempts_${email}`) || "{}");
+    return { count: data.count || 0, lockedUntil: data.lockedUntil || null };
+  } catch {
+    return { count: 0, lockedUntil: null };
+  }
+};
+
+const incrementOtpAttempts = (email: string): boolean => {
+  const attempts = getOtpAttempts(email);
+  const newCount = attempts.count + 1;
+  
+  if (newCount >= MAX_OTP_ATTEMPTS) {
+    sessionStorage.setItem(`otp_attempts_${email}`, JSON.stringify({
+      count: newCount,
+      lockedUntil: Date.now() + LOCKOUT_DURATION
+    }));
+    return false; // Locked out
+  }
+  
+  sessionStorage.setItem(`otp_attempts_${email}`, JSON.stringify({ count: newCount, lockedUntil: null }));
+  return true; // Can continue
+};
+
+const resetOtpAttempts = (email: string) => {
+  sessionStorage.removeItem(`otp_attempts_${email}`);
+};
 
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="w-4 h-4">
@@ -55,6 +126,9 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
   const [otpResendTimer, setOtpResendTimer] = useState(0);
   const [pendingAction, setPendingAction] = useState<"login" | "register" | null>(null);
+  const [rememberDevice, setRememberDevice] = useState(true);
+  const [remainingAttempts, setRemainingAttempts] = useState(MAX_OTP_ATTEMPTS);
+  const [lockoutEndTime, setLockoutEndTime] = useState<number | null>(null);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   
   const [formData, setFormData] = useState({
@@ -74,6 +148,20 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   }, [otpResendTimer]);
 
+  // Lockout timer
+  useEffect(() => {
+    if (lockoutEndTime && lockoutEndTime > Date.now()) {
+      const timer = setInterval(() => {
+        if (lockoutEndTime <= Date.now()) {
+          setLockoutEndTime(null);
+          resetOtpAttempts(formData.email);
+          setRemainingAttempts(MAX_OTP_ATTEMPTS);
+        }
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [lockoutEndTime, formData.email]);
+
   const resetForm = () => {
     setFormData({ email: "", password: "", fullName: "", phone: "" });
     setErrors({});
@@ -82,6 +170,9 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     setOtpSent(false);
     setOtpCode(["", "", "", "", "", ""]);
     setPendingAction(null);
+    setRememberDevice(true);
+    setRemainingAttempts(MAX_OTP_ATTEMPTS);
+    setLockoutEndTime(null);
   };
 
   const handleClose = () => {
@@ -125,11 +216,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: window.location.origin,
-        },
+      const { error } = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
       });
       
       if (error) throw error;
@@ -209,6 +297,15 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       return false;
     }
 
+    // Check if locked out
+    const attempts = getOtpAttempts(formData.email);
+    if (attempts.lockedUntil && attempts.lockedUntil > Date.now()) {
+      const remainingMinutes = Math.ceil((attempts.lockedUntil - Date.now()) / 60000);
+      setErrors({ otp: `יותר מדי ניסיונות שגויים. נסה שוב בעוד ${remainingMinutes} דקות` });
+      setLockoutEndTime(attempts.lockedUntil);
+      return false;
+    }
+
     setIsLoading(true);
     try {
       const response = await supabase.functions.invoke("send-otp", {
@@ -218,9 +315,27 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       if (response.error) throw new Error(response.error.message);
       if (response.data?.error) throw new Error(response.data.error);
 
+      // Reset attempts on success
+      resetOtpAttempts(formData.email);
+      
+      // Trust device if requested
+      if (rememberDevice) {
+        trustDevice(formData.email);
+      }
+
       return true;
     } catch (error: any) {
-      setErrors({ otp: error.message || "קוד אימות שגוי" });
+      // Increment failed attempts
+      const canContinue = incrementOtpAttempts(formData.email);
+      const newAttempts = getOtpAttempts(formData.email);
+      setRemainingAttempts(MAX_OTP_ATTEMPTS - newAttempts.count);
+      
+      if (!canContinue) {
+        setLockoutEndTime(newAttempts.lockedUntil);
+        setErrors({ otp: "יותר מדי ניסיונות שגויים. נסה שוב בעוד 15 דקות" });
+      } else {
+        setErrors({ otp: `${error.message || "קוד אימות שגוי"} (נותרו ${MAX_OTP_ATTEMPTS - newAttempts.count} ניסיונות)` });
+      }
       return false;
     } finally {
       setIsLoading(false);
@@ -345,6 +460,20 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       return;
     }
     
+    // Check if device is trusted - skip 2FA
+    if (mode === "login" && isDeviceTrusted(formData.email)) {
+      setPendingAction("login");
+      try {
+        await completeAuth();
+      } catch (error: any) {
+        // If auth fails, still require 2FA
+        setPendingAction("login");
+        setMode("otp");
+        await sendOTP();
+      }
+      return;
+    }
+    
     // Send OTP for 2FA
     setPendingAction(mode as "login" | "register");
     setMode("otp");
@@ -359,6 +488,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       case "otp": return "אימות דו-שלבי";
     }
   };
+
+  const isLockedOut = lockoutEndTime && lockoutEndTime > Date.now();
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
@@ -391,6 +522,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   onKeyDown={(e) => handleOtpKeyDown(index, e)}
                   className="w-10 h-12 text-center text-lg font-bold"
                   autoFocus={index === 0}
+                  disabled={isLockedOut}
                 />
               ))}
             </div>
@@ -399,9 +531,21 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               <p className="text-[10px] text-destructive text-center">{errors.otp}</p>
             )}
 
+            <div className="flex items-center gap-2 justify-center">
+              <Checkbox
+                id="rememberDevice"
+                checked={rememberDevice}
+                onCheckedChange={(checked) => setRememberDevice(checked as boolean)}
+              />
+              <label htmlFor="rememberDevice" className="text-xs text-muted-foreground flex items-center gap-1 cursor-pointer">
+                <Smartphone className="h-3 w-3" />
+                זכור את המכשיר הזה
+              </label>
+            </div>
+
             <Button
               type="submit"
-              disabled={isLoading || otpCode.join("").length !== 6}
+              disabled={isLoading || otpCode.join("").length !== 6 || isLockedOut}
               className="w-full h-8 text-sm"
               size="sm"
             >
