@@ -384,9 +384,9 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       </div>
       
       {/* Button section */}
-      <div className="px-3 pb-3 pt-2 border-t border-border/50 mx-2">
+      <div className="px-3 pb-3 pt-2 flex justify-center">
         {quantity > 0 ? (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <Button
               onClick={handleDecrement}
               variant="outline"
@@ -395,7 +395,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
             >
               {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
             </Button>
-            <div className="flex-1 text-center font-bold text-base text-foreground">
+            <div className="w-8 text-center font-bold text-base text-foreground">
               {quantity}
             </div>
             <Button
@@ -409,17 +409,17 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         ) : (
           <Button
             onClick={handleAddToCart}
-            size="sm"
-            className={`w-full text-sm h-8 transition-all duration-300 ${
+            size="icon"
+            className={`h-9 w-9 rounded-full transition-all duration-300 ${
               justAdded 
                 ? "bg-green-500 hover:bg-green-500" 
                 : "bg-primary hover:bg-primary/90"
             }`}
           >
             {justAdded ? (
-              <Check className="w-4 h-4" />
+              <Check className="w-5 h-5" />
             ) : (
-              <Plus className="w-4 h-4" />
+              <Plus className="w-5 h-5" />
             )}
           </Button>
         )}
