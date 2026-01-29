@@ -681,8 +681,10 @@
 
 /* Stagger animation for auth elements */
 .auth-stagger > * {
-  opacity: 0;
-  animation: authFadeIn 0.4s ease-out forwards;
+  /* Default to visible so content never disappears if animations are skipped */
+  opacity: 1;
+  animation: authFadeIn 0.4s ease-out both;
+  will-change: transform, opacity;
 }
 
 .auth-stagger > *:nth-child(1) { animation-delay: 0.05s; }
@@ -702,6 +704,13 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-stagger > * {
+    animation: none;
+    transform: none;
   }
 }
 
