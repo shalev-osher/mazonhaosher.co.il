@@ -29,14 +29,19 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   variant?: "default" | "luxury";
+  overlayVariant?: "default" | "glass";
 }
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   DialogContentProps
->(({ className, children, variant = "default", ...props }, ref) => (
+>(({ className, children, variant = "default", overlayVariant = "default", ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlay />
+    <DialogOverlay
+      className={cn(
+        overlayVariant === "glass" && "bg-black/20 backdrop-blur-[1px]",
+      )}
+    />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
