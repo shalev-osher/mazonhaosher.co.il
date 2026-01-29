@@ -1,4 +1,4 @@
-import { User, LogIn, LogOut, Package, ChevronDown, Sparkles, Star, MessageCircle, HelpCircle, Gift, ShoppingCart, Smartphone } from "lucide-react";
+import { User, LogIn, LogOut, Package, ChevronDown, Cookie, Box, ThumbsUp, CircleHelp, Info, ShoppingCart, Smartphone } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -20,11 +20,29 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showDevicesModal, setShowDevicesModal] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+      
+      // Detect active section
+      const sections = ["cookies", "gift-packages", "reviews", "faq", "about"];
+      let current = "";
+      
+      for (const sectionId of sections) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            current = sectionId;
+            break;
+          }
+        }
+      }
+      setActiveSection(current);
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -43,11 +61,11 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   const navItems = [
-    { id: "cookies", label: "מוצרים", icon: Sparkles },
-    { id: "gift-packages", label: "מארזים", icon: Gift },
-    { id: "reviews", label: "ביקורות", icon: Star },
-    { id: "faq", label: "שאלות", icon: HelpCircle },
-    { id: "about", label: "עלינו", icon: MessageCircle },
+    { id: "cookies", label: "מוצרים", icon: Cookie },
+    { id: "gift-packages", label: "מארזים", icon: Box },
+    { id: "reviews", label: "ביקורות", icon: ThumbsUp },
+    { id: "faq", label: "שאלות", icon: CircleHelp },
+    { id: "about", label: "עלינו", icon: Info },
   ];
 
   return (
@@ -63,15 +81,22 @@ const Header = () => {
           <nav className="flex items-center gap-0.5">
             {navItems.map((item) => {
               const IconComponent = item.icon;
+              const isActive = activeSection === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="relative p-1.5 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10 group"
+                  className={`relative p-1.5 transition-all duration-300 rounded-full group ${
+                    isActive 
+                      ? "text-primary bg-primary/15" 
+                      : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  }`}
                   title={item.label}
                 >
                   <IconComponent className="w-4 h-4" />
-                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 rounded-full" />
+                  <span className={`absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-primary transition-all duration-300 rounded-full ${
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`} />
                 </button>
               );
             })}
