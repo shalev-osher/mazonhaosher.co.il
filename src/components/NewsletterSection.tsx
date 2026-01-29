@@ -123,10 +123,10 @@ const NewsletterSection = () => {
               <Check className="h-6 w-6 text-white" />
             </div>
             <h3 className="font-display text-xl font-bold text-primary mb-2">
-              תודה שנרשמת! 🍪
+              תודה שנרשמת! ✨
             </h3>
             <p className="text-muted-foreground text-sm">
-              נעדכן אותך על מבצעים מיוחדים, עוגיות חדשות והפתעות מתוקות
+              נעדכן אותך על מבצעים מיוחדים, מוצרים חדשים והפתעות מתוקות
             </p>
           </div>
         </div>
@@ -190,12 +190,12 @@ const NewsletterSection = () => {
               size="lg"
               className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold"
             >
-              {isLoading ? "שולח..." : "להירשם לעדכונים 🍪"}
+              {isLoading ? "שולח..." : "להירשם לעדכונים ✨"}
             </Button>
           </div>
 
           <p className="text-xs text-muted-foreground mt-4">
-            אנחנו מבטיחים לא לשלוח ספאם. רק עוגיות. 🍪
+            אנחנו מבטיחים לא לשלוח ספאם. רק טוב טעים. ✨
           </p>
         </div>
       </div>

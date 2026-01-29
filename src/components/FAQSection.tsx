@@ -4,7 +4,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { HelpCircle, Truck, CreditCard, Clock, Cookie, AlertTriangle } from "lucide-react";
+import { HelpCircle, Truck, CreditCard, Clock, Package, AlertTriangle } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const faqs = [
   {
@@ -19,8 +20,8 @@ const faqs = [
   },
   {
     icon: Clock,
-    question: "כמה זמן העוגיות נשמרות טריות?",
-    answer: "העוגיות שלנו נאפות טריות לכל הזמנה ונשמרות טריות עד 5 ימים בטמפרטורת החדר או עד שבועיים במקרר. מומלץ לחמם במיקרוגל 10 שניות לחוויה מושלמת!",
+    question: "כמה זמן המוצרים נשמרים טריים?",
+    answer: "המוצרים שלנו מוכנים טריים לכל הזמנה ונשמרים טריים עד 5 ימים בטמפרטורת החדר או עד שבועיים במקרר. מומלץ לחמם במיקרוגל 10 שניות לחוויה מושלמת!",
   },
   {
     icon: AlertTriangle,
@@ -28,7 +29,7 @@ const faqs = [
     answer: "כל העוגיות שלנו מכילות גלוטן, חלב וביצים. חלק מהעוגיות מכילות אגוזים, בוטנים או סויה. אם יש לכם אלרגיה מסוימת, אנא ציינו בהערות ההזמנה ונתאים עבורכם.",
   },
   {
-    icon: Cookie,
+    icon: Package,
     question: "האם אפשר להזמין לאירועים?",
     answer: "בהחלט! אנחנו מציעים חבילות מיוחדות לאירועים, ימי הולדת, חתונות ובת/בר מצווה. צרו איתנו קשר לקבלת הצעת מחיר מותאמת אישית.",
   },
@@ -40,12 +41,16 @@ const faqs = [
 ];
 
 const FAQSection = () => {
+  const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
+  
   return (
-    <section id="faq" className="py-10 relative overflow-hidden">
+    <section id="faq" ref={sectionRef} className="py-10 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-6">
+        <div className={`text-center mb-6 transition-all duration-700 ${
+          sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
             שאלות נפוצות
           </h2>
@@ -54,7 +59,9 @@ const FAQSection = () => {
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto">
+        <div className={`max-w-2xl mx-auto transition-all duration-700 delay-200 ${
+          sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <Accordion type="single" collapsible className="space-y-2">
             {faqs.map((faq, index) => (
               <AccordionItem
