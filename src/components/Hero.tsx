@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import { useState, useEffect, useCallback } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
+import logo from "@/assets/logo.png";
 import { Sparkles, Heart } from "lucide-react";
 
 const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pauseTime: number = 2000) => {
@@ -138,18 +139,18 @@ const Hero = () => {
             <Heart className="h-3.5 w-3.5 text-accent fill-accent animate-pulse" />
           </div>
           
-          {/* Main title with gradient and glow */}
-          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold mb-6 relative">
-            <span className="relative inline-block">
-              <span className="gradient-text animate-sparkle drop-shadow-lg">
-                מזון האושר
-              </span>
-              {/* Glow effect behind text */}
-              <span className="absolute inset-0 gradient-text blur-xl opacity-50 -z-10">
-                מזון האושר
-              </span>
-            </span>
-          </h1>
+          {/* Logo with glow effect */}
+          <div className="relative mb-6">
+            <img 
+              src={logo}
+              alt="מזון האושר"
+              className="h-24 md:h-32 lg:h-40 w-auto mx-auto animate-sparkle drop-shadow-2xl"
+            />
+            {/* Glow effect behind logo */}
+            <div className="absolute inset-0 flex items-center justify-center -z-10">
+              <div className="w-32 md:w-40 lg:w-48 h-32 md:h-40 lg:h-48 bg-accent/20 rounded-full blur-3xl animate-pulse" />
+            </div>
+          </div>
           
           {/* Typewriter text with enhanced styling */}
           <div className="relative min-h-[4rem] flex items-center justify-center mb-8">
