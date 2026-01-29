@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone, Trash2, X } from "lucide-react";
+import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -38,7 +38,7 @@ interface AuthModalProps {
   onClose: () => void;
 }
 
-type AuthMode = "login" | "register" | "forgot" | "otp" | "manage-devices";
+type AuthMode = "login" | "register" | "forgot" | "otp";
 
 // Device fingerprint helpers
 const getDeviceId = (): string => {
@@ -115,23 +115,6 @@ const trustDevice = (email: string) => {
   localStorage.setItem(TRUSTED_DEVICES_KEY, JSON.stringify(devices));
 };
 
-const removeTrustedDevice = (email: string, deviceId: string) => {
-  const devices = getTrustedDevices();
-  const filtered = devices.filter(d => !(d.email === email && d.deviceId === deviceId));
-  localStorage.setItem(TRUSTED_DEVICES_KEY, JSON.stringify(filtered));
-};
-
-const removeAllTrustedDevices = (email: string) => {
-  const devices = getTrustedDevices();
-  const filtered = devices.filter(d => d.email !== email);
-  localStorage.setItem(TRUSTED_DEVICES_KEY, JSON.stringify(filtered));
-};
-
-const getUserTrustedDevices = (email: string): TrustedDevice[] => {
-  const devices = getTrustedDevices();
-  return devices.filter(d => d.email === email && d.trustedUntil > Date.now());
-};
-
 // Rate limiting for OTP attempts
 const getOtpAttempts = (email: string): { count: number; lockedUntil: number | null } => {
   try {
@@ -204,7 +187,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [rememberDevice, setRememberDevice] = useState(true);
   const [remainingAttempts, setRemainingAttempts] = useState(MAX_OTP_ATTEMPTS);
   const [lockoutEndTime, setLockoutEndTime] = useState<number | null>(null);
-  const [userDevices, setUserDevices] = useState<TrustedDevice[]>([]);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   
   const [formData, setFormData] = useState({
@@ -215,13 +197,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   });
   
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // Load user devices when email changes
-  useEffect(() => {
-    if (formData.email && mode === "manage-devices") {
-      setUserDevices(getUserTrustedDevices(formData.email));
-    }
-  }, [formData.email, mode]);
 
   // Timer for resend OTP
   useEffect(() => {
@@ -600,31 +575,12 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     await sendOTP();
   };
 
-  const handleRemoveDevice = (deviceId: string) => {
-    removeTrustedDevice(formData.email, deviceId);
-    setUserDevices(getUserTrustedDevices(formData.email));
-    toast({
-      title: "המכשיר הוסר",
-      description: "המכשיר לא יזוהה כמהימן בהתחברות הבאה",
-    });
-  };
-
-  const handleRemoveAllDevices = () => {
-    removeAllTrustedDevices(formData.email);
-    setUserDevices([]);
-    toast({
-      title: "כל המכשירים הוסרו",
-      description: "תצטרך לאמת את זהותך בהתחברות הבאה",
-    });
-  };
-
   const getTitle = () => {
     switch (mode) {
       case "login": return "התחברות";
       case "register": return "הרשמה";
       case "forgot": return "שכחתי סיסמה";
       case "otp": return "אימות דו-שלבי";
-      case "manage-devices": return "מכשירים מהימנים";
     }
   };
 
@@ -636,86 +592,11 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         <DialogHeader className="pb-2">
           <DialogTitle className="text-lg font-display text-primary text-center flex items-center justify-center gap-2">
             {mode === "otp" && <Shield className="h-5 w-5" />}
-            {mode === "manage-devices" && <Smartphone className="h-5 w-5" />}
             {getTitle()}
           </DialogTitle>
         </DialogHeader>
 
-        {mode === "manage-devices" ? (
-          <div className="space-y-4">
-            <p className="text-sm text-center text-muted-foreground">
-              מכשירים שזוהו כמהימנים עבור
-              <br />
-              <span className="font-medium text-foreground" dir="ltr">{formData.email}</span>
-            </p>
-            
-            {userDevices.length === 0 ? (
-              <p className="text-sm text-center text-muted-foreground py-4">
-                אין מכשירים מהימנים
-              </p>
-            ) : (
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {userDevices.map((device) => {
-                  const isCurrentDevice = device.deviceId === getDeviceId();
-                  const expiresIn = Math.ceil((device.trustedUntil - Date.now()) / (1000 * 60 * 60 * 24));
-                  
-                  return (
-                    <div 
-                      key={device.deviceId} 
-                      className={`flex items-center justify-between p-3 rounded-lg border ${
-                        isCurrentDevice ? 'bg-accent/10 border-accent/30' : 'bg-muted/30'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Smartphone className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <p className="text-sm font-medium">
-                            {device.deviceInfo}
-                            {isCurrentDevice && (
-                              <span className="text-xs text-accent mr-2">(המכשיר הנוכחי)</span>
-                            )}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            תקף עוד {expiresIn} ימים
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveDevice(device.deviceId)}
-                        className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {userDevices.length > 0 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleRemoveAllDevices}
-                className="w-full h-8 text-sm text-destructive border-destructive/30 hover:bg-destructive/10"
-              >
-                <Trash2 className="h-3.5 w-3.5 ml-1.5" />
-                הסר את כל המכשירים
-              </Button>
-            )}
-
-            <button
-              type="button"
-              onClick={() => setMode("login")}
-              className="w-full text-xs text-muted-foreground hover:underline"
-            >
-              חזרה להתחברות
-            </button>
-          </div>
-        ) : mode === "otp" ? (
+        {mode === "otp" ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <p className="text-sm text-center text-muted-foreground">
               שלחנו קוד אימות בן 6 ספרות ל-
@@ -946,25 +827,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     className="text-xs text-primary hover:underline"
                   >
                     שכחתי סיסמה
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (formData.email) {
-                        setUserDevices(getUserTrustedDevices(formData.email));
-                        setMode("manage-devices");
-                      } else {
-                        toast({
-                          title: "נא להזין אימייל",
-                          description: "הזן את כתובת המייל שלך כדי לנהל מכשירים מהימנים",
-                          variant: "destructive",
-                        });
-                      }
-                    }}
-                    className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1"
-                  >
-                    <Smartphone className="h-3 w-3" />
-                    נהל מכשירים
                   </button>
                 </div>
               )}
