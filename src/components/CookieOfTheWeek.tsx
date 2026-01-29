@@ -106,70 +106,54 @@ const CookieOfTheWeek = () => {
   };
 
   return (
-    <section className="py-8 relative overflow-hidden w-full">
+    <section className="py-4 relative overflow-hidden w-full">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-2xl mx-auto flex flex-col md:flex-row items-center gap-4 bg-background/50 rounded-2xl p-4 shadow-[0_0_30px_-5px_hsl(35_80%_55%/0.4)] border-2 border-[hsl(35,80%,55%)]">
+        <div className="max-w-md mx-auto flex items-center gap-3 bg-background/50 rounded-xl p-3 shadow-[0_0_20px_-5px_hsl(35_80%_55%/0.4)] border border-[hsl(35,80%,55%)]">
           {/* Badge */}
-          <div className="absolute -top-3 right-6 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-md">
-            <Star className="h-3 w-3 fill-current" />
+          <div className="absolute -top-2 right-4 bg-accent text-accent-foreground px-3 py-0.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-md">
+            <Star className="h-2.5 w-2.5 fill-current" />
             עוגיית השבוע
-            <Star className="h-3 w-3 fill-current" />
+            <Star className="h-2.5 w-2.5 fill-current" />
           </div>
 
           {/* Image */}
-          <div className="relative w-32 h-32 flex-shrink-0">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full animate-pulse" />
+          <div className="relative w-16 h-16 flex-shrink-0">
             <img
               src={image}
               alt={cookieOfWeek.cookie_name}
-              className="w-full h-full object-cover rounded-full border-2 border-primary shadow-lg relative z-10"
+              className="w-full h-full object-cover rounded-full border border-primary shadow-md"
             />
-            <div className="absolute -bottom-1 -right-1 bg-destructive text-destructive-foreground px-2 py-0.5 rounded-full font-bold text-xs flex items-center gap-0.5 shadow-md z-20">
-              <Percent className="h-3 w-3" />
+            <div className="absolute -bottom-1 -right-1 bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded-full font-bold text-[10px] flex items-center gap-0.5 shadow-md z-20">
+              <Percent className="h-2.5 w-2.5" />
               {cookieOfWeek.discount_percent}%
             </div>
           </div>
 
           {/* Content */}
-          <div className="flex-1 text-center">
-            <h3 className="font-display text-xl font-bold text-primary mb-1">
+          <div className="flex-1 text-center min-w-0">
+            <h3 className="font-display text-sm font-bold text-primary">
               {cookieOfWeek.cookie_name}
             </h3>
-            <p className="text-sm text-muted-foreground mb-2">{description}</p>
+            <p className="text-xs text-muted-foreground truncate">{description}</p>
             
-            {/* Price */}
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <span className="text-base text-muted-foreground line-through">₪{originalPrice}</span>
-              <span className="text-xl font-bold text-primary">₪{discountedPrice}</span>
-            </div>
-
-            {/* Countdown */}
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <div className="flex gap-1 text-center">
-                <div className="bg-primary/10 px-2 py-1 rounded-md">
-                  <span className="text-base font-bold text-primary">{timeLeft.days}</span>
-                  <span className="text-[10px] text-muted-foreground block">ימים</span>
-                </div>
-                <div className="bg-primary/10 px-2 py-1 rounded-md">
-                  <span className="text-base font-bold text-primary">{timeLeft.hours}</span>
-                  <span className="text-[10px] text-muted-foreground block">שעות</span>
-                </div>
-                <div className="bg-primary/10 px-2 py-1 rounded-md">
-                  <span className="text-base font-bold text-primary">{timeLeft.minutes}</span>
-                  <span className="text-[10px] text-muted-foreground block">דקות</span>
-                </div>
+            {/* Price & Countdown inline */}
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <span className="text-xs text-muted-foreground line-through">₪{originalPrice}</span>
+              <span className="text-sm font-bold text-primary">₪{discountedPrice}</span>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                <span>{timeLeft.days}י {timeLeft.hours}ש {timeLeft.minutes}ד</span>
               </div>
             </div>
-
-            <Button
-              onClick={handleAddToCart}
-              size="sm"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs px-4"
-            >
-              להוסיף לעגלה במחיר מבצע
-            </Button>
           </div>
+
+          <Button
+            onClick={handleAddToCart}
+            size="sm"
+            className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs px-3 h-8 flex-shrink-0"
+          >
+            הוספה
+          </Button>
         </div>
       </div>
     </section>
