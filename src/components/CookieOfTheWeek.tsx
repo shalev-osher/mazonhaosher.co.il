@@ -107,11 +107,8 @@ const CookieOfTheWeek = () => {
 
   return (
     <section className="py-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-accent/30 via-primary/20 to-accent/30" />
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgZmlsbD0iI2U4NWQ4ZiIgZmlsbC1vcGFjaXR5PSIwLjEiIGN4PSIyMCIgY3k9IjIwIiByPSI0Ii8+PC9nPjwvc3ZnPg==')] opacity-50" />
-      
       <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col md:flex-row items-center gap-4 bg-card/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-primary/20">
+        <div className="max-w-2xl mx-auto flex flex-col md:flex-row items-center gap-4 bg-background/60 rounded-2xl p-4 shadow-xl border border-primary/20">
           {/* Badge */}
           <div className="absolute -top-3 right-6 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-md">
             <Star className="h-3 w-3 fill-current" />
