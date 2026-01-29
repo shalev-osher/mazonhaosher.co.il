@@ -403,7 +403,12 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
             <Button
               onClick={handleIncrement}
               size="icon"
-              className="h-8 w-8 rounded-full shrink-0 bg-primary hover:bg-primary/90"
+              disabled={quantity >= 6}
+              className={`h-8 w-8 rounded-full shrink-0 transition-all duration-200 ${
+                quantity >= 6 
+                  ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" 
+                  : "bg-primary hover:bg-primary/90"
+              }`}
             >
               <Plus className="w-4 h-4" />
             </Button>
