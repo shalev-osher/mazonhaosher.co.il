@@ -1,4 +1,4 @@
-import { User, LogIn, LogOut, Package, ChevronDown, Cookie, Box, ThumbsUp, CircleHelp, Info, ShoppingCart, Smartphone } from "lucide-react";
+import { User, KeyRound, LogOut, Package, ChevronDown, Sparkles, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useProfile } from "@/contexts/ProfileContext";
 
 import ThemeToggle from "./ThemeToggle";
@@ -61,11 +67,11 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   const navItems = [
-    { id: "cookies", label: "מוצרים", icon: Cookie },
-    { id: "gift-packages", label: "מארזים", icon: Box },
-    { id: "reviews", label: "ביקורות", icon: ThumbsUp },
-    { id: "faq", label: "שאלות", icon: CircleHelp },
-    { id: "about", label: "עלינו", icon: Info },
+    { id: "cookies", label: "העוגיות שלנו", icon: Sparkles },
+    { id: "gift-packages", label: "מארזי מתנה", icon: Gift },
+    { id: "reviews", label: "ביקורות לקוחות", icon: Star },
+    { id: "faq", label: "שאלות נפוצות", icon: HelpCircle },
+    { id: "about", label: "אודותינו", icon: Heart },
   ];
 
   return (
@@ -78,29 +84,39 @@ const Header = () => {
         <div className="flex items-center justify-between">
 
           {/* Navigation - All devices */}
-          <nav className="flex items-center gap-0.5">
-            {navItems.map((item) => {
-              const IconComponent = item.icon;
-              const isActive = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`relative p-1.5 transition-all duration-300 rounded-full group ${
-                    isActive 
-                      ? "text-primary bg-primary/15" 
-                      : "text-muted-foreground hover:text-primary hover:bg-primary/10"
-                  }`}
-                  title={item.label}
-                >
-                  <IconComponent className="w-4 h-4" />
-                  <span className={`absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-primary transition-all duration-300 rounded-full ${
-                    isActive ? "w-full" : "w-0 group-hover:w-full"
-                  }`} />
-                </button>
-              );
-            })}
-          </nav>
+          <TooltipProvider delayDuration={100}>
+            <nav className="flex items-center gap-0.5">
+              {navItems.map((item) => {
+                const IconComponent = item.icon;
+                const isActive = activeSection === item.id;
+                return (
+                  <Tooltip key={item.id}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => scrollToSection(item.id)}
+                        className={`relative p-1.5 transition-all duration-300 rounded-full group ${
+                          isActive 
+                            ? "text-primary bg-primary/15 shadow-sm shadow-primary/20" 
+                            : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                        }`}
+                      >
+                        <IconComponent className={`w-4 h-4 transition-transform duration-300 ${isActive ? "scale-110" : "group-hover:scale-110"}`} />
+                        <span className={`absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50 transition-all duration-300 rounded-full ${
+                          isActive ? "w-full" : "w-0 group-hover:w-full"
+                        }`} />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent 
+                      side="bottom" 
+                      className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+                    >
+                      {item.label}
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </nav>
+          </TooltipProvider>
 
           {/* Right side - Cart + Theme Toggle + Auth + Mobile Menu Button */}
           <div className="flex items-center gap-1">
@@ -144,15 +160,26 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setAuthModalOpen(true)}
-                className="p-1.5 rounded-full hover:bg-primary/10 transition-all duration-300"
-                title="התחברות"
-              >
-                <LogIn className="w-4 h-4 text-muted-foreground hover:text-primary" />
-              </Button>
+              <TooltipProvider delayDuration={100}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setAuthModalOpen(true)}
+                      className="p-1.5 rounded-full hover:bg-primary/10 transition-all duration-300"
+                    >
+                      <KeyRound className="w-4 h-4 text-muted-foreground hover:text-primary" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent 
+                    side="bottom" 
+                    className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+                  >
+                    התחברות
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
 
             {/* Auth Modal */}
@@ -179,18 +206,29 @@ const CartHeaderButton = () => {
   const totalItems = getTotalItems();
 
   return (
-    <button
-      onClick={() => setIsCartOpen(true)}
-      className="relative p-1.5 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10"
-      title="עגלת קניות"
-    >
-      <ShoppingCart className="w-4 h-4" />
-      {totalItems > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold">
-          {totalItems}
-        </span>
-      )}
-    </button>
+    <TooltipProvider delayDuration={100}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-1.5 text-muted-foreground hover:text-primary transition-all duration-300 rounded-full hover:bg-primary/10"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            {totalItems > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold animate-pulse">
+                {totalItems}
+              </span>
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent 
+          side="bottom" 
+          className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+        >
+          עגלת קניות {totalItems > 0 && `(${totalItems})`}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
