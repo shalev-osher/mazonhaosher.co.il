@@ -1,4 +1,4 @@
-import { User, KeyRound, LogOut, Package, ChevronDown, Sparkles, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone } from "lucide-react";
+import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -33,16 +33,22 @@ const Header = () => {
       setScrolled(window.scrollY > 20);
       
       // Detect active section
-      const sections = ["cookies", "gift-packages", "reviews", "faq", "about"];
+      const sections = ["hero", "cookies", "gift-packages", "reviews", "faq", "about"];
       let current = "";
       
-      for (const sectionId of sections) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            current = sectionId;
-            break;
+      // Check if at top of page
+      if (window.scrollY < 100) {
+        current = "hero";
+      } else {
+        for (const sectionId of sections) {
+          if (sectionId === "hero") continue;
+          const section = document.getElementById(sectionId);
+          if (section) {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= 150 && rect.bottom >= 150) {
+              current = sectionId;
+              break;
+            }
           }
         }
       }
@@ -58,6 +64,10 @@ const Header = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
+    if (sectionId === "hero") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
@@ -67,7 +77,8 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   const navItems = [
-    { id: "cookies", label: "העוגיות שלנו", icon: Sparkles },
+    { id: "hero", label: "ראשי", icon: Home },
+    { id: "cookies", label: "הקולקציה שלנו", icon: Crown },
     { id: "gift-packages", label: "מארזי מתנה", icon: Gift },
     { id: "reviews", label: "ביקורות לקוחות", icon: Star },
     { id: "faq", label: "שאלות נפוצות", icon: HelpCircle },
