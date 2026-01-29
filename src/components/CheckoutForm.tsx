@@ -298,139 +298,152 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         חזרה לעגלה
       </button>
 
-      {isLoggedIn && profile ? (
-        <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/30 rounded-xl">
-          <User className="w-5 h-5 text-primary" />
-          <span className="text-sm text-foreground">
-            מחובר כ: <strong>{profile.full_name || user?.email}</strong>
-          </span>
-        </div>
-      ) : !isLoggedIn ? (
-        <div className="flex items-center justify-between gap-2 p-3 bg-secondary/50 border border-border rounded-xl">
-          <span className="text-sm text-muted-foreground">
-            התחבר כדי לשמור את פרטיך להזמנות הבאות
-          </span>
-          <Button size="sm" variant="outline" onClick={handleLoginRedirect}>
-            <LogIn className="w-4 h-4 ml-1" />
-            התחברות
+      {!isLoggedIn ? (
+        // Login required screen
+        <div className="flex flex-col items-center justify-center py-12 space-y-6">
+          <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center">
+            <LogIn className="w-10 h-10 text-primary" />
+          </div>
+          <div className="text-center space-y-2">
+            <h3 className="text-xl font-display font-bold text-foreground">נדרשת התחברות</h3>
+            <p className="text-muted-foreground text-sm max-w-xs">
+              כדי להשלים את ההזמנה, יש להתחבר או להירשם. הפרטים שלך יישמרו להזמנות הבאות!
+            </p>
+          </div>
+          <Button 
+            onClick={handleLoginRedirect} 
+            size="lg" 
+            className="gap-2 bg-background/80 border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+          >
+            <LogIn className="w-5 h-5" />
+            התחברות / הרשמה
           </Button>
         </div>
-      ) : null}
-
-      <div className="space-y-4">
-        <h3 className="text-xl font-display font-bold text-foreground">פרטי הזמנה</h3>
-        
-        <div className="space-y-2">
-          <Label htmlFor="fullName">שם מלא</Label>
-          <Input
-            id="fullName"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleInputChange}
-            placeholder="ישראל ישראלי"
-            className="text-right"
-            maxLength={100}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">מייל</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            placeholder="example@email.com"
-            className="text-left"
-            dir="ltr"
-            maxLength={255}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="phone">טלפון</Label>
-          <Input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleInputChange}
-            placeholder="0501234567"
-            className="text-left"
-            dir="ltr"
-            maxLength={10}
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="city">עיר</Label>
-            <Input
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={handleInputChange}
-              placeholder="תל אביב"
-              className="text-right"
-              maxLength={50}
-            />
+      ) : (
+        <>
+          <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/30 rounded-xl">
+            <User className="w-5 h-5 text-primary" />
+            <span className="text-sm text-foreground">
+              מחובר כ: <strong>{profile?.full_name || user?.email}</strong>
+            </span>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="address">כתובת</Label>
-            <Input
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleInputChange}
-              placeholder="רחוב הרצל 1"
-              className="text-right"
-              maxLength={200}
-            />
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-display font-bold text-foreground">פרטי הזמנה</h3>
+            
+            <div className="space-y-2">
+              <Label htmlFor="fullName">שם מלא</Label>
+              <Input
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                placeholder="ישראל ישראלי"
+                className="text-right"
+                maxLength={100}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">מייל</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="example@email.com"
+                className="text-left"
+                dir="ltr"
+                maxLength={255}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">טלפון</Label>
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="0501234567"
+                className="text-left"
+                dir="ltr"
+                maxLength={10}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="city">עיר</Label>
+                <Input
+                  id="city"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  placeholder="תל אביב"
+                  className="text-right"
+                  maxLength={50}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="address">כתובת</Label>
+                <Input
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  placeholder="רחוב הרצל 1"
+                  className="text-right"
+                  maxLength={200}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="notes">הערות למשלוח (אופציונלי, עד 500 תווים)</Label>
+              <Textarea
+                id="notes"
+                name="notes"
+                value={formData.notes}
+                onChange={handleInputChange}
+                placeholder="קומה, דירה, הוראות מיוחדות..."
+                className="text-right resize-none"
+                rows={2}
+                maxLength={500}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="notes">הערות למשלוח (אופציונלי, עד 500 תווים)</Label>
-          <Textarea
-            id="notes"
-            name="notes"
-            value={formData.notes}
-            onChange={handleInputChange}
-            placeholder="קומה, דירה, הוראות מיוחדות..."
-            className="text-right resize-none"
-            rows={2}
-            maxLength={500}
-          />
-        </div>
-      </div>
+          <div className="bg-secondary/50 rounded-xl p-4 space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="font-semibold">סה״כ לתשלום:</span>
+              <span className="font-bold text-primary text-2xl">₪{totalPrice}</span>
+            </div>
+            <p className="text-sm text-muted-foreground">💵 תשלום במזומן בעת המשלוח</p>
+          </div>
 
-      <div className="bg-secondary/50 rounded-xl p-4 space-y-2">
-        <div className="flex justify-between items-center">
-          <span className="font-semibold">סה״כ לתשלום:</span>
-          <span className="font-bold text-primary text-2xl">₪{totalPrice}</span>
-        </div>
-        <p className="text-sm text-muted-foreground">💵 תשלום במזומן בעת המשלוח</p>
-      </div>
-
-      <Button
-        onClick={handleSubmitOrder}
-        disabled={isLoading}
-        className="w-full h-14 text-lg gap-2 bg-green-500 hover:bg-green-600"
-      >
-        {isLoading ? (
-          "שולח..."
-        ) : (
-          <>
-            <WhatsAppIcon className="w-5 h-5" />
-            להזמין במזומן
-          </>
-        )}
-      </Button>
-      <p className="text-xs text-center text-muted-foreground">
-        <Mail className="w-3 h-3 inline ml-1" />
-        נשלח אישור למייל ולוואטסאפ
-      </p>
+          <Button
+            onClick={handleSubmitOrder}
+            disabled={isLoading}
+            className="w-full h-14 text-lg gap-2 bg-background/80 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+          >
+            {isLoading ? (
+              "שולח..."
+            ) : (
+              <>
+                <WhatsAppIcon className="w-5 h-5" />
+                להזמין במזומן
+              </>
+            )}
+          </Button>
+          <p className="text-xs text-center text-muted-foreground">
+            <Mail className="w-3 h-3 inline ml-1" />
+            נשלח אישור למייל ולוואטסאפ
+          </p>
+        </>
+      )}
 
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </div>
