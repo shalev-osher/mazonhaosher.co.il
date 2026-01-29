@@ -108,7 +108,7 @@ const CookieOfTheWeek = () => {
   return (
     <section className="py-8 relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-2xl mx-auto flex flex-col md:flex-row items-center gap-4 bg-background/60 rounded-2xl p-4 shadow-xl border border-primary/20">
+        <div className="max-w-2xl mx-auto flex flex-col md:flex-row items-center gap-4 bg-background/50 rounded-2xl p-4 shadow-xl border-2 border-primary/30">
           {/* Badge */}
           <div className="absolute -top-3 right-6 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-md">
             <Star className="h-3 w-3 fill-current" />
