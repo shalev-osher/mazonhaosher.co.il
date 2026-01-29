@@ -482,91 +482,50 @@
 
 /* ===== Luxury Auth Modal Styles - Apple Liquid Glass ===== */
 .auth-modal-luxury {
-  background: hsl(var(--background)) !important;
-  border-radius: 1.75rem !important;
+  /* Compact width */
+  max-width: 360px !important;
+  width: 90% !important;
+  
+  /* Solid background - no flickering */
+  background: hsl(var(--background) / 0.97) !important;
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  
+  /* Rounded glass appearance */
+  border-radius: 1.5rem !important;
+  border: 1px solid hsl(var(--foreground) / 0.08) !important;
+  
+  /* Elegant shadow */
   box-shadow: 
-    0 0 0 1px hsl(var(--foreground) / 0.1),
-    inset 0 1px 0 0 hsl(0 0% 100% / 0.15),
-    0 25px 50px -12px hsl(var(--foreground) / 0.25),
-    0 0 60px -10px hsl(var(--primary) / 0.3);
-  position: relative;
-  animation: borderShimmerGlow 4s ease-in-out infinite;
+    0 0 0 1px hsl(0 0% 100% / 0.1),
+    0 25px 60px -15px hsl(var(--foreground) / 0.3),
+    0 0 40px -10px hsl(var(--primary) / 0.25);
+  
+  /* Smooth border glow - no flicker */
+  transition: box-shadow 0.4s ease;
+}
+
+.auth-modal-luxury:hover {
+  box-shadow: 
+    0 0 0 1px hsl(var(--primary) / 0.2),
+    0 25px 60px -15px hsl(var(--foreground) / 0.35),
+    0 0 50px -10px hsl(var(--primary) / 0.35);
 }
 
 .dark .auth-modal-luxury {
-  background: hsl(var(--background)) !important;
+  background: hsl(var(--background) / 0.95) !important;
+  border-color: hsl(0 0% 100% / 0.1) !important;
   box-shadow: 
-    0 0 0 1px hsl(0 0% 100% / 0.12),
-    inset 0 1px 0 0 hsl(0 0% 100% / 0.1),
-    0 25px 50px -12px hsl(0 0% 0% / 0.6),
-    0 0 60px -10px hsl(var(--primary) / 0.4);
+    0 0 0 1px hsl(0 0% 100% / 0.08),
+    0 25px 60px -15px hsl(0 0% 0% / 0.6),
+    0 0 40px -10px hsl(var(--primary) / 0.3);
 }
 
-/* Animated shimmer glow effect */
-@keyframes borderShimmerGlow {
-  0%, 100% {
-    box-shadow: 
-      0 0 0 1px hsl(var(--foreground) / 0.1),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.15),
-      0 25px 50px -12px hsl(var(--foreground) / 0.25),
-      0 0 30px -5px hsl(var(--primary) / 0.25);
-  }
-  25% {
-    box-shadow: 
-      0 0 0 1.5px hsl(var(--primary) / 0.3),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.2),
-      0 25px 50px -12px hsl(var(--foreground) / 0.25),
-      0 0 45px -5px hsl(var(--golden-honey) / 0.35);
-  }
-  50% {
-    box-shadow: 
-      0 0 0 1.5px hsl(var(--golden-honey) / 0.25),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.25),
-      0 25px 50px -12px hsl(var(--foreground) / 0.25),
-      0 0 40px -5px hsl(var(--primary) / 0.3);
-  }
-  75% {
-    box-shadow: 
-      0 0 0 1px hsl(0 0% 100% / 0.2),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.2),
-      0 25px 50px -12px hsl(var(--foreground) / 0.25),
-      0 0 50px -5px hsl(var(--primary) / 0.2);
-  }
-}
-
-.dark .auth-modal-luxury {
-  animation: borderShimmerGlowDark 4s ease-in-out infinite;
-}
-
-@keyframes borderShimmerGlowDark {
-  0%, 100% {
-    box-shadow: 
-      0 0 0 1px hsl(0 0% 100% / 0.12),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.1),
-      0 25px 50px -12px hsl(0 0% 0% / 0.6),
-      0 0 30px -5px hsl(var(--primary) / 0.4);
-  }
-  25% {
-    box-shadow: 
-      0 0 0 1.5px hsl(var(--primary) / 0.4),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.15),
-      0 25px 50px -12px hsl(0 0% 0% / 0.6),
-      0 0 45px -5px hsl(var(--golden-honey) / 0.45);
-  }
-  50% {
-    box-shadow: 
-      0 0 0 1.5px hsl(var(--golden-honey) / 0.3),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.2),
-      0 25px 50px -12px hsl(0 0% 0% / 0.6),
-      0 0 40px -5px hsl(var(--primary) / 0.4);
-  }
-  75% {
-    box-shadow: 
-      0 0 0 1px hsl(0 0% 100% / 0.15),
-      inset 0 1px 0 0 hsl(0 0% 100% / 0.12),
-      0 25px 50px -12px hsl(0 0% 0% / 0.6),
-      0 0 50px -5px hsl(var(--primary) / 0.35);
-  }
+.dark .auth-modal-luxury:hover {
+  box-shadow: 
+    0 0 0 1px hsl(var(--primary) / 0.3),
+    0 25px 60px -15px hsl(0 0% 0% / 0.7),
+    0 0 50px -10px hsl(var(--primary) / 0.4);
 }
 
 /* Auth modal logo glow */
@@ -679,38 +638,33 @@
   }
 }
 
-/* Stagger animation for auth elements */
+/* Stagger animation for auth elements - simplified, no flicker */
 .auth-stagger > * {
-  /* Default to visible so content never disappears if animations are skipped */
   opacity: 1;
-  animation: authFadeIn 0.4s ease-out both;
-  will-change: transform, opacity;
 }
 
-.auth-stagger > *:nth-child(1) { animation-delay: 0.05s; }
-.auth-stagger > *:nth-child(2) { animation-delay: 0.1s; }
-.auth-stagger > *:nth-child(3) { animation-delay: 0.15s; }
-.auth-stagger > *:nth-child(4) { animation-delay: 0.2s; }
-.auth-stagger > *:nth-child(5) { animation-delay: 0.25s; }
-.auth-stagger > *:nth-child(6) { animation-delay: 0.3s; }
-.auth-stagger > *:nth-child(7) { animation-delay: 0.35s; }
-.auth-stagger > *:nth-child(8) { animation-delay: 0.4s; }
+/* Only animate on first appearance, not on every render */
+@media (prefers-reduced-motion: no-preference) {
+  .auth-modal-luxury[data-state="open"] .auth-stagger > * {
+    animation: authFadeInSimple 0.3s ease-out forwards;
+  }
+  
+  .auth-modal-luxury[data-state="open"] .auth-stagger > *:nth-child(1) { animation-delay: 0.03s; }
+  .auth-modal-luxury[data-state="open"] .auth-stagger > *:nth-child(2) { animation-delay: 0.06s; }
+  .auth-modal-luxury[data-state="open"] .auth-stagger > *:nth-child(3) { animation-delay: 0.09s; }
+  .auth-modal-luxury[data-state="open"] .auth-stagger > *:nth-child(4) { animation-delay: 0.12s; }
+  .auth-modal-luxury[data-state="open"] .auth-stagger > *:nth-child(5) { animation-delay: 0.15s; }
+  .auth-modal-luxury[data-state="open"] .auth-stagger > *:nth-child(6) { animation-delay: 0.18s; }
+}
 
-@keyframes authFadeIn {
+@keyframes authFadeInSimple {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    opacity: 0.5;
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .auth-stagger > * {
-    animation: none;
-    transform: none;
   }
 }
 
