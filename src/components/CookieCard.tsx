@@ -104,7 +104,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       <div 
         ref={cardRef}
         className={cn(
-          "group bg-card/40 rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border border-primary/10",
+          "group bg-card/50 rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border-2 border-primary/30",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}
         style={{ 
@@ -239,7 +239,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "group bg-card/40 rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border border-primary/10",
+        "group bg-card/50 rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border-2 border-primary/30",
         isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
       )}
       style={{ 
@@ -383,49 +383,43 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         </Dialog>
       </div>
       
-      {/* Button section - mini */}
-      <div className="px-2 pb-2 pt-1 border-t border-border/50 mx-2">
+      {/* Button section */}
+      <div className="px-3 pb-3 pt-2 border-t border-border/50 mx-2">
         {quantity > 0 ? (
-          <div className="flex items-center gap-0.5">
+          <div className="flex items-center gap-1">
             <Button
               onClick={handleDecrement}
               variant="outline"
               size="icon"
-              className="h-5 w-5 rounded-full shrink-0"
+              className="h-8 w-8 rounded-full shrink-0"
             >
-              {quantity === 1 ? <Trash2 className="w-2.5 h-2.5" /> : <Minus className="w-2.5 h-2.5" />}
+              {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
             </Button>
-            <div className="flex-1 text-center font-bold text-[11px] text-foreground">
+            <div className="flex-1 text-center font-bold text-base text-foreground">
               {quantity}
             </div>
             <Button
               onClick={handleIncrement}
               size="icon"
-              className="h-5 w-5 rounded-full shrink-0 bg-primary hover:bg-primary/90"
+              className="h-8 w-8 rounded-full shrink-0 bg-primary hover:bg-primary/90"
             >
-              <Plus className="w-2.5 h-2.5" />
+              <Plus className="w-4 h-4" />
             </Button>
           </div>
         ) : (
           <Button
             onClick={handleAddToCart}
             size="sm"
-            className={`w-full gap-0.5 text-[10px] h-5 transition-all duration-300 ${
+            className={`w-full text-sm h-8 transition-all duration-300 ${
               justAdded 
                 ? "bg-green-500 hover:bg-green-500" 
                 : "bg-primary hover:bg-primary/90"
             }`}
           >
             {justAdded ? (
-              <>
-                <Check className="w-2.5 h-2.5" />
-                נוסף!
-              </>
+              <Check className="w-4 h-4" />
             ) : (
-              <>
-                <Plus className="w-2.5 h-2.5" />
-                הוסף
-              </>
+              <Plus className="w-4 h-4" />
             )}
           </Button>
         )}
