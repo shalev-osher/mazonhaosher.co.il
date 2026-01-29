@@ -104,7 +104,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       <div 
         ref={cardRef}
         className={cn(
-          "group bg-card rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4",
+          "group bg-card/70 backdrop-blur-sm rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border border-primary/10",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}
         style={{ 
@@ -239,7 +239,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "group bg-card rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer",
+        "group bg-card/70 backdrop-blur-sm rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border border-primary/10",
         isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
       )}
       style={{ 
