@@ -174,9 +174,9 @@ const ReviewsSection = () => {
 
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium mb-2">בחרו מוצר</label>
+                <label className="block text-sm font-medium mb-2 text-center">בחרו מוצר</label>
                 <Select value={selectedCookie} onValueChange={setSelectedCookie}>
-                  <SelectTrigger>
+                  <SelectTrigger className="text-center">
                     <SelectValue placeholder="בחרו מוצר..." />
                   </SelectTrigger>
                   <SelectContent>
