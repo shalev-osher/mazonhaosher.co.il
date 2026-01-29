@@ -1,4 +1,4 @@
-import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home, Trash2 } from "lucide-react";
+import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home, Trash2, UserPen } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import ThemeToggle from "./ThemeToggle";
 import AuthModal from "./AuthModal";
 import TrustedDevicesModal from "./TrustedDevicesModal";
 import DeleteAccountModal from "./DeleteAccountModal";
+import EditProfileModal from "./EditProfileModal";
 
 const Header = () => {
   const { profile, isLoggedIn, logout, user } = useProfile();
@@ -28,6 +29,7 @@ const Header = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showDevicesModal, setShowDevicesModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("hero");
 
   useEffect(() => {
@@ -151,6 +153,10 @@ const Header = () => {
                       <Package className="w-3.5 h-3.5 text-primary" />
                       ההזמנות שלי
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setShowEditProfileModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
+                      <UserPen className="w-3.5 h-3.5 text-primary" />
+                      עריכת פרופיל
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setShowDevicesModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
                       <Smartphone className="w-3.5 h-3.5 text-primary" />
                       מכשירים מהימנים
@@ -207,6 +213,12 @@ const Header = () => {
           <DeleteAccountModal 
             isOpen={showDeleteModal} 
             onClose={() => setShowDeleteModal(false)} 
+          />
+
+          {/* Edit Profile Modal */}
+          <EditProfileModal 
+            isOpen={showEditProfileModal} 
+            onClose={() => setShowEditProfileModal(false)} 
           />
         </div>
       </div>
