@@ -71,7 +71,7 @@ const useParallax = (speed: number = 0.5) => {
 
 const Hero = () => {
   const { displayedText, isTyping } = useTypewriter(
-    "עוגיות קראמבל אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד. אספקה עד 3 ימי עסקים.",
+    "אופים לכם אושר",
     40,
     800,
     3000
@@ -105,8 +105,7 @@ const Hero = () => {
             מיוצר באהבה
           </span>
           <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground leading-tight mb-2">
-            <span className="text-accent">מזון האושר</span>{" "}
-            עוגיות ביתיות
+            <span className="text-accent">מזון האושר</span>
           </h1>
           <p className="text-sm text-muted-foreground mb-4 mx-auto max-w-sm min-h-[3rem]">
             {displayedText}
