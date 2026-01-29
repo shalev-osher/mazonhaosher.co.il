@@ -22,7 +22,7 @@ const IndexContent = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main>
+      <main className="flex flex-col items-center">
         <Hero />
         <CookieOfTheWeek />
         <CookiesSection />
