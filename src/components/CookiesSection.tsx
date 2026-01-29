@@ -394,7 +394,7 @@ const CookiesSection = () => {
               className={`rounded-full px-3 h-7 text-xs transition-all duration-200 ${
                 activeCategory === category 
                   ? "bg-primary text-primary-foreground" 
-                  : "hover:bg-card"
+                  : "bg-background/40 hover:bg-background/60"
               }`}
             >
               {category}
@@ -413,7 +413,7 @@ const CookiesSection = () => {
             className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
               activeTag === "מומלץ"
                 ? "bg-accent text-accent-foreground"
-                : "bg-card/80 text-muted-foreground hover:text-foreground"
+                : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
             }`}
           >
             <Star className="h-3 w-3" />
@@ -423,7 +423,7 @@ const CookiesSection = () => {
             className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
               activeTag === "חדש"
                 ? "bg-green-500 text-white"
-                : "bg-card/80 text-muted-foreground hover:text-foreground"
+                : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
             }`}
           >
             <Sparkles className="h-3 w-3" />
@@ -439,7 +439,7 @@ const CookiesSection = () => {
             className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
               activeTag === "מועדפים"
                 ? "bg-red-500 text-white"
-                : "bg-card/80 text-muted-foreground hover:text-foreground"
+                : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
             }`}
           >
             <Heart className={`h-3 w-3 ${favorites.length > 0 ? "fill-current" : ""}`} />
@@ -450,7 +450,7 @@ const CookiesSection = () => {
           <div className="w-px h-6 bg-border/50" />
 
           {/* Sort */}
-          <div className="flex items-center gap-1 bg-card/80 rounded-full px-2 py-1 h-7">
+          <div className="flex items-center gap-1 bg-background/40 rounded-full px-2 py-1 h-7">
             <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
             {sortOptions.map((option) => (
               <button
