@@ -131,20 +131,20 @@ const CookieOfTheWeek = () => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 text-center md:text-right">
+          <div className="flex-1 text-center">
             <h3 className="font-display text-xl font-bold text-primary mb-1">
               {cookieOfWeek.cookie_name}
             </h3>
             <p className="text-sm text-muted-foreground mb-2">{description}</p>
             
             {/* Price */}
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
+            <div className="flex items-center justify-center gap-2 mb-3">
               <span className="text-base text-muted-foreground line-through">₪{originalPrice}</span>
               <span className="text-xl font-bold text-primary">₪{discountedPrice}</span>
             </div>
 
             {/* Countdown */}
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
+            <div className="flex items-center justify-center gap-2 mb-3">
               <Clock className="h-4 w-4 text-muted-foreground" />
               <div className="flex gap-1 text-center">
                 <div className="bg-primary/10 px-2 py-1 rounded-md">
