@@ -34,6 +34,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -400,18 +401,37 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
             <div className="w-8 text-center font-bold text-base text-foreground">
               {quantity}
             </div>
-            <Button
-              onClick={handleIncrement}
-              size="icon"
-              disabled={quantity >= 6}
-              className={`h-8 w-8 rounded-full shrink-0 transition-all duration-200 ${
-                quantity >= 6 
-                  ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" 
-                  : "bg-primary hover:bg-primary/90"
-              }`}
-            >
-              <Plus className="w-4 h-4" />
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={() => {
+                      if (quantity >= 6) {
+                        setIsShaking(true);
+                        setTimeout(() => setIsShaking(false), 500);
+                      } else {
+                        handleIncrement();
+                      }
+                    }}
+                    size="icon"
+                    className={cn(
+                      "h-8 w-8 rounded-full shrink-0 transition-all duration-200",
+                      quantity >= 6 
+                        ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" 
+                        : "bg-primary hover:bg-primary/90",
+                      isShaking && "animate-[shake_0.5s_ease-in-out]"
+                    )}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                {quantity >= 6 && (
+                  <TooltipContent side="top" className="bg-destructive text-destructive-foreground">
+                    <p>מקסימום 6 יחידות לפריט</p>
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
           </div>
         ) : (
           <Button
