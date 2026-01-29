@@ -108,20 +108,20 @@ const CookieOfTheWeek = () => {
   return (
     <section className="py-4 relative overflow-hidden w-full">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-md mx-auto flex items-center gap-3 bg-background/50 rounded-xl p-3 shadow-[0_0_20px_-5px_hsl(35_80%_55%/0.4)] border border-[hsl(35,80%,55%)]">
-          {/* Badge */}
-          <div className="absolute -top-2 right-4 bg-accent text-accent-foreground px-3 py-0.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-md">
+        <div className="max-w-lg mx-auto flex items-center gap-4 bg-background/50 rounded-xl p-4 shadow-[0_0_20px_-5px_hsl(35_80%_55%/0.4)] border border-[hsl(35,80%,55%)]">
+          {/* Badge - centered */}
+          <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground px-3 py-0.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-md">
             <Star className="h-2.5 w-2.5 fill-current" />
             עוגיית השבוע
             <Star className="h-2.5 w-2.5 fill-current" />
           </div>
 
-          {/* Image */}
-          <div className="relative w-16 h-16 flex-shrink-0">
+          {/* Image - bigger */}
+          <div className="relative w-20 h-20 flex-shrink-0">
             <img
               src={image}
               alt={cookieOfWeek.cookie_name}
-              className="w-full h-full object-cover rounded-full border border-primary shadow-md"
+              className="w-full h-full object-cover rounded-full border-2 border-primary shadow-md"
             />
             <div className="absolute -bottom-1 -right-1 bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded-full font-bold text-[10px] flex items-center gap-0.5 shadow-md z-20">
               <Percent className="h-2.5 w-2.5" />
@@ -129,28 +129,24 @@ const CookieOfTheWeek = () => {
             </div>
           </div>
 
-          {/* Content */}
+          {/* Content - no timer */}
           <div className="flex-1 text-center min-w-0">
-            <h3 className="font-display text-sm font-bold text-primary">
+            <h3 className="font-display text-base font-bold text-primary">
               {cookieOfWeek.cookie_name}
             </h3>
             <p className="text-xs text-muted-foreground truncate">{description}</p>
             
-            {/* Price & Countdown inline */}
+            {/* Price only */}
             <div className="flex items-center justify-center gap-2 mt-1">
               <span className="text-xs text-muted-foreground line-through">₪{originalPrice}</span>
-              <span className="text-sm font-bold text-primary">₪{discountedPrice}</span>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Clock className="h-3 w-3" />
-                <span>{timeLeft.days}י {timeLeft.hours}ש {timeLeft.minutes}ד</span>
-              </div>
+              <span className="text-lg font-bold text-primary">₪{discountedPrice}</span>
             </div>
           </div>
 
           <Button
             onClick={handleAddToCart}
             size="sm"
-            className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs px-3 h-8 flex-shrink-0"
+            className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs px-4 h-9 flex-shrink-0"
           >
             הוספה
           </Button>
