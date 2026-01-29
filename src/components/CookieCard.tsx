@@ -123,9 +123,9 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
               {tag === "מומלץ" ? "⭐" : "✨"}
             </div>
           )}
-          <div className="w-20 h-20 overflow-hidden rounded-full relative">
+          <div className="w-20 h-20 overflow-hidden rounded-full relative bg-card">
             <div className={cn(
-              "absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 animate-pulse rounded-full transition-opacity duration-500",
+              "absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 animate-pulse rounded-full transition-opacity duration-500",
               imageLoaded ? "opacity-0" : "opacity-100"
             )} />
             <img
@@ -280,9 +280,9 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="aspect-square overflow-hidden relative rounded-md group/image cursor-pointer">
+              <div className="aspect-square overflow-hidden relative rounded-md group/image cursor-pointer bg-card">
                 <div className={cn(
-                  "absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 animate-pulse rounded-lg transition-opacity duration-500",
+                  "absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 animate-pulse rounded-lg transition-opacity duration-500",
                   imageLoaded ? "opacity-0" : "opacity-100"
                 )} />
                 <img
@@ -291,11 +291,11 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                   loading="lazy"
                   onLoad={() => setImageLoaded(true)}
                   className={cn(
-                    "w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-out rounded-lg",
+                    "w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-out rounded-lg bg-card",
                     imageLoaded ? "opacity-100" : "opacity-0"
                   )}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
