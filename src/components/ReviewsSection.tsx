@@ -12,6 +12,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { reviewTextSchema, getValidationError } from "@/lib/validation";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const cookieOptions = [
   "לוטוס", "קינדר", "קינדר בואנו", "רד וולווט", "קונפטי", "פיסטוק",
@@ -35,6 +36,8 @@ const ReviewsSection = () => {
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filterCookie, setFilterCookie] = useState<string>("all");
+  
+  const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
 
   useEffect(() => {
     fetchReviews();
@@ -56,7 +59,7 @@ const ReviewsSection = () => {
     if (!selectedCookie) {
       toast({
         title: "שגיאה",
-        description: "נא לבחור עוגיה",
+        description: "נא לבחור מוצר",
         variant: "destructive",
       });
       return false;
@@ -65,7 +68,7 @@ const ReviewsSection = () => {
     if (rating === 0) {
       toast({
         title: "שגיאה",
-        description: "נא לדרג את העוגיה",
+        description: "נא לדרג את המוצר",
         variant: "destructive",
       });
       return false;
@@ -133,11 +136,13 @@ const ReviewsSection = () => {
     : "0";
 
   return (
-    <section id="reviews" className="py-10 relative overflow-hidden">
+    <section id="reviews" ref={sectionRef} className="py-10 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/20 via-background to-secondary/20" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-6">
+        <div className={`text-center mb-6 transition-all duration-700 ${
+          sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
             מה הלקוחות אומרים
           </h2>
@@ -169,10 +174,10 @@ const ReviewsSection = () => {
 
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium mb-2">בחרו עוגיה</label>
+                <label className="block text-sm font-medium mb-2">בחרו מוצר</label>
                 <Select value={selectedCookie} onValueChange={setSelectedCookie}>
                   <SelectTrigger>
-                    <SelectValue placeholder="בחרו עוגיה..." />
+                    <SelectValue placeholder="בחרו מוצר..." />
                   </SelectTrigger>
                   <SelectContent>
                     {cookieOptions.map((cookie) => (
@@ -214,7 +219,8 @@ const ReviewsSection = () => {
                 <Textarea
                   value={reviewText}
                   onChange={(e) => setReviewText(e.target.value.slice(0, 500))}
-                  placeholder="ספרו לנו מה חשבתם על העוגיה..."
+                  placeholder="ספרו לנו מה חשבתם..."
+                  
                   className="min-h-[100px] text-right"
                   maxLength={500}
                 />
@@ -244,10 +250,10 @@ const ReviewsSection = () => {
               <h3 className="font-display text-2xl font-bold text-primary">ביקורות אחרונות</h3>
               <Select value={filterCookie} onValueChange={setFilterCookie}>
                 <SelectTrigger className="w-40">
-                  <SelectValue placeholder="סנן לפי עוגיה" />
+                  <SelectValue placeholder="סנן לפי מוצר" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">כל העוגיות</SelectItem>
+                  <SelectItem value="all">כל המוצרים</SelectItem>
                   {cookieOptions.map((cookie) => (
                     <SelectItem key={cookie} value={cookie}>
                       {cookie}
