@@ -1,4 +1,4 @@
-import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle, Gift, ShoppingCart } from "lucide-react";
+import { User, LogIn, LogOut, Package, ChevronDown, Menu, X, Cookie, Star, MessageCircle, HelpCircle, Gift, ShoppingCart, Smartphone } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useProfile } from "@/contexts/ProfileContext";
-import logo from "@/assets/logo.png";
+
 import {
   Sheet,
   SheetContent,
@@ -20,11 +20,14 @@ import {
 } from "@/components/ui/sheet";
 import ThemeToggle from "./ThemeToggle";
 import AuthModal from "./AuthModal";
+import TrustedDevicesModal from "./TrustedDevicesModal";
+
 const Header = () => {
   const { profile, isLoggedIn, logout, user } = useProfile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [showDevicesModal, setShowDevicesModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,22 +62,11 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       scrolled 
-        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-md py-0" 
-        : "bg-background/80 backdrop-blur-md py-0.5"
+        ? "bg-background/98 backdrop-blur-lg border-b border-border/50 shadow-md py-1" 
+        : "bg-background/80 backdrop-blur-md py-1.5"
     }`}>
       <div className="max-w-7xl mx-auto px-3">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-1.5 hover:scale-105 transition-transform duration-300"
-          >
-            <img
-              src={logo}
-              alt="מזון האושר"
-              className={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-5 md:h-6" : "h-6 md:h-7"}`}
-            />
-          </button>
 
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center gap-0">
@@ -124,6 +116,10 @@ const Header = () => {
                     <Package className="w-3.5 h-3.5 text-primary" />
                     ההזמנות שלי
                   </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setShowDevicesModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
+                    <Smartphone className="w-3.5 h-3.5 text-primary" />
+                    מכשירים מהימנים
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
                     <LogOut className="w-3.5 h-3.5" />
@@ -145,6 +141,15 @@ const Header = () => {
 
             {/* Auth Modal */}
             <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+            
+            {/* Trusted Devices Modal */}
+            {user?.email && (
+              <TrustedDevicesModal 
+                isOpen={showDevicesModal} 
+                onClose={() => setShowDevicesModal(false)} 
+                userEmail={user.email}
+              />
+            )}
 
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
