@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { User, Loader2, MapPin, Phone, FileText, Building } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { User, Loader2, MapPin, Phone, FileText, Building, Camera, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/contexts/ProfileContext";
-import { toast } from "@/hooks/use-toast";
 import { z } from "zod";
 
 interface EditProfileModalProps {
@@ -30,7 +29,11 @@ const profileSchema = z.object({
 const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
   const { profile, refreshProfile, user } = useProfile();
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     full_name: "",
@@ -41,17 +44,23 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
   });
 
   useEffect(() => {
-    if (isOpen && profile) {
-      setFormData({
-        full_name: profile.full_name || "",
-        phone: profile.phone || "",
-        address: profile.address || "",
-        city: profile.city || "",
-        notes: profile.notes || "",
-      });
+    if (isOpen) {
+      if (profile) {
+        setFormData({
+          full_name: profile.full_name || "",
+          phone: profile.phone || "",
+          address: profile.address || "",
+          city: profile.city || "",
+          notes: profile.notes || "",
+        });
+      }
+      // Load avatar from user metadata or Google
+      const googleAvatar = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+      setAvatarUrl(googleAvatar || null);
       setErrors({});
+      setSuccessMessage(null);
     }
-  }, [isOpen, profile]);
+  }, [isOpen, profile, user]);
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -61,6 +70,57 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
         delete newErrors[field];
         return newErrors;
       });
+    }
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    // Validate file
+    if (!file.type.startsWith("image/")) {
+      setErrors({ avatar: "יש להעלות קובץ תמונה בלבד" });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setErrors({ avatar: "גודל התמונה מקסימלי 2MB" });
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${user.id}/avatar.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("assets")
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("assets")
+        .getPublicUrl(fileName);
+
+      // Update user metadata
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { avatar_url: publicUrl + `?t=${Date.now()}` },
+      });
+
+      if (updateError) throw updateError;
+
+      setAvatarUrl(publicUrl + `?t=${Date.now()}`);
+      setSuccessMessage("התמונה הועלתה בהצלחה!");
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (error: any) {
+      console.error("Avatar upload error:", error);
+      setErrors({ avatar: error.message || "שגיאה בהעלאת התמונה" });
+    } finally {
+      setIsUploadingAvatar(false);
     }
   };
 
@@ -91,20 +151,13 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
       if (error) throw error;
 
       await refreshProfile();
-      
-      toast({
-        title: "הפרופיל עודכן! ✨",
-        description: "הפרטים נשמרו בהצלחה",
-      });
-      
-      onClose();
+      setSuccessMessage("הפרופיל עודכן בהצלחה! ✨");
+      setTimeout(() => {
+        onClose();
+      }, 1500);
     } catch (error: any) {
       console.error("Update profile error:", error);
-      toast({
-        title: "שגיאה",
-        description: error.message || "אירעה שגיאה בעדכון הפרופיל",
-        variant: "destructive",
-      });
+      setErrors({ submit: error.message || "אירעה שגיאה בעדכון הפרופיל" });
     } finally {
       setIsLoading(false);
     }
@@ -121,6 +174,49 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
         </DialogHeader>
 
         <div className="space-y-4 py-4">
+          {/* Avatar Upload */}
+          <div className="flex flex-col items-center gap-2">
+            <div 
+              onClick={handleAvatarClick}
+              className="relative w-20 h-20 rounded-full bg-primary/10 border-2 border-primary/30 cursor-pointer hover:border-primary/50 transition-all overflow-hidden group"
+            >
+              {avatarUrl ? (
+                <img 
+                  src={avatarUrl} 
+                  alt="Avatar" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <User className="w-10 h-10 text-primary/50" />
+                </div>
+              )}
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                {isUploadingAvatar ? (
+                  <Loader2 className="w-6 h-6 text-white animate-spin" />
+                ) : (
+                  <Camera className="w-6 h-6 text-white" />
+                )}
+              </div>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarUpload}
+              className="hidden"
+            />
+            <p className="text-[10px] text-muted-foreground">לחץ להחלפת תמונה</p>
+            {errors.avatar && <p className="text-xs text-destructive">{errors.avatar}</p>}
+          </div>
+
+          {/* Success Message */}
+          {successMessage && (
+            <div className="bg-primary/10 border border-primary/30 rounded-lg p-2 text-center">
+              <p className="text-sm text-primary">{successMessage}</p>
+            </div>
+          )}
+
           {/* Email (read-only) */}
           <div className="space-y-1.5">
             <label className="text-xs text-muted-foreground">אימייל</label>
@@ -207,6 +303,11 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
             </div>
             {errors.notes && <p className="text-xs text-destructive">{errors.notes}</p>}
           </div>
+
+          {/* Submit Error */}
+          {errors.submit && (
+            <p className="text-xs text-destructive text-center">{errors.submit}</p>
+          )}
 
           {/* Submit Button */}
           <Button
