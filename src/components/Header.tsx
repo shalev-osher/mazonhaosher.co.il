@@ -1,4 +1,4 @@
-import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home, Trash2, UserPen } from "lucide-react";
+import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home, Trash2, UserPen, Lock } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ import AuthModal from "./AuthModal";
 import TrustedDevicesModal from "./TrustedDevicesModal";
 import DeleteAccountModal from "./DeleteAccountModal";
 import EditProfileModal from "./EditProfileModal";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 const Header = () => {
   const { profile, isLoggedIn, logout, user } = useProfile();
@@ -30,6 +31,7 @@ const Header = () => {
   const [showDevicesModal, setShowDevicesModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("hero");
 
   useEffect(() => {
@@ -157,6 +159,10 @@ const Header = () => {
                       <UserPen className="w-3.5 h-3.5 text-primary" />
                       עריכת פרופיל
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setShowChangePasswordModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
+                      <Lock className="w-3.5 h-3.5 text-primary" />
+                      שינוי סיסמה
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setShowDevicesModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
                       <Smartphone className="w-3.5 h-3.5 text-primary" />
                       מכשירים מהימנים
@@ -219,6 +225,12 @@ const Header = () => {
           <EditProfileModal 
             isOpen={showEditProfileModal} 
             onClose={() => setShowEditProfileModal(false)} 
+          />
+
+          {/* Change Password Modal */}
+          <ChangePasswordModal 
+            isOpen={showChangePasswordModal} 
+            onClose={() => setShowChangePasswordModal(false)} 
           />
         </div>
       </div>
