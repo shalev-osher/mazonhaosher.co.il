@@ -92,10 +92,10 @@ const Header = () => {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent ${
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent pt-[env(safe-area-inset-top)] ${
       scrolled ? "py-1" : "py-1.5"
     }`}>
-      <div className="max-w-7xl mx-auto px-3">
+      <div className="max-w-7xl mx-auto px-3 px-[max(0.75rem,env(safe-area-inset-left))]">
         <div className="flex items-center justify-between">
 
           {/* Navigation - All devices */}
