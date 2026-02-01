@@ -131,34 +131,34 @@ const Hero = () => {
           }`}
         >
           {/* Made with love badge */}
-          <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-4 py-1.5 mb-6 animate-bounce-gentle">
-            <Heart className="h-3.5 w-3.5 text-accent fill-accent animate-pulse" />
-            <span className="text-accent font-medium tracking-wider uppercase text-xs">
+          <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-5 py-2 mb-8 animate-bounce-gentle">
+            <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
+            <span className="text-accent font-medium tracking-wider uppercase text-sm">
               מיוצר באהבה
             </span>
-            <Heart className="h-3.5 w-3.5 text-accent fill-accent animate-pulse" />
+            <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
           </div>
           
           {/* Logo with glow effect */}
-          <div className="relative mb-6">
+          <div className="relative mb-8">
             <img 
               src={logo}
               alt="מזון האושר"
-              className="h-24 md:h-32 lg:h-40 w-auto mx-auto animate-sparkle drop-shadow-2xl"
+              className="h-32 md:h-40 lg:h-48 w-auto mx-auto animate-sparkle drop-shadow-2xl"
             />
             {/* Glow effect behind logo */}
             <div className="absolute inset-0 flex items-center justify-center -z-10">
-              <div className="w-32 md:w-40 lg:w-48 h-32 md:h-40 lg:h-48 bg-accent/20 rounded-full blur-3xl animate-pulse" />
+              <div className="w-40 md:w-48 lg:w-56 h-40 md:h-48 lg:h-56 bg-accent/20 rounded-full blur-3xl animate-pulse" />
             </div>
           </div>
           
           {/* Typewriter text with enhanced styling */}
-          <div className="relative min-h-[4rem] flex items-center justify-center mb-8">
-            <p className="text-xl md:text-2xl lg:text-3xl text-foreground/80 font-display font-medium">
+          <div className="relative min-h-[5rem] flex items-center justify-center mb-10">
+            <p className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 font-display font-medium">
               <span className="relative">
                 {displayedText}
                 <span 
-                  className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-accent mr-1 align-middle ${
+                  className={`inline-block w-0.5 h-7 md:h-8 lg:h-10 bg-accent mr-1 align-middle ${
                     isTyping ? 'animate-blink' : 'opacity-0'
                   }`}
                 />
