@@ -290,11 +290,25 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     return error?.message || "אירעה שגיאה בהתחברות";
   };
 
+  // Use production domain for OAuth redirect
+  const getRedirectUri = () => {
+    // If on production domain, use it; otherwise use current origin
+    const productionDomain = "https://mazonhaosher.co.il";
+    const currentOrigin = window.location.origin;
+    
+    // Check if we're on the production domain or a subdomain of it
+    if (currentOrigin.includes("mazonhaosher.co.il")) {
+      return productionDomain;
+    }
+    // For preview/development, use current origin
+    return currentOrigin;
+  };
+
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     try {
       const { error } = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: getRedirectUri(),
       });
       
       if (error) throw error;
@@ -313,7 +327,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     setIsAppleLoading(true);
     try {
       const { error } = await lovable.auth.signInWithOAuth("apple", {
-        redirect_uri: window.location.origin,
+        redirect_uri: getRedirectUri(),
       });
       
       if (error) throw error;
