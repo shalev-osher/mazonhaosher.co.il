@@ -60,11 +60,8 @@ const handler = async (req: Request): Promise<Response> => {
       otpStore.set(email, { code: otp, expiresAt });
 
       // Send email with OTP
-      // Use Resend's verified domain - for production, verify your own domain at https://resend.com/domains
-      const fromEmail = Deno.env.get("RESEND_FROM_EMAIL") || "מזון האושר <onboarding@resend.dev>";
-      
       const emailResponse = await resend.emails.send({
-        from: fromEmail,
+        from: "מזון האושר <noreply@send.mazonhaosher.co.il>",
         to: [email],
         subject: "קוד אימות - מזון האושר 🍪",
         html: `
