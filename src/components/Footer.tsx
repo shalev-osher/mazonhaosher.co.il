@@ -10,7 +10,7 @@ const Footer = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-40 py-1 md:py-1.5 bg-background border-t border-amber-500/30">
+    <footer className="fixed bottom-0 left-0 right-0 z-40 py-0.5 md:py-1 bg-background border-t border-amber-500/30">
       <div className="w-full px-2 md:px-4">
         <div className="flex items-center justify-between">
           {/* Right side - Theme Toggle, Cart, WhatsApp */}
