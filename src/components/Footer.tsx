@@ -46,6 +46,9 @@ const Footer = () => {
             </span>
           </button>
 
+          {/* Language Toggle */}
+          <LanguageToggle />
+
           {/* WhatsApp */}
           <a 
             href="https://wa.me/972546791198"
@@ -66,9 +69,6 @@ const Footer = () => {
               WhatsApp
             </span>
           </a>
-
-          {/* Language Toggle */}
-          <LanguageToggle />
           
           {/* Facebook */}
           <a 
