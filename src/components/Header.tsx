@@ -163,35 +163,35 @@ const Header = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={() => scrollToSection("order-history")}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 flex-row-reverse justify-start"
+                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                     >
                       <Package className="w-3.5 h-3.5 text-primary" />
                       <span>ההזמנות שלי</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setShowEditProfileModal(true)}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 flex-row-reverse justify-start"
+                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                     >
                       <UserPen className="w-3.5 h-3.5 text-primary" />
                       <span>עריכת פרופיל</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setShowChangePasswordModal(true)}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 flex-row-reverse justify-start"
+                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                     >
                       <Lock className="w-3.5 h-3.5 text-primary" />
                       <span>שינוי סיסמה</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setShowDevicesModal(true)}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 flex-row-reverse justify-start"
+                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                     >
                       <Smartphone className="w-3.5 h-3.5 text-primary" />
                       <span>מכשירים מהימנים</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setShowDeleteModal(true)}
-                      className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 flex-row-reverse justify-start"
+                      className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>מחיקת חשבון</span>
@@ -199,7 +199,7 @@ const Header = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleLogout}
-                      className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 flex-row-reverse justify-start"
+                      className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
                     >
                       <LogOut className="w-3.5 h-3.5" />
                       <span>התנתקות</span>
