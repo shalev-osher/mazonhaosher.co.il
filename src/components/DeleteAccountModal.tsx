@@ -182,7 +182,7 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleClose}>
-      <AlertDialogContent className="bg-background/90 border-destructive/30 text-right max-w-[360px]" dir="rtl">
+      <AlertDialogContent className="bg-background/90 border-destructive/30 text-right max-w-[360px] z-[100]" dir="rtl">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2 text-destructive text-right">
             <AlertTriangle className="w-5 h-5" />
