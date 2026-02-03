@@ -1,22 +1,21 @@
 import { Instagram, Facebook, ShoppingBag } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 const Footer = () => {
+  const { setIsCartOpen } = useCart();
+
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-40 py-2 bg-background/90 border-t border-border/30">
       <div className="container mx-auto px-3">
         <div className="flex items-center justify-between">
           {/* Right side - Cart, WhatsApp */}
           <div className="flex items-center gap-2">
-            <a 
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('[data-cart-button]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-              }}
+            <button 
+              onClick={() => setIsCartOpen(true)}
               className="w-8 h-8 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center hover:bg-accent hover:border-transparent transition-all duration-300 hover:scale-110 group"
             >
               <ShoppingBag className="w-4 h-4 text-accent group-hover:text-white transition-colors" />
-            </a>
+            </button>
             <a 
               href="https://wa.me/972546791198"
               target="_blank"
@@ -36,7 +35,7 @@ const Footer = () => {
           {/* Center - Copyright + Brand name + Year */}
           <span className="text-sm font-medium text-foreground/80">© מזון האושר 2026</span>
 
-          {/* Left side - Facebook, Instagram, GitHub */}
+          {/* Left side - Facebook, Instagram */}
           <div className="flex items-center gap-2">
             <a 
               href="https://www.facebook.com/p/%D7%9E%D7%96%D7%95%D7%9F-%D7%94%D7%90%D7%95%D7%A9%D7%A8-61565573526817/" 
