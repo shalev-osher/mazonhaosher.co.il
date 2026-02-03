@@ -56,9 +56,9 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-500/30">
       {/* Safe area background - solid color to match theme-color */}
       <div className="absolute inset-x-0 top-0 h-[env(safe-area-inset-top)] bg-background" />
-      <div className="flex items-center justify-center px-2 py-1.5 md:py-2 pt-[calc(0.375rem+env(safe-area-inset-top))] bg-background">
+      <div className="flex items-center justify-center px-1 py-1 md:py-1.5 pt-[calc(0.25rem+env(safe-area-inset-top))] bg-background">
         {/* Navigation bar */}
-        <nav className="flex items-center gap-0.5 md:gap-1">
+        <nav className="flex items-center gap-0">
           {/* Navigation items */}
           {navItems.map((item) => {
             const IconComponent = item.icon;
@@ -67,7 +67,7 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group ${
+                className={`flex flex-col items-center gap-0 px-1.5 md:px-2.5 py-0.5 md:py-1 transition-all duration-300 rounded-lg group ${
                   isActive 
                     ? "bg-amber-500/20" 
                     : "hover:bg-muted"

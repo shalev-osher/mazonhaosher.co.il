@@ -10,11 +10,11 @@ const Footer = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-40 py-2 md:py-3 bg-background border-t border-amber-500/30">
-      <div className="w-full px-3 md:px-6">
+    <footer className="fixed bottom-0 left-0 right-0 z-40 py-1 md:py-1.5 bg-background border-t border-amber-500/30">
+      <div className="w-full px-2 md:px-4">
         <div className="flex items-center justify-between">
           {/* Right side - Theme Toggle, Cart, WhatsApp */}
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-3">
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -74,7 +74,7 @@ const Footer = () => {
           </span>
 
           {/* Left side - Language Toggle, Facebook, Instagram */}
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-3">
             {/* Language Toggle */}
             <LanguageToggle />
             
