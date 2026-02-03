@@ -34,6 +34,11 @@ interface SubscribeRequest {
   phone?: string;
 }
 
+// Generate unsubscribe token (base64 encoded email)
+function generateUnsubscribeToken(email: string): string {
+  return btoa(email);
+}
+
 // Send welcome email to new subscriber
 async function sendWelcomeEmail(email: string): Promise<void> {
   const resendApiKey = Deno.env.get("RESEND_API_KEY");
@@ -44,6 +49,9 @@ async function sendWelcomeEmail(email: string): Promise<void> {
 
   const resend = new Resend(resendApiKey);
   const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/assets/logo.png";
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const unsubscribeToken = generateUnsubscribeToken(email);
+  const unsubscribeUrl = `${supabaseUrl}/functions/v1/newsletter-unsubscribe?token=${unsubscribeToken}`;
 
   try {
     await resend.emails.send({
@@ -138,6 +146,16 @@ async function sendWelcomeEmail(email: string): Promise<void> {
                         </tr>
                         
                       </table>
+                    </td>
+                  </tr>
+                  
+                  <!-- Unsubscribe Link -->
+                  <tr>
+                    <td align="center" style="padding-top: 30px;">
+                      <p style="margin: 0; color: #9ca3af; font-size: 12px;">
+                        לא מעוניינים לקבל עדכונים? 
+                        <a href="${unsubscribeUrl}" style="color: #e85d8f; text-decoration: underline;">לחצו כאן להסרה מהרשימה</a>
+                      </p>
                     </td>
                   </tr>
                   
