@@ -163,7 +163,7 @@ const handler = async (req: Request): Promise<Response> => {
           api_key: vonageApiKey,
           api_secret: vonageApiSecret,
           to: normalizedPhone.replace("+", ""),
-          from: "Mazon",
+          from: "Osher",
           text: `${otp} קוד הכניסה שלך למזון האושר. הקוד בתוקף ל-10 דקות.`,
           type: "unicode",
         }),
