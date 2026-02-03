@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/contexts/ProfileContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 
 interface DeleteAccountModalProps {
@@ -22,6 +23,7 @@ interface DeleteAccountModalProps {
 type Step = "type-confirm" | "confirm" | "otp";
 
 const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
+  const { t, isRTL, language } = useLanguage();
   const [step, setStep] = useState<Step>("type-confirm");
   const [isLoading, setIsLoading] = useState(false);
   const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
@@ -30,6 +32,8 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
   const [confirmText, setConfirmText] = useState("");
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { logout, user } = useProfile();
+
+  const deleteWord = language === 'he' ? 'מחיקה' : 'delete';
 
   // Timer for resend OTP
   useEffect(() => {
@@ -42,8 +46,8 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
   const sendOTP = async () => {
     if (!user?.email) {
       toast({
-        title: "שגיאה",
-        description: "לא נמצא אימייל משתמש",
+        title: t('general.error'),
+        description: t('deleteAccount.noEmail'),
         variant: "destructive",
       });
       return;
@@ -62,13 +66,13 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
       setStep("otp");
       setOtpResendTimer(60);
       toast({
-        title: "קוד נשלח! 📧",
-        description: "בדוק את תיבת המייל שלך",
+        title: t('deleteAccount.codeSent'),
+        description: t('deleteAccount.checkEmail'),
       });
     } catch (error: any) {
       toast({
-        title: "שגיאה",
-        description: error.message || "אירעה שגיאה בשליחת הקוד",
+        title: t('general.error'),
+        description: error.message || t('general.error'),
         variant: "destructive",
       });
     } finally {
@@ -79,12 +83,12 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
   const verifyAndDelete = async () => {
     const code = otpCode.join("");
     if (code.length !== 6) {
-      setError("יש להזין 6 ספרות");
+      setError(t('deleteAccount.enter6Digits'));
       return;
     }
 
     if (!user?.email) {
-      setError("לא נמצא אימייל משתמש");
+      setError(t('deleteAccount.noEmail'));
       return;
     }
 
@@ -102,7 +106,7 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
       // OTP verified, now delete account
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        throw new Error("לא מחובר");
+        throw new Error(t('general.error'));
       }
 
       const deleteResponse = await supabase.functions.invoke("delete-account", {
@@ -120,8 +124,8 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
       }
 
       toast({
-        title: "החשבון נמחק",
-        description: "להתראות, תמיד אפשר לחזור 🍪",
+        title: t('deleteAccount.deleted'),
+        description: t('deleteAccount.goodbye'),
       });
 
       // Clear local storage
@@ -132,7 +136,7 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
       handleClose();
     } catch (error: any) {
       console.error("Delete account error:", error);
-      setError(error.message || "אירעה שגיאה");
+      setError(error.message || t('general.error'));
     } finally {
       setIsLoading(false);
     }
@@ -182,26 +186,26 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleClose}>
-      <AlertDialogContent className="bg-background border-destructive/30 text-right max-w-[360px] z-[100]" dir="rtl">
+      <AlertDialogContent className="bg-background border-destructive/30 max-w-[360px] z-[100]" dir={isRTL ? "rtl" : "ltr"}>
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2 text-destructive text-right">
+          <AlertDialogTitle className={`flex items-center gap-2 text-destructive ${isRTL ? 'text-right' : 'text-left'}`}>
             <AlertTriangle className="w-5 h-5" />
-            מחיקת חשבון
+            {t('deleteAccount.title')}
           </AlertDialogTitle>
         </AlertDialogHeader>
 
         {step === "type-confirm" ? (
           <>
-            <AlertDialogDescription className="text-right space-y-3">
+            <AlertDialogDescription className={`${isRTL ? 'text-right' : 'text-left'} space-y-3`}>
               <p className="text-foreground/80">
-                כדי להמשיך, הקלד <span className="font-bold text-destructive">"מחיקה"</span> בשדה למטה:
+                {t('deleteAccount.typeConfirm')} <span className="font-bold text-destructive">"{deleteWord}"</span> {language === 'he' ? 'בשדה למטה:' : 'in the field below:'}
               </p>
               <Input
                 value={confirmText}
                 onChange={(e) => setConfirmText(e.target.value)}
-                placeholder="הקלד מחיקה"
-                className="text-right bg-background/50 border-destructive/30 focus:border-destructive"
-                dir="rtl"
+                placeholder={t('deleteAccount.typePlaceholder')}
+                className={`${isRTL ? 'text-right' : 'text-left'} bg-background/50 border-destructive/30 focus:border-destructive`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </AlertDialogDescription>
             <AlertDialogFooter className="flex-row-reverse gap-2 mt-4">
@@ -210,34 +214,34 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
                 onClick={handleClose}
                 className="bg-background/80 border border-primary text-foreground hover:bg-primary/10"
               >
-                ביטול
+                {t('deleteAccount.cancel')}
               </Button>
               <Button
                 onClick={() => setStep("confirm")}
-                disabled={confirmText !== "מחיקה"}
+                disabled={confirmText !== deleteWord}
                 className="bg-destructive/90 border border-destructive text-destructive-foreground hover:bg-destructive disabled:opacity-50"
               >
-                המשך
+                {t('deleteAccount.continue')}
               </Button>
             </AlertDialogFooter>
           </>
         ) : step === "confirm" ? (
           <>
-            <AlertDialogDescription className="text-right space-y-3">
+            <AlertDialogDescription className={`${isRTL ? 'text-right' : 'text-left'} space-y-3`}>
               <p className="text-foreground/80">
-                פעולה זו תמחק לצמיתות את החשבון שלך וכל המידע הקשור אליו, כולל:
+                {t('deleteAccount.warning')}
               </p>
-              <ul className="list-disc list-inside text-muted-foreground text-sm space-y-1 mr-2">
-                <li>פרטי הפרופיל</li>
-                <li>היסטוריית הזמנות</li>
+              <ul className={`list-disc ${isRTL ? 'list-inside mr-2' : 'list-inside ml-2'} text-muted-foreground text-sm space-y-1`}>
+                <li>{t('deleteAccount.profileData')}</li>
+                <li>{t('deleteAccount.orderHistory')}</li>
               </ul>
               <p className="text-destructive font-medium">
-                לא ניתן לשחזר את המידע לאחר המחיקה!
+                {t('deleteAccount.noRecover')}
               </p>
               <div className="pt-2 p-3 bg-muted/30 rounded-lg border border-muted">
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  נשלח קוד אימות למייל {user?.email}
+                  {t('deleteAccount.sendCode')} {user?.email}
                 </p>
               </div>
             </AlertDialogDescription>
@@ -247,7 +251,7 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
                 onClick={() => setStep("type-confirm")}
                 className="bg-background/80 border border-primary text-foreground hover:bg-primary/10"
               >
-                חזור
+                {t('deleteAccount.back')}
               </Button>
               <Button
                 onClick={sendOTP}
@@ -257,12 +261,12 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin ml-2" />
-                    שולח קוד...
+                    {t('deleteAccount.sendingCode')}
                   </>
                 ) : (
                   <>
-                    המשך למחיקה
-                    <ArrowRight className="w-4 h-4 mr-2" />
+                    {t('deleteAccount.continueDelete')}
+                    <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2' : 'ml-2'}`} />
                   </>
                 )}
               </Button>
@@ -270,9 +274,9 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
           </>
         ) : (
           <>
-            <AlertDialogDescription className="text-right space-y-4">
+            <AlertDialogDescription className={`${isRTL ? 'text-right' : 'text-left'} space-y-4`}>
               <p className="text-foreground/80">
-                הזן את קוד האימות שנשלח למייל שלך:
+                {t('deleteAccount.enterCode')}
               </p>
               
               {/* OTP Input */}
@@ -299,7 +303,7 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
               <div className="text-center">
                 {otpResendTimer > 0 ? (
                   <p className="text-xs text-muted-foreground">
-                    שלח שוב בעוד {otpResendTimer} שניות
+                    {t('deleteAccount.resendIn').replace('{seconds}', String(otpResendTimer))}
                   </p>
                 ) : (
                   <button
@@ -307,7 +311,7 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
                     disabled={isLoading}
                     className="text-xs text-primary hover:underline disabled:opacity-50"
                   >
-                    שלח קוד חדש
+                    {t('deleteAccount.resend')}
                   </button>
                 )}
               </div>
@@ -318,7 +322,7 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
                 onClick={() => setStep("confirm")}
                 className="bg-background/80 border border-primary text-foreground hover:bg-primary/10"
               >
-                חזור
+                {t('deleteAccount.back')}
               </Button>
               <Button
                 onClick={verifyAndDelete}
@@ -328,12 +332,12 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin ml-2" />
-                    מוחק...
+                    {t('deleteAccount.deleting')}
                   </>
                 ) : (
                   <>
                     <Trash2 className="w-4 h-4 ml-2" />
-                    מחק לצמיתות
+                    {t('deleteAccount.deletePermanently')}
                   </>
                 )}
               </Button>

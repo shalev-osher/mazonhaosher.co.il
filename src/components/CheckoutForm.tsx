@@ -7,6 +7,7 @@ import { Mail, ArrowRight, User, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import { useProfile } from "@/contexts/ProfileContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import AuthModal from "./AuthModal";
 import { 
@@ -36,6 +37,7 @@ const WhatsAppIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
   const { items, clearCart } = useCart();
   const { profile, setProfile, isLoggedIn, user } = useProfile();
+  const { t, isRTL } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -79,7 +81,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       nameSchema.parse(formData.fullName.trim());
     } catch (error) {
       const message = getValidationError(error);
-      toast.error(message || "נא להזין שם מלא תקין");
+      toast.error(message || t('checkoutForm.orderError'));
       return false;
     }
 
@@ -88,7 +90,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       emailSchema.parse(formData.email.trim());
     } catch (error) {
       const message = getValidationError(error);
-      toast.error(message || "נא להזין כתובת מייל תקינה");
+      toast.error(message || t('checkoutForm.orderError'));
       return false;
     }
 
@@ -97,7 +99,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       phoneSchema.parse(formData.phone.trim());
     } catch (error) {
       const message = getValidationError(error);
-      toast.error(message || "נא להזין מספר טלפון תקין");
+      toast.error(message || t('checkoutForm.orderError'));
       return false;
     }
 
@@ -106,7 +108,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       addressSchema.parse(formData.address.trim());
     } catch (error) {
       const message = getValidationError(error);
-      toast.error(message || "נא להזין כתובת תקינה");
+      toast.error(message || t('checkoutForm.orderError'));
       return false;
     }
 
@@ -115,7 +117,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
       citySchema.parse(formData.city.trim());
     } catch (error) {
       const message = getValidationError(error);
-      toast.error(message || "נא להזין עיר");
+      toast.error(message || t('checkoutForm.orderError'));
       return false;
     }
 
@@ -125,7 +127,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         notesSchema.parse(formData.notes);
       } catch (error) {
         const message = getValidationError(error);
-        toast.error(message || "ההערות ארוכות מדי");
+        toast.error(message || t('checkoutForm.orderError'));
         return false;
       }
     }
@@ -232,7 +234,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         if (data?.error) {
           // Handle rate limiting
           if (data.error.includes("יותר מדי")) {
-            toast.error("יותר מדי הזמנות. נסו שוב מאוחר יותר.");
+            toast.error(t('checkoutForm.tooManyOrders'));
             setIsLoading(false);
             return;
           }
@@ -273,12 +275,12 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         window.open(customerWhatsappUrl, "_blank");
       }, 1000);
 
-      toast.success("ההזמנה נשלחה בהצלחה! נשלח מייל ווואטסאפ");
+      toast.success(t('checkoutForm.orderSuccess'));
       clearCart();
       onClose();
     } catch (error) {
       console.error("Error submitting order");
-      toast.error("שגיאה בשליחת ההזמנה, נסו שוב");
+      toast.error(t('checkoutForm.orderError'));
     } finally {
       setIsLoading(false);
     }
@@ -294,8 +296,8 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
         onClick={onBack}
         className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowRight className="w-4 h-4" />
-        חזרה לעגלה
+        <ArrowRight className={`w-4 h-4 ${!isRTL ? 'rotate-180' : ''}`} />
+        {t('checkoutForm.back')}
       </button>
 
       {!isLoggedIn ? (
@@ -305,9 +307,9 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             <LogIn className="w-10 h-10 text-primary" />
           </div>
           <div className="text-center space-y-2">
-            <h3 className="text-xl font-display font-bold text-foreground">נדרשת התחברות</h3>
+            <h3 className="text-xl font-display font-bold text-foreground">{t('checkoutForm.loginRequired')}</h3>
             <p className="text-muted-foreground text-sm max-w-xs">
-              כדי להשלים את ההזמנה, יש להתחבר או להירשם. הפרטים שלך יישמרו להזמנות הבאות!
+              {t('checkoutForm.loginRequiredDesc')}
             </p>
           </div>
           <Button 
@@ -316,7 +318,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             className="gap-2 bg-background/80 border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
           >
             <LogIn className="w-5 h-5" />
-            התחברות / הרשמה
+            {t('checkoutForm.loginSignup')}
           </Button>
         </div>
       ) : (
@@ -324,28 +326,28 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
           <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/30 rounded-xl">
             <User className="w-5 h-5 text-primary" />
             <span className="text-sm text-foreground">
-              מחובר כ: <strong>{profile?.full_name || user?.email}</strong>
+              {t('checkoutForm.connectedAs')} <strong>{profile?.full_name || user?.email}</strong>
             </span>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-xl font-display font-bold text-foreground">פרטי הזמנה</h3>
+            <h3 className="text-xl font-display font-bold text-foreground">{t('checkoutForm.orderDetails')}</h3>
             
             <div className="space-y-2">
-              <Label htmlFor="fullName">שם מלא</Label>
+              <Label htmlFor="fullName">{t('checkoutForm.fullName')}</Label>
               <Input
                 id="fullName"
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleInputChange}
-                placeholder="ישראל ישראלי"
-                className="text-right"
+                placeholder={t('checkoutForm.namePlaceholder')}
+                className={isRTL ? "text-right" : "text-left"}
                 maxLength={100}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">מייל</Label>
+              <Label htmlFor="email">{t('checkoutForm.email')}</Label>
               <Input
                 id="email"
                 name="email"
@@ -360,7 +362,7 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">טלפון</Label>
+              <Label htmlFor="phone">{t('checkoutForm.phone')}</Label>
               <Input
                 id="phone"
                 name="phone"
@@ -376,40 +378,40 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="city">עיר</Label>
+                <Label htmlFor="city">{t('checkoutForm.city')}</Label>
                 <Input
                   id="city"
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  placeholder="תל אביב"
-                  className="text-right"
+                  placeholder={t('checkoutForm.cityPlaceholder')}
+                  className={isRTL ? "text-right" : "text-left"}
                   maxLength={50}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="address">כתובת</Label>
+                <Label htmlFor="address">{t('checkoutForm.address')}</Label>
                 <Input
                   id="address"
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  placeholder="רחוב הרצל 1"
-                  className="text-right"
+                  placeholder={t('checkoutForm.addressPlaceholder')}
+                  className={isRTL ? "text-right" : "text-left"}
                   maxLength={200}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="notes">הערות למשלוח (אופציונלי, עד 500 תווים)</Label>
+              <Label htmlFor="notes">{t('checkoutForm.notes')}</Label>
               <Textarea
                 id="notes"
                 name="notes"
                 value={formData.notes}
                 onChange={handleInputChange}
-                placeholder="קומה, דירה, הוראות מיוחדות..."
-                className="text-right resize-none"
+                placeholder={t('checkoutForm.notesPlaceholder')}
+                className={`${isRTL ? "text-right" : "text-left"} resize-none`}
                 rows={2}
                 maxLength={500}
               />
@@ -418,10 +420,10 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
 
           <div className="bg-secondary/50 rounded-xl p-4 space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-semibold">סה״כ לתשלום:</span>
+              <span className="font-semibold">{t('checkoutForm.totalPayment')}</span>
               <span className="font-bold text-primary text-2xl">₪{totalPrice}</span>
             </div>
-            <p className="text-sm text-muted-foreground">💵 תשלום במזומן בעת המשלוח</p>
+            <p className="text-sm text-muted-foreground">{t('checkoutForm.cashPayment')}</p>
           </div>
 
           <Button
@@ -430,17 +432,17 @@ const CheckoutForm = ({ onBack, onClose, totalPrice }: CheckoutFormProps) => {
             className="w-full h-14 text-lg gap-2 bg-background/80 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
           >
             {isLoading ? (
-              "שולח..."
+              t('checkoutForm.sending')
             ) : (
               <>
                 <WhatsAppIcon className="w-5 h-5" />
-                להזמין במזומן
+                {t('checkoutForm.orderCash')}
               </>
             )}
           </Button>
           <p className="text-xs text-center text-muted-foreground">
             <Mail className="w-3 h-3 inline ml-1" />
-            נשלח אישור למייל ולוואטסאפ
+            {t('checkoutForm.confirmationSent')}
           </p>
         </>
       )}

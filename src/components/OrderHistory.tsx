@@ -3,6 +3,7 @@ import { Package, ChevronDown, ChevronUp, RotateCcw, Clock, KeyRound } from "luc
 import { Button } from "@/components/ui/button";
 import { useProfile } from "@/contexts/ProfileContext";
 import { useCart } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import AuthModal from "./AuthModal";
@@ -28,6 +29,7 @@ interface Order {
 const OrderHistory = () => {
   const { isLoggedIn, session } = useProfile();
   const { addToCart } = useCart();
+  const { t, language } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
@@ -87,12 +89,12 @@ const OrderHistory = () => {
         image: "",
       });
     });
-    toast.success("הפריטים נוספו לעגלה!");
+    toast.success(t('orderHistory.itemsAdded'));
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("he-IL", {
+    return date.toLocaleDateString(language === 'he' ? "he-IL" : "en-US", {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -103,12 +105,12 @@ const OrderHistory = () => {
 
   const getStatusLabel = (status: string) => {
     const statuses: Record<string, { label: string; color: string }> = {
-      pending: { label: "ממתין לאישור", color: "bg-yellow-500" },
-      confirmed: { label: "אושר", color: "bg-blue-500" },
-      preparing: { label: "בהכנה", color: "bg-orange-500" },
-      delivering: { label: "במשלוח", color: "bg-purple-500" },
-      completed: { label: "הושלם", color: "bg-green-500" },
-      cancelled: { label: "בוטל", color: "bg-red-500" },
+      pending: { label: t('orderHistory.pending'), color: "bg-yellow-500" },
+      confirmed: { label: t('orderHistory.confirmed'), color: "bg-blue-500" },
+      preparing: { label: t('orderHistory.preparing'), color: "bg-orange-500" },
+      delivering: { label: t('orderHistory.delivering'), color: "bg-purple-500" },
+      completed: { label: t('orderHistory.completed'), color: "bg-green-500" },
+      cancelled: { label: t('orderHistory.cancelled'), color: "bg-red-500" },
     };
     return statuses[status] || { label: status, color: "bg-gray-500" };
   };
@@ -121,14 +123,14 @@ const OrderHistory = () => {
             <div className="text-center max-w-md mx-auto">
               <Clock className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
               <h2 className="text-2xl font-display font-bold text-foreground mb-2">
-                היסטוריית הזמנות
+                {t('orderHistory.title')}
               </h2>
               <p className="text-muted-foreground mb-4">
-                התחברו כדי לראות את ההזמנות הקודמות
+                {t('orderHistory.loginPrompt')}
               </p>
               <Button onClick={() => setAuthModalOpen(true)} variant="outline" className="gap-2">
                 <KeyRound className="w-4 h-4" />
-                התחברות
+                {t('orderHistory.login')}
               </Button>
             </div>
           </div>
@@ -143,24 +145,24 @@ const OrderHistory = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
-            ההזמנות שלי
+            {t('orderHistory.myOrders')}
           </h2>
           <p className="text-muted-foreground">
-            צפייה והזמנה חוזרת של הזמנות קודמות
+            {t('orderHistory.subtitle')}
           </p>
         </div>
 
         {isLoading ? (
           <div className="text-center py-12">
             <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
-            <p className="text-muted-foreground">טוען הזמנות...</p>
+            <p className="text-muted-foreground">{t('orderHistory.loading')}</p>
           </div>
         ) : orders.length === 0 ? (
           <div className="text-center py-12 max-w-md mx-auto">
             <Package className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
-            <p className="text-muted-foreground text-lg">אין הזמנות קודמות</p>
+            <p className="text-muted-foreground text-lg">{t('orderHistory.noOrders')}</p>
             <p className="text-muted-foreground text-sm mt-2">
-              ההזמנות שלכם יופיעו כאן
+              {t('orderHistory.ordersWillAppear')}
             </p>
           </div>
         ) : (
@@ -229,7 +231,7 @@ const OrderHistory = () => {
                         className="w-full gap-2"
                       >
                         <RotateCcw className="w-4 h-4" />
-                        הזמנה חוזרת
+                        {t('orderHistory.reorder')}
                       </Button>
                     </div>
                   )}
