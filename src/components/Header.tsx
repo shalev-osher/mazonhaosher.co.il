@@ -146,7 +146,7 @@ const Header = () => {
               <ThemeToggle />
               {/* Auth Button */}
               {isLoggedIn ? (
-                <DropdownMenu>
+                <DropdownMenu dir="rtl">
                   <DropdownMenuTrigger asChild>
                     <button className="relative p-2 transition-all duration-300 rounded-lg group text-primary bg-primary/15 shadow-sm shadow-primary/20 border border-primary/20">
                       <User className="w-4 h-4 transition-transform duration-300 scale-110" />
@@ -154,8 +154,7 @@ const Header = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="start"
-                    dir="rtl"
-                    className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm text-right"
+                    className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm text-right [direction:rtl]"
                   >
                     <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
                       <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
