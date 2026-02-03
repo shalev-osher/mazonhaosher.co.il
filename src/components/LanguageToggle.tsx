@@ -1,8 +1,9 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
+import { Globe } from 'lucide-react';
 
 const LanguageToggle = () => {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, isRTL } = useLanguage();
 
   const toggleLanguage = () => {
     setLanguage(language === 'he' ? 'en' : 'he');
@@ -12,14 +13,15 @@ const LanguageToggle = () => {
     <button
       onClick={toggleLanguage}
       className={cn(
-        "flex items-center justify-center w-8 h-8 rounded-lg",
-        "bg-primary/10 hover:bg-primary/20 transition-all duration-300",
-        "text-xs font-bold text-foreground/80 hover:text-foreground",
-        "border border-primary/20 hover:border-primary/40"
+        "flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5",
+        "transition-all duration-300 rounded-lg group hover:bg-muted/50"
       )}
       aria-label={language === 'he' ? 'Switch to English' : 'עבור לעברית'}
     >
-      {language === 'he' ? 'EN' : 'עב'}
+      <Globe className="w-4 h-4 md:w-[18px] md:h-[18px] text-primary transition-all duration-300 group-hover:scale-105" />
+      <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground">
+        {language === 'he' ? 'English' : 'עברית'}
+      </span>
     </button>
   );
 };
