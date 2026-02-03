@@ -13,7 +13,7 @@ const ThemeToggle = () => {
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md bg-gradient-to-br ${
-        theme === 'dark' ? 'from-amber-400 to-orange-500' : 'from-indigo-500 to-violet-600'
+        theme === 'dark' ? 'from-amber-400 to-orange-500' : 'from-blue-500 to-cyan-600'
       }`}>
         {theme === 'dark' ? (
           <Sun className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white fill-white/20" />
