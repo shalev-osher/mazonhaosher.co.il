@@ -2,17 +2,22 @@ import { Clock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 
-// Waze official icon component
+// Waze official colorful icon component
 const WazeIcon = ({ className }: { className?: string }) => (
   <svg 
-    viewBox="0 0 512 512" 
+    viewBox="0 0 48 48" 
     className={className}
-    fill="currentColor"
   >
-    {/* Waze “Wazer” icon (monochrome) */}
-    <path d="M428 224a156.12 156.12 0 0 0-156-156c-112 0-156 84-156 156 0 32 12.8 56 20 72-12 16-32.4 33.6-48 48a28.69 28.69 0 0 0 20 48h280a156.12 156.12 0 0 0 156-156c0-4.4-.4-8.4-1.2-12.4zM283.6 296c-15.6 0-28.4-12.8-28.4-28.4s12.8-28.4 28.4-28.4 28.4 12.8 28.4 28.4-12.8 28.4-28.4 28.4zm96 0c-15.6 0-28.4-12.8-28.4-28.4s12.8-28.4 28.4-28.4 28.4 12.8 28.4 28.4-12.8 28.4-28.4 28.4z" />
-    <circle cx="168" cy="404" r="32" />
-    <circle cx="344" cy="404" r="32" />
+    {/* White face with outline */}
+    <path d="M24 4C12.95 4 4 12.95 4 24c0 6.62 3.22 12.49 8.17 16.13-.09.62-.17 1.27-.17 1.87 0 3.31 2.69 6 6 6s6-2.69 6-6c0-.06-.02-.12-.02-.18.66.12 1.33.18 2.02.18.69 0 1.36-.06 2.02-.18 0 .06-.02.12-.02.18 0 3.31 2.69 6 6 6s6-2.69 6-6c0-.6-.08-1.25-.17-1.87C44.78 36.49 48 30.62 48 24c0-11.05-8.95-20-20-20h-4z" fill="#FFFFFF" stroke="#AAA" strokeWidth="1"/>
+    {/* Left eye */}
+    <ellipse cx="17" cy="22" rx="4" ry="5" fill="#000000"/>
+    <circle cx="18.5" cy="21" r="1.5" fill="#FFFFFF"/>
+    {/* Right eye */}
+    <ellipse cx="31" cy="22" rx="4" ry="5" fill="#000000"/>
+    <circle cx="32.5" cy="21" r="1.5" fill="#FFFFFF"/>
+    {/* Smile */}
+    <path d="M16 32c0 0 4 6 8 6s8-6 8-6" stroke="#000000" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
   </svg>
 );
 
@@ -60,7 +65,7 @@ const ContactSection = () => {
             onClick={openWaze}
             className="mb-4 bg-[#05c8f7] hover:bg-[#04b5e0] text-white font-bold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
           >
-            <WazeIcon className="w-5 h-5 mr-2 rtl:mr-0 rtl:ml-2" />
+            <WazeIcon className="w-6 h-6 mr-2 rtl:mr-0 rtl:ml-2" />
             {isRTL ? "נווט אלינו עם Waze" : "Navigate with Waze"}
           </Button>
 
