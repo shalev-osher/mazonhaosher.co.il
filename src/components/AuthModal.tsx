@@ -290,19 +290,9 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     return error?.message || "אירעה שגיאה בהתחברות";
   };
 
-  // Use production domain for OAuth redirect
-  const getRedirectUri = () => {
-    // If on production domain, use it; otherwise use current origin
-    const productionDomain = "https://mazonhaosher.co.il";
-    const currentOrigin = window.location.origin;
-    
-    // Check if we're on the production domain or a subdomain of it
-    if (currentOrigin.includes("mazonhaosher.co.il")) {
-      return productionDomain;
-    }
-    // For preview/development, use current origin
-    return currentOrigin;
-  };
+  // OAuth redirect should return to the exact origin the user is currently on
+  // (important for custom domain vs www vs preview domains)
+  const getRedirectUri = () => window.location.origin;
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
