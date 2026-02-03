@@ -161,61 +161,68 @@ const handler = async (req: Request): Promise<Response> => {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
         </head>
-        <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif;">
+        <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif; background-color: #fdf8f6;">
           <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-            <!-- Glass-like container with transparency -->
-            <div style="background: linear-gradient(135deg, rgba(251, 243, 241, 0.85) 0%, rgba(248, 236, 232, 0.75) 100%); border-radius: 24px; padding: 40px 30px; border: 1px solid rgba(232, 93, 143, 0.15);">
+            <!-- Solid luxurious container -->
+            <div style="background: #ffffff; border-radius: 24px; padding: 50px 40px; border: 2px solid #e85d8f; box-shadow: 0 20px 60px rgba(232, 93, 143, 0.15);">
               
               <!-- Large Logo -->
-              <div style="text-align: center; margin-bottom: 25px;">
-                <img src="${logoUrl}" alt="מזון האושר" style="max-width: 180px; height: auto;" />
+              <div style="text-align: center; margin-bottom: 35px;">
+                <img src="${logoUrl}" alt="מזון האושר" style="max-width: 220px; height: auto; filter: drop-shadow(0 4px 12px rgba(232, 93, 143, 0.3));" />
               </div>
               
-              <!-- Title - Just brand name -->
-              <h1 style="text-align: center; color: hsl(340, 60%, 55%); font-size: 26px; margin: 0 0 25px 0; font-weight: 600;">מזון האושר</h1>
+              <!-- Decorative divider -->
+              <div style="text-align: center; margin-bottom: 30px;">
+                <div style="height: 2px; background: linear-gradient(90deg, transparent, #e85d8f, transparent); max-width: 200px; margin: 0 auto;"></div>
+              </div>
               
               <!-- Order Number Badge -->
-              <div style="text-align: center; margin-bottom: 25px;">
-                <span style="background: rgba(232, 93, 143, 0.15); color: hsl(340, 60%, 45%); padding: 8px 20px; border-radius: 20px; font-size: 14px;">
-                  הזמנה ${orderNumber} | ${orderDate}
+              <div style="text-align: center; margin-bottom: 30px;">
+                <span style="background: linear-gradient(135deg, #e85d8f 0%, #d14d7f 100%); color: white; padding: 12px 28px; border-radius: 30px; font-size: 15px; font-weight: 600; display: inline-block; box-shadow: 0 4px 15px rgba(232, 93, 143, 0.4);">
+                  הזמנה ${orderNumber}
                 </span>
+                <p style="font-size: 13px; color: #888; margin: 12px 0 0 0;">${orderDate}</p>
               </div>
               
               <!-- Greeting -->
-              <p style="font-size: 18px; color: #333; text-align: center; margin: 0 0 20px 0;">שלום ${safeName},</p>
-              <p style="color: #666; text-align: center; margin: 0 0 30px 0;">תודה שבחרת בנו! קיבלנו את הזמנתך ונחזור אליך בהקדם.</p>
+              <p style="font-size: 22px; color: #333; text-align: center; margin: 0 0 15px 0; font-weight: 600;">שלום ${safeName} 🍪</p>
+              <p style="color: #666; text-align: center; margin: 0 0 35px 0; font-size: 16px; line-height: 1.6;">תודה שבחרת בנו! קיבלנו את הזמנתך ונחזור אליך בהקדם.</p>
               
               <!-- Order Details Box -->
-              <div style="background: rgba(255, 255, 255, 0.7); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(232, 93, 143, 0.2);">
-                <h2 style="color: hsl(340, 60%, 55%); font-size: 16px; margin: 0 0 15px 0; font-weight: 600;">📋 פירוט ההזמנה</h2>
-                <pre style="white-space: pre-wrap; font-family: 'Heebo', Arial, sans-serif; margin: 0; font-size: 14px; line-height: 1.8; color: #444;">${safeOrderDetails}</pre>
-                <div style="border-top: 1px dashed rgba(232, 93, 143, 0.3); margin-top: 20px; padding-top: 15px;">
+              <div style="background: #fdf8f6; border-radius: 20px; padding: 30px; margin-bottom: 25px; border: 1px solid #f0d5dc;">
+                <h2 style="color: #e85d8f; font-size: 18px; margin: 0 0 20px 0; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 22px;">📋</span> פירוט ההזמנה
+                </h2>
+                <pre style="white-space: pre-wrap; font-family: 'Heebo', Arial, sans-serif; margin: 0; font-size: 15px; line-height: 2; color: #444;">${safeOrderDetails}</pre>
+                <div style="border-top: 2px dashed #e85d8f; margin-top: 25px; padding-top: 20px;">
                   <table style="width: 100%;">
                     <tr>
-                      <td style="font-size: 16px; font-weight: 600; color: hsl(340, 60%, 45%);">סה״כ לתשלום:</td>
-                      <td style="font-size: 22px; font-weight: bold; color: hsl(340, 60%, 55%); text-align: left;">₪${safePrice}</td>
+                      <td style="font-size: 18px; font-weight: 600; color: #333;">סה״כ לתשלום:</td>
+                      <td style="font-size: 28px; font-weight: bold; color: #e85d8f; text-align: left;">₪${safePrice}</td>
                     </tr>
                   </table>
                 </div>
               </div>
               
               <!-- Customer Info Box -->
-              <div style="background: rgba(255, 255, 255, 0.5); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(232, 93, 143, 0.1);">
-                <h3 style="margin: 0 0 12px 0; color: hsl(340, 60%, 45%); font-size: 14px; font-weight: 600;">📦 פרטי המזמין</h3>
-                <p style="margin: 5px 0; font-size: 14px; color: #555;"><strong>שם:</strong> ${safeName}</p>
-                <p style="margin: 5px 0; font-size: 14px; color: #555;"><strong>טלפון:</strong> ${safePhone}</p>
-                <p style="margin: 5px 0; font-size: 14px; color: #555;"><strong>מייל:</strong> ${safeEmail}</p>
+              <div style="background: #f9f9f9; border-radius: 16px; padding: 25px; margin-bottom: 25px; border: 1px solid #eee;">
+                <h3 style="margin: 0 0 15px 0; color: #e85d8f; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 18px;">📦</span> פרטי המזמין
+                </h3>
+                <p style="margin: 8px 0; font-size: 15px; color: #555;"><strong>שם:</strong> ${safeName}</p>
+                <p style="margin: 8px 0; font-size: 15px; color: #555;"><strong>טלפון:</strong> ${safePhone}</p>
+                <p style="margin: 8px 0; font-size: 15px; color: #555;"><strong>מייל:</strong> ${safeEmail}</p>
               </div>
               
               <!-- Payment Notice -->
-              <div style="background: rgba(255, 243, 205, 0.6); padding: 15px 20px; border-radius: 12px; border-right: 3px solid hsl(45, 100%, 51%);">
-                <p style="margin: 0; font-size: 14px; color: #666;"><strong>💵 אופן תשלום:</strong> מזומן בעת המשלוח</p>
+              <div style="background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%); padding: 18px 24px; border-radius: 16px; border-right: 4px solid #f5a623;">
+                <p style="margin: 0; font-size: 15px; color: #666;"><strong>💵 אופן תשלום:</strong> מזומן בעת המשלוח</p>
               </div>
               
               <!-- Footer -->
-              <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(232, 93, 143, 0.15);">
-                <p style="color: #888; margin: 0; font-size: 14px;">בברכה,</p>
-                <p style="color: hsl(340, 60%, 55%); font-weight: 600; font-size: 16px; margin: 8px 0 0 0;">מזון האושר</p>
+              <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid #f0d5dc;">
+                <p style="color: #888; margin: 0; font-size: 15px;">בברכה,</p>
+                <p style="color: #e85d8f; font-weight: 700; font-size: 20px; margin: 10px 0 0 0;">מזון האושר 🍪</p>
               </div>
             </div>
           </div>

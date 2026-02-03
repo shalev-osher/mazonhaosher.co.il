@@ -35,6 +35,7 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
@@ -164,6 +165,24 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
       setIsLoading(false);
     }
   };
+
+  const handleOpenDeleteModal = () => {
+    onClose(); // Close edit profile first
+    setTimeout(() => setShowDeleteModal(true), 100);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+  };
+
+  if (showDeleteModal) {
+    return (
+      <DeleteAccountModal 
+        isOpen={showDeleteModal} 
+        onClose={handleCloseDeleteModal} 
+      />
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -327,18 +346,12 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
             )}
           </Button>
           <Button
-            onClick={() => setShowDeleteModal(true)}
+            onClick={handleOpenDeleteModal}
             className="w-full bg-destructive/90 border border-destructive text-destructive-foreground font-semibold hover:bg-destructive"
           >
             מחיקת חשבון
           </Button>
         </div>
-
-        {/* Delete Account Modal */}
-        <DeleteAccountModal 
-          isOpen={showDeleteModal} 
-          onClose={() => setShowDeleteModal(false)} 
-        />
       </DialogContent>
     </Dialog>
   );
