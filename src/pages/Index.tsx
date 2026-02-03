@@ -35,9 +35,7 @@ const IndexContent = () => {
         <ContactSection />
       </main>
       <Footer />
-      <FloatingWhatsApp />
       <ScrollToTop />
-      <CartButton onClick={() => setIsCartOpen(true)} />
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
