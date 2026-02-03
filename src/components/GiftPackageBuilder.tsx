@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useCart } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 
 import cookieLotus from "@/assets/cookie-lotus.jpg";
@@ -23,24 +24,32 @@ import cookieSaltedCaramel from "@/assets/cookie-salted-caramel.jpg";
 import cookieChocolate from "@/assets/cookie-chocolate.jpg";
 import cookieConfetti from "@/assets/cookie-confetti.jpg";
 
-const availableCookies = [
-  { name: "לוטוס", image: cookieLotus, price: 25 },
-  { name: "קינדר", image: cookieKinder, price: 25 },
-  { name: "קינדר בואנו", image: cookieKinderBueno, price: 25 },
-  { name: "רד וולווט", image: cookieRedVelvet, price: 25 },
-  { name: "פיסטוק", image: cookiePistachio, price: 25 },
-  { name: "אוראו", image: cookieOreo, price: 25 },
-  { name: "חמאת בוטנים", image: cookiePeanut, price: 25 },
-  { name: "קרמל מלוח", image: cookieSaltedCaramel, price: 25 },
-  { name: "שוקולד צ׳יפס", image: cookieChocolate, price: 25 },
-  { name: "קונפטי", image: cookieConfetti, price: 25 },
-];
-
-const packageSizes = [
-  { name: "חבילה קטנה", count: 6, discount: 5, description: "6 עוגיות לבחירתך" },
-  { name: "חבילה בינונית", count: 12, discount: 10, description: "12 עוגיות לבחירתך" },
-  { name: "חבילה גדולה", count: 24, discount: 15, description: "24 עוגיות לבחירתך" },
-];
+const availableCookiesData = {
+  he: [
+    { name: "לוטוס", image: cookieLotus, price: 25 },
+    { name: "קינדר", image: cookieKinder, price: 25 },
+    { name: "קינדר בואנו", image: cookieKinderBueno, price: 25 },
+    { name: "רד וולווט", image: cookieRedVelvet, price: 25 },
+    { name: "פיסטוק", image: cookiePistachio, price: 25 },
+    { name: "אוראו", image: cookieOreo, price: 25 },
+    { name: "חמאת בוטנים", image: cookiePeanut, price: 25 },
+    { name: "קרמל מלוח", image: cookieSaltedCaramel, price: 25 },
+    { name: "שוקולד צ׳יפס", image: cookieChocolate, price: 25 },
+    { name: "קונפטי", image: cookieConfetti, price: 25 },
+  ],
+  en: [
+    { name: "Lotus", image: cookieLotus, price: 25 },
+    { name: "Kinder", image: cookieKinder, price: 25 },
+    { name: "Kinder Bueno", image: cookieKinderBueno, price: 25 },
+    { name: "Red Velvet", image: cookieRedVelvet, price: 25 },
+    { name: "Pistachio", image: cookiePistachio, price: 25 },
+    { name: "Oreo", image: cookieOreo, price: 25 },
+    { name: "Peanut Butter", image: cookiePeanut, price: 25 },
+    { name: "Salted Caramel", image: cookieSaltedCaramel, price: 25 },
+    { name: "Chocolate Chip", image: cookieChocolate, price: 25 },
+    { name: "Confetti", image: cookieConfetti, price: 25 },
+  ],
+};
 
 interface SelectedCookie {
   name: string;
@@ -50,11 +59,20 @@ interface SelectedCookie {
 
 const GiftPackageBuilder = () => {
   const { addToCart } = useCart();
+  const { t, language, isRTL } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  
+  const packageSizes = [
+    { nameKey: "gift.small", count: 6, discount: 5, descKey: "gift.smallDesc" },
+    { nameKey: "gift.medium", count: 12, discount: 10, descKey: "gift.mediumDesc" },
+    { nameKey: "gift.large", count: 24, discount: 15, descKey: "gift.largeDesc" },
+  ];
+  
   const [selectedSize, setSelectedSize] = useState(packageSizes[0]);
   const [selectedCookies, setSelectedCookies] = useState<SelectedCookie[]>([]);
   const [packageName, setPackageName] = useState("");
 
+  const availableCookies = availableCookiesData[language];
   const totalSelected = selectedCookies.reduce((acc, c) => acc + c.quantity, 0);
   const remaining = selectedSize.count - totalSelected;
 
@@ -65,8 +83,8 @@ const GiftPackageBuilder = () => {
   const handleAddCookie = (cookie: typeof availableCookies[0]) => {
     if (remaining <= 0) {
       toast({
-        title: "החבילה מלאה",
-        description: `בחרת כבר ${selectedSize.count} עוגיות`,
+        title: t('gift.packageFullError'),
+        description: t('gift.alreadySelected').replace('{count}', String(selectedSize.count)),
         variant: "destructive",
       });
       return;
@@ -98,14 +116,14 @@ const GiftPackageBuilder = () => {
   const handleAddToCart = () => {
     if (totalSelected !== selectedSize.count) {
       toast({
-        title: "החבילה לא מלאה",
-        description: `נא לבחור ${remaining} עוגיות נוספות`,
+        title: t('gift.notComplete'),
+        description: t('gift.selectMore').replace('{count}', String(remaining)),
         variant: "destructive",
       });
       return;
     }
 
-    const name = packageName || selectedSize.name;
+    const name = packageName || t(selectedSize.nameKey);
     addToCart({
       name: `🎁 ${name}`,
       price: `₪${finalPrice}`,
@@ -113,8 +131,8 @@ const GiftPackageBuilder = () => {
     });
 
     toast({
-      title: "החבילה נוספה לעגלה! 🎁",
-      description: `${name} עם ${totalSelected} עוגיות`,
+      title: t('gift.addedToCart'),
+      description: `${name} ${language === 'he' ? 'עם' : 'with'} ${totalSelected} ${t('gift.cookies')}`,
     });
 
     setIsOpen(false);
@@ -134,17 +152,17 @@ const GiftPackageBuilder = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-6">
           <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
-            חבילות מתנה
+            {t('gift.title')}
           </h2>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-            בנו חבילת מתנה מושלמת עם העוגיות האהובות עליכם
+            {t('gift.subtitle')}
           </p>
         </div>
 
         {/* Package Size Cards */}
         <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-6">
           {packageSizes.map((pkg) => (
-            <Dialog key={pkg.name} open={isOpen && selectedSize.name === pkg.name} onOpenChange={(open) => {
+            <Dialog key={pkg.nameKey} open={isOpen && selectedSize.nameKey === pkg.nameKey} onOpenChange={(open) => {
               if (open) {
                 setSelectedSize(pkg);
                 resetBuilder();
@@ -158,44 +176,44 @@ const GiftPackageBuilder = () => {
                   <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                     <Gift className="h-6 w-6 text-accent" />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-primary mb-1">{pkg.name}</h3>
-                  <p className="text-muted-foreground text-xs mb-2">{pkg.description}</p>
+                  <h3 className="font-display text-lg font-bold text-primary mb-1">{t(pkg.nameKey)}</h3>
+                  <p className="text-muted-foreground text-xs mb-2">{t(pkg.descKey)}</p>
                   <div className="flex items-center justify-center gap-2">
                     <span className="bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs font-bold">
-                      {pkg.discount}% הנחה
+                      {pkg.discount}% {t('gift.discount')}
                     </span>
                   </div>
                 </button>
               </DialogTrigger>
 
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" dir={isRTL ? "rtl" : "ltr"}>
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl text-primary flex items-center gap-2">
                     <Gift className="h-6 w-6" />
-                    {pkg.name} - {pkg.count} עוגיות
+                    {t(pkg.nameKey)} - {pkg.count} {t('gift.cookies')}
                   </DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-6">
                   {/* Package Name */}
                   <div>
-                    <label className="block text-sm font-medium mb-2">שם החבילה (אופציונלי)</label>
+                    <label className="block text-sm font-medium mb-2">{t('gift.packageNameOptional')}</label>
                     <Input
                       value={packageName}
                       onChange={(e) => setPackageName(e.target.value)}
-                      placeholder="למשל: מתנה ליום הולדת"
-                      className="text-right"
+                      placeholder={t('gift.packageNamePlaceholder')}
+                      className={isRTL ? "text-right" : "text-left"}
                     />
                   </div>
 
                   {/* Progress */}
                   <div className="bg-secondary/50 rounded-2xl p-4">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">נבחרו {totalSelected} מתוך {pkg.count}</span>
+                      <span className="font-medium">{t('gift.selected')} {totalSelected} {t('gift.outOf')} {pkg.count}</span>
                       {remaining > 0 ? (
-                        <span className="text-muted-foreground">עוד {remaining} לבחירה</span>
+                        <span className="text-muted-foreground">{t('gift.moreToSelect').replace('{count}', String(remaining))}</span>
                       ) : (
-                        <span className="text-green-600 font-bold">החבילה מלאה! ✓</span>
+                        <span className="text-green-600 font-bold">{t('gift.packageFull')} ✓</span>
                       )}
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
@@ -211,7 +229,7 @@ const GiftPackageBuilder = () => {
                     <div className="bg-card rounded-2xl p-4 border border-primary/10">
                       <h4 className="font-semibold mb-3 flex items-center gap-2">
                         <Package className="h-5 w-5 text-primary" />
-                        העוגיות שבחרתם
+                        {t('gift.yourCookies')}
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {selectedCookies.map((cookie) => (
@@ -258,7 +276,7 @@ const GiftPackageBuilder = () => {
                           />
                           <span className="text-sm font-medium block truncate">{cookie.name}</span>
                           {selected && (
-                            <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">
+                            <div className={`absolute -top-2 ${isRTL ? '-right-2' : '-left-2'} bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold`}>
                               {selected.quantity}
                             </div>
                           )}
@@ -270,15 +288,15 @@ const GiftPackageBuilder = () => {
                   {/* Price Summary */}
                   <div className="bg-accent/10 rounded-2xl p-4 space-y-2">
                     <div className="flex justify-between">
-                      <span>מחיר רגיל:</span>
+                      <span>{t('gift.regularPrice')}</span>
                       <span>₪{basePrice}</span>
                     </div>
                     <div className="flex justify-between text-green-600">
-                      <span>הנחת חבילה ({pkg.discount}%):</span>
+                      <span>{t('gift.packageDiscount')} ({pkg.discount}%):</span>
                       <span>-₪{discount}</span>
                     </div>
                     <div className="flex justify-between text-xl font-bold text-primary border-t pt-2">
-                      <span>סה״כ:</span>
+                      <span>{t('gift.total')}</span>
                       <span>₪{finalPrice}</span>
                     </div>
                   </div>
@@ -290,7 +308,7 @@ const GiftPackageBuilder = () => {
                     className="w-full bg-accent hover:bg-accent/90"
                   >
                     <ShoppingBag className="h-5 w-5 ml-2" />
-                    להוסיף לעגלה
+                    {t('gift.addToCart')}
                   </Button>
                 </div>
               </DialogContent>
