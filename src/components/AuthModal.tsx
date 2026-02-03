@@ -461,6 +461,19 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       // Reset attempts on success
       resetOtpAttempts(smsPhone);
 
+      // Set the session from the response
+      if (response.data?.session) {
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: response.data.session.access_token,
+          refresh_token: response.data.session.refresh_token,
+        });
+        
+        if (sessionError) {
+          console.error("Error setting session:", sessionError);
+          throw new Error("שגיאה בהתחברות");
+        }
+      }
+
       return true;
     } catch (error: any) {
       // Increment failed attempts
@@ -481,41 +494,11 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   };
 
   const completeSMSAuth = async () => {
-    // Sign in with phone - using Supabase's phone auth or create/link profile
-    try {
-      // For SMS login, we'll sign in anonymously and then link the phone
-      // Or check if user exists with this phone and authenticate them
-      const { data: existingProfile, error: profileError } = await supabase
-        .from("profiles")
-        .select("user_id, phone")
-        .eq("phone", smsPhone)
-        .maybeSingle();
-
-      if (existingProfile?.user_id) {
-        // User exists - we'll need to authenticate them differently
-        // For now, show a message that they should use email login
-        toast({
-          title: "משתמש קיים",
-          description: "מספר הטלפון הזה כבר רשום. נסה להתחבר עם אימייל וסיסמה.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // New user - create anonymous session and profile
-      toast({
-        title: "אימות הצליח! 📱",
-        description: "מספר הטלפון אומת בהצלחה",
-      });
-      
-      handleClose();
-    } catch (error: any) {
-      toast({
-        title: "שגיאה",
-        description: error.message || "אירעה שגיאה באימות",
-        variant: "destructive",
-      });
-    }
+    toast({
+      title: "התחברת בהצלחה! 🎉",
+      description: "ברוך הבא למזון האושר",
+    });
+    handleClose();
   };
 
   const verifyOTP = async (): Promise<boolean> => {

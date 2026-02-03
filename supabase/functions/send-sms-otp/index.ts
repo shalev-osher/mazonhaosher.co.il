@@ -163,8 +163,9 @@ const handler = async (req: Request): Promise<Response> => {
           api_key: vonageApiKey,
           api_secret: vonageApiSecret,
           to: normalizedPhone.replace("+", ""),
-          from: "MazonHaosher",
-          text: `קוד האימות שלך הוא: ${otp}\nתוקף: 10 דקות`,
+          from: "Mazon",
+          text: `${otp} קוד הכניסה שלך למזון האושר. הקוד בתוקף ל-10 דקות.`,
+          type: "unicode",
         }),
       });
 
@@ -215,8 +216,110 @@ const handler = async (req: Request): Promise<Response> => {
         .update({ verified: true })
         .eq("id", otpRecord.id);
 
+      // Generate email from phone for anonymous user creation
+      const phoneEmail = `${normalizedPhone.replace("+", "")}@sms.mazonhaosher.co.il`;
+      const tempPassword = crypto.randomUUID();
+
+      // Check if user exists with this phone email
+      const supabaseAdmin = createClient(
+        supabaseUrl,
+        supabaseServiceKey,
+        { auth: { autoRefreshToken: false, persistSession: false } }
+      );
+
+      // Try to get existing user by email
+      const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
+      const existingUser = existingUsers?.users?.find(u => u.email === phoneEmail);
+
+      let userId: string;
+      let accessToken: string;
+      let refreshToken: string;
+
+      if (existingUser) {
+        // User exists, sign them in using admin API to generate tokens
+        const { data: signInData, error: signInError } = await supabaseAdmin.auth.admin.generateLink({
+          type: "magiclink",
+          email: phoneEmail,
+        });
+
+        if (signInError) {
+          console.error("Error generating magic link:", signInError);
+          throw new Error("שגיאה ביצירת קישור כניסה");
+        }
+
+        // Use the hashed token to sign in
+        const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.verifyOtp({
+          token_hash: signInData.properties?.hashed_token || "",
+          type: "magiclink",
+        });
+
+        if (sessionError || !sessionData.session) {
+          console.error("Error verifying OTP:", sessionError);
+          throw new Error("שגיאה באימות");
+        }
+
+        userId = existingUser.id;
+        accessToken = sessionData.session.access_token;
+        refreshToken = sessionData.session.refresh_token;
+      } else {
+        // Create new user
+        const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+          email: phoneEmail,
+          password: tempPassword,
+          email_confirm: true,
+          user_metadata: {
+            phone: normalizedPhone,
+            auth_method: "sms",
+          },
+        });
+
+        if (createError || !newUser.user) {
+          console.error("Error creating user:", createError);
+          throw new Error("שגיאה ביצירת משתמש");
+        }
+
+        userId = newUser.user.id;
+
+        // Generate session for the new user
+        const { data: signInData, error: signInError } = await supabaseAdmin.auth.admin.generateLink({
+          type: "magiclink",
+          email: phoneEmail,
+        });
+
+        if (signInError) {
+          throw new Error("שגיאה ביצירת session");
+        }
+
+        const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.verifyOtp({
+          token_hash: signInData.properties?.hashed_token || "",
+          type: "magiclink",
+        });
+
+        if (sessionError || !sessionData.session) {
+          throw new Error("שגיאה באימות session");
+        }
+
+        accessToken = sessionData.session.access_token;
+        refreshToken = sessionData.session.refresh_token;
+
+        // Create profile for the user
+        await supabase
+          .from("profiles")
+          .insert({
+            user_id: userId,
+            phone: normalizedPhone,
+          });
+      }
+
       return new Response(
-        JSON.stringify({ success: true, verified: true }),
+        JSON.stringify({ 
+          success: true, 
+          verified: true,
+          session: {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          }
+        }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
