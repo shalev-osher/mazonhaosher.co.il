@@ -18,15 +18,18 @@ const ScrollDownButton = () => {
   
   const scrollToNextSection = () => {
     const scrollY = window.scrollY;
-    const viewportHeight = window.innerHeight;
+    const headerOffset = 80;
     
     // Find the next section below current scroll position
     for (const sectionId of sections) {
       const section = document.getElementById(sectionId);
       if (section) {
-        const sectionTop = section.offsetTop;
-        if (sectionTop > scrollY + 100) {
-          section.scrollIntoView({ behavior: "smooth" });
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        if (sectionTop > scrollY + headerOffset + 50) {
+          window.scrollTo({
+            top: sectionTop - headerOffset,
+            behavior: "smooth"
+          });
           return;
         }
       }
@@ -35,7 +38,10 @@ const ScrollDownButton = () => {
     // If no section found, scroll to footer
     const footer = document.querySelector("footer");
     if (footer) {
-      footer.scrollIntoView({ behavior: "smooth" });
+      window.scrollTo({
+        top: footer.getBoundingClientRect().top + window.scrollY - headerOffset,
+        behavior: "smooth"
+      });
     }
   };
 

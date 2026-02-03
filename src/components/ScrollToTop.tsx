@@ -3,6 +3,17 @@ import { ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const sections = [
+  "cookies",
+  "gift-packages", 
+  "order-history",
+  "reviews",
+  "faq",
+  "newsletter",
+  "about",
+  "contact"
+];
+
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { isRTL } = useLanguage();
@@ -16,7 +27,26 @@ const ScrollToTop = () => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
+  const scrollToPreviousSection = () => {
+    const scrollY = window.scrollY;
+    const headerOffset = 80;
+    
+    // Find the previous section above current scroll position
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const section = document.getElementById(sections[i]);
+      if (section) {
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        if (sectionTop < scrollY - 50) {
+          window.scrollTo({
+            top: sectionTop - headerOffset,
+            behavior: "smooth"
+          });
+          return;
+        }
+      }
+    }
+    
+    // If no previous section, scroll to top
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -25,7 +55,7 @@ const ScrollToTop = () => {
 
   return (
     <button
-      onClick={scrollToTop}
+      onClick={scrollToPreviousSection}
       className={cn(
         "fixed bottom-28 z-40 w-10 h-10 rounded-full",
         "bg-amber-500 text-white shadow-lg",
@@ -36,7 +66,7 @@ const ScrollToTop = () => {
           ? "opacity-100" 
           : "opacity-0 pointer-events-none"
       )}
-      aria-label={isRTL ? "חזרה למעלה" : "Back to top"}
+      aria-label={isRTL ? "לסקשן הקודם" : "Previous section"}
     >
       <ChevronUp className="w-6 h-6" />
     </button>
