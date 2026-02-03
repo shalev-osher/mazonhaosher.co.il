@@ -1,4 +1,4 @@
-import { User, LogOut, Package, ChevronDown, Gift, Star, CircleHelp, Users, Smartphone, Home, Trash2, UserPen, Lock, Cookie, UserCircle } from "lucide-react";
+import { User, LogOut, Package, ChevronDown, Gift, Star, CircleHelp, Users, Home, UserPen, Lock, Cookie, UserCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +18,6 @@ import { useProfile } from "@/contexts/ProfileContext";
 
 import ThemeToggle from "./ThemeToggle";
 import AuthModal from "./AuthModal";
-import TrustedDevicesModal from "./TrustedDevicesModal";
-import DeleteAccountModal from "./DeleteAccountModal";
 import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
 
@@ -27,8 +25,6 @@ const Header = () => {
   const { profile, isLoggedIn, logout, user } = useProfile();
   const [scrolled, setScrolled] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [showDevicesModal, setShowDevicesModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("hero");
@@ -167,26 +163,12 @@ const Header = () => {
                   <Lock className="w-3.5 h-3.5 text-primary" />
                   <span>שינוי סיסמה</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => setShowDevicesModal(true)}
-                  className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
-                >
-                  <Smartphone className="w-3.5 h-3.5 text-primary" />
-                  <span>מכשירים מהימנים</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => setShowDeleteModal(true)}
-                  className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>מחיקת חשבון</span>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={handleLogout}
-                  className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
+                  className="gap-2 cursor-pointer hover:bg-muted/50 text-xs py-1.5 justify-start"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
+                  <LogOut className="w-3.5 h-3.5 text-muted-foreground" />
                   <span>התנתקות</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -209,21 +191,6 @@ const Header = () => {
 
       {/* Auth Modal */}
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
-      
-      {/* Trusted Devices Modal */}
-      {user?.email && (
-        <TrustedDevicesModal 
-          isOpen={showDevicesModal} 
-          onClose={() => setShowDevicesModal(false)} 
-          userEmail={user.email}
-        />
-      )}
-
-      {/* Delete Account Modal */}
-      <DeleteAccountModal 
-        isOpen={showDeleteModal} 
-        onClose={() => setShowDeleteModal(false)} 
-      />
 
       {/* Edit Profile Modal */}
       <EditProfileModal 
