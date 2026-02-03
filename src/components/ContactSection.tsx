@@ -21,8 +21,8 @@ const ContactSection = () => {
           <div className="rounded-xl overflow-hidden shadow-lg mb-4 border-2 border-white/20">
             <iframe
               src={isRTL 
-                ? "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d847.5!2d34.5712!3d31.6658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502673a5c0d5555%3A0x0!2z39 שדרות קדש, אשקלון!5e0!3m2!1siw!2sil!4v1706000000000!5m2!1siw!2sil"
-                : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d847.5!2d34.5712!3d31.6658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502673a5c0d5555%3A0x0!2z39 Sderot Kadesh, Ashkelon!5e0!3m2!1sen!2sil!4v1706000000000!5m2!1sen!2sil"
+                ? "https://maps.google.com/maps?q=שדרות+קדש+39+אשקלון+ישראל&t=&z=17&ie=UTF8&iwloc=&output=embed&hl=he"
+                : "https://maps.google.com/maps?q=Sderot+Kadesh+39+Ashkelon+Israel&t=&z=17&ie=UTF8&iwloc=&output=embed&hl=en"
               }
               width="100%"
               height="200"
