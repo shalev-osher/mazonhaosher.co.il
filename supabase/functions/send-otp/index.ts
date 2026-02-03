@@ -18,6 +18,11 @@ interface OTPRequest {
 // Store OTPs in memory with expiration (in production, use a database table)
 const otpStore = new Map<string, { code: string; expiresAt: number }>();
 
+// Rate limiting - 3 OTP sends per hour per IP
+const rateLimiter = new Map<string, { count: number; resetTime: number }>();
+const MAX_REQUESTS_PER_HOUR = 3;
+const RATE_LIMIT_WINDOW_MS = 3600000; // 1 hour
+
 // Generate 6-digit OTP
 function generateOTP(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -31,6 +36,24 @@ function cleanExpiredOTPs() {
       otpStore.delete(email);
     }
   }
+}
+
+// Check and update rate limit
+function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
+  const now = Date.now();
+  const limitData = rateLimiter.get(ip);
+
+  if (!limitData || now > limitData.resetTime) {
+    rateLimiter.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, remaining: MAX_REQUESTS_PER_HOUR - 1 };
+  }
+
+  if (limitData.count >= MAX_REQUESTS_PER_HOUR) {
+    return { allowed: false, remaining: 0 };
+  }
+
+  limitData.count++;
+  return { allowed: true, remaining: MAX_REQUESTS_PER_HOUR - limitData.count };
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -53,6 +76,20 @@ const handler = async (req: Request): Promise<Response> => {
     cleanExpiredOTPs();
 
     if (action === "send") {
+      // Check rate limit
+      const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                       req.headers.get("cf-connecting-ip") || 
+                       "unknown";
+      
+      const rateLimit = checkRateLimit(clientIP);
+      if (!rateLimit.allowed) {
+        console.log(`Rate limit exceeded for IP: ${clientIP}`);
+        return new Response(
+          JSON.stringify({ error: "יותר מדי בקשות. נסה שוב מאוחר יותר" }),
+          { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+
       // Generate and store OTP
       const otp = generateOTP();
       const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes expiration
