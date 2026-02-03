@@ -153,7 +153,7 @@ const Hero = () => {
           </div>
           
           {/* Typewriter text with enhanced styling */}
-          <div className="relative min-h-[5rem] flex items-center justify-center mb-6">
+          <div className="relative min-h-[4rem] flex items-center justify-center mb-3">
             <p className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 font-display font-medium">
               <span className="relative">
                 {displayedText}
