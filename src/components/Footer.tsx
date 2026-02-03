@@ -63,7 +63,7 @@ const Footer = () => {
                 </svg>
               </div>
               <span className="text-[10px] md:text-xs font-medium text-foreground/70">
-                {isRTL ? 'וואטסאפ' : 'WhatsApp'}
+                WhatsApp
               </span>
             </a>
           </div>
@@ -90,7 +90,7 @@ const Footer = () => {
                 </svg>
               </div>
               <span className="text-[10px] md:text-xs font-medium text-foreground/70">
-                {isRTL ? 'פייסבוק' : 'Facebook'}
+                Facebook
               </span>
             </a>
 
@@ -115,7 +115,7 @@ const Footer = () => {
                 </svg>
               </div>
               <span className="text-[10px] md:text-xs font-medium text-foreground/70">
-                {isRTL ? 'אינסטגרם' : 'Instagram'}
+                Instagram
               </span>
             </a>
           </div>
