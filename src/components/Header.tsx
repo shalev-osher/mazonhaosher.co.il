@@ -2,7 +2,6 @@ import { Gift, Star, CircleHelp, Users, Home } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "./LanguageToggle";
-import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
   const { t, isRTL } = useLanguage();
@@ -87,9 +86,6 @@ const Header = () => {
 
           {/* Language Toggle */}
           <LanguageToggle />
-          
-          {/* Theme Toggle */}
-          <ThemeToggle />
         </nav>
       </div>
     </header>
