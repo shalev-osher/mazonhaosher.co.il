@@ -167,7 +167,7 @@ const Hero = () => {
           </div>
 
           {/* Decorative line */}
-          <div className="flex items-center justify-center gap-3 mb-8">
+          <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-accent/50 to-accent" />
             <Sparkles className="h-4 w-4 text-accent animate-pulse" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent via-accent/50 to-accent" />
