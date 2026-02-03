@@ -14,18 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { z } from "zod";
 import logo from "@/assets/logo.png";
-
-// Validation schemas
-const emailSchema = z.string().email("כתובת אימייל לא תקינה");
-const passwordSchema = z.string().min(6, "סיסמה חייבת להכיל לפחות 6 תווים");
-const phoneSchema = z.string().min(9, "מספר טלפון לא תקין").max(15, "מספר טלפון ארוך מדי");
-const nameSchema = z.string().min(2, "שם חייב להכיל לפחות 2 תווים").max(100, "שם ארוך מדי");
-const smsPhoneSchema = z.string()
-  .min(9, "מספר טלפון לא תקין")
-  .max(15, "מספר טלפון ארוך מדי")
-  .refine((val) => /^0?5[0-9]{8}$|^\+972[5][0-9]{8}$/.test(val.replace(/[\s-]/g, "")), {
-    message: "יש להזין מספר טלפון נייד ישראלי תקין"
-  });
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Trusted devices storage key
 const TRUSTED_DEVICES_KEY = "mazon_haosher_trusted_devices";
@@ -56,20 +45,19 @@ const getDeviceId = (): string => {
   return newId;
 };
 
-const getDeviceInfo = (): string => {
+const getDeviceInfo = (t: (key: string) => string): string => {
   const ua = navigator.userAgent;
   if (/iPhone|iPad|iPod/.test(ua)) return "iOS";
   if (/Android/.test(ua)) return "Android";
   if (/Mac/.test(ua)) return "Mac";
   if (/Windows/.test(ua)) return "Windows";
   if (/Linux/.test(ua)) return "Linux";
-  return "מכשיר לא ידוע";
+  return t('auth.unknownDevice');
 };
 
 const getTrustedDevices = (): TrustedDevice[] => {
   try {
     const data = JSON.parse(localStorage.getItem(TRUSTED_DEVICES_KEY) || "[]");
-    // Convert old format to new format if needed
     if (!Array.isArray(data)) {
       const devices: TrustedDevice[] = [];
       for (const [key, value] of Object.entries(data as Record<string, number>)) {
@@ -80,7 +68,7 @@ const getTrustedDevices = (): TrustedDevice[] => {
             deviceId,
             trustedUntil: value as number,
             addedAt: Date.now(),
-            deviceInfo: getDeviceInfo()
+            deviceInfo: "Unknown"
           });
         }
       }
@@ -100,7 +88,7 @@ const isDeviceTrusted = (email: string): boolean => {
   return device ? device.trustedUntil > Date.now() : false;
 };
 
-const trustDevice = (email: string) => {
+const trustDevice = (email: string, t: (key: string) => string) => {
   const devices = getTrustedDevices();
   const deviceId = getDeviceId();
   const existingIndex = devices.findIndex(d => d.email === email && d.deviceId === deviceId);
@@ -110,7 +98,7 @@ const trustDevice = (email: string) => {
     deviceId,
     trustedUntil: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
     addedAt: Date.now(),
-    deviceInfo: getDeviceInfo()
+    deviceInfo: getDeviceInfo(t)
   };
   
   if (existingIndex >= 0) {
@@ -141,11 +129,11 @@ const incrementOtpAttempts = (email: string): boolean => {
       count: newCount,
       lockedUntil: Date.now() + LOCKOUT_DURATION
     }));
-    return false; // Locked out
+    return false;
   }
   
   sessionStorage.setItem(`otp_attempts_${email}`, JSON.stringify({ count: newCount, lockedUntil: null }));
-  return true; // Can continue
+  return true;
 };
 
 const resetOtpAttempts = (email: string) => {
@@ -182,6 +170,7 @@ const AppleIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>
 AppleIcon.displayName = "AppleIcon";
 
 const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
+  const { t, isRTL, language } = useLanguage();
   const [mode, setMode] = useState<AuthMode>("login");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -205,6 +194,18 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   });
   
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Dynamic validation schemas based on language
+  const emailSchema = z.string().email(t('auth.invalidEmail'));
+  const passwordSchema = z.string().min(6, t('auth.passwordMin'));
+  const phoneSchema = z.string().min(9, t('auth.invalidPhone')).max(15, t('auth.phoneTooLong'));
+  const nameSchema = z.string().min(2, t('auth.nameMin')).max(100, t('auth.nameTooLong'));
+  const smsPhoneSchema = z.string()
+    .min(9, t('auth.invalidPhone'))
+    .max(15, t('auth.phoneTooLong'))
+    .refine((val) => /^0?5[0-9]{8}$|^\+972[5][0-9]{8}$/.test(val.replace(/[\s-]/g, "")), {
+      message: t('auth.israeliPhoneRequired')
+    });
 
   // Timer for resend OTP
   useEffect(() => {
@@ -247,7 +248,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     onClose();
   };
 
-  // If authentication completes while the modal is open (e.g. hash/OAuth handler finishes), close it.
   useEffect(() => {
     if (!isOpen) return;
 
@@ -260,7 +260,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     });
 
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const validateForm = (): boolean => {
@@ -296,27 +295,23 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Helper to translate OAuth errors to Hebrew
   const translateOAuthError = (error: any): string => {
     const msg = error?.message?.toLowerCase() || "";
     if (msg.includes("cancelled") || msg.includes("canceled")) {
-      return "ההתחברות בוטלה";
+      return t('auth.cancelledLogin');
     }
     if (msg.includes("popup closed") || msg.includes("popup_closed")) {
-      return "החלון נסגר לפני השלמת ההתחברות";
+      return t('auth.popupClosed');
     }
     if (msg.includes("network") || msg.includes("fetch")) {
-      return "שגיאת רשת, בדוק את החיבור לאינטרנט";
+      return t('auth.networkError');
     }
     if (msg.includes("provider is not enabled") || msg.includes("missing oauth secret")) {
-      return "ספק ההתחברות לא מוגדר כרגע";
+      return t('auth.providerNotEnabled');
     }
-    return error?.message || "אירעה שגיאה בהתחברות";
+    return error?.message || t('auth.genericError');
   };
 
-  // OAuth redirect must match the allow-list exactly.
-  // Use a canonical root URL with a trailing slash (e.g. https://mazonhaosher.co.il/)
-  // to avoid subtle mismatches that can lead to a 404 from the OAuth service.
   const getRedirectUri = () => new URL("/", window.location.origin).toString();
 
   const handleGoogleSignIn = async () => {
@@ -329,7 +324,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       if (error) throw error;
     } catch (error: any) {
       toast({
-        title: "שגיאה",
+        title: t('auth.error'),
         description: translateOAuthError(error),
         variant: "destructive",
       });
@@ -348,7 +343,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       if (error) throw error;
     } catch (error: any) {
       toast({
-        title: "שגיאה",
+        title: t('auth.error'),
         description: translateOAuthError(error),
         variant: "destructive",
       });
@@ -373,14 +368,14 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       if (error) throw error;
       
       toast({
-        title: "נשלח בהצלחה! 📧",
-        description: "קישור לאיפוס סיסמה נשלח לאימייל שלך",
+        title: t('auth.resetSent'),
+        description: t('auth.resetSentDesc'),
       });
       setMode("login");
     } catch (error: any) {
       toast({
-        title: "שגיאה",
-        description: error.message || "אירעה שגיאה, נסו שוב",
+        title: t('auth.error'),
+        description: error.message || t('auth.genericError'),
         variant: "destructive",
       });
     } finally {
@@ -401,13 +396,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       setOtpSent(true);
       setOtpResendTimer(60);
       toast({
-        title: "קוד נשלח! 📧",
-        description: "בדוק את תיבת המייל שלך",
+        title: t('auth.codeSentEmail'),
+        description: t('auth.checkEmailInbox'),
       });
     } catch (error: any) {
       toast({
-        title: "שגיאה",
-        description: error.message || "אירעה שגיאה בשליחת הקוד",
+        title: t('auth.error'),
+        description: error.message || t('auth.sendCodeError'),
         variant: "destructive",
       });
     } finally {
@@ -415,7 +410,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   };
 
-  // SMS OTP functions
   const sendSMSOTP = async () => {
     const phoneResult = smsPhoneSchema.safeParse(smsPhone);
     if (!phoneResult.success) {
@@ -436,13 +430,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       setOtpResendTimer(60);
       setMode("sms-otp");
       toast({
-        title: "קוד נשלח! 📱",
-        description: "בדוק את הודעות ה-SMS שלך",
+        title: t('auth.codeSentSms'),
+        description: t('auth.checkSms'),
       });
     } catch (error: any) {
       toast({
-        title: "שגיאה",
-        description: error.message || "אירעה שגיאה בשליחת הקוד",
+        title: t('auth.error'),
+        description: error.message || t('auth.sendCodeError'),
         variant: "destructive",
       });
     } finally {
@@ -453,15 +447,14 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const verifySMSOTP = async (): Promise<boolean> => {
     const code = otpCode.join("");
     if (code.length !== 6) {
-      setErrors({ otp: "יש להזין 6 ספרות" });
+      setErrors({ otp: t('auth.enter6Digits') });
       return false;
     }
 
-    // Check if locked out
     const attempts = getOtpAttempts(smsPhone);
     if (attempts.lockedUntil && attempts.lockedUntil > Date.now()) {
       const remainingMinutes = Math.ceil((attempts.lockedUntil - Date.now()) / 60000);
-      setErrors({ otp: `יותר מדי ניסיונות שגויים. נסה שוב בעוד ${remainingMinutes} דקות` });
+      setErrors({ otp: t('auth.tooManyAttempts').replace('{minutes}', String(remainingMinutes)) });
       setLockoutEndTime(attempts.lockedUntil);
       return false;
     }
@@ -475,10 +468,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       if (response.error) throw new Error(response.error.message);
       if (response.data?.error) throw new Error(response.data.error);
 
-      // Reset attempts on success
       resetOtpAttempts(smsPhone);
 
-      // Set the session from the response
       if (response.data?.session) {
         const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
           access_token: response.data.session.access_token,
@@ -487,22 +478,21 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         
         if (sessionError || !sessionData.session) {
           console.error("Error setting session:", sessionError);
-          throw new Error("שגיאה בהתחברות");
+          throw new Error(t('auth.sessionError'));
         }
       }
 
       return true;
     } catch (error: any) {
-      // Increment failed attempts
       const canContinue = incrementOtpAttempts(smsPhone);
       const newAttempts = getOtpAttempts(smsPhone);
       setRemainingAttempts(MAX_OTP_ATTEMPTS - newAttempts.count);
       
       if (!canContinue) {
         setLockoutEndTime(newAttempts.lockedUntil);
-        setErrors({ otp: "יותר מדי ניסיונות שגויים. נסה שוב בעוד 15 דקות" });
+        setErrors({ otp: t('auth.tooManyAttempts').replace('{minutes}', '15') });
       } else {
-        setErrors({ otp: `${error.message || "קוד אימות שגוי"} (נותרו ${MAX_OTP_ATTEMPTS - newAttempts.count} ניסיונות)` });
+        setErrors({ otp: `${error.message || t('auth.wrongCode')} (${t('auth.attemptsLeft').replace('{count}', String(MAX_OTP_ATTEMPTS - newAttempts.count))})` });
       }
       return false;
     } finally {
@@ -517,15 +507,14 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const verifyOTP = async (): Promise<boolean> => {
     const code = otpCode.join("");
     if (code.length !== 6) {
-      setErrors({ otp: "יש להזין 6 ספרות" });
+      setErrors({ otp: t('auth.enter6Digits') });
       return false;
     }
 
-    // Check if locked out
     const attempts = getOtpAttempts(formData.email);
     if (attempts.lockedUntil && attempts.lockedUntil > Date.now()) {
       const remainingMinutes = Math.ceil((attempts.lockedUntil - Date.now()) / 60000);
-      setErrors({ otp: `יותר מדי ניסיונות שגויים. נסה שוב בעוד ${remainingMinutes} דקות` });
+      setErrors({ otp: t('auth.tooManyAttempts').replace('{minutes}', String(remainingMinutes)) });
       setLockoutEndTime(attempts.lockedUntil);
       return false;
     }
@@ -539,26 +528,23 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       if (response.error) throw new Error(response.error.message);
       if (response.data?.error) throw new Error(response.data.error);
 
-      // Reset attempts on success
       resetOtpAttempts(formData.email);
       
-      // Trust device if requested
       if (rememberDevice) {
-        trustDevice(formData.email);
+        trustDevice(formData.email, t);
       }
 
       return true;
     } catch (error: any) {
-      // Increment failed attempts
       const canContinue = incrementOtpAttempts(formData.email);
       const newAttempts = getOtpAttempts(formData.email);
       setRemainingAttempts(MAX_OTP_ATTEMPTS - newAttempts.count);
       
       if (!canContinue) {
         setLockoutEndTime(newAttempts.lockedUntil);
-        setErrors({ otp: "יותר מדי ניסיונות שגויים. נסה שוב בעוד 15 דקות" });
+        setErrors({ otp: t('auth.tooManyAttempts').replace('{minutes}', '15') });
       } else {
-        setErrors({ otp: `${error.message || "קוד אימות שגוי"} (נותרו ${MAX_OTP_ATTEMPTS - newAttempts.count} ניסיונות)` });
+        setErrors({ otp: `${error.message || t('auth.wrongCode')} (${t('auth.attemptsLeft').replace('{count}', String(MAX_OTP_ATTEMPTS - newAttempts.count))})` });
       }
       return false;
     } finally {
@@ -574,7 +560,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     setOtpCode(newOtp);
     setErrors({});
 
-    // Auto-focus next input
     if (value && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
@@ -608,12 +593,10 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       
       if (error) {
         if (error.message.includes("Invalid login credentials")) {
-          throw new Error("אימייל או סיסמה שגויים");
+          throw new Error(t('auth.wrongCredentials'));
         }
         throw error;
       }
-      
-      // Login successful - no toast needed
     } else if (pendingAction === "register") {
       const redirectUrl = `${window.location.origin}/`;
       
@@ -631,12 +614,11 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       
       if (error) {
         if (error.message.includes("already registered")) {
-          throw new Error("כתובת האימייל כבר רשומה במערכת");
+          throw new Error(t('auth.emailExists'));
         }
         throw error;
       }
       
-      // Create profile for the user
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         await supabase.rpc("upsert_my_profile", {
@@ -644,8 +626,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
           p_full_name: formData.fullName,
         });
       }
-      
-      // Registration successful - no toast needed
     }
     handleClose();
   };
@@ -678,8 +658,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
           await completeAuth();
         } catch (error: any) {
           toast({
-            title: "שגיאה",
-            description: error.message || "אירעה שגיאה, נסו שוב",
+            title: t('auth.error'),
+            description: error.message || t('auth.genericError'),
             variant: "destructive",
           });
         }
@@ -691,13 +671,11 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       return;
     }
     
-    // Check if device is trusted - skip 2FA
     if (mode === "login" && isDeviceTrusted(formData.email)) {
       setPendingAction("login");
       try {
         await completeAuth();
       } catch (error: any) {
-        // If auth fails, still require 2FA
         setPendingAction("login");
         setMode("otp");
         await sendOTP();
@@ -705,7 +683,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       return;
     }
     
-    // Send OTP for 2FA
     setPendingAction(mode as "login" | "register");
     setMode("otp");
     await sendOTP();
@@ -713,12 +690,12 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
   const getTitle = () => {
     switch (mode) {
-      case "login": return "התחברות";
-      case "register": return "הרשמה";
-      case "forgot": return "שכחתי סיסמה";
-      case "otp": return "אימות דו-שלבי";
-      case "sms-login": return "התחברות ב-SMS";
-      case "sms-otp": return "אימות SMS";
+      case "login": return t('auth.loginTitle');
+      case "register": return t('auth.registerTitle');
+      case "forgot": return t('auth.forgotTitle');
+      case "otp": return t('auth.otpTitle');
+      case "sms-login": return t('auth.smsLoginTitle');
+      case "sms-otp": return t('auth.smsOtpTitle');
     }
   };
 
@@ -726,16 +703,14 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent variant="luxury" overlayVariant="glass" className="sm:max-w-[380px] p-6" dir="rtl">
-        {/* Decorative sparkles */}
+      <DialogContent variant="luxury" overlayVariant="glass" className="sm:max-w-[380px] p-6" dir={isRTL ? "rtl" : "ltr"}>
         <Sparkles className="absolute top-4 left-12 h-4 w-4 auth-sparkle" />
         <Sparkles className="absolute top-8 right-12 h-3 w-3 auth-sparkle" style={{ animationDelay: '0.5s' }} />
         
-        {/* Logo */}
         <div className="flex justify-center -mt-2 mb-1">
           <img 
             src={logo} 
-            alt="מזון האושר" 
+            alt={isRTL ? "מזון האושר" : "Mazon HaOsher"} 
             className="h-14 w-auto auth-logo-glow"
           />
         </div>
@@ -751,13 +726,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         {mode === "sms-login" ? (
           <form onSubmit={handleSubmit} className="space-y-4 auth-stagger">
             <p className="text-sm text-center text-muted-foreground">
-              הזן את מספר הטלפון שלך ונשלח לך קוד אימות ב-SMS
+              {t('auth.smsLoginDesc')}
             </p>
             
             <div className="space-y-1.5">
               <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
                 <Phone className="h-3 w-3 text-primary" />
-                מספר טלפון *
+                {t('auth.phoneLabel')}
               </label>
               <Input
                 type="tel"
@@ -785,10 +760,10 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               {isLoading ? (
                 <>
                   <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
-                  <span className="relative z-10">שולח...</span>
+                  <span className="relative z-10">{t('auth.sending')}</span>
                 </>
               ) : (
-                <span className="relative z-10">שלח קוד אימות</span>
+                <span className="relative z-10">{t('auth.sendCode')}</span>
               )}
             </Button>
 
@@ -801,13 +776,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               }}
               className="w-full text-xs text-muted-foreground hover:underline"
             >
-              חזרה להתחברות רגילה
+              {t('auth.backToLogin')}
             </button>
           </form>
         ) : mode === "sms-otp" ? (
           <form onSubmit={handleSubmit} className="space-y-4 auth-stagger">
             <p className="text-sm text-center text-muted-foreground">
-              שלחנו קוד אימות בן 6 ספרות ל-
+              {t('auth.codeSentTo')}
               <br />
               <span className="font-medium text-foreground" dir="ltr">{smsPhone}</span>
             </p>
@@ -843,17 +818,17 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               {isLoading ? (
                 <>
                   <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
-                  <span className="relative z-10">מאמת...</span>
+                  <span className="relative z-10">{t('auth.verifying')}</span>
                 </>
               ) : (
-                <span className="relative z-10">אמת</span>
+                <span className="relative z-10">{t('auth.verify')}</span>
               )}
             </Button>
 
             <div className="text-center">
               {otpResendTimer > 0 ? (
                 <p className="text-xs text-muted-foreground">
-                  שלח שוב בעוד {otpResendTimer} שניות
+                  {t('auth.resendIn').replace('{seconds}', String(otpResendTimer))}
                 </p>
               ) : (
                 <button
@@ -862,7 +837,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   disabled={isLoading}
                   className="text-xs text-primary hover:underline"
                 >
-                  שלח קוד חדש
+                  {t('auth.resendCode')}
                 </button>
               )}
             </div>
@@ -876,13 +851,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               }}
               className="w-full text-xs text-muted-foreground hover:underline"
             >
-              חזרה
+              {t('auth.back')}
             </button>
           </form>
         ) : mode === "otp" ? (
           <form onSubmit={handleSubmit} className="space-y-4 auth-stagger">
             <p className="text-sm text-center text-muted-foreground">
-              שלחנו קוד אימות בן 6 ספרות ל-
+              {t('auth.codeSentTo')}
               <br />
               <span className="font-medium text-foreground" dir="ltr">{formData.email}</span>
             </p>
@@ -917,7 +892,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               />
               <label htmlFor="rememberDevice" className="text-xs text-muted-foreground flex items-center gap-1 cursor-pointer">
                 <Smartphone className="h-3 w-3" />
-                זכור את המכשיר הזה
+                {t('auth.rememberDevice')}
               </label>
             </div>
 
@@ -930,17 +905,17 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               {isLoading ? (
                 <>
                   <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
-                  <span className="relative z-10">מאמת...</span>
+                  <span className="relative z-10">{t('auth.verifying')}</span>
                 </>
               ) : (
-                <span className="relative z-10">אמת והמשך</span>
+                <span className="relative z-10">{t('auth.verifyAndContinue')}</span>
               )}
             </Button>
 
             <div className="text-center">
               {otpResendTimer > 0 ? (
                 <p className="text-xs text-muted-foreground">
-                  שלח שוב בעוד {otpResendTimer} שניות
+                  {t('auth.resendIn').replace('{seconds}', String(otpResendTimer))}
                 </p>
               ) : (
                 <button
@@ -949,7 +924,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   disabled={isLoading}
                   className="text-xs text-primary hover:underline"
                 >
-                  שלח קוד חדש
+                  {t('auth.resendCode')}
                 </button>
               )}
             </div>
@@ -963,7 +938,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               }}
               className="w-full text-xs text-muted-foreground hover:underline"
             >
-              חזרה
+              {t('auth.back')}
             </button>
           </form>
         ) : (
@@ -1002,7 +977,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   </Button>
                 </div>
 
-                {/* SMS Login Button */}
                 <Button
                   type="button"
                   variant="outline"
@@ -1010,12 +984,12 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   className="w-full h-9 text-sm gap-2 auth-oauth-btn border-0 mt-2"
                 >
                   <MessageSquare className="h-4 w-4" />
-                  התחברות ב-SMS
+                  {t('auth.smsLogin')}
                 </Button>
                 
                 <div className="relative my-4 auth-divider">
                   <div className="relative flex justify-center text-xs">
-                    <span className="bg-transparent px-3 text-muted-foreground">או</span>
+                    <span className="bg-transparent px-3 text-muted-foreground">{t('auth.or')}</span>
                   </div>
                 </div>
               </>
@@ -1027,13 +1001,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   <div className="space-y-1.5">
                     <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
                       <User className="h-3 w-3 text-primary" />
-                      שם מלא *
+                      {t('auth.fullNameLabel')}
                     </label>
                     <Input
                       value={formData.fullName}
                       onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                      placeholder="ישראל ישראלי"
-                      className="text-right h-9 text-sm auth-input-luxury"
+                      placeholder={t('auth.fullNamePlaceholder')}
+                      className={`h-9 text-sm auth-input-luxury ${isRTL ? 'text-right' : 'text-left'}`}
                     />
                     {errors.fullName && (
                       <p className="text-[10px] text-destructive">{errors.fullName}</p>
@@ -1043,7 +1017,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   <div className="space-y-1.5">
                     <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
                       <Phone className="h-3 w-3 text-primary" />
-                      טלפון
+                      {t('auth.phoneOptional')}
                     </label>
                     <Input
                       type="tel"
@@ -1063,7 +1037,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               <div className="space-y-1.5">
                 <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
                   <Mail className="h-3 w-3 text-primary" />
-                  אימייל *
+                  {t('auth.emailLabel')}
                 </label>
                 <Input
                   type="email"
@@ -1082,14 +1056,14 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 <div className="space-y-1.5">
                   <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
                     <Lock className="h-3 w-3 text-primary" />
-                    סיסמה *
+                    {t('auth.passwordLabel')}
                   </label>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                      placeholder="לפחות 6 תווים"
+                      placeholder={t('auth.passwordPlaceholder')}
                       className="text-left pl-8 h-9 text-sm auth-input-luxury"
                       dir="ltr"
                     />
@@ -1117,7 +1091,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     }}
                     className="text-xs text-primary hover:underline"
                   >
-                    שכחתי סיסמה
+                    {t('auth.forgotPassword')}
                   </button>
                 </div>
               )}
@@ -1132,12 +1106,12 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   <>
                     <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
                     <span className="relative z-10">
-                      {mode === "login" ? "מתחבר..." : mode === "register" ? "נרשם..." : "שולח..."}
+                      {mode === "login" ? t('auth.loggingIn') : mode === "register" ? t('auth.registering') : t('auth.sendingReset')}
                     </span>
                   </>
                 ) : (
                   <span className="relative z-10">
-                    {mode === "login" ? "התחברות" : mode === "register" ? "הרשמה" : "שלח קישור לאיפוס"}
+                    {mode === "login" ? t('auth.loginBtn') : mode === "register" ? t('auth.registerBtn') : t('auth.sendResetLink')}
                   </span>
                 )}
               </Button>
@@ -1152,11 +1126,11 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   }}
                   className="text-xs text-primary hover:underline"
                 >
-                  חזרה להתחברות
+                  {t('auth.backToLoginLink')}
                 </button>
               ) : (
                 <p className="text-muted-foreground text-xs">
-                  {mode === "login" ? "אין לך חשבון?" : "כבר יש לך חשבון?"}
+                  {mode === "login" ? t('auth.noAccount') : t('auth.hasAccount')}
                   {" "}
                   <button
                     onClick={() => {
@@ -1165,7 +1139,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     }}
                     className="text-primary hover:underline font-medium"
                   >
-                    {mode === "login" ? "הירשם" : "התחבר"}
+                    {mode === "login" ? t('auth.signupLink') : t('auth.loginLink')}
                   </button>
                 </p>
               )}
