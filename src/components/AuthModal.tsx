@@ -298,9 +298,10 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     return error?.message || "אירעה שגיאה בהתחברות";
   };
 
-  // OAuth redirect should return to the exact origin the user is currently on
-  // (important for custom domain vs www vs preview domains)
-  const getRedirectUri = () => window.location.origin;
+  // OAuth redirect must match the allow-list exactly.
+  // Use a canonical root URL with a trailing slash (e.g. https://mazonhaosher.co.il/)
+  // to avoid subtle mismatches that can lead to a 404 from the OAuth service.
+  const getRedirectUri = () => new URL("/", window.location.origin).toString();
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
