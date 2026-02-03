@@ -1,5 +1,4 @@
-import { User, LogOut, Package, ChevronDown, Gift, Star, CircleHelp, Users, ShoppingBag, Smartphone, Home, Trash2, UserPen, Lock, Cookie, UserCircle } from "lucide-react";
-import { useCart } from "@/contexts/CartContext";
+import { User, LogOut, Package, ChevronDown, Gift, Star, CircleHelp, Users, Smartphone, Home, Trash2, UserPen, Lock, Cookie, UserCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -124,8 +123,6 @@ const Header = () => {
             );
           })}
 
-          {/* Cart Button */}
-          <CartHeaderButton />
           {/* Theme Toggle */}
           <ThemeToggle />
           {/* Auth Button */}
@@ -237,33 +234,6 @@ const Header = () => {
         onClose={() => setShowChangePasswordModal(false)} 
       />
     </header>
-  );
-};
-
-const CartHeaderButton = () => {
-  const { getTotalItems, setIsCartOpen, isCartOpen } = useCart();
-  const totalItems = getTotalItems();
-  const isActive = isCartOpen || totalItems > 0;
-
-  return (
-    <button
-      onClick={() => setIsCartOpen(true)}
-      className={`relative flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg group ${
-        isActive
-          ? "text-primary bg-primary/10"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-      }`}
-    >
-      <div className="relative">
-        <ShoppingBag className={`w-4 h-4 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
-        {totalItems > 0 && (
-          <span className="absolute -top-1 -right-1.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shadow-sm">
-            {totalItems}
-          </span>
-        )}
-      </div>
-      <span className="text-[9px] font-medium">עגלה</span>
-    </button>
   );
 };
 
