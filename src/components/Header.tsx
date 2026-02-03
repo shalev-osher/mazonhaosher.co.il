@@ -73,10 +73,12 @@ const Header = () => {
                     : "hover:bg-muted"
                 }`}
               >
-                <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 bg-gradient-to-br ${item.gradient} shadow-md ${
-                  isActive ? "scale-110" : "group-hover:scale-105"
+                <div className={`transition-all duration-300 bg-gradient-to-br ${item.gradient} shadow-md ${
+                  item.id === 'gift-packages' 
+                    ? `p-1.5 md:p-2 rounded-2xl ring-2 ring-offset-1 ring-offset-background ring-pink-400/50 ${isActive ? "scale-115 animate-pulse" : "group-hover:scale-110"}` 
+                    : `p-1 md:p-1.5 rounded-xl ${isActive ? "scale-110" : "group-hover:scale-105"}`
                 }`}>
-                  <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
+                  <IconComponent className={`text-white ${item.id === 'gift-packages' ? 'w-4 h-4 md:w-5 md:h-5 fill-white/30 drop-shadow-lg' : 'w-3.5 h-3.5 md:w-4 md:h-4'}`} />
                 </div>
                 <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
               </button>
