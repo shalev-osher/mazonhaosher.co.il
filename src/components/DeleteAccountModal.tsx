@@ -19,14 +19,15 @@ interface DeleteAccountModalProps {
   onClose: () => void;
 }
 
-type Step = "confirm" | "otp";
+type Step = "type-confirm" | "confirm" | "otp";
 
 const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
-  const [step, setStep] = useState<Step>("confirm");
+  const [step, setStep] = useState<Step>("type-confirm");
   const [isLoading, setIsLoading] = useState(false);
   const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
   const [otpResendTimer, setOtpResendTimer] = useState(0);
   const [error, setError] = useState("");
+  const [confirmText, setConfirmText] = useState("");
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { logout, user } = useProfile();
 
@@ -171,10 +172,11 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
   };
 
   const handleClose = () => {
-    setStep("confirm");
+    setStep("type-confirm");
     setOtpCode(["", "", "", "", "", ""]);
     setError("");
     setOtpResendTimer(0);
+    setConfirmText("");
     onClose();
   };
 
@@ -188,7 +190,38 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
           </AlertDialogTitle>
         </AlertDialogHeader>
 
-        {step === "confirm" ? (
+        {step === "type-confirm" ? (
+          <>
+            <AlertDialogDescription className="text-right space-y-3">
+              <p className="text-foreground/80">
+                כדי להמשיך, הקלד <span className="font-bold text-destructive">"מחיקה"</span> בשדה למטה:
+              </p>
+              <Input
+                value={confirmText}
+                onChange={(e) => setConfirmText(e.target.value)}
+                placeholder="הקלד מחיקה"
+                className="text-right bg-background/50 border-destructive/30 focus:border-destructive"
+                dir="rtl"
+              />
+            </AlertDialogDescription>
+            <AlertDialogFooter className="flex-row-reverse gap-2 mt-4">
+              <Button
+                variant="outline"
+                onClick={handleClose}
+                className="bg-background/80 border border-primary text-foreground hover:bg-primary/10"
+              >
+                ביטול
+              </Button>
+              <Button
+                onClick={() => setStep("confirm")}
+                disabled={confirmText !== "מחיקה"}
+                className="bg-destructive/90 border border-destructive text-destructive-foreground hover:bg-destructive disabled:opacity-50"
+              >
+                המשך
+              </Button>
+            </AlertDialogFooter>
+          </>
+        ) : step === "confirm" ? (
           <>
             <AlertDialogDescription className="text-right space-y-3">
               <p className="text-foreground/80">
@@ -197,7 +230,6 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
               <ul className="list-disc list-inside text-muted-foreground text-sm space-y-1 mr-2">
                 <li>פרטי הפרופיל</li>
                 <li>היסטוריית הזמנות</li>
-                <li>מכשירים מהימנים</li>
               </ul>
               <p className="text-destructive font-medium">
                 לא ניתן לשחזר את המידע לאחר המחיקה!
@@ -212,10 +244,10 @@ const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps) => {
             <AlertDialogFooter className="flex-row-reverse gap-2 mt-4">
               <Button
                 variant="outline"
-                onClick={handleClose}
+                onClick={() => setStep("type-confirm")}
                 className="bg-background/80 border border-primary text-foreground hover:bg-primary/10"
               >
-                ביטול
+                חזור
               </Button>
               <Button
                 onClick={sendOTP}
