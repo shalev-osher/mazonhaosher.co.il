@@ -97,16 +97,18 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    try {
-      await supabase.auth.signOut();
-    } catch (error) {
-      // Session might already be expired/invalid, that's fine
-      console.log("Logout completed (session may have been expired)");
-    }
-    // Always clear local state regardless of signOut result
+    // Clear local state first to prevent any re-auth attempts
     setProfileState(null);
     setUser(null);
     setSession(null);
+    
+    try {
+      // Use scope: 'local' to clear local storage even if server session is gone
+      await supabase.auth.signOut({ scope: 'local' });
+    } catch (error) {
+      // Even if signOut fails, local state is already cleared
+      console.log("Logout completed (local state cleared)");
+    }
   };
 
   return (
