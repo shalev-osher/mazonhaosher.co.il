@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { KeyRound, Loader2, Eye, EyeOff } from "lucide-react";
+import { KeyRound, Loader2, Eye, EyeOff, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,6 +17,7 @@ interface ChangePasswordModalProps {
 }
 
 const passwordSchema = z.object({
+  currentPassword: z.string().min(1, "יש להזין סיסמה נוכחית"),
   newPassword: z.string()
     .min(8, "סיסמה חייבת להכיל לפחות 8 תווים")
     .regex(/[A-Z]/, "סיסמה חייבת להכיל אות גדולה באנגלית")
@@ -29,12 +30,14 @@ const passwordSchema = z.object({
 
 const ChangePasswordModal = ({ isOpen, onClose }: ChangePasswordModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   
   const [formData, setFormData] = useState({
+    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -66,6 +69,25 @@ const ChangePasswordModal = ({ isOpen, onClose }: ChangePasswordModalProps) => {
 
     setIsLoading(true);
     try {
+      // First, verify current password by re-authenticating
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) {
+        throw new Error("לא נמצא משתמש מחובר");
+      }
+
+      // Re-authenticate with current password
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: formData.currentPassword,
+      });
+
+      if (signInError) {
+        setErrors({ currentPassword: "סיסמה נוכחית שגויה" });
+        setIsLoading(false);
+        return;
+      }
+
+      // Update to new password
       const { error } = await supabase.auth.updateUser({
         password: formData.newPassword,
       });
@@ -85,9 +107,10 @@ const ChangePasswordModal = ({ isOpen, onClose }: ChangePasswordModalProps) => {
   };
 
   const handleClose = () => {
-    setFormData({ newPassword: "", confirmPassword: "" });
+    setFormData({ currentPassword: "", newPassword: "", confirmPassword: "" });
     setErrors({});
     setSuccess(false);
+    setShowCurrentPassword(false);
     setShowNewPassword(false);
     setShowConfirmPassword(false);
     onClose();
@@ -113,6 +136,30 @@ const ChangePasswordModal = ({ isOpen, onClose }: ChangePasswordModalProps) => {
           </div>
         ) : (
           <div className="space-y-4 py-4">
+            {/* Current Password */}
+            <div className="space-y-1.5">
+              <label className="text-xs text-muted-foreground">סיסמה נוכחית</label>
+              <div className="relative">
+                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={formData.currentPassword}
+                  onChange={(e) => handleChange("currentPassword", e.target.value)}
+                  placeholder="הזן סיסמה נוכחית"
+                  className={`pr-10 pl-10 text-right bg-background/50 ${errors.currentPassword ? "border-destructive" : "border-primary/30"}`}
+                  dir="ltr"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {errors.currentPassword && <p className="text-xs text-destructive">{errors.currentPassword}</p>}
+            </div>
+
             {/* New Password */}
             <div className="space-y-1.5">
               <label className="text-xs text-muted-foreground">סיסמה חדשה</label>
@@ -165,7 +212,7 @@ const ChangePasswordModal = ({ isOpen, onClose }: ChangePasswordModalProps) => {
             {/* Submit Button */}
             <Button
               onClick={handleSubmit}
-              disabled={isLoading || !formData.newPassword || !formData.confirmPassword}
+              disabled={isLoading || !formData.currentPassword || !formData.newPassword || !formData.confirmPassword}
               className="w-full bg-background/80 border border-primary text-foreground hover:bg-primary hover:text-primary-foreground"
             >
               {isLoading ? (
