@@ -78,48 +78,23 @@ const Header = () => {
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-500/30">
         {/* Safe area background - solid color to match theme-color */}
         <div className="absolute inset-x-0 top-0 h-[env(safe-area-inset-top)] bg-background" />
-        <div className="flex items-center justify-center px-2 py-1.5 md:py-2 pt-[calc(0.375rem+env(safe-area-inset-top))] bg-background">
-          {/* Navigation bar */}
-          <nav className="flex items-center gap-0.5 md:gap-1">
-            {/* Navigation items */}
-            {navItems.map((item) => {
-              const IconComponent = item.icon;
-              const isActive = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group ${
-                    isActive 
-                      ? "bg-amber-500/20" 
-                      : "hover:bg-muted"
-                  }`}
-                >
-                  <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 bg-gradient-to-br ${item.gradient} shadow-md ${
-                    isActive ? "scale-110" : "group-hover:scale-105"
-                  }`}>
-                    <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white fill-white/20" />
-                  </div>
-                  <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
-                </button>
-              );
-            })}
-
-            {/* Account Button */}
+        <div className="flex items-center justify-between px-2 py-1.5 md:py-2 pt-[calc(0.375rem+env(safe-area-inset-top))] bg-background">
+          {/* Left side - Login/Account button */}
+          <div className="flex items-center">
             {isLoggedIn ? (
               <DropdownMenu dir={isRTL ? "rtl" : "ltr"}>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group hover:bg-muted/50">
+                  <button className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 md:py-2 transition-all duration-300 rounded-lg group hover:bg-muted/50">
                     <div className="p-1 md:p-1.5 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md transition-all duration-300 group-hover:scale-105">
                       <UserCircle className="w-3.5 h-3.5 md:w-4 md:h-4 text-white fill-white/20" />
                     </div>
-                    <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground">
+                    <span className="text-[10px] md:text-xs font-medium text-muted-foreground group-hover:text-foreground">
                       {isRTL ? "חשבון" : "Account"}
                     </span>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  align="end"
+                  align="start"
                   side="bottom"
                   className={`w-48 rounded-xl shadow-xl border-border/50 bg-background animate-scale-in text-sm ${isRTL ? 'text-right [direction:rtl]' : 'text-left [direction:ltr]'}`}
                 >
@@ -162,17 +137,47 @@ const Header = () => {
             ) : (
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group hover:bg-muted/50"
+                className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 md:py-2 transition-all duration-300 rounded-lg group hover:bg-muted/50"
               >
                 <div className="p-1 md:p-1.5 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md transition-all duration-300 group-hover:scale-105">
                   <UserCircle className="w-3.5 h-3.5 md:w-4 md:h-4 text-white fill-white/20" />
                 </div>
-                <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground">
+                <span className="text-[10px] md:text-xs font-medium text-muted-foreground group-hover:text-foreground">
                   {isRTL ? "התחברות" : "Login"}
                 </span>
               </button>
             )}
+          </div>
+
+          {/* Center - Navigation bar */}
+          <nav className="flex items-center gap-0.5 md:gap-1">
+            {/* Navigation items */}
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group ${
+                    isActive 
+                      ? "bg-amber-500/20" 
+                      : "hover:bg-muted"
+                  }`}
+                >
+                  <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 bg-gradient-to-br ${item.gradient} shadow-md ${
+                    isActive ? "scale-110" : "group-hover:scale-105"
+                  }`}>
+                    <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white fill-white/20" />
+                  </div>
+                  <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
+                </button>
+              );
+            })}
           </nav>
+
+          {/* Right side - Empty for balance */}
+          <div className="w-[80px] md:w-[100px]"></div>
         </div>
       </header>
 
