@@ -46,15 +46,15 @@ const Header = () => {
   };
 
   const navItems = [
-    { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, bgColor: "bg-orange-500/15", iconColor: "text-orange-500" },
-    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, bgColor: "bg-purple-500/15", iconColor: "text-purple-500" },
-    { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, bgColor: "bg-amber-500/15", iconColor: "text-amber-500" },
-    { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, bgColor: "bg-sky-500/15", iconColor: "text-sky-500" },
-    { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, bgColor: "bg-emerald-500/15", iconColor: "text-emerald-500" },
+    { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, bgColor: "bg-orange-500/20", iconColor: "text-orange-500" },
+    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, bgColor: "bg-purple-500/20", iconColor: "text-purple-500" },
+    { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, bgColor: "bg-amber-500/20", iconColor: "text-amber-500" },
+    { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, bgColor: "bg-sky-500/20", iconColor: "text-sky-500" },
+    { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, bgColor: "bg-emerald-500/20", iconColor: "text-emerald-500" },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/30">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-500/30">
       {/* Safe area background - solid color to match theme-color */}
       <div className="absolute inset-x-0 top-0 h-[env(safe-area-inset-top)] bg-background" />
       <div className="flex items-center justify-center px-2 py-1.5 md:py-2 pt-[calc(0.375rem+env(safe-area-inset-top))] bg-background">
@@ -70,8 +70,8 @@ const Header = () => {
                 onClick={() => scrollToSection(item.id)}
                 className={`flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group ${
                   isActive 
-                    ? "bg-primary/10" 
-                    : "hover:bg-muted/50"
+                    ? "bg-amber-500/20" 
+                    : "hover:bg-muted"
                 }`}
               >
                 <div className={`p-1 md:p-1.5 rounded-lg transition-all duration-300 ${item.bgColor} ${
