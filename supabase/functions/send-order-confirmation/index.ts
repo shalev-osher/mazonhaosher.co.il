@@ -148,70 +148,79 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     const orderNumber = `MH-${Date.now().toString().slice(-6)}`;
+    const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/assets/logo.png";
 
     const emailResponse = await resend.emails.send({
       from: "מזון האושר <noreply@mazonhaosher.co.il>",
       to: [customerEmail],
-      subject: "קבלה והאישור הזמנה - מזון האושר 🍪",
+      subject: "אישור הזמנה - מזון האושר",
       html: `
-        <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fefefe;">
-          <!-- Header with Logo -->
-          <div style="text-align: center; padding: 20px 0; border-bottom: 3px solid #B8860B;">
-            <h1 style="color: #B8860B; margin: 10px 0 0 0; font-size: 28px;">מזון האושר</h1>
-            <p style="color: #666; margin: 5px 0 0 0;">עוגיות אמריקאיות ביתיות</p>
-          </div>
-          
-          <!-- Receipt Header -->
-          <div style="background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 8px;">
-            <table style="width: 100%; font-size: 14px;">
-              <tr>
-                <td><strong>מספר הזמנה:</strong> ${orderNumber}</td>
-                <td style="text-align: left;"><strong>תאריך:</strong> ${orderDate}</td>
-              </tr>
-            </table>
-          </div>
-          
-          <p style="font-size: 18px; color: #333;">שלום ${safeName},</p>
-          <p style="color: #555;">תודה שבחרת במזון האושר! קיבלנו את הזמנתך ונחזור אליך בהקדם לתיאום משלוח.</p>
-          
-          <!-- Order Details - Receipt Style -->
-          <div style="border: 2px solid #B8860B; border-radius: 10px; overflow: hidden; margin: 20px 0;">
-            <div style="background-color: #B8860B; color: white; padding: 12px 20px;">
-              <h2 style="margin: 0; font-size: 18px;">📋 פירוט ההזמנה</h2>
+        <!DOCTYPE html>
+        <html dir="rtl" lang="he">
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+            <!-- Glass-like container with transparency -->
+            <div style="background: linear-gradient(135deg, rgba(251, 243, 241, 0.85) 0%, rgba(248, 236, 232, 0.75) 100%); border-radius: 24px; padding: 40px 30px; border: 1px solid rgba(232, 93, 143, 0.15);">
+              
+              <!-- Large Logo -->
+              <div style="text-align: center; margin-bottom: 25px;">
+                <img src="${logoUrl}" alt="מזון האושר" style="max-width: 180px; height: auto;" />
+              </div>
+              
+              <!-- Title - Just brand name -->
+              <h1 style="text-align: center; color: hsl(340, 60%, 55%); font-size: 26px; margin: 0 0 25px 0; font-weight: 600;">מזון האושר</h1>
+              
+              <!-- Order Number Badge -->
+              <div style="text-align: center; margin-bottom: 25px;">
+                <span style="background: rgba(232, 93, 143, 0.15); color: hsl(340, 60%, 45%); padding: 8px 20px; border-radius: 20px; font-size: 14px;">
+                  הזמנה ${orderNumber} | ${orderDate}
+                </span>
+              </div>
+              
+              <!-- Greeting -->
+              <p style="font-size: 18px; color: #333; text-align: center; margin: 0 0 20px 0;">שלום ${safeName},</p>
+              <p style="color: #666; text-align: center; margin: 0 0 30px 0;">תודה שבחרת בנו! קיבלנו את הזמנתך ונחזור אליך בהקדם.</p>
+              
+              <!-- Order Details Box -->
+              <div style="background: rgba(255, 255, 255, 0.7); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(232, 93, 143, 0.2);">
+                <h2 style="color: hsl(340, 60%, 55%); font-size: 16px; margin: 0 0 15px 0; font-weight: 600;">📋 פירוט ההזמנה</h2>
+                <pre style="white-space: pre-wrap; font-family: 'Heebo', Arial, sans-serif; margin: 0; font-size: 14px; line-height: 1.8; color: #444;">${safeOrderDetails}</pre>
+                <div style="border-top: 1px dashed rgba(232, 93, 143, 0.3); margin-top: 20px; padding-top: 15px;">
+                  <table style="width: 100%;">
+                    <tr>
+                      <td style="font-size: 16px; font-weight: 600; color: hsl(340, 60%, 45%);">סה״כ לתשלום:</td>
+                      <td style="font-size: 22px; font-weight: bold; color: hsl(340, 60%, 55%); text-align: left;">₪${safePrice}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              
+              <!-- Customer Info Box -->
+              <div style="background: rgba(255, 255, 255, 0.5); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(232, 93, 143, 0.1);">
+                <h3 style="margin: 0 0 12px 0; color: hsl(340, 60%, 45%); font-size: 14px; font-weight: 600;">📦 פרטי המזמין</h3>
+                <p style="margin: 5px 0; font-size: 14px; color: #555;"><strong>שם:</strong> ${safeName}</p>
+                <p style="margin: 5px 0; font-size: 14px; color: #555;"><strong>טלפון:</strong> ${safePhone}</p>
+                <p style="margin: 5px 0; font-size: 14px; color: #555;"><strong>מייל:</strong> ${safeEmail}</p>
+              </div>
+              
+              <!-- Payment Notice -->
+              <div style="background: rgba(255, 243, 205, 0.6); padding: 15px 20px; border-radius: 12px; border-right: 3px solid hsl(45, 100%, 51%);">
+                <p style="margin: 0; font-size: 14px; color: #666;"><strong>💵 אופן תשלום:</strong> מזומן בעת המשלוח</p>
+              </div>
+              
+              <!-- Footer -->
+              <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(232, 93, 143, 0.15);">
+                <p style="color: #888; margin: 0; font-size: 14px;">בברכה,</p>
+                <p style="color: hsl(340, 60%, 55%); font-weight: 600; font-size: 16px; margin: 8px 0 0 0;">מזון האושר</p>
+              </div>
             </div>
-            <div style="padding: 20px; background-color: #fffef5;">
-              <pre style="white-space: pre-wrap; font-family: Arial, sans-serif; margin: 0; font-size: 15px; line-height: 1.8;">${safeOrderDetails}</pre>
-            </div>
-            <div style="border-top: 2px dashed #B8860B; padding: 15px 20px; background-color: #fff8e7;">
-              <table style="width: 100%;">
-                <tr>
-                  <td style="font-size: 20px; font-weight: bold; color: #B8860B;">סה״כ לתשלום:</td>
-                  <td style="font-size: 24px; font-weight: bold; color: #B8860B; text-align: left;">₪${safePrice}</td>
-                </tr>
-              </table>
-            </div>
           </div>
-          
-          <!-- Customer Info -->
-          <div style="background-color: #e8f5e9; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin: 0 0 10px 0; color: #2e7d32;">📦 פרטי המזמין</h3>
-            <p style="margin: 5px 0;"><strong>שם:</strong> ${safeName}</p>
-            <p style="margin: 5px 0;"><strong>טלפון:</strong> ${safePhone}</p>
-            <p style="margin: 5px 0;"><strong>מייל:</strong> ${safeEmail}</p>
-          </div>
-          
-          <!-- Payment Notice -->
-          <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-right: 4px solid #ffc107;">
-            <p style="margin: 0;"><strong>💵 אופן תשלום:</strong> מזומן בעת המשלוח</p>
-          </div>
-          
-          <!-- Footer -->
-          <div style="text-align: center; padding: 20px 0; border-top: 1px solid #eee; margin-top: 30px;">
-            <p style="color: #666; margin: 0;">בברכה,</p>
-            <p style="color: #B8860B; font-weight: bold; font-size: 18px; margin: 5px 0;">מזון האושר</p>
-            <p style="color: #999; font-size: 12px; margin: 10px 0 0 0;">עוגיות אמריקאיות ביתיות מוכנות באהבה 🍪</p>
-          </div>
-        </div>
+        </body>
+        </html>
       `,
     });
 
