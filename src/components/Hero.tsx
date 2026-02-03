@@ -115,7 +115,7 @@ const Hero = () => {
           alt="עוגיות קראמבל טריות מהתנור"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/60 to-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/50 to-background" />
       </div>
 
       {/* Floating Sparkles */}
@@ -134,9 +134,9 @@ const Hero = () => {
           }`}
         >
           {/* Made with love badge */}
-          <div className="inline-flex items-center gap-2 bg-amber-500/10 backdrop-blur-sm border border-amber-500/20 rounded-full px-4 py-1.5 mb-2">
+          <div className="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900 border-2 border-amber-500 rounded-full px-4 py-1.5 mb-2">
             <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
-            <span className="text-amber-600 font-medium tracking-wider uppercase text-sm">
+            <span className="text-amber-700 dark:text-amber-300 font-medium tracking-wider uppercase text-sm">
               {isRTL ? "מיוצר באהבה" : "Made with Love"}
             </span>
             <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
