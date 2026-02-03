@@ -6,51 +6,59 @@
 
 @layer base {
   :root {
-    --background: 340 30% 97%;
-    --foreground: 340 30% 15%;
+    --background: 30 25% 97%;
+    --foreground: 20 20% 18%;
 
-    --card: 340 25% 95%;
-    --card-foreground: 340 30% 15%;
+    --card: 30 20% 95%;
+    --card-foreground: 20 20% 18%;
 
-    --popover: 340 30% 97%;
-    --popover-foreground: 340 30% 15%;
+    --popover: 30 25% 97%;
+    --popover-foreground: 20 20% 18%;
 
-    --primary: 340 60% 55%;
+    --primary: 350 65% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 340 25% 92%;
-    --secondary-foreground: 340 30% 15%;
+    --secondary: 30 20% 92%;
+    --secondary-foreground: 20 20% 18%;
 
-    --muted: 340 20% 94%;
-    --muted-foreground: 340 15% 45%;
+    --muted: 30 15% 94%;
+    --muted-foreground: 20 10% 45%;
 
-    --accent: 340 70% 60%;
+    --accent: 280 60% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 340 20% 88%;
-    --input: 340 20% 88%;
-    --ring: 340 60% 55%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 350 65% 55%;
 
     --radius: 0.75rem;
 
-    /* Custom tokens - Pink theme */
-    --warm-cream: 340 30% 97%;
-    --rich-pink: 340 60% 45%;
-    --golden-honey: 35 80% 55%;
-    --soft-pink: 340 40% 85%;
-    --dark-pink: 340 50% 35%;
+    /* Custom accent colors */
+    --warm-cream: 30 25% 97%;
+    --rose: 350 65% 55%;
+    --coral: 15 75% 60%;
+    --amber: 35 85% 55%;
+    --teal: 175 60% 45%;
+    --violet: 280 60% 60%;
+    --sky: 200 80% 55%;
+    --emerald: 155 60% 45%;
+    --golden-honey: 40 90% 55%;
+    --soft-pink: 350 40% 85%;
 
     /* Gradients */
-    --gradient-warm: linear-gradient(135deg, hsl(340 30% 97%) 0%, hsl(340 25% 92%) 100%);
-    --gradient-cookie: linear-gradient(180deg, hsl(340 40% 85% / 0.3) 0%, transparent 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(30 25% 97%) 0%, hsl(30 20% 92%) 100%);
+    --gradient-cookie: linear-gradient(180deg, hsl(35 85% 55% / 0.2) 0%, transparent 100%);
+    --gradient-sunset: linear-gradient(135deg, hsl(350 65% 55%), hsl(35 85% 55%));
+    --gradient-ocean: linear-gradient(135deg, hsl(200 80% 55%), hsl(175 60% 45%));
+    --gradient-berry: linear-gradient(135deg, hsl(350 65% 55%), hsl(280 60% 60%));
     
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(340 30% 15% / 0.1);
-    --shadow-warm: 0 8px 30px -8px hsl(340 60% 55% / 0.3);
-    --shadow-elevated: 0 20px 50px -15px hsl(340 30% 15% / 0.15);
+    --shadow-soft: 0 4px 20px -4px hsl(20 20% 18% / 0.08);
+    --shadow-warm: 0 8px 30px -8px hsl(350 65% 55% / 0.25);
+    --shadow-elevated: 0 20px 50px -15px hsl(20 20% 18% / 0.12);
 
     /* Animations */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -66,33 +74,41 @@
   }
 
   .dark {
-    --background: 340 30% 8%;
-    --foreground: 340 30% 96%;
+    --background: 25 20% 8%;
+    --foreground: 30 20% 96%;
 
-    --card: 340 25% 12%;
-    --card-foreground: 340 30% 96%;
+    --card: 25 18% 12%;
+    --card-foreground: 30 20% 96%;
 
-    --popover: 340 30% 8%;
-    --popover-foreground: 340 30% 96%;
+    --popover: 25 20% 8%;
+    --popover-foreground: 30 20% 96%;
 
-    --primary: 340 70% 60%;
-    --primary-foreground: 340 30% 10%;
+    --primary: 350 70% 62%;
+    --primary-foreground: 25 20% 10%;
 
-    --secondary: 340 25% 18%;
-    --secondary-foreground: 340 30% 96%;
+    --secondary: 25 18% 18%;
+    --secondary-foreground: 30 20% 96%;
 
-    --muted: 340 20% 20%;
-    --muted-foreground: 340 15% 60%;
+    --muted: 25 15% 20%;
+    --muted-foreground: 30 10% 60%;
 
-    --accent: 340 70% 60%;
-    --accent-foreground: 340 30% 10%;
+    --accent: 280 65% 65%;
+    --accent-foreground: 25 20% 10%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 340 20% 20%;
-    --input: 340 20% 20%;
-    --ring: 340 70% 60%;
+    --border: 25 15% 20%;
+    --input: 25 15% 20%;
+    --ring: 350 70% 62%;
+
+    /* Dark mode custom colors */
+    --coral: 15 80% 65%;
+    --amber: 40 90% 60%;
+    --teal: 175 65% 50%;
+    --violet: 280 65% 65%;
+    --sky: 200 85% 60%;
+    --emerald: 155 65% 50%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
