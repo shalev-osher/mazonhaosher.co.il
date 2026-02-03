@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+import { lovable } from "@/lib/lovableAuth";
 import { z } from "zod";
 import logo from "@/assets/logo.png";
 
@@ -463,12 +463,12 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
       // Set the session from the response
       if (response.data?.session) {
-        const { error: sessionError } = await supabase.auth.setSession({
+        const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
           access_token: response.data.session.access_token,
           refresh_token: response.data.session.refresh_token,
         });
         
-        if (sessionError) {
+        if (sessionError || !sessionData.session) {
           console.error("Error setting session:", sessionError);
           throw new Error("שגיאה בהתחברות");
         }
