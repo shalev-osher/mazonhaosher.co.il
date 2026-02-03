@@ -12,9 +12,9 @@ const ThemeToggle = () => {
       className="flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group hover:bg-muted"
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
-      <div className="p-1 md:p-1.5 rounded-lg transition-all duration-300 group-hover:scale-105 bg-muted ring-1 ring-border/60">
+      <div className="p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 bg-gradient-to-br from-indigo-500 to-violet-600 shadow-md">
         <Moon 
-          className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-foreground"
+          className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white fill-white/20"
         />
       </div>
       <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground">

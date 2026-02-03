@@ -47,7 +47,11 @@ const FAQSection = () => {
   
   return (
     <section id="faq" ref={sectionRef} className="py-10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-sky-500/10 via-background to-teal-500/10" />
+      {/* Rich gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-sky-100 via-cyan-50 to-teal-100 dark:from-sky-950/40 dark:via-cyan-950/30 dark:to-teal-950/40" />
+      <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, hsl(200 80% 60% / 0.25) 0%, transparent 45%), radial-gradient(circle at 80% 70%, hsl(175 70% 50% / 0.2) 0%, transparent 50%), radial-gradient(circle at 50% 90%, hsl(190 75% 55% / 0.15) 0%, transparent 40%)' }} />
+      {/* Question mark pattern */}
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='20' y='28' font-size='20' text-anchor='middle' fill='%230ea5e9'%3E%3F%3C/text%3E%3C/svg%3E")`, backgroundSize: '60px 60px' }} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className={`text-center mb-6 transition-all duration-700 ${
@@ -73,8 +77,8 @@ const FAQSection = () => {
               >
                 <AccordionTrigger className={`hover:no-underline py-3 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                   <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-sky-500/10 rounded-full">
-                      <faq.icon className="h-4 w-4 text-sky-500" />
+                    <div className="p-2 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-xl shadow-md">
+                      <faq.icon className="h-4 w-4 text-white fill-white/20" />
                     </div>
                     <span className="font-semibold text-sm">{faq.question}</span>
                   </div>

@@ -52,31 +52,29 @@ const Footer = () => {
                 className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
                 aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
               >
-                <div className="p-1.5 md:p-2 rounded-full transition-all duration-300 bg-muted ring-1 ring-border/60">
-                  <Moon className="w-4 h-4 md:w-5 md:h-5 text-foreground" />
+                <div className="p-1.5 md:p-2 rounded-xl transition-all duration-300 bg-gradient-to-br from-indigo-500 to-violet-600 shadow-md">
+                  <Moon className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
                 </div>
               </button>
               
-              {/* Cart */}
               <button 
                 onClick={() => setIsCartOpen(true)}
                 className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
               >
-                <div className="p-1.5 md:p-2 rounded-full bg-teal-500/15">
-                  <ShoppingBag className="w-4 h-4 md:w-5 md:h-5 text-teal-500" />
+                <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 shadow-md">
+                  <ShoppingBag className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
                 </div>
               </button>
 
-              {/* WhatsApp */}
               <a 
                 href="https://wa.me/972546791198"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
               >
-                <div className="p-1.5 md:p-2 rounded-full bg-[#25D366]/15">
+                <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-[#25D366] to-[#128C7E] shadow-md">
                   <svg 
-                    className="w-4 h-4 md:w-5 md:h-5 text-[#25D366]" 
+                    className="w-4 h-4 md:w-5 md:h-5 text-white"
                     viewBox="0 0 24 24" 
                     fill="currentColor"
                   >
@@ -98,8 +96,8 @@ const Footer = () => {
                 <DropdownMenu dir={isRTL ? "rtl" : "ltr"}>
                   <DropdownMenuTrigger asChild>
                     <button className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group">
-                      <div className="p-1.5 md:p-2 rounded-full bg-cyan-500/15">
-                        <UserCircle className="w-4 h-4 md:w-5 md:h-5 text-cyan-500" />
+                      <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md">
+                        <UserCircle className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
                       </div>
                     </button>
                   </DropdownMenuTrigger>
@@ -149,35 +147,33 @@ const Footer = () => {
                   onClick={() => setAuthModalOpen(true)}
                   className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
                 >
-                  <div className="p-1.5 md:p-2 rounded-full bg-cyan-500/15">
-                    <UserCircle className="w-4 h-4 md:w-5 md:h-5 text-cyan-500" />
+                  <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md">
+                    <UserCircle className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
                   </div>
                 </button>
               )}
               
-              {/* Facebook */}
               <a 
                 href="https://www.facebook.com/p/%D7%9E%D7%96%D7%95%D7%9F-%D7%94%D7%90%D7%95%D7%A9%D7%A8-61565573526817/" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
               >
-                <div className="p-1.5 md:p-2 rounded-full bg-[#1877F2]/15">
-                  <svg className="w-4 h-4 md:w-5 md:h-5 text-[#1877F2]" viewBox="0 0 24 24" fill="currentColor">
+                <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-[#1877F2] to-[#0d5fc4] shadow-md">
+                  <svg className="w-4 h-4 md:w-5 md:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </div>
               </a>
 
-              {/* Instagram */}
               <a 
                 href="https://www.instagram.com/mazonaosher/" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
               >
-                <div className="p-1.5 md:p-2 rounded-full bg-gradient-to-br from-[#833AB4]/20 via-[#E1306C]/20 to-[#F77737]/20">
-                  <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="url(#instagram-gradient)">
+                <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#F77737] shadow-md">
+                  <svg className="w-4 h-4 md:w-5 md:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
                     <defs>
                       <linearGradient id="instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
                         <stop offset="0%" stopColor="#FFDC80"/>

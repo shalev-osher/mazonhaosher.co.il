@@ -147,7 +147,11 @@ const GiftPackageBuilder = () => {
 
   return (
     <section id="gift-packages" className="py-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 via-background to-teal-500/10" />
+      {/* Rich purple gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-100 via-violet-50 to-fuchsia-100 dark:from-purple-950/40 dark:via-violet-950/30 dark:to-fuchsia-950/40" />
+      <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, hsl(270 70% 60% / 0.25) 0%, transparent 50%), radial-gradient(circle at 75% 75%, hsl(280 65% 55% / 0.2) 0%, transparent 45%), radial-gradient(circle at 50% 50%, hsl(265 75% 65% / 0.15) 0%, transparent 55%)' }} />
+      {/* Gift pattern */}
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='10' y='20' width='30' height='25' fill='%238b5cf6' rx='3' /%3E%3Crect x='22' y='20' width='6' height='25' fill='%23a855f7' /%3E%3Crect x='10' y='15' width='30' height='8' fill='%239333ea' rx='2' /%3E%3Ccircle cx='25' cy='12' r='5' fill='%23c084fc' /%3E%3C/svg%3E")`, backgroundSize: '80px 80px' }} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-6">
@@ -173,8 +177,8 @@ const GiftPackageBuilder = () => {
                 <button
                   className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20 hover:border-purple-500/40 hover:shadow-lg transition-all duration-300 text-center group"
                 >
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
-                    <Gift className="h-6 w-6 text-purple-500" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform shadow-lg">
+                    <Gift className="h-7 w-7 text-white fill-white/20" />
                   </div>
                   <h3 className="font-display text-lg font-bold text-purple-600 mb-1">{t(pkg.nameKey)}</h3>
                   <p className="text-muted-foreground text-xs mb-2">{t(pkg.descKey)}</p>
@@ -189,7 +193,9 @@ const GiftPackageBuilder = () => {
               <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" dir={isRTL ? "rtl" : "ltr"}>
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl text-purple-600 flex items-center gap-2">
-                    <Gift className="h-6 w-6 text-purple-500" />
+                    <div className="p-2 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl shadow-md">
+                      <Gift className="h-5 w-5 text-white fill-white/20" />
+                    </div>
                     {t(pkg.nameKey)} - {pkg.count} {t('gift.cookies')}
                   </DialogTitle>
                 </DialogHeader>
@@ -228,7 +234,9 @@ const GiftPackageBuilder = () => {
                   {selectedCookies.length > 0 && (
                     <div className="bg-card rounded-2xl p-4 border border-purple-500/20">
                       <h4 className="font-semibold mb-3 flex items-center gap-2">
-                        <Package className="h-5 w-5 text-purple-500" />
+                        <div className="p-1.5 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg shadow-sm">
+                          <Package className="h-4 w-4 text-white fill-white/20" />
+                        </div>
                         {t('gift.yourCookies')}
                       </h4>
                       <div className="flex flex-wrap gap-2">
