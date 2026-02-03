@@ -145,7 +145,7 @@ const Header = () => {
                       <User className="w-4 h-4 transition-transform duration-300 scale-110" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm" dir="rtl">
+                  <DropdownMenuContent align="start" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm [direction:rtl]">
                     <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
                       <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
                       <p className="text-[10px] text-muted-foreground">{user?.email}</p>
