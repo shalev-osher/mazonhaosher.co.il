@@ -6,7 +6,7 @@ const Footer = () => {
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-40 py-2 md:py-3 bg-background/90 border-t border-border/30">
-      <div className="container mx-auto px-3 md:px-6">
+      <div className="w-full px-3 md:px-6">
         <div className="flex items-center justify-between">
           {/* Right side - Cart, WhatsApp */}
           <div className="flex items-center gap-2 md:gap-3">
