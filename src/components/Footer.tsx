@@ -68,9 +68,9 @@ const Footer = () => {
             </a>
           </div>
 
-          {/* Center - Copyright + Brand name + Year */}
+          {/* Center - Copyright + Brand name */}
           <span className="text-sm md:text-base font-medium text-foreground/80">
-            © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
+            © {isRTL ? "מזון האושר" : "Mazon HaOsher"}
           </span>
 
           {/* Left side - Language Toggle, Facebook, Instagram */}
