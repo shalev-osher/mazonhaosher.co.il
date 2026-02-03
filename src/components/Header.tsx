@@ -87,6 +87,7 @@ const Header = () => {
   };
 
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
+  const firstName = displayName?.split(" ")[0] || "";
 
   const navItems = [
     { id: "hero", label: "בית", icon: Home, color: "text-blue-500" },
@@ -131,7 +132,7 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <button className="flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg bg-primary/10">
                   <UserCircle className="w-4 h-4 md:w-[18px] md:h-[18px] text-orange-500" />
-                  <span className="text-[9px] md:text-[11px] font-medium text-foreground">חשבון</span>
+                  {firstName && <span className="text-[9px] md:text-[11px] font-medium text-foreground">{firstName}</span>}
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
