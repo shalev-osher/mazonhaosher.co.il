@@ -98,7 +98,7 @@ const ReviewsSection = () => {
 
   const handleSubmitReview = async () => {
     if (!isLoggedIn) {
-      setAuthModalOpen(true);
+      handleGoogleSignIn();
       return;
     }
     if (!validateReview()) return;
