@@ -13,17 +13,14 @@ const LanguageToggle = () => {
     <button
       onClick={toggleLanguage}
       className={cn(
-        "flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5",
-        "transition-all duration-300 rounded-lg group hover:bg-muted/50"
+        "w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center",
+        "transition-all duration-300 hover:scale-110 group"
       )}
       aria-label={language === 'he' ? 'Switch to English' : 'עבור לעברית'}
     >
-      <div className="p-1 md:p-1.5 rounded-lg bg-violet-500/15 transition-all duration-300 group-hover:scale-105">
-        <Globe className="w-3.5 h-3.5 md:w-4 md:h-4 text-violet-500" />
+      <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-md transition-all duration-300">
+        <Globe className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
       </div>
-      <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground">
-        {language === 'he' ? 'English' : 'עברית'}
-      </span>
     </button>
   );
 };
