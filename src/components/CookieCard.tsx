@@ -109,7 +109,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       <div 
         ref={cardRef}
         className={cn(
-          "group bg-card/50 rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border-2 border-primary/30",
+          "group bg-card/50 rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border-2 border-amber-500/30",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}
         style={{ 
@@ -122,15 +122,15 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           {tag && (
             <div className={`absolute -top-1 -right-1 z-10 px-2 py-0.5 rounded-full text-xs font-bold shadow-lg ${
               tag === "מומלץ" || tag === "Recommended"
-                ? "bg-accent text-accent-foreground" 
-                : "bg-green-500 text-white"
+                ? "bg-amber-500 text-white" 
+                : "bg-emerald-500 text-white"
             }`}>
               {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
             </div>
           )}
           <div className="w-20 h-20 overflow-hidden rounded-full relative bg-card">
             <div className={cn(
-              "absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 animate-pulse rounded-full transition-opacity duration-500",
+              "absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 animate-pulse rounded-full transition-opacity duration-500",
               imageLoaded ? "opacity-0" : "opacity-100"
             )} />
             <img
@@ -149,20 +149,20 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+            <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-amber-600 transition-colors">
               {name}
             </h3>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button className="text-muted-foreground hover:text-primary transition-colors">
+                  <button className="text-muted-foreground hover:text-sky-500 transition-colors">
                     <Info className="h-4 w-4" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
                   <p className="font-medium">{name}</p>
                   <p className="text-sm text-muted-foreground">{description}</p>
-                  <p className="text-sm text-primary font-bold mt-1">{price}</p>
+                  <p className="text-sm text-amber-600 font-bold mt-1">{price}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -185,7 +185,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         )}
 
         {/* Price */}
-        <span className="text-primary font-bold text-lg shrink-0">{price}</span>
+        <span className="text-amber-600 font-bold text-lg shrink-0">{price}</span>
 
         {/* Actions */}
         <div className="shrink-0">
@@ -203,7 +203,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
               <Button
                 onClick={handleIncrement}
                 size="icon"
-                className="h-8 w-8 rounded-full bg-primary hover:bg-primary/90"
+                className="h-8 w-8 rounded-full bg-amber-500 hover:bg-amber-600"
               >
                 <Plus className="w-3 h-3" />
               </Button>
@@ -214,8 +214,8 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
               size="sm"
               className={`gap-1 transition-all duration-300 ${
                 justAdded 
-                  ? "bg-green-500 hover:bg-green-500" 
-                  : "bg-primary hover:bg-primary/90"
+                  ? "bg-emerald-500 hover:bg-emerald-500" 
+                  : "bg-amber-500 hover:bg-amber-600"
               }`}
             >
               {justAdded ? (
@@ -244,10 +244,10 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "group bg-card/50 rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border-2 border-primary/30",
+        "group bg-card/50 rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border-2 border-amber-500/30",
         isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
       )}
-      style={{ 
+      style={{
         transitionDelay: isVisible ? '0ms' : `${delay}ms`,
         transitionProperty: 'opacity, transform, box-shadow',
         transform: isHovering 
@@ -276,8 +276,8 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         {tag && (
           <div className={`absolute top-1 left-1 z-10 px-1.5 py-0.5 rounded-full text-[8px] font-bold shadow-sm ${
             tag === "מומלץ" || tag === "Recommended"
-              ? "bg-accent text-accent-foreground" 
-              : "bg-green-500 text-white"
+              ? "bg-amber-500 text-white" 
+              : "bg-emerald-500 text-white"
           }`}>
             {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
           </div>
@@ -287,7 +287,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
             <TooltipTrigger asChild>
               <div className="aspect-square overflow-hidden relative rounded-md group/image cursor-pointer bg-card">
                 <div className={cn(
-                  "absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 animate-pulse rounded-lg transition-opacity duration-500",
+                  "absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 animate-pulse rounded-lg transition-opacity duration-500",
                   imageLoaded ? "opacity-0" : "opacity-100"
                 )} />
                 <img
@@ -300,19 +300,19 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                     imageLoaded ? "opacity-100" : "opacity-0"
                   )}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+                <div className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
               <p className="font-medium text-base">{name}</p>
               <p className="text-sm text-muted-foreground mt-1">{description}</p>
               <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
-                <span className="text-primary font-bold">{price}</span>
+                <span className="text-amber-600 font-bold">{price}</span>
                 {tag && (
                   <span className={`text-xs px-2 py-0.5 rounded-full ${
                     tag === "מומלץ" || tag === "Recommended"
-                      ? "bg-accent/20 text-accent-foreground" 
-                      : "bg-green-500/20 text-green-700"
+                      ? "bg-amber-500/20 text-amber-700" 
+                      : "bg-emerald-500/20 text-emerald-700"
                   }`}>
                     {(tag === "מומלץ" || tag === "Recommended") ? `⭐ ${t('cookieCard.recommended')}` : `✨ ${t('cookieCard.new')}`}
                   </span>
@@ -325,10 +325,10 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       
       {/* Content section */}
       <div className="p-3 pt-3 flex-1 text-center">
-        <h3 className="font-display text-base font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1 mb-2">
+        <h3 className="font-display text-base font-semibold text-foreground group-hover:text-amber-600 transition-colors duration-300 line-clamp-1 mb-2">
           {name}
         </h3>
-        <span className="text-primary font-bold text-base block mb-2">{price}</span>
+        <span className="text-amber-600 font-bold text-base block mb-2">{price}</span>
         <Dialog>
           <DialogTrigger asChild>
             <button
@@ -349,10 +349,10 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                 />
               </div>
               <DialogHeader className="text-center">
-                <DialogTitle className="font-display text-2xl text-primary">{name}</DialogTitle>
+                <DialogTitle className="font-display text-2xl text-amber-600">{name}</DialogTitle>
               </DialogHeader>
               <p className="text-muted-foreground leading-relaxed">{description}</p>
-              <span className="text-primary font-bold text-xl">{price}</span>
+              <span className="text-amber-600 font-bold text-xl">{price}</span>
               
               {/* Quantity controls in dialog */}
               {quantity > 0 ? (
@@ -369,7 +369,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                   <Button
                     onClick={handleIncrement}
                     size="icon"
-                    className="h-10 w-10 rounded-full bg-primary hover:bg-primary/90"
+                    className="h-10 w-10 rounded-full bg-amber-500 hover:bg-amber-600"
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -377,7 +377,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
               ) : (
                 <Button
                   onClick={handleAddToCart}
-                  className="w-full gap-2 bg-primary hover:bg-primary/90"
+                  className="w-full gap-2 bg-amber-500 hover:bg-amber-600"
                 >
                   <Plus className="w-4 h-4" />
                   {t('cookieCard.addToCart')}
@@ -420,7 +420,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                       "h-8 w-8 rounded-full shrink-0 transition-all duration-200",
                       quantity >= 6 
                         ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" 
-                        : "bg-primary hover:bg-primary/90",
+                        : "bg-amber-500 hover:bg-amber-600",
                       isShaking && "animate-[shake_0.5s_ease-in-out]"
                     )}
                   >
@@ -428,7 +428,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                   </Button>
                 </TooltipTrigger>
                 {quantity >= 6 && (
-                  <TooltipContent side="top" className="bg-background/90 border border-primary/50 text-foreground">
+                  <TooltipContent side="top" className="bg-background/90 border border-amber-500/50 text-foreground">
                     <p>{t('cookieCard.maxItems')}</p>
                   </TooltipContent>
                 )}
@@ -441,8 +441,8 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
             size="icon"
             className={`h-9 w-9 rounded-full transition-all duration-300 ${
               justAdded 
-                ? "bg-green-500 hover:bg-green-500" 
-                : "bg-primary hover:bg-primary/90"
+                ? "bg-emerald-500 hover:bg-emerald-500" 
+                : "bg-amber-500 hover:bg-amber-600"
             }`}
           >
             {justAdded ? (
