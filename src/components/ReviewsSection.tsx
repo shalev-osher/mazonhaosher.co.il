@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Star, Send, User, KeyRound } from "lucide-react";
+import { Star, Send, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import { reviewTextSchema, getValidationError } from "@/lib/validation";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useProfile } from "@/contexts/ProfileContext";
-import AuthModal from "./AuthModal";
 
 const cookieOptions = [
   "לוטוס", "קינדר", "קינדר בואנו", "רד וולווט", "קונפטי", "פיסטוק",
