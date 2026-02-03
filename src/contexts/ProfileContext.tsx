@@ -103,12 +103,18 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     setSession(null);
     
     try {
-      // Use scope: 'local' to clear local storage even if server session is gone
+      // Sign out from Supabase - this clears the session
       await supabase.auth.signOut({ scope: 'local' });
     } catch (error) {
-      // Even if signOut fails, local state is already cleared
       console.log("Logout completed (local state cleared)");
     }
+    
+    // Manually clear any remaining auth data from localStorage
+    // This ensures no tokens remain that could trigger auto-refresh
+    const keysToRemove = Object.keys(localStorage).filter(key => 
+      key.startsWith('sb-') || key.includes('supabase')
+    );
+    keysToRemove.forEach(key => localStorage.removeItem(key));
   };
 
   return (
