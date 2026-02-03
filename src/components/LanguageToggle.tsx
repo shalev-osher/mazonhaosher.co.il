@@ -19,7 +19,7 @@ const LanguageToggle = () => {
       aria-label={language === 'he' ? 'Switch to English' : 'עבור לעברית'}
     >
       <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 shadow-md transition-all duration-300">
-        <Globe className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
+        <Globe className="w-4 h-4 md:w-5 md:h-5 text-white" />
       </div>
     </button>
   );
