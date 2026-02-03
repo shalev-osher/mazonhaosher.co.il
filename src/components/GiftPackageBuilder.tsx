@@ -147,11 +147,11 @@ const GiftPackageBuilder = () => {
 
   return (
     <section id="gift-packages" className="py-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-accent/10 via-background to-accent/10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 via-background to-teal-500/10" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-6">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-purple-600 mb-2">
             {t('gift.title')}
           </h2>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto">
@@ -171,15 +171,15 @@ const GiftPackageBuilder = () => {
             }}>
               <DialogTrigger asChild>
                 <button
-                  className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border border-primary/10 hover:border-primary/30 hover:shadow-lg transition-all duration-300 text-center group"
+                  className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20 hover:border-purple-500/40 hover:shadow-lg transition-all duration-300 text-center group"
                 >
-                  <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
-                    <Gift className="h-6 w-6 text-accent" />
+                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                    <Gift className="h-6 w-6 text-purple-500" />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-primary mb-1">{t(pkg.nameKey)}</h3>
+                  <h3 className="font-display text-lg font-bold text-purple-600 mb-1">{t(pkg.nameKey)}</h3>
                   <p className="text-muted-foreground text-xs mb-2">{t(pkg.descKey)}</p>
                   <div className="flex items-center justify-center gap-2">
-                    <span className="bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs font-bold">
+                    <span className="bg-emerald-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">
                       {pkg.discount}% {t('gift.discount')}
                     </span>
                   </div>
@@ -188,8 +188,8 @@ const GiftPackageBuilder = () => {
 
               <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" dir={isRTL ? "rtl" : "ltr"}>
                 <DialogHeader>
-                  <DialogTitle className="font-display text-2xl text-primary flex items-center gap-2">
-                    <Gift className="h-6 w-6" />
+                  <DialogTitle className="font-display text-2xl text-purple-600 flex items-center gap-2">
+                    <Gift className="h-6 w-6 text-purple-500" />
                     {t(pkg.nameKey)} - {pkg.count} {t('gift.cookies')}
                   </DialogTitle>
                 </DialogHeader>
@@ -213,12 +213,12 @@ const GiftPackageBuilder = () => {
                       {remaining > 0 ? (
                         <span className="text-muted-foreground">{t('gift.moreToSelect').replace('{count}', String(remaining))}</span>
                       ) : (
-                        <span className="text-green-600 font-bold">{t('gift.packageFull')} ✓</span>
+                        <span className="text-emerald-600 font-bold">{t('gift.packageFull')} ✓</span>
                       )}
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div 
-                        className="bg-primary h-2 rounded-full transition-all duration-300"
+                        className="bg-purple-500 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${(totalSelected / pkg.count) * 100}%` }}
                       />
                     </div>
@@ -226,20 +226,20 @@ const GiftPackageBuilder = () => {
 
                   {/* Selected Cookies */}
                   {selectedCookies.length > 0 && (
-                    <div className="bg-card rounded-2xl p-4 border border-primary/10">
+                    <div className="bg-card rounded-2xl p-4 border border-purple-500/20">
                       <h4 className="font-semibold mb-3 flex items-center gap-2">
-                        <Package className="h-5 w-5 text-primary" />
+                        <Package className="h-5 w-5 text-purple-500" />
                         {t('gift.yourCookies')}
                       </h4>
                       <div className="flex flex-wrap gap-2">
-                        {selectedCookies.map((cookie) => (
+                          {selectedCookies.map((cookie) => (
                           <div
                             key={cookie.name}
-                            className="flex items-center gap-2 bg-primary/10 rounded-full px-3 py-1"
+                            className="flex items-center gap-2 bg-purple-500/10 rounded-full px-3 py-1"
                           >
                             <img src={cookie.image} alt={cookie.name} className="w-6 h-6 rounded-full object-cover" />
                             <span className="text-sm">{cookie.name}</span>
-                            <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
+                            <span className="text-xs bg-purple-500 text-white px-2 py-0.5 rounded-full">
                               x{cookie.quantity}
                             </span>
                             <button
@@ -265,8 +265,8 @@ const GiftPackageBuilder = () => {
                           disabled={remaining <= 0 && !selected}
                           className={`relative bg-card rounded-xl p-3 border transition-all duration-200 ${
                             selected 
-                              ? "border-primary shadow-md" 
-                              : "border-primary/10 hover:border-primary/30"
+                              ? "border-purple-500 shadow-md" 
+                              : "border-purple-500/10 hover:border-purple-500/30"
                           } ${remaining <= 0 && !selected ? "opacity-50" : ""}`}
                         >
                           <img
@@ -276,7 +276,7 @@ const GiftPackageBuilder = () => {
                           />
                           <span className="text-sm font-medium block truncate">{cookie.name}</span>
                           {selected && (
-                            <div className={`absolute -top-2 ${isRTL ? '-right-2' : '-left-2'} bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold`}>
+                            <div className={`absolute -top-2 ${isRTL ? '-right-2' : '-left-2'} bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold`}>
                               {selected.quantity}
                             </div>
                           )}
@@ -286,16 +286,16 @@ const GiftPackageBuilder = () => {
                   </div>
 
                   {/* Price Summary */}
-                  <div className="bg-accent/10 rounded-2xl p-4 space-y-2">
+                  <div className="bg-teal-500/10 rounded-2xl p-4 space-y-2">
                     <div className="flex justify-between">
                       <span>{t('gift.regularPrice')}</span>
                       <span>₪{basePrice}</span>
                     </div>
-                    <div className="flex justify-between text-green-600">
+                    <div className="flex justify-between text-emerald-600">
                       <span>{t('gift.packageDiscount')} ({pkg.discount}%):</span>
                       <span>-₪{discount}</span>
                     </div>
-                    <div className="flex justify-between text-xl font-bold text-primary border-t pt-2">
+                    <div className="flex justify-between text-xl font-bold text-purple-600 border-t pt-2">
                       <span>{t('gift.total')}</span>
                       <span>₪{finalPrice}</span>
                     </div>
@@ -305,7 +305,7 @@ const GiftPackageBuilder = () => {
                     onClick={handleAddToCart}
                     disabled={totalSelected !== pkg.count}
                     size="lg"
-                    className="w-full bg-accent hover:bg-accent/90"
+                    className="w-full bg-purple-500 hover:bg-purple-600"
                   >
                     <ShoppingBag className="h-5 w-5 ml-2" />
                     {t('gift.addToCart')}
