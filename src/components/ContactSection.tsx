@@ -1,8 +1,14 @@
-import { Clock } from "lucide-react";
+import { Clock, Navigation } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
 
 const ContactSection = () => {
   const { t, isRTL } = useLanguage();
+  
+  const openWaze = () => {
+    // Waze deep link to Sderot Kadesh 39, Ashkelon
+    window.open("https://waze.com/ul?ll=31.6689,34.5743&navigate=yes&zoom=17", "_blank");
+  };
   
   return (
     <section id="contact" className="py-6 relative overflow-hidden">
@@ -18,7 +24,7 @@ const ContactSection = () => {
           </h2>
 
           {/* Map */}
-          <div className="rounded-xl overflow-hidden shadow-lg mb-4 border-2 border-white/20">
+          <div className="rounded-xl overflow-hidden shadow-lg mb-3 border-2 border-white/20">
             <iframe
               src={isRTL 
                 ? "https://maps.google.com/maps?q=שדרות+קדש+39+אשקלון+ישראל&t=&z=17&ie=UTF8&iwloc=&output=embed&hl=he"
@@ -34,6 +40,15 @@ const ContactSection = () => {
               className="w-full"
             />
           </div>
+
+          {/* Waze Navigation Button */}
+          <Button
+            onClick={openWaze}
+            className="mb-4 bg-[#33ccff] hover:bg-[#29a8d4] text-white font-bold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          >
+            <Navigation className="w-4 h-4 mr-2 rtl:mr-0 rtl:ml-2" />
+            {isRTL ? "נווט אלינו עם Waze" : "Navigate with Waze"}
+          </Button>
 
           <div className="flex items-center justify-center gap-1.5 text-white/90 text-sm hover:scale-105 transition-transform duration-300">
             <Clock className="w-4 h-4" />
