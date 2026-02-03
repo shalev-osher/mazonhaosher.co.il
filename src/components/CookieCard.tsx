@@ -2,8 +2,7 @@ import { Plus, Minus, Trash2, Check, Info, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect, useCallback } from "react";
-import type { MouseEvent as ReactMouseEvent } from "react";
+import { useState, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -35,53 +34,12 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const { t } = useLanguage();
   const [justAdded, setJustAdded] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
   const itemInCart = items.find((i) => i.name === name);
   const quantity = itemInCart?.quantity || 0;
-
-  // 3D tilt effect handler
-  const handleMouseMove = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const tiltX = (y - centerY) / 8;
-    const tiltY = (centerX - x) / 8;
-    setTilt({ x: tiltX, y: tiltY });
-  }, []);
-
-  const handleMouseEnter = () => setIsHovering(true);
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-    setTilt({ x: 0, y: 0 });
-  };
-
-  // Intersection Observer for scroll reveal
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   const handleAddToCart = () => {
     addToCart({ name, price, image });
@@ -108,14 +66,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
     return (
       <div 
         ref={cardRef}
-        className={cn(
-          "group bg-card rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border-2 border-amber-500/30",
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        )}
-        style={{ 
-          transitionDelay: `${delay}ms`,
-          transitionProperty: 'opacity, transform'
-        }}
+        className="group bg-card rounded-2xl overflow-hidden shadow-soft flex items-center gap-4 p-4 border-2 border-amber-500/30"
       >
         {/* Image with lazy loading */}
         <div className="relative shrink-0">
@@ -129,19 +80,12 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
             </div>
           )}
           <div className="w-20 h-20 overflow-hidden rounded-full relative bg-card">
-            <div className={cn(
-              "absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 animate-pulse rounded-full transition-opacity duration-500",
-              imageLoaded ? "opacity-0" : "opacity-100"
-            )} />
             <img
               src={image}
               alt={name}
               loading="lazy"
               onLoad={() => setImageLoaded(true)}
-              className={cn(
-                "w-full h-full object-cover group-hover:scale-110 transition-all duration-500",
-                imageLoaded ? "opacity-100" : "opacity-0"
-              )}
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
@@ -149,7 +93,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-amber-600 transition-colors">
+            <h3 className="font-display text-lg font-semibold text-foreground">
               {name}
             </h3>
             <TooltipProvider>
@@ -240,23 +184,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
   return (
     <div 
       ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={cn(
-        "group bg-card rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border-2 border-amber-500/30",
-        isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
-      )}
-      style={{
-        transitionDelay: isVisible ? '0ms' : `${delay}ms`,
-        transitionProperty: 'opacity, transform, box-shadow',
-        transform: isHovering 
-          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(10px) scale(1.02)` 
-          : isVisible 
-            ? 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)' 
-            : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(0.95)',
-        transformStyle: 'preserve-3d',
-      }}
+      className="group bg-card rounded-xl overflow-hidden shadow-soft flex flex-col cursor-pointer border-2 border-amber-500/30"
     >
       {/* Image section */}
       <div className="p-3 pb-0 relative">
@@ -264,7 +192,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         {onToggleFavorite && (
           <button
             onClick={onToggleFavorite}
-            className={`absolute top-1 right-1 z-10 p-1 rounded-full bg-card shadow-sm transition-all duration-300 hover:scale-110 ${
+            className={`absolute top-1 right-1 z-10 p-1 rounded-full bg-card shadow-sm ${
               isFavorite 
                 ? "text-red-500" 
                 : "text-muted-foreground hover:text-red-500"
@@ -285,22 +213,14 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="aspect-square overflow-hidden relative rounded-md group/image cursor-pointer bg-card">
-                <div className={cn(
-                  "absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 animate-pulse rounded-lg transition-opacity duration-500",
-                  imageLoaded ? "opacity-0" : "opacity-100"
-                )} />
+              <div className="aspect-square overflow-hidden relative rounded-md cursor-pointer bg-card">
                 <img
                   src={image}
                   alt={name}
                   loading="lazy"
                   onLoad={() => setImageLoaded(true)}
-                  className={cn(
-                    "w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-out rounded-lg bg-card",
-                    imageLoaded ? "opacity-100" : "opacity-0"
-                  )}
+                  className="w-full h-full object-cover rounded-lg bg-card"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
@@ -325,7 +245,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       
       {/* Content section */}
       <div className="p-3 pt-3 flex-1 text-center">
-        <h3 className="font-display text-base font-semibold text-foreground group-hover:text-amber-600 transition-colors duration-300 line-clamp-1 mb-2">
+        <h3 className="font-display text-base font-semibold text-foreground line-clamp-1 mb-2">
           {name}
         </h3>
         <span className="text-amber-600 font-bold text-base block mb-2">{price}</span>
