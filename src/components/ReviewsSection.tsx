@@ -39,7 +39,7 @@ const ReviewsSection = () => {
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filterCookie, setFilterCookie] = useState<string>("all");
-  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
 
