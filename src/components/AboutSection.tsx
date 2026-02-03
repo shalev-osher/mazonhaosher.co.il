@@ -1,26 +1,28 @@
 import { Heart, Leaf, Clock } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const features = [
-  {
-    icon: Heart,
-    title: "מיוצר באהבה",
-    description: "כל אצווה מוכנה בקפידה ובתשוקה, בדיוק כמו שסבתא הייתה עושה.",
-  },
-  {
-    icon: Leaf,
-    title: "מרכיבים טריים",
-    description: "אנחנו מקפידים רק על המרכיבים הטריים והמשובחים ביותר.",
-  },
-  {
-    icon: Clock,
-    title: "הכנה יומית",
-    description: "המוצרים שלנו מוכנים טריים כל בוקר לטעם מושלם.",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AboutSection = () => {
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
+  const { t } = useLanguage();
+
+  const features = [
+    {
+      icon: Heart,
+      titleKey: 'about.madeWithLove',
+      descKey: 'about.madeWithLoveDesc',
+    },
+    {
+      icon: Leaf,
+      titleKey: 'about.freshIngredients',
+      descKey: 'about.freshIngredientsDesc',
+    },
+    {
+      icon: Clock,
+      titleKey: 'about.dailyPrep',
+      descKey: 'about.dailyPrepDesc',
+    },
+  ];
   
   return (
     <section id="about" ref={sectionRef} className="py-8 relative overflow-hidden">
@@ -32,30 +34,30 @@ const AboutSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className={`text-center mb-4 transition-all duration-700 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <span className="inline-block text-accent font-medium tracking-wider uppercase text-sm mb-1">
-            הסיפור שלנו
+            {t('about.ourStory')}
           </span>
           <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-2">
-            יוצרים אושר, יצירה אחת בכל פעם
+            {t('about.headline')}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed max-w-xl mx-auto">
-            מזון האושר התחיל במטבח ביתי קטן עם חלום פשוט: לשתף את החום והנוחות של מאפים ביתיים עם הקהילה שלנו.
+            {t('about.description')}
           </p>
         </div>
 
         <div className={`grid md:grid-cols-3 gap-3 transition-all duration-700 delay-200 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <div 
-              key={feature.title}
+              key={feature.titleKey}
               className="flex flex-col items-center text-center p-3 bg-card rounded-lg shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-1 group"
             >
               <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center mb-2 group-hover:scale-110 group-hover:bg-accent/30 transition-all duration-300 group-hover:rotate-6">
                 <feature.icon className="w-5 h-5 text-accent group-hover:scale-110 transition-transform duration-300" />
               </div>
               <h3 className="font-display text-sm font-semibold text-foreground mb-0.5">
-                {feature.title}
+                {t(feature.titleKey)}
               </h3>
               <p className="text-muted-foreground text-xs">
-                {feature.description}
+                {t(feature.descKey)}
               </p>
             </div>
           ))}
