@@ -6,42 +6,44 @@ import {
 } from "@/components/ui/accordion";
 import { HelpCircle, Truck, CreditCard, Clock, Package, AlertTriangle } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const faqs = [
-  {
-    icon: Truck,
-    question: "איך עובד המשלוח?",
-    answer: "המשלוחים מתבצעים בימים א׳-ה׳ בשעות 10:00-20:00. המשלוח עולה ₪25 לכל הארץ, ומשלוח חינם בהזמנות מעל ₪150. זמן האספקה הוא 1-3 ימי עסקים.",
-  },
-  {
-    icon: CreditCard,
-    question: "אילו אמצעי תשלום מקבלים?",
-    answer: "כרגע אנחנו מקבלים תשלום במזומן בלבד בעת קבלת המשלוח. בקרוב נוסיף אפשרות לתשלום בכרטיס אשראי.",
-  },
-  {
-    icon: Clock,
-    question: "כמה זמן המוצרים נשמרים טריים?",
-    answer: "המוצרים שלנו מוכנים טריים לכל הזמנה ונשמרים טריים עד 5 ימים בטמפרטורת החדר או עד שבועיים במקרר. מומלץ לחמם במיקרוגל 10 שניות לחוויה מושלמת!",
-  },
-  {
-    icon: AlertTriangle,
-    question: "מה לגבי אלרגנים?",
-    answer: "כל העוגיות שלנו מכילות גלוטן, חלב וביצים. חלק מהעוגיות מכילות אגוזים, בוטנים או סויה. אם יש לכם אלרגיה מסוימת, אנא ציינו בהערות ההזמנה ונתאים עבורכם.",
-  },
-  {
-    icon: Package,
-    question: "האם אפשר להזמין לאירועים?",
-    answer: "בהחלט! אנחנו מציעים חבילות מיוחדות לאירועים, ימי הולדת, חתונות ובת/בר מצווה. צרו איתנו קשר לקבלת הצעת מחיר מותאמת אישית.",
-  },
-  {
-    icon: HelpCircle,
-    question: "איך יוצרים איתכם קשר?",
-    answer: "אפשר ליצור קשר דרך הוואטסאפ בכפתור הצף למטה, דרך הטופס באתר, או בטלפון 054-6791198. אנחנו זמינים בימים א׳-ה׳ בין השעות 9:00-21:00.",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const FAQSection = () => {
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
+  const { t, isRTL } = useLanguage();
+
+  const faqs = [
+    {
+      icon: Truck,
+      question: t('faq.delivery'),
+      answer: t('faq.deliveryAnswer'),
+    },
+    {
+      icon: CreditCard,
+      question: t('faq.payment'),
+      answer: t('faq.paymentAnswer'),
+    },
+    {
+      icon: Clock,
+      question: t('faq.freshness'),
+      answer: t('faq.freshnessAnswer'),
+    },
+    {
+      icon: AlertTriangle,
+      question: t('faq.allergens'),
+      answer: t('faq.allergensAnswer'),
+    },
+    {
+      icon: Package,
+      question: t('faq.events'),
+      answer: t('faq.eventsAnswer'),
+    },
+    {
+      icon: HelpCircle,
+      question: t('faq.contact'),
+      answer: t('faq.contactAnswer'),
+    },
+  ];
   
   return (
     <section id="faq" ref={sectionRef} className="py-10 relative overflow-hidden">
@@ -52,10 +54,10 @@ const FAQSection = () => {
           sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
-            שאלות נפוצות
+            {t('faq.title')}
           </h2>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-            כאן תמצאו תשובות לשאלות הנפוצות ביותר. לא מצאתם מה שחיפשתם? צרו איתנו קשר!
+            {t('faq.subtitle')}
           </p>
         </div>
 
@@ -69,7 +71,7 @@ const FAQSection = () => {
                 value={`item-${index}`}
                 className="bg-card/80 backdrop-blur-sm border border-primary/10 rounded-xl px-4 overflow-hidden"
               >
-                <AccordionTrigger className="text-right hover:no-underline py-3 gap-2">
+                <AccordionTrigger className={`hover:no-underline py-3 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                   <div className="flex items-center gap-2">
                     <div className="p-1.5 bg-primary/10 rounded-full">
                       <faq.icon className="h-4 w-4 text-primary" />
@@ -77,7 +79,7 @@ const FAQSection = () => {
                     <span className="font-semibold text-sm">{faq.question}</span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-3 pr-10 text-sm leading-relaxed">
+                <AccordionContent className={`text-muted-foreground pb-3 text-sm leading-relaxed ${isRTL ? 'pr-10' : 'pl-10'}`}>
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
