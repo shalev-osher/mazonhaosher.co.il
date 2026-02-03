@@ -165,38 +165,38 @@ const ReviewsSection = () => {
 
   return (
     <section id="reviews" ref={sectionRef} className="py-10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-secondary/20 via-background to-secondary/20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-background to-orange-500/10" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className={`text-center mb-6 transition-all duration-700 ${
           sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-amber-600 mb-2">
             {t('reviews.title')}
           </h2>
           <div className="flex items-center justify-center gap-2 text-sm">
             <div className="flex">
               {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  className={`h-4 w-4 ${
-                    star <= Math.round(Number(averageRating))
-                      ? "text-accent fill-accent"
-                      : "text-muted"
-                  }`}
-                />
-              ))}
-            </div>
-            <span className="font-bold text-primary">{averageRating}</span>
-            <span className="text-muted-foreground">({reviews.length} {t('reviews.reviewsCount')})</span>
+                  <Star
+                    key={star}
+                    className={`h-4 w-4 ${
+                      star <= Math.round(Number(averageRating))
+                        ? "text-amber-500 fill-amber-500"
+                        : "text-muted"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="font-bold text-amber-600">{averageRating}</span>
+              <span className="text-muted-foreground">({reviews.length} {t('reviews.reviewsCount')})</span>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Add Review Form */}
-          <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-primary/10">
-            <h3 className="font-display text-lg font-bold text-primary mb-4 flex items-center gap-2">
-              <Star className="h-4 w-4 text-accent" />
+          <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-amber-500/20">
+            <h3 className="font-display text-lg font-bold text-amber-600 mb-4 flex items-center gap-2">
+              <Star className="h-4 w-4 text-amber-500" />
               {t('reviews.addReview')}
             </h3>
 
@@ -249,8 +249,8 @@ const ReviewsSection = () => {
                         <Star
                           className={`h-8 w-8 transition-colors ${
                             star <= (hoverRating || rating)
-                              ? "text-accent fill-accent"
-                              : "text-muted hover:text-accent/50"
+                              ? "text-amber-500 fill-amber-500"
+                              : "text-muted hover:text-amber-500/50"
                           }`}
                         />
                       </button>
@@ -277,7 +277,7 @@ const ReviewsSection = () => {
                 <Button
                   onClick={handleSubmitReview}
                   disabled={isSubmitting}
-                  className="w-full bg-accent hover:bg-accent/90"
+                  className="w-full bg-amber-500 hover:bg-amber-600"
                 >
                   {isSubmitting ? (
                     t('reviews.submitting')
@@ -295,7 +295,7 @@ const ReviewsSection = () => {
           {/* Reviews List */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h3 className="font-display text-2xl font-bold text-primary">{t('reviews.recentReviews')}</h3>
+              <h3 className="font-display text-2xl font-bold text-amber-600">{t('reviews.recentReviews')}</h3>
               <Select value={filterCookie} onValueChange={setFilterCookie}>
                 <SelectTrigger className="w-40">
                   <SelectValue placeholder={isRTL ? "סנן לפי מוצר" : "Filter by product"} />
@@ -320,22 +320,22 @@ const ReviewsSection = () => {
                 filteredReviews.map((review) => (
                   <div
                     key={review.id}
-                    className="bg-card/60 backdrop-blur-sm rounded-2xl p-4 border border-primary/10"
+                    className="bg-card/60 backdrop-blur-sm rounded-2xl p-4 border border-amber-500/20"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <User className="h-5 w-5 text-primary" />
+                      <div className="w-10 h-10 bg-amber-500/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="h-5 w-5 text-amber-600" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold text-primary">{getCookieName(review.cookie_name)}</span>
+                          <span className="font-semibold text-amber-600">{getCookieName(review.cookie_name)}</span>
                           <div className="flex">
                             {[1, 2, 3, 4, 5].map((star) => (
                               <Star
                                 key={star}
                                 className={`h-4 w-4 ${
                                   star <= review.rating
-                                    ? "text-accent fill-accent"
+                                    ? "text-amber-500 fill-amber-500"
                                     : "text-muted"
                                 }`}
                               />
