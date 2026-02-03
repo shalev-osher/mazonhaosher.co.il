@@ -10,8 +10,7 @@ import OrderHistory from "@/components/OrderHistory";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import CartButton from "@/components/CartButton";
+import ScrollDownButton from "@/components/ScrollDownButton";
 import CartModal from "@/components/CartModal";
 import ScrollToTop from "@/components/ScrollToTop";
 import { CartProvider, useCart } from "@/contexts/CartContext";
@@ -35,6 +34,7 @@ const IndexContent = () => {
         <ContactSection />
       </main>
       <Footer />
+      <ScrollDownButton />
       <ScrollToTop />
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
