@@ -3,8 +3,8 @@ import CookieCard from "./CookieCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List, Heart, Trash2, Cookie } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useLanguage } from "@/contexts/LanguageContext";
 import cookieKinder from "@/assets/cookie-kinder.jpg";
 import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
 import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
@@ -21,146 +21,189 @@ import cookieOatmeal from "@/assets/cookie-oatmeal.jpg";
 import cookieSaltedCaramel from "@/assets/cookie-salted-caramel.jpg";
 import cookieTahini from "@/assets/cookie-tahini.jpg";
 
-type Category = "הכל" | "שוקולד" | "פירות" | "ממתקים" | "אגוזים" | "קלאסי";
 type SortOption = "default" | "name" | "price";
 type Tag = "מומלץ" | "חדש" | null;
 type TagFilter = Tag | "הכל" | "מועדפים";
 
-const cookies = [
-  {
-    image: cookieLotus,
-    name: "לוטוס",
-    description: "ביסקוויט לוטוס וממרח קרמל",
-    price: "₪25",
-    category: "ממתקים" as Category,
-    tag: "מומלץ" as Tag,
-  },
-  {
-    image: cookieKinder,
-    name: "קינדר",
-    description: "שוקולד קינדר וכדורי שוקולד צבעוניים",
-    price: "₪25",
-    category: "שוקולד" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookieKinderBueno,
-    name: "קינדר בואנו",
-    description: "קינדר בואנו, שוקולד חלב וציפוי שוקולד",
-    price: "₪25",
-    category: "שוקולד" as Category,
-    tag: "חדש" as Tag,
-  },
-  {
-    image: cookieRedVelvet,
-    name: "רד וולווט",
-    description: "בצק רד וולווט, שוקולד לבן ופירורי פטל",
-    price: "₪25",
-    category: "פירות" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookieConfetti,
-    name: "קונפטי",
-    description: "סוכריות צבעוניות וסמארטיז",
-    price: "₪25",
-    category: "ממתקים" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookiePistachio,
-    name: "פיסטוק",
-    description: "שוקולד לבן, פיסטוקים קלויים וגרגירי רימון",
-    price: "₪25",
-    category: "אגוזים" as Category,
-    tag: "מומלץ" as Tag,
-  },
-  {
-    image: cookiePretzel,
-    name: "בייגלה",
-    description: "בייגלה מלוח, שוקולד לבן וצ׳יפס שוקולד",
-    price: "₪25",
-    category: "שוקולד" as Category,
-    tag: "חדש" as Tag,
-  },
-  {
-    image: cookieChocolate,
-    name: "שוקולד צ׳יפס",
-    description: "צ׳יפס שוקולד בלגי מריר ושוקולד חלב",
-    price: "₪25",
-    category: "שוקולד" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookieOreo,
-    name: "אוראו",
-    description: "פירורי אוראו, שוקולד לבן וקרם וניל",
-    price: "₪25",
-    category: "ממתקים" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookiePeanut,
-    name: "חמאת בוטנים",
-    description: "חמאת בוטנים, בוטנים קלויים ושוקולד",
-    price: "₪25",
-    category: "אגוזים" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookieLemon,
-    name: "לימון",
-    description: "גרידת לימון טרי וציפוי סוכר",
-    price: "₪25",
-    category: "פירות" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookieMacadamia,
-    name: "מקדמיה",
-    description: "אגוזי מקדמיה ושוקולד לבן",
-    price: "₪25",
-    category: "אגוזים" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookieOatmeal,
-    name: "שיבולת שועל",
-    description: "שיבולת שועל, צימוקים וקינמון",
-    price: "₪25",
-    category: "קלאסי" as Category,
-    tag: null as Tag,
-  },
-  {
-    image: cookieSaltedCaramel,
-    name: "קרמל מלוח",
-    description: "קרמל ביתי וקריסטלי מלח ים",
-    price: "₪25",
-    category: "קלאסי" as Category,
-    tag: "מומלץ" as Tag,
-  },
-  {
-    image: cookieTahini,
-    name: "טחינה",
-    description: "טחינה גולמית, שומשום ודבש",
-    price: "₪25",
-    category: "קלאסי" as Category,
-    tag: null as Tag,
-  },
-];
-
-const categories: Category[] = ["הכל", "שוקולד", "פירות", "ממתקים", "אגוזים", "קלאסי"];
-const sortOptions: { value: SortOption; label: string }[] = [
-  { value: "default", label: "ברירת מחדל" },
-  { value: "name", label: "לפי שם" },
-  { value: "price", label: "לפי מחיר" },
-];
-
 const CookiesSection = () => {
-  const fullText = "הקולקציה שלנו";
+  const { t, isRTL } = useLanguage();
+  
+  // Categories with translations
+  const categories = [
+    { key: "all", he: "הכל", en: "All" },
+    { key: "chocolate", he: "שוקולד", en: "Chocolate" },
+    { key: "fruits", he: "פירות", en: "Fruits" },
+    { key: "candy", he: "ממתקים", en: "Candy" },
+    { key: "nuts", he: "אגוזים", en: "Nuts" },
+    { key: "classic", he: "קלאסי", en: "Classic" },
+  ];
+
+  const sortOptions = [
+    { value: "default" as SortOption, he: "ברירת מחדל", en: "Default" },
+    { value: "name" as SortOption, he: "לפי שם", en: "By Name" },
+    { value: "price" as SortOption, he: "לפי מחיר", en: "By Price" },
+  ];
+
+  const cookies = [
+    {
+      image: cookieLotus,
+      nameHe: "לוטוס",
+      nameEn: "Lotus",
+      descHe: "ביסקוויט לוטוס וממרח קרמל",
+      descEn: "Lotus biscuit and caramel spread",
+      price: "₪25",
+      categoryKey: "candy",
+      tag: "מומלץ" as Tag,
+    },
+    {
+      image: cookieKinder,
+      nameHe: "קינדר",
+      nameEn: "Kinder",
+      descHe: "שוקולד קינדר וכדורי שוקולד צבעוניים",
+      descEn: "Kinder chocolate with colorful chocolate balls",
+      price: "₪25",
+      categoryKey: "chocolate",
+      tag: null as Tag,
+    },
+    {
+      image: cookieKinderBueno,
+      nameHe: "קינדר בואנו",
+      nameEn: "Kinder Bueno",
+      descHe: "קינדר בואנו, שוקולד חלב וציפוי שוקולד",
+      descEn: "Kinder Bueno, milk chocolate and chocolate coating",
+      price: "₪25",
+      categoryKey: "chocolate",
+      tag: "חדש" as Tag,
+    },
+    {
+      image: cookieRedVelvet,
+      nameHe: "רד וולווט",
+      nameEn: "Red Velvet",
+      descHe: "בצק רד וולווט, שוקולד לבן ופירורי פטל",
+      descEn: "Red velvet dough, white chocolate and raspberry crumbs",
+      price: "₪25",
+      categoryKey: "fruits",
+      tag: null as Tag,
+    },
+    {
+      image: cookieConfetti,
+      nameHe: "קונפטי",
+      nameEn: "Confetti",
+      descHe: "סוכריות צבעוניות וסמארטיז",
+      descEn: "Colorful sprinkles and Smarties",
+      price: "₪25",
+      categoryKey: "candy",
+      tag: null as Tag,
+    },
+    {
+      image: cookiePistachio,
+      nameHe: "פיסטוק",
+      nameEn: "Pistachio",
+      descHe: "שוקולד לבן, פיסטוקים קלויים וגרגירי רימון",
+      descEn: "White chocolate, roasted pistachios and pomegranate seeds",
+      price: "₪25",
+      categoryKey: "nuts",
+      tag: "מומלץ" as Tag,
+    },
+    {
+      image: cookiePretzel,
+      nameHe: "בייגלה",
+      nameEn: "Pretzel",
+      descHe: "בייגלה מלוח, שוקולד לבן וצ׳יפס שוקולד",
+      descEn: "Salted pretzel, white chocolate and chocolate chips",
+      price: "₪25",
+      categoryKey: "chocolate",
+      tag: "חדש" as Tag,
+    },
+    {
+      image: cookieChocolate,
+      nameHe: "שוקולד צ׳יפס",
+      nameEn: "Chocolate Chip",
+      descHe: "צ׳יפס שוקולד בלגי מריר ושוקולד חלב",
+      descEn: "Belgian dark and milk chocolate chips",
+      price: "₪25",
+      categoryKey: "chocolate",
+      tag: null as Tag,
+    },
+    {
+      image: cookieOreo,
+      nameHe: "אוראו",
+      nameEn: "Oreo",
+      descHe: "פירורי אוראו, שוקולד לבן וקרם וניל",
+      descEn: "Oreo crumbs, white chocolate and vanilla cream",
+      price: "₪25",
+      categoryKey: "candy",
+      tag: null as Tag,
+    },
+    {
+      image: cookiePeanut,
+      nameHe: "חמאת בוטנים",
+      nameEn: "Peanut Butter",
+      descHe: "חמאת בוטנים, בוטנים קלויים ושוקולד",
+      descEn: "Peanut butter, roasted peanuts and chocolate",
+      price: "₪25",
+      categoryKey: "nuts",
+      tag: null as Tag,
+    },
+    {
+      image: cookieLemon,
+      nameHe: "לימון",
+      nameEn: "Lemon",
+      descHe: "גרידת לימון טרי וציפוי סוכר",
+      descEn: "Fresh lemon zest with sugar coating",
+      price: "₪25",
+      categoryKey: "fruits",
+      tag: null as Tag,
+    },
+    {
+      image: cookieMacadamia,
+      nameHe: "מקדמיה",
+      nameEn: "Macadamia",
+      descHe: "אגוזי מקדמיה ושוקולד לבן",
+      descEn: "Macadamia nuts and white chocolate",
+      price: "₪25",
+      categoryKey: "nuts",
+      tag: null as Tag,
+    },
+    {
+      image: cookieOatmeal,
+      nameHe: "שיבולת שועל",
+      nameEn: "Oatmeal",
+      descHe: "שיבולת שועל, צימוקים וקינמון",
+      descEn: "Oatmeal, raisins and cinnamon",
+      price: "₪25",
+      categoryKey: "classic",
+      tag: null as Tag,
+    },
+    {
+      image: cookieSaltedCaramel,
+      nameHe: "קרמל מלוח",
+      nameEn: "Salted Caramel",
+      descHe: "קרמל ביתי וקריסטלי מלח ים",
+      descEn: "Homemade caramel with sea salt crystals",
+      price: "₪25",
+      categoryKey: "classic",
+      tag: "מומלץ" as Tag,
+    },
+    {
+      image: cookieTahini,
+      nameHe: "טחינה",
+      nameEn: "Tahini",
+      descHe: "טחינה גולמית, שומשום ודבש",
+      descEn: "Raw tahini, sesame seeds and honey",
+      price: "₪25",
+      categoryKey: "classic",
+      tag: null as Tag,
+    },
+  ];
+
+  const fullTextHe = "הקולקציה שלנו";
+  const fullTextEn = "Our Collection";
+  const fullText = isRTL ? fullTextHe : fullTextEn;
+  
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<Category>("הכל");
+  const [activeCategoryKey, setActiveCategoryKey] = useState<string>("all");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("default");
@@ -235,28 +278,34 @@ const CookiesSection = () => {
     }, isDeleting ? 50 : 100);
 
     return () => clearTimeout(timeout);
-  }, [displayedText, isDeleting]);
+  }, [displayedText, isDeleting, fullText]);
 
-  const handleCategoryChange = (category: Category) => {
-    if (category === activeCategory) return;
+  // Reset displayed text when language changes
+  useEffect(() => {
+    setDisplayedText("");
+    setIsDeleting(false);
+  }, [isRTL]);
+
+  const handleCategoryChange = (categoryKey: string) => {
+    if (categoryKey === activeCategoryKey) return;
     setIsTransitioning(true);
     setTimeout(() => {
-      setActiveCategory(category);
+      setActiveCategoryKey(categoryKey);
       setIsTransitioning(false);
     }, 200);
   };
 
-  const getCategoryCount = (category: Category) => {
-    if (category === "הכל") return cookies.length;
-    return cookies.filter(c => c.category === category).length;
+  const getCategoryCount = (categoryKey: string) => {
+    if (categoryKey === "all") return cookies.length;
+    return cookies.filter(c => c.categoryKey === categoryKey).length;
   };
 
-  const hasActiveFilters = activeCategory !== "הכל" || activeTag !== "הכל" || searchQuery !== "" || sortBy !== "default";
+  const hasActiveFilters = activeCategoryKey !== "all" || activeTag !== "הכל" || searchQuery !== "" || sortBy !== "default";
 
   const resetAllFilters = () => {
     setIsTransitioning(true);
     setTimeout(() => {
-      setActiveCategory("הכל");
+      setActiveCategoryKey("all");
       setActiveTag("הכל");
       setSearchQuery("");
       setSortBy("default");
@@ -266,11 +315,16 @@ const CookiesSection = () => {
 
   const filteredCookies = cookies
     .filter(cookie => {
-      const matchesCategory = activeCategory === "הכל" || cookie.category === activeCategory;
-      const matchesSearch = cookie.name.includes(searchQuery) || cookie.description.includes(searchQuery);
+      const matchesCategory = activeCategoryKey === "all" || cookie.categoryKey === activeCategoryKey;
+      const name = isRTL ? cookie.nameHe : cookie.nameEn;
+      const desc = isRTL ? cookie.descHe : cookie.descEn;
+      const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                           desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           cookie.nameHe.includes(searchQuery) ||
+                           cookie.descHe.includes(searchQuery);
       let matchesTag = true;
       if (activeTag === "מועדפים") {
-        matchesTag = favorites.includes(cookie.name);
+        matchesTag = favorites.includes(cookie.nameHe);
       } else if (activeTag !== "הכל") {
         matchesTag = cookie.tag === activeTag;
       }
@@ -278,7 +332,9 @@ const CookiesSection = () => {
     })
     .sort((a, b) => {
       if (sortBy === "name") {
-        return a.name.localeCompare(b.name, "he");
+        const nameA = isRTL ? a.nameHe : a.nameEn;
+        const nameB = isRTL ? b.nameHe : b.nameEn;
+        return nameA.localeCompare(nameB, isRTL ? "he" : "en");
       }
       if (sortBy === "price") {
         const priceA = parseInt(a.price.replace(/[^\d]/g, ""));
@@ -338,14 +394,14 @@ const CookiesSection = () => {
             <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
               {displayedText}
             </span>
-            <span className="inline-block w-1 h-12 md:h-16 bg-primary mr-1 animate-blink" />
+            <span className={`inline-block w-1 h-12 md:h-16 bg-primary ${isRTL ? 'mr-1' : 'ml-1'} animate-blink`} />
           </h2>
           
           {/* Decorative subtitle */}
           <p className={`mt-4 text-muted-foreground text-lg transition-all duration-700 delay-500 ${
             sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}>
-            מיוצר באהבה, במיוחד בשבילכם ✨
+            {t('cookies.subtitle')}
           </p>
         </div>
 
@@ -353,18 +409,18 @@ const CookiesSection = () => {
         <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
           {/* Search */}
           <div className="relative w-48">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+            <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground`} />
             <Input
               type="text"
-              placeholder="חיפוש..."
+              placeholder={t('cookies.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-8 pl-7 py-1.5 h-8 text-sm rounded-full bg-background/50 border-primary/30 focus:border-primary text-right"
+              className={`${isRTL ? 'pr-8 pl-7' : 'pl-8 pr-7'} py-1.5 h-8 text-sm rounded-full bg-background/50 border-primary/30 focus:border-primary ${isRTL ? 'text-right' : 'text-left'}`}
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-primary transition-all"
+                className={`absolute ${isRTL ? 'left-2' : 'right-2'} top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-primary transition-all`}
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -377,19 +433,19 @@ const CookiesSection = () => {
           {/* Category Filter */}
           {categories.map((category) => (
             <Button
-              key={category}
-              onClick={() => handleCategoryChange(category)}
-              variant={activeCategory === category ? "default" : "ghost"}
+              key={category.key}
+              onClick={() => handleCategoryChange(category.key)}
+              variant={activeCategoryKey === category.key ? "default" : "ghost"}
               size="sm"
               className={`rounded-full px-3 h-7 text-xs transition-all duration-200 ${
-                activeCategory === category 
+                activeCategoryKey === category.key 
                   ? "bg-primary text-primary-foreground" 
                   : "bg-background/40 hover:bg-background/60"
               }`}
             >
-              {category}
-              <span className="mr-1 text-[10px] opacity-70">
-                {getCategoryCount(category)}
+              {isRTL ? category.he : category.en}
+              <span className={`${isRTL ? 'mr-1' : 'ml-1'} text-[10px] opacity-70`}>
+                {getCategoryCount(category.key)}
               </span>
             </Button>
           ))}
@@ -405,6 +461,7 @@ const CookiesSection = () => {
                 ? "bg-accent text-accent-foreground"
                 : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
             }`}
+            title={isRTL ? "מומלץ" : "Recommended"}
           >
             <Star className="h-3 w-3" />
           </button>
@@ -415,6 +472,7 @@ const CookiesSection = () => {
                 ? "bg-green-500 text-white"
                 : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
             }`}
+            title={isRTL ? "חדש" : "New"}
           >
             <Sparkles className="h-3 w-3" />
           </button>
@@ -431,6 +489,7 @@ const CookiesSection = () => {
                 ? "bg-red-500 text-white"
                 : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
             }`}
+            title={isRTL ? "מועדפים" : "Favorites"}
           >
             <Heart className={`h-3 w-3 ${favorites.length > 0 ? "fill-current" : ""}`} />
             {favorites.length > 0 && <span>{favorites.length}</span>}
@@ -452,7 +511,7 @@ const CookiesSection = () => {
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {option.label}
+                {isRTL ? option.he : option.en}
               </button>
             ))}
           </div>
@@ -486,6 +545,7 @@ const CookiesSection = () => {
             <button
               onClick={resetAllFilters}
               className="flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full bg-card/80 text-muted-foreground hover:text-primary transition-all"
+              title={isRTL ? "איפוס" : "Reset"}
             >
               <RotateCcw className="h-3 w-3" />
             </button>
@@ -503,16 +563,16 @@ const CookiesSection = () => {
         >
           {filteredCookies.map((cookie, index) => (
             <CookieCard
-              key={cookie.name}
+              key={cookie.nameHe}
               image={cookie.image}
-              name={cookie.name}
-              description={cookie.description}
+              name={isRTL ? cookie.nameHe : cookie.nameEn}
+              description={isRTL ? cookie.descHe : cookie.descEn}
               price={cookie.price}
               delay={index * 100}
               tag={cookie.tag}
               viewMode={viewMode}
-              isFavorite={favorites.includes(cookie.name)}
-              onToggleFavorite={() => toggleFavorite(cookie.name)}
+              isFavorite={favorites.includes(cookie.nameHe)}
+              onToggleFavorite={() => toggleFavorite(cookie.nameHe)}
             />
           ))}
         </div>
@@ -521,10 +581,14 @@ const CookiesSection = () => {
           <div className="text-center py-16 animate-fade-in">
             <div className="text-6xl mb-4">✨</div>
             <p className="text-foreground text-xl font-medium mb-2">
-              {searchQuery ? `לא מצאנו מוצרים עבור "${searchQuery}"` : "אין מוצרים בקטגוריה זו"}
+              {searchQuery 
+                ? (isRTL ? `לא מצאנו מוצרים עבור "${searchQuery}"` : `No products found for "${searchQuery}"`)
+                : (isRTL ? "אין מוצרים בקטגוריה זו" : "No products in this category")}
             </p>
             <p className="text-muted-foreground">
-              {searchQuery ? "נסו לחפש משהו אחר או לנקות את החיפוש" : "נסו לבחור קטגוריה אחרת"}
+              {searchQuery 
+                ? (isRTL ? "נסו לחפש משהו אחר או לנקות את החיפוש" : "Try searching for something else or clear search")
+                : (isRTL ? "נסו לבחור קטגוריה אחרת" : "Try selecting a different category")}
             </p>
             {searchQuery && (
               <Button
@@ -532,7 +596,7 @@ const CookiesSection = () => {
                 variant="outline"
                 className="mt-4 rounded-full"
               >
-                נקה חיפוש
+                {isRTL ? "נקה חיפוש" : "Clear search"}
               </Button>
             )}
           </div>

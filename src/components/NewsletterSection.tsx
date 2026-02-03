@@ -4,21 +4,23 @@ import { Input } from "@/components/ui/input";
 import { Bell, Mail, Phone, Check, Sparkles } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { emailSchema, optionalPhoneSchema, getValidationError } from "@/lib/validation";
+import { emailSchema, getValidationError } from "@/lib/validation";
 import { z } from "zod";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const { t, isRTL } = useLanguage();
 
   const validateInputs = (): boolean => {
     // At least one field required
     if (!email.trim() && !phone.trim()) {
       toast({
-        title: "שגיאה",
-        description: "נא להזין מייל או טלפון",
+        title: t('general.error'),
+        description: isRTL ? "נא להזין מייל או טלפון" : "Please enter email or phone",
         variant: "destructive",
       });
       return false;
@@ -31,8 +33,8 @@ const NewsletterSection = () => {
       } catch (error) {
         const message = getValidationError(error);
         toast({
-          title: "שגיאה",
-          description: message || "כתובת מייל לא תקינה",
+          title: t('general.error'),
+          description: message || (isRTL ? "כתובת מייל לא תקינה" : "Invalid email address"),
           variant: "destructive",
         });
         return false;
@@ -47,15 +49,15 @@ const NewsletterSection = () => {
         if (!phoneRegex.test(phone.trim())) {
           throw new z.ZodError([{
             code: "custom",
-            message: "מספר טלפון לא תקין (נדרש פורמט ישראלי)",
+            message: isRTL ? "מספר טלפון לא תקין (נדרש פורמט ישראלי)" : "Invalid phone number (Israeli format required)",
             path: ["phone"],
           }]);
         }
       } catch (error) {
         const message = getValidationError(error);
         toast({
-          title: "שגיאה",
-          description: message || "מספר טלפון לא תקין",
+          title: t('general.error'),
+          description: message || (isRTL ? "מספר טלפון לא תקין" : "Invalid phone number"),
           variant: "destructive",
         });
         return false;
@@ -87,8 +89,8 @@ const NewsletterSection = () => {
         // Handle rate limiting
         if (data.error.includes("יותר מדי")) {
           toast({
-            title: "יותר מדי בקשות",
-            description: "נסו שוב מאוחר יותר",
+            title: isRTL ? "יותר מדי בקשות" : "Too many requests",
+            description: isRTL ? "נסו שוב מאוחר יותר" : "Please try again later",
             variant: "destructive",
           });
           return;
@@ -98,14 +100,14 @@ const NewsletterSection = () => {
 
       setSubscribed(true);
       toast({
-        title: "נרשמת בהצלחה! 🎉",
-        description: "תקבל/י עדכונים על מבצעים וחדשות",
+        title: t('newsletter.success'),
+        description: t('newsletter.successDesc'),
       });
     } catch (error) {
       console.error("Error subscribing");
       toast({
-        title: "שגיאה",
-        description: "אירעה שגיאה, נסו שוב מאוחר יותר",
+        title: t('general.error'),
+        description: isRTL ? "אירעה שגיאה, נסו שוב מאוחר יותר" : "An error occurred, please try again later",
         variant: "destructive",
       });
     } finally {
@@ -123,10 +125,10 @@ const NewsletterSection = () => {
               <Check className="h-6 w-6 text-white" />
             </div>
             <h3 className="font-display text-xl font-bold text-primary mb-2">
-              תודה שנרשמת! ✨
+              {t('newsletter.thankYou')}
             </h3>
             <p className="text-muted-foreground text-sm">
-              נעדכן אותך על מבצעים מיוחדים, מוצרים חדשים והפתעות מתוקות
+              {t('newsletter.thankYouDesc')}
             </p>
           </div>
         </div>
@@ -147,10 +149,10 @@ const NewsletterSection = () => {
           </div>
           
           <h3 className="font-display text-xl font-bold text-primary mb-1">
-            לא לפספס מבצעים!
+            {t('newsletter.title')}
           </h3>
           <p className="text-muted-foreground text-sm mb-4">
-            הירשמו לניוזלטר וקבלו עדכונים על מבצעים מיוחדים
+            {t('newsletter.subtitle')}
           </p>
 
           <div className="space-y-2">
@@ -160,7 +162,7 @@ const NewsletterSection = () => {
               </div>
               <Input
                 type="email"
-                placeholder="כתובת המייל שלך"
+                placeholder={t('newsletter.emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 text-center"
@@ -175,7 +177,7 @@ const NewsletterSection = () => {
               </div>
               <Input
                 type="tel"
-                placeholder="מספר טלפון (אופציונלי)"
+                placeholder={t('newsletter.phonePlaceholder')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="flex-1 text-center"
@@ -190,12 +192,12 @@ const NewsletterSection = () => {
               size="lg"
               className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold"
             >
-              {isLoading ? "שולח..." : "להירשם לעדכונים ✨"}
+              {isLoading ? t('newsletter.submitting') : t('newsletter.button')}
             </Button>
           </div>
 
           <p className="text-xs text-muted-foreground mt-4">
-            אנחנו מבטיחים לא לשלוח ספאם. רק טוב טעים. ✨
+            {t('newsletter.noSpam')}
           </p>
         </div>
       </div>

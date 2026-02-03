@@ -14,12 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { reviewTextSchema, getValidationError } from "@/lib/validation";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useProfile } from "@/contexts/ProfileContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import AuthModal from "@/components/AuthModal";
-const cookieOptions = [
-  "לוטוס", "קינדר", "קינדר בואנו", "רד וולווט", "קונפטי", "פיסטוק",
-  "בייגלה", "שוקולד צ׳יפס", "אוראו", "חמאת בוטנים", "לימון", "מקדמיה",
-  "שיבולת שועל", "קרמל מלוח", "טחינה"
-];
 
 interface Review {
   id: string;
@@ -31,6 +27,7 @@ interface Review {
 
 const ReviewsSection = () => {
   const { isLoggedIn } = useProfile();
+  const { t, isRTL } = useLanguage();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedCookie, setSelectedCookie] = useState("");
   const [rating, setRating] = useState(0);
@@ -41,6 +38,30 @@ const ReviewsSection = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
+
+  // Cookie options with translation keys
+  const cookieOptions = [
+    { key: "lotus", he: "לוטוס", en: "Lotus" },
+    { key: "kinder", he: "קינדר", en: "Kinder" },
+    { key: "kinderBueno", he: "קינדר בואנו", en: "Kinder Bueno" },
+    { key: "redVelvet", he: "רד וולווט", en: "Red Velvet" },
+    { key: "confetti", he: "קונפטי", en: "Confetti" },
+    { key: "pistachio", he: "פיסטוק", en: "Pistachio" },
+    { key: "pretzel", he: "בייגלה", en: "Pretzel" },
+    { key: "chocolateChip", he: "שוקולד צ׳יפס", en: "Chocolate Chip" },
+    { key: "oreo", he: "אוראו", en: "Oreo" },
+    { key: "peanutButter", he: "חמאת בוטנים", en: "Peanut Butter" },
+    { key: "lemon", he: "לימון", en: "Lemon" },
+    { key: "macadamia", he: "מקדמיה", en: "Macadamia" },
+    { key: "oatmeal", he: "שיבולת שועל", en: "Oatmeal" },
+    { key: "saltedCaramel", he: "קרמל מלוח", en: "Salted Caramel" },
+    { key: "tahini", he: "טחינה", en: "Tahini" },
+  ];
+
+  const getCookieName = (hebrewName: string) => {
+    const cookie = cookieOptions.find(c => c.he === hebrewName);
+    return cookie ? (isRTL ? cookie.he : cookie.en) : hebrewName;
+  };
 
   useEffect(() => {
     fetchReviews();
@@ -61,8 +82,8 @@ const ReviewsSection = () => {
   const validateReview = (): boolean => {
     if (!selectedCookie) {
       toast({
-        title: "שגיאה",
-        description: "נא לבחור מוצר",
+        title: t('general.error'),
+        description: isRTL ? "נא לבחור מוצר" : "Please select a product",
         variant: "destructive",
       });
       return false;
@@ -70,8 +91,8 @@ const ReviewsSection = () => {
 
     if (rating === 0) {
       toast({
-        title: "שגיאה",
-        description: "נא לדרג את המוצר",
+        title: t('general.error'),
+        description: isRTL ? "נא לדרג את המוצר" : "Please rate the product",
         variant: "destructive",
       });
       return false;
@@ -84,8 +105,8 @@ const ReviewsSection = () => {
       } catch (error) {
         const message = getValidationError(error);
         toast({
-          title: "שגיאה",
-          description: message || "הביקורת ארוכה מדי",
+          title: t('general.error'),
+          description: message || (isRTL ? "הביקורת ארוכה מדי" : "Review is too long"),
           variant: "destructive",
         });
         return false;
@@ -114,8 +135,8 @@ const ReviewsSection = () => {
       if (error) throw error;
 
       toast({
-        title: "תודה על הביקורת! 🍪",
-        description: "הביקורת שלך נוספה בהצלחה",
+        title: t('reviews.thankYou'),
+        description: t('reviews.reviewAdded'),
       });
 
       setSelectedCookie("");
@@ -125,8 +146,8 @@ const ReviewsSection = () => {
     } catch (error) {
       console.error("Error submitting review:", error);
       toast({
-        title: "שגיאה",
-        description: "אירעה שגיאה, נסו שוב",
+        title: t('general.error'),
+        description: isRTL ? "אירעה שגיאה, נסו שוב" : "An error occurred, please try again",
         variant: "destructive",
       });
     } finally {
@@ -151,7 +172,7 @@ const ReviewsSection = () => {
           sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
-            מה הלקוחות אומרים
+            {t('reviews.title')}
           </h2>
           <div className="flex items-center justify-center gap-2 text-sm">
             <div className="flex">
@@ -167,7 +188,7 @@ const ReviewsSection = () => {
               ))}
             </div>
             <span className="font-bold text-primary">{averageRating}</span>
-            <span className="text-muted-foreground">({reviews.length} ביקורות)</span>
+            <span className="text-muted-foreground">({reviews.length} {t('reviews.reviewsCount')})</span>
           </div>
         </div>
 
@@ -176,34 +197,36 @@ const ReviewsSection = () => {
           <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-primary/10">
             <h3 className="font-display text-lg font-bold text-primary mb-4 flex items-center gap-2">
               <Star className="h-4 w-4 text-accent" />
-              הוסיפו ביקורת
+              {t('reviews.addReview')}
             </h3>
 
             {!isLoggedIn ? (
               <div className="text-center py-6">
                 <p className="text-sm text-muted-foreground mb-4">
-                  כדי לכתוב ביקורת צריך להתחבר
+                  {t('reviews.loginRequired')}
                 </p>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setShowAuthModal(true)}
                 >
-                  התחברות
+                  {t('auth.login')}
                 </Button>
               </div>
             ) : (
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-right">בחרו מוצר</label>
+                  <label className={`block text-sm font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {t('reviews.selectProduct')}
+                  </label>
                   <Select value={selectedCookie} onValueChange={setSelectedCookie}>
-                    <SelectTrigger className="text-right">
-                      <SelectValue placeholder="בחרו מוצר..." />
+                    <SelectTrigger className={isRTL ? 'text-right' : 'text-left'}>
+                      <SelectValue placeholder={t('reviews.selectProductPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       {cookieOptions.map((cookie) => (
-                        <SelectItem key={cookie} value={cookie}>
-                          {cookie}
+                        <SelectItem key={cookie.key} value={cookie.he}>
+                          {isRTL ? cookie.he : cookie.en}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -211,7 +234,9 @@ const ReviewsSection = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-right">דירוג</label>
+                  <label className={`block text-sm font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {t('reviews.rating')}
+                  </label>
                   <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -234,17 +259,17 @@ const ReviewsSection = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-right">
-                    הביקורת שלכם (אופציונלי, עד 500 תווים)
+                  <label className={`block text-sm font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {t('reviews.yourReview')}
                   </label>
                   <Textarea
                     value={reviewText}
                     onChange={(e) => setReviewText(e.target.value.slice(0, 500))}
-                    placeholder="ספרו לנו מה חשבתם..."
-                    className="min-h-[100px] text-right"
+                    placeholder={t('reviews.reviewPlaceholder')}
+                    className={`min-h-[100px] ${isRTL ? 'text-right' : 'text-left'}`}
                     maxLength={500}
                   />
-                  <p className="text-xs text-muted-foreground mt-1 text-left">
+                  <p className={`text-xs text-muted-foreground mt-1 ${isRTL ? 'text-left' : 'text-right'}`}>
                     {reviewText.length}/500
                   </p>
                 </div>
@@ -255,11 +280,11 @@ const ReviewsSection = () => {
                   className="w-full bg-accent hover:bg-accent/90"
                 >
                   {isSubmitting ? (
-                    "שולח..."
+                    t('reviews.submitting')
                   ) : (
                     <>
-                      <Send className="h-4 w-4 ml-2" />
-                      לשלוח ביקורת
+                      <Send className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {t('reviews.submit')}
                     </>
                   )}
                 </Button>
@@ -270,26 +295,26 @@ const ReviewsSection = () => {
           {/* Reviews List */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h3 className="font-display text-2xl font-bold text-primary">ביקורות אחרונות</h3>
+              <h3 className="font-display text-2xl font-bold text-primary">{t('reviews.recentReviews')}</h3>
               <Select value={filterCookie} onValueChange={setFilterCookie}>
                 <SelectTrigger className="w-40">
-                  <SelectValue placeholder="סנן לפי מוצר" />
+                  <SelectValue placeholder={isRTL ? "סנן לפי מוצר" : "Filter by product"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">כל המוצרים</SelectItem>
+                  <SelectItem value="all">{t('reviews.filterAll')}</SelectItem>
                   {cookieOptions.map((cookie) => (
-                    <SelectItem key={cookie} value={cookie}>
-                      {cookie}
+                    <SelectItem key={cookie.key} value={cookie.he}>
+                      {isRTL ? cookie.he : cookie.en}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+            <div className={`space-y-4 max-h-[500px] overflow-y-auto ${isRTL ? 'pr-2' : 'pl-2'}`}>
               {filteredReviews.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
-                  אין עדיין ביקורות. היו הראשונים לכתוב ביקורת!
+                  {t('reviews.noReviews')}
                 </p>
               ) : (
                 filteredReviews.map((review) => (
@@ -303,7 +328,7 @@ const ReviewsSection = () => {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold text-primary">{review.cookie_name}</span>
+                          <span className="font-semibold text-primary">{getCookieName(review.cookie_name)}</span>
                           <div className="flex">
                             {[1, 2, 3, 4, 5].map((star) => (
                               <Star
@@ -321,7 +346,7 @@ const ReviewsSection = () => {
                           <p className="text-muted-foreground text-sm">{review.review_text}</p>
                         )}
                         <span className="text-xs text-muted-foreground mt-2 block">
-                          {new Date(review.created_at).toLocaleDateString("he-IL")}
+                          {new Date(review.created_at).toLocaleDateString(isRTL ? "he-IL" : "en-US")}
                         </span>
                       </div>
                     </div>
