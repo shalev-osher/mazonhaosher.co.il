@@ -123,26 +123,48 @@ const handler = async (req: Request): Promise<Response> => {
       }
 
       // Send email with OTP
+      const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/assets/logo.png";
       const emailResponse = await resend.emails.send({
         from: "מזון האושר <noreply@mazonhaosher.co.il>",
         to: [email],
-        subject: "קוד אימות - מזון האושר 🍪",
+        subject: "קוד אימות - מזון האושר",
         html: `
-          <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
-            <div style="text-align: center; margin-bottom: 20px;">
-              <h1 style="color: #D4A574; margin: 0;">מזון האושר 🍪</h1>
-            </div>
-            <div style="background: #f8f4f0; border-radius: 12px; padding: 24px; text-align: center;">
-              <p style="font-size: 16px; color: #333; margin-bottom: 20px;">קוד האימות שלך הוא:</p>
-              <div style="background: white; border-radius: 8px; padding: 16px; margin: 16px 0;">
-                <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #D4A574;">${otp}</span>
+          <!DOCTYPE html>
+          <html dir="rtl" lang="he">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif;">
+            <div style="max-width: 500px; margin: 0 auto; padding: 40px 20px;">
+              <!-- Glass-like container with transparency -->
+              <div style="background: linear-gradient(135deg, rgba(251, 243, 241, 0.85) 0%, rgba(248, 236, 232, 0.75) 100%); border-radius: 24px; padding: 40px 30px; border: 1px solid rgba(232, 93, 143, 0.15);">
+                
+                <!-- Large Logo -->
+                <div style="text-align: center; margin-bottom: 30px;">
+                  <img src="${logoUrl}" alt="מזון האושר" style="max-width: 200px; height: auto;" />
+                </div>
+                
+                <!-- Title - Just brand name -->
+                <h1 style="text-align: center; color: hsl(340, 60%, 55%); font-size: 28px; margin: 0 0 30px 0; font-weight: 600;">מזון האושר</h1>
+                
+                <!-- OTP Code Box with transparent style -->
+                <div style="background: rgba(255, 255, 255, 0.7); border-radius: 16px; padding: 30px; text-align: center; border: 1px solid rgba(232, 93, 143, 0.2);">
+                  <p style="font-size: 16px; color: #555; margin: 0 0 20px 0;">קוד האימות שלך:</p>
+                  <div style="background: linear-gradient(135deg, rgba(232, 93, 143, 0.1) 0%, rgba(232, 93, 143, 0.05) 100%); border-radius: 12px; padding: 20px; display: inline-block;">
+                    <span style="font-size: 36px; font-weight: bold; letter-spacing: 10px; color: hsl(340, 60%, 55%);">${otp}</span>
+                  </div>
+                  <p style="font-size: 14px; color: #888; margin: 20px 0 0 0;">הקוד תקף ל-5 דקות</p>
+                </div>
+                
+                <!-- Footer text -->
+                <p style="font-size: 12px; color: #999; text-align: center; margin: 25px 0 0 0;">
+                  אם לא ביקשת קוד זה, התעלם מהודעה זו.
+                </p>
               </div>
-              <p style="font-size: 14px; color: #666; margin-top: 16px;">הקוד תקף ל-5 דקות</p>
             </div>
-            <p style="font-size: 12px; color: #999; text-align: center; margin-top: 20px;">
-              אם לא ביקשת קוד זה, התעלם מהודעה זו.
-            </p>
-          </div>
+          </body>
+          </html>
         `,
       });
 
