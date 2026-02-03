@@ -18,7 +18,7 @@ const Footer = () => {
               <ShoppingBag className="w-4 h-4 text-accent group-hover:text-white transition-colors" />
             </a>
             <a 
-              href="https://wa.me/972000000000" 
+              href="https://wa.me/972546791198"
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full bg-[#25D366]/20 border border-[#25D366]/30 flex items-center justify-center hover:bg-[#25D366] hover:border-transparent transition-all duration-300 hover:scale-110 group"
