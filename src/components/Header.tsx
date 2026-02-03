@@ -47,7 +47,7 @@ const Header = () => {
 
   const navItems = [
     { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, bgColor: "bg-orange-500/20", iconColor: "text-orange-500" },
-    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, bgColor: "bg-purple-500/20", iconColor: "text-purple-500" },
+    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, bgColor: "bg-teal-500/20", iconColor: "text-teal-500" },
     { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, bgColor: "bg-amber-500/20", iconColor: "text-amber-500" },
     { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, bgColor: "bg-sky-500/20", iconColor: "text-sky-500" },
     { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, bgColor: "bg-emerald-500/20", iconColor: "text-emerald-500" },

@@ -109,7 +109,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       <div 
         ref={cardRef}
         className={cn(
-          "group bg-card/50 rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border-2 border-amber-500/30",
+          "group bg-card rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 flex items-center gap-4 p-4 border-2 border-amber-500/30",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}
         style={{ 
@@ -244,7 +244,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "group bg-card/50 rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border-2 border-amber-500/30",
+        "group bg-card rounded-xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col cursor-pointer border-2 border-amber-500/30",
         isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
       )}
       style={{
@@ -264,7 +264,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         {onToggleFavorite && (
           <button
             onClick={onToggleFavorite}
-            className={`absolute top-1 right-1 z-10 p-1 rounded-full bg-card/80 backdrop-blur-sm shadow-sm transition-all duration-300 hover:scale-110 ${
+            className={`absolute top-1 right-1 z-10 p-1 rounded-full bg-card shadow-sm transition-all duration-300 hover:scale-110 ${
               isFavorite 
                 ? "text-red-500" 
                 : "text-muted-foreground hover:text-red-500"
