@@ -131,7 +131,7 @@ const Hero = () => {
           }`}
         >
           {/* Made with love badge */}
-          <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-5 py-2 mb-4 animate-bounce-gentle">
+          <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-4 py-1.5 mb-2 animate-bounce-gentle">
             <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
             <span className="text-accent font-medium tracking-wider uppercase text-sm">
               מיוצר באהבה
@@ -140,7 +140,7 @@ const Hero = () => {
           </div>
           
           {/* Logo with glow effect */}
-          <div className="relative mb-4">
+          <div className="relative mb-2">
             <img 
               src={logo}
               alt="מזון האושר"
@@ -153,7 +153,7 @@ const Hero = () => {
           </div>
           
           {/* Typewriter text with enhanced styling */}
-          <div className="relative min-h-[3rem] flex items-center justify-center mb-1">
+          <div className="relative min-h-[2.5rem] flex items-center justify-center mb-0">
             <p className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 font-display font-medium">
               <span className="relative">
                 {displayedText}
@@ -167,7 +167,7 @@ const Hero = () => {
           </div>
 
           {/* Decorative line */}
-          <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="flex items-center justify-center gap-3 mb-2">
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-accent/50 to-accent" />
             <Sparkles className="h-4 w-4 text-accent animate-pulse" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent via-accent/50 to-accent" />
