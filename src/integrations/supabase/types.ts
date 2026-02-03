@@ -283,12 +283,40 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_otp_tokens: {
+        Row: {
+          code_hash: string
+          created_at: string
+          expires_at: string
+          id: string
+          phone: string
+          verified: boolean
+        }
+        Insert: {
+          code_hash: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          phone: string
+          verified?: boolean
+        }
+        Update: {
+          code_hash?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          phone?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
       cleanup_expired_otp_tokens: { Args: never; Returns: undefined }
+      cleanup_expired_sms_otp_tokens: { Args: never; Returns: undefined }
       get_my_order_items: {
         Args: { order_uuid: string }
         Returns: {
