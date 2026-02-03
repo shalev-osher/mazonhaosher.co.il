@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -31,6 +32,128 @@ function validatePhone(phone: string): boolean {
 interface SubscribeRequest {
   email?: string;
   phone?: string;
+}
+
+// Send welcome email to new subscriber
+async function sendWelcomeEmail(email: string): Promise<void> {
+  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+  if (!resendApiKey) {
+    console.warn("RESEND_API_KEY not configured, skipping welcome email");
+    return;
+  }
+
+  const resend = new Resend(resendApiKey);
+  const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/assets/logo.png";
+
+  try {
+    await resend.emails.send({
+      from: "מזון האושר <noreply@mazonhaosher.co.il>",
+      to: [email],
+      subject: "ברוכים הבאים למשפחת מזון האושר! 🍪",
+      html: `
+        <!DOCTYPE html>
+        <html dir="rtl" lang="he">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif; background-color: #fef7f0; direction: rtl;">
+          <table role="presentation" style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" style="max-width: 600px; width: 100%; border-collapse: collapse;">
+                  
+                  <!-- Logo Section -->
+                  <tr>
+                    <td align="center" style="padding-bottom: 30px;">
+                      <img src="${logoUrl}" alt="מזון האושר" style="max-width: 180px; height: auto;" />
+                    </td>
+                  </tr>
+                  
+                  <!-- Main Content Card -->
+                  <tr>
+                    <td>
+                      <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 3px solid #e85d8f;">
+                        
+                        <!-- Header -->
+                        <tr>
+                          <td style="background: linear-gradient(135deg, #e85d8f 0%, #f472b6 100%); padding: 30px 40px; border-radius: 17px 17px 0 0;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; text-align: center;">
+                              תודה שנרשמת! 🎉
+                            </h1>
+                          </td>
+                        </tr>
+                        
+                        <!-- Body -->
+                        <tr>
+                          <td style="padding: 40px;">
+                            <p style="margin: 0 0 20px 0; color: #374151; font-size: 18px; line-height: 1.8; text-align: center;">
+                              שמחים לבשר שהצטרפת לרשימת התפוצה שלנו! 💖
+                            </p>
+                            
+                            <p style="margin: 0 0 25px 0; color: #6b7280; font-size: 16px; line-height: 1.8; text-align: center;">
+                              מעכשיו תהיו הראשונים לשמוע על:
+                            </p>
+                            
+                            <!-- Benefits List -->
+                            <table role="presentation" style="width: 100%; margin: 0 0 30px 0;">
+                              <tr>
+                                <td align="center">
+                                  <table role="presentation" style="border-collapse: collapse;">
+                                    <tr>
+                                      <td style="padding: 10px 20px; background-color: #fef3c7; border-radius: 10px; margin-bottom: 10px;">
+                                        <span style="color: #92400e; font-size: 15px;">🍪 עוגיות חדשות וטעמים מפתיעים</span>
+                                      </td>
+                                    </tr>
+                                    <tr><td style="height: 10px;"></td></tr>
+                                    <tr>
+                                      <td style="padding: 10px 20px; background-color: #dbeafe; border-radius: 10px;">
+                                        <span style="color: #1e40af; font-size: 15px;">🎁 מבצעים והנחות בלעדיות</span>
+                                      </td>
+                                    </tr>
+                                    <tr><td style="height: 10px;"></td></tr>
+                                    <tr>
+                                      <td style="padding: 10px 20px; background-color: #dcfce7; border-radius: 10px;">
+                                        <span style="color: #166534; font-size: 15px;">✨ עדכונים ואירועים מיוחדים</span>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                            
+                            <p style="margin: 0; color: #6b7280; font-size: 16px; line-height: 1.8; text-align: center;">
+                              נתראה בקרוב! 🥰
+                            </p>
+                          </td>
+                        </tr>
+                        
+                        <!-- Footer -->
+                        <tr>
+                          <td style="background-color: #fdf2f8; padding: 25px 40px; border-radius: 0 0 17px 17px; text-align: center;">
+                            <p style="margin: 0; color: #9ca3af; font-size: 13px;">
+                              מזון האושר - עוגיות שמביאות אושר 💝
+                            </p>
+                          </td>
+                        </tr>
+                        
+                      </table>
+                    </td>
+                  </tr>
+                  
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `,
+    });
+    console.log("Welcome email sent successfully to:", email);
+  } catch (error) {
+    console.error("Failed to send welcome email:", error);
+    // Don't throw - subscription should succeed even if email fails
+  }
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -125,6 +248,11 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     console.log("Newsletter subscription successful");
+
+    // Send welcome email if email was provided
+    if (email) {
+      await sendWelcomeEmail(email.trim());
+    }
 
     return new Response(
       JSON.stringify({ success: true }),

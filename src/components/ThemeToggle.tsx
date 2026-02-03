@@ -16,9 +16,9 @@ const ThemeToggle = () => {
         theme === 'dark' ? 'from-amber-400 to-orange-500' : 'from-blue-500 to-cyan-600'
       }`}>
         {theme === 'dark' ? (
-          <Sun className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white fill-white/20" />
+          <Sun className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white" />
         ) : (
-          <Moon className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white fill-white/20" />
+          <Moon className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white" />
         )}
       </div>
       <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground">
