@@ -1,7 +1,13 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
+// Initialize Supabase client with service role key
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,9 +21,6 @@ interface OTPRequest {
   code?: string;
 }
 
-// Store OTPs in memory with expiration (in production, use a database table)
-const otpStore = new Map<string, { code: string; expiresAt: number }>();
-
 // Rate limiting - 3 OTP sends per hour per IP
 const rateLimiter = new Map<string, { count: number; resetTime: number }>();
 const MAX_REQUESTS_PER_HOUR = 3;
@@ -28,14 +31,13 @@ function generateOTP(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// Clean expired OTPs
-function cleanExpiredOTPs() {
-  const now = Date.now();
-  for (const [email, data] of otpStore.entries()) {
-    if (data.expiresAt < now) {
-      otpStore.delete(email);
-    }
-  }
+// Simple hash function for OTP (in production, use a proper crypto hash)
+async function hashOTP(code: string, email: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(code + email + "mazon_haosher_secret");
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 // Check and update rate limit
@@ -73,7 +75,12 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    cleanExpiredOTPs();
+    // Cleanup expired tokens (run occasionally)
+    try {
+      await supabase.rpc("cleanup_expired_otp_tokens");
+    } catch {
+      // Ignore cleanup errors
+    }
 
     if (action === "send") {
       // Check rate limit
@@ -90,11 +97,30 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Generate and store OTP
+      // Generate OTP and hash it
       const otp = generateOTP();
-      const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes expiration
-      
-      otpStore.set(email, { code: otp, expiresAt });
+      const codeHash = await hashOTP(otp, email);
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 minutes expiration
+
+      // Delete any existing OTP for this email
+      await supabase
+        .from("otp_tokens")
+        .delete()
+        .eq("email", email);
+
+      // Store new OTP in database
+      const { error: insertError } = await supabase
+        .from("otp_tokens")
+        .insert({
+          email,
+          code_hash: codeHash,
+          expires_at: expiresAt,
+        });
+
+      if (insertError) {
+        console.error("Error storing OTP:", insertError);
+        throw new Error("שגיאה בשמירת קוד האימות");
+      }
 
       // Send email with OTP
       const emailResponse = await resend.emails.send({
@@ -134,32 +160,49 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      const storedData = otpStore.get(email);
-      
-      if (!storedData) {
-        return new Response(
-          JSON.stringify({ error: "קוד אימות לא נמצא או פג תוקף", valid: false }),
-          { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-        );
-      }
+      // Hash the provided code
+      const codeHash = await hashOTP(code, email);
 
-      if (storedData.expiresAt < Date.now()) {
-        otpStore.delete(email);
-        return new Response(
-          JSON.stringify({ error: "קוד האימות פג תוקף", valid: false }),
-          { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-        );
-      }
+      // Find matching OTP in database
+      const { data: otpData, error: fetchError } = await supabase
+        .from("otp_tokens")
+        .select("*")
+        .eq("email", email)
+        .eq("code_hash", codeHash)
+        .eq("verified", false)
+        .gt("expires_at", new Date().toISOString())
+        .single();
 
-      if (storedData.code !== code) {
+      if (fetchError || !otpData) {
+        // Check if there's an expired token
+        const { data: expiredToken } = await supabase
+          .from("otp_tokens")
+          .select("*")
+          .eq("email", email)
+          .eq("code_hash", codeHash)
+          .lte("expires_at", new Date().toISOString())
+          .single();
+
+        if (expiredToken) {
+          // Delete expired token
+          await supabase.from("otp_tokens").delete().eq("id", expiredToken.id);
+          return new Response(
+            JSON.stringify({ error: "קוד האימות פג תוקף", valid: false }),
+            { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+          );
+        }
+
         return new Response(
           JSON.stringify({ error: "קוד אימות שגוי", valid: false }),
           { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
         );
       }
 
-      // OTP is valid - remove it from store
-      otpStore.delete(email);
+      // Mark OTP as verified and delete it
+      await supabase
+        .from("otp_tokens")
+        .delete()
+        .eq("id", otpData.id);
 
       return new Response(
         JSON.stringify({ success: true, valid: true, message: "קוד אומת בהצלחה" }),
