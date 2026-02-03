@@ -144,7 +144,7 @@ const Hero = () => {
             <img 
               src={logo}
               alt="מזון האושר"
-              className="h-32 md:h-40 lg:h-48 w-auto mx-auto animate-sparkle drop-shadow-2xl"
+              className="h-32 md:h-40 lg:h-48 w-auto mx-auto drop-shadow-2xl"
             />
             {/* Glow effect behind logo */}
             <div className="absolute inset-0 flex items-center justify-center -z-10">
