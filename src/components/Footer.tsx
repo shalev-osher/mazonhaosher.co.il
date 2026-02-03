@@ -5,25 +5,25 @@ const Footer = () => {
   const { setIsCartOpen } = useCart();
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-40 py-2 bg-background/90 border-t border-border/30">
-      <div className="container mx-auto px-3">
+    <footer className="fixed bottom-0 left-0 right-0 z-40 py-2 md:py-3 bg-background/90 border-t border-border/30">
+      <div className="container mx-auto px-3 md:px-6">
         <div className="flex items-center justify-between">
           {/* Right side - Cart, WhatsApp */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 md:gap-3">
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="w-8 h-8 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center hover:bg-accent hover:border-transparent transition-all duration-300 hover:scale-110 group"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center hover:bg-accent hover:border-transparent transition-all duration-300 hover:scale-110 group"
             >
-              <ShoppingBag className="w-4 h-4 text-accent group-hover:text-white transition-colors" />
+              <ShoppingBag className="w-4 h-4 md:w-5 md:h-5 text-accent group-hover:text-white transition-colors" />
             </button>
             <a 
               href="https://wa.me/972546791198"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-[#25D366]/20 border border-[#25D366]/30 flex items-center justify-center hover:bg-[#25D366] hover:border-transparent transition-all duration-300 hover:scale-110 group"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#25D366]/20 border border-[#25D366]/30 flex items-center justify-center hover:bg-[#25D366] hover:border-transparent transition-all duration-300 hover:scale-110 group"
             >
               <svg 
-                className="w-4 h-4 text-[#25D366] group-hover:text-white transition-colors" 
+                className="w-4 h-4 md:w-5 md:h-5 text-[#25D366] group-hover:text-white transition-colors" 
                 viewBox="0 0 24 24" 
                 fill="currentColor"
               >
@@ -33,25 +33,25 @@ const Footer = () => {
           </div>
 
           {/* Center - Copyright + Brand name + Year */}
-          <span className="text-sm font-medium text-foreground/80">© מזון האושר 2026</span>
+          <span className="text-sm md:text-base font-medium text-foreground/80">© מזון האושר 2026</span>
 
           {/* Left side - Facebook, Instagram */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 md:gap-3">
             <a 
               href="https://www.facebook.com/p/%D7%9E%D7%96%D7%95%D7%9F-%D7%94%D7%90%D7%95%D7%A9%D7%A8-61565573526817/" 
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-[#1877F2]/20 border border-[#1877F2]/30 flex items-center justify-center hover:bg-[#1877F2] hover:border-transparent transition-all duration-300 hover:scale-110 group"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#1877F2]/20 border border-[#1877F2]/30 flex items-center justify-center hover:bg-[#1877F2] hover:border-transparent transition-all duration-300 hover:scale-110 group"
             >
-              <Facebook className="w-4 h-4 text-[#1877F2] group-hover:text-white transition-colors" />
+              <Facebook className="w-4 h-4 md:w-5 md:h-5 text-[#1877F2] group-hover:text-white transition-colors" />
             </a>
             <a 
               href="https://www.instagram.com/mazonaosher/" 
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 border border-pink-500/30 flex items-center justify-center hover:from-purple-500 hover:via-pink-500 hover:to-orange-500 hover:border-transparent transition-all duration-300 hover:scale-110 group"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 border border-pink-500/30 flex items-center justify-center hover:from-purple-500 hover:via-pink-500 hover:to-orange-500 hover:border-transparent transition-all duration-300 hover:scale-110 group"
             >
-            <Instagram className="w-4 h-4 text-pink-500 group-hover:text-white transition-colors" />
+            <Instagram className="w-4 h-4 md:w-5 md:h-5 text-pink-500 group-hover:text-white transition-colors" />
             </a>
           </div>
         </div>
