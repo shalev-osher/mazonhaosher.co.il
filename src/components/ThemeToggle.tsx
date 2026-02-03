@@ -14,15 +14,15 @@ const ThemeToggle = () => {
         <Sun 
           className={`absolute inset-0 w-4 h-4 md:w-[18px] md:h-[18px] text-amber-500 transition-all duration-500 ${
             theme === 'dark' 
-              ? 'rotate-90 scale-0 opacity-0' 
-              : 'rotate-0 scale-100 opacity-100'
+              ? 'rotate-0 scale-100 opacity-100' 
+              : 'rotate-90 scale-0 opacity-0'
           }`}
         />
         <MoonStar 
           className={`absolute inset-0 w-4 h-4 md:w-[18px] md:h-[18px] text-indigo-400 transition-all duration-500 ${
             theme === 'dark' 
-              ? 'rotate-0 scale-100 opacity-100' 
-              : '-rotate-90 scale-0 opacity-0'
+              ? '-rotate-90 scale-0 opacity-0'
+              : 'rotate-0 scale-100 opacity-100'
           }`}
         />
       </div>
