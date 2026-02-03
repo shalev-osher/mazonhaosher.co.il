@@ -99,12 +99,10 @@ const Header = () => {
   ];
 
   return (
-    <header className={`fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 transition-all duration-500 bg-transparent ${
-      scrolled ? "py-1.5" : "py-2"
-    }`}>
-      <div className="flex justify-center px-2">
-        {/* Single centered floating pill with all icons + labels */}
-        <nav className="flex items-center bg-background/70 backdrop-blur-xl rounded-2xl px-2 py-1.5 border border-border/40 shadow-lg shadow-black/5 gap-0.5">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/85 border-b border-border/30">
+      <div className="flex items-center justify-center px-2 py-1.5 pt-[calc(0.375rem+env(safe-area-inset-top))]">
+        {/* Navigation bar */}
+        <nav className="flex items-center gap-0.5">
           {/* Navigation items */}
           {navItems.map((item) => {
             const IconComponent = item.icon;
@@ -113,7 +111,7 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`relative flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group ${
+                className={`p-2 transition-all duration-300 rounded-lg group ${
                   isActive 
                     ? "text-primary bg-primary/10" 
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -122,17 +120,12 @@ const Header = () => {
                 <IconComponent className={`w-4 h-4 transition-all duration-300 ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`} />
-                <span className={`text-[10px] font-medium transition-all duration-300 ${
-                  isActive ? "text-primary" : ""
-                }`}>
-                  {item.label}
-                </span>
               </button>
             );
           })}
 
           {/* Separator */}
-          <div className="w-px h-8 bg-border/40 mx-1" />
+          <div className="w-px h-5 bg-border/40 mx-1" />
 
           {/* Cart Button */}
           <CartHeaderButton />
@@ -142,14 +135,13 @@ const Header = () => {
           {isLoggedIn ? (
             <DropdownMenu dir="rtl">
               <DropdownMenuTrigger asChild>
-                <button className="flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group text-primary bg-primary/10">
+                <button className="p-2 transition-all duration-300 rounded-lg text-primary bg-primary/10">
                   <UserCircle className="w-4 h-4" />
-                  <span className="text-[10px] font-medium">חשבון</span>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
-                className="w-48 rounded-2xl shadow-xl border-border/50 backdrop-blur-xl animate-scale-in text-sm text-right [direction:rtl]"
+                className="w-48 rounded-xl shadow-xl border-border/50 bg-background/90 animate-scale-in text-sm text-right [direction:rtl]"
               >
                 <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
                   <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
@@ -204,14 +196,13 @@ const Header = () => {
           ) : (
             <button
               onClick={() => setAuthModalOpen(true)}
-              className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group ${
+              className={`p-2 transition-all duration-300 rounded-lg group ${
                 authModalOpen
                   ? "text-primary bg-primary/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
               <UserCircle className={`w-4 h-4 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
-              <span className="text-[10px] font-medium">כניסה</span>
             </button>
           )}
         </nav>
@@ -258,21 +249,18 @@ const CartHeaderButton = () => {
   return (
     <button
       onClick={() => setIsCartOpen(true)}
-      className={`relative flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group ${
+      className={`relative p-2 transition-all duration-300 rounded-lg group ${
         isActive
           ? "text-primary bg-primary/10"
           : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
       }`}
     >
-      <div className="relative">
-        <ShoppingBag className={`w-4 h-4 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
-        {totalItems > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow-sm">
-            {totalItems}
-          </span>
-        )}
-      </div>
-      <span className="text-[10px] font-medium">עגלה</span>
+      <ShoppingBag className={`w-4 h-4 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
+      {totalItems > 0 && (
+        <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow-sm">
+          {totalItems}
+        </span>
+      )}
     </button>
   );
 };
