@@ -25,6 +25,15 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
     localStorage.setItem('theme', theme);
+    
+    // Update theme-color meta tag for status bar
+    const themeColor = theme === 'dark' ? '#1a0d10' : '#faf6f7';
+    const metaTags = document.querySelectorAll('meta[name="theme-color"]');
+    metaTags.forEach(tag => tag.remove());
+    const meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = themeColor;
+    document.head.appendChild(meta);
   }, [theme]);
 
   const toggleTheme = () => {
