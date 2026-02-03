@@ -1,6 +1,9 @@
 import { MapPin, Phone, Clock } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ContactSection = () => {
+  const { t, isRTL } = useLanguage();
+  
   return (
     <section id="contact" className="py-6 relative overflow-hidden">
       {/* Decorative gradient background */}
@@ -11,21 +14,21 @@ const ContactSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-lg mx-auto animate-fade-in text-primary-foreground">
           <h2 className="font-display text-xl md:text-2xl font-bold mb-2">
-            צרו קשר
+            {t('contact.title')}
           </h2>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-primary-foreground/90 text-sm">
             <div className="flex items-center gap-1.5 hover:scale-105 transition-transform duration-300">
               <MapPin className="w-4 h-4" />
-              <span>שדרות קדש 39, אשקלון</span>
+              <span>{t('contact.address')}</span>
             </div>
             <div className="flex items-center gap-1.5 hover:scale-105 transition-transform duration-300">
               <Phone className="w-4 h-4" />
-              <span dir="ltr">054-679-1198</span>
+              <span dir="ltr">{t('contact.phone')}</span>
             </div>
             <div className="flex items-center gap-1.5 hover:scale-105 transition-transform duration-300">
               <Clock className="w-4 h-4" />
-              <span>אספקה עד 3 ימי עסקים</span>
+              <span>{t('contact.hours')}</span>
             </div>
           </div>
         </div>
