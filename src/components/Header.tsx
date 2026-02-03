@@ -98,9 +98,9 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/85 border-b border-border/30">
-      <div className="flex items-center justify-center px-2 py-1.5 pt-[calc(0.375rem+env(safe-area-inset-top))]">
+      <div className="flex items-center justify-center px-2 py-1.5 md:py-2.5 pt-[calc(0.375rem+env(safe-area-inset-top))]">
         {/* Navigation bar */}
-        <nav className="flex items-center gap-0.5">
+        <nav className="flex items-center gap-0.5 md:gap-2">
           {/* Navigation items */}
           {navItems.map((item) => {
             const IconComponent = item.icon;
@@ -109,16 +109,16 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg group ${
+                className={`flex flex-col items-center gap-0.5 md:gap-1 px-2 md:px-4 py-1 md:py-2 transition-all duration-300 rounded-lg group ${
                   isActive 
                     ? "text-primary bg-primary/10" 
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 }`}
               >
-                <IconComponent className={`w-4 h-4 transition-all duration-300 ${
+                <IconComponent className={`w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`} />
-                <span className="text-[9px] font-medium">{item.label}</span>
+                <span className="text-[9px] md:text-xs font-medium">{item.label}</span>
               </button>
             );
           })}
@@ -129,9 +129,9 @@ const Header = () => {
           {isLoggedIn ? (
             <DropdownMenu dir="rtl">
               <DropdownMenuTrigger asChild>
-                <button className="flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg text-primary bg-primary/10">
-                  <UserCircle className="w-4 h-4" />
-                  <span className="text-[9px] font-medium">חשבון</span>
+                <button className="flex flex-col items-center gap-0.5 md:gap-1 px-2 md:px-4 py-1 md:py-2 transition-all duration-300 rounded-lg text-primary bg-primary/10">
+                  <UserCircle className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="text-[9px] md:text-xs font-medium">חשבון</span>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -191,14 +191,14 @@ const Header = () => {
           ) : (
             <button
               onClick={() => setAuthModalOpen(true)}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg group ${
+              className={`flex flex-col items-center gap-0.5 md:gap-1 px-2 md:px-4 py-1 md:py-2 transition-all duration-300 rounded-lg group ${
                 authModalOpen
                   ? "text-primary bg-primary/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
-              <UserCircle className={`w-4 h-4 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
-              <span className="text-[9px] font-medium">כניסה</span>
+              <UserCircle className={`w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
+              <span className="text-[9px] md:text-xs font-medium">כניסה</span>
             </button>
           )}
         </nav>
