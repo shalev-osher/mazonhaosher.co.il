@@ -1,4 +1,4 @@
-import { Instagram, Facebook, Github, ShoppingBag } from "lucide-react";
+import { Instagram, Facebook, ShoppingBag } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -52,15 +52,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 border border-pink-500/30 flex items-center justify-center hover:from-purple-500 hover:via-pink-500 hover:to-orange-500 hover:border-transparent transition-all duration-300 hover:scale-110 group"
             >
-              <Instagram className="w-4 h-4 text-pink-500 group-hover:text-white transition-colors" />
-            </a>
-            <a 
-              href="https://github.com" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-foreground/10 border border-foreground/20 flex items-center justify-center hover:bg-foreground hover:border-transparent transition-all duration-300 hover:scale-110 group"
-            >
-              <Github className="w-4 h-4 text-foreground group-hover:text-background transition-colors" />
+            <Instagram className="w-4 h-4 text-pink-500 group-hover:text-white transition-colors" />
             </a>
           </div>
         </div>
