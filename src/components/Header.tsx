@@ -46,11 +46,11 @@ const Header = () => {
   };
 
   const navItems = [
-    { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, bgColor: "bg-orange-500/20", iconColor: "text-orange-500" },
-    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, bgColor: "bg-teal-500/20", iconColor: "text-teal-500" },
-    { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, bgColor: "bg-amber-500/20", iconColor: "text-amber-500" },
-    { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, bgColor: "bg-sky-500/20", iconColor: "text-sky-500" },
-    { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, bgColor: "bg-emerald-500/20", iconColor: "text-emerald-500" },
+    { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, gradient: "from-orange-500 to-amber-600" },
+    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, gradient: "from-purple-500 to-violet-600" },
+    { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, gradient: "from-amber-500 to-orange-600" },
+    { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, gradient: "from-sky-500 to-cyan-600" },
+    { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, gradient: "from-emerald-500 to-teal-600" },
   ];
 
   return (
@@ -74,10 +74,10 @@ const Header = () => {
                     : "hover:bg-muted"
                 }`}
               >
-                <div className={`p-1 md:p-1.5 rounded-lg transition-all duration-300 ${item.bgColor} ${
+                <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 bg-gradient-to-br ${item.gradient} shadow-md ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`}>
-                  <IconComponent className={`w-3.5 h-3.5 md:w-4 md:h-4 ${item.iconColor}`} />
+                  <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white fill-white/20" />
                 </div>
                 <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
               </button>
