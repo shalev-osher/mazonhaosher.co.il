@@ -22,7 +22,8 @@ const FloatingAuthButton = () => {
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
-
+  const firstName = displayName?.split(" ")[0] || "";
+  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
   const handleLogout = async () => {
     await logout();
   };
@@ -43,14 +44,22 @@ const FloatingAuthButton = () => {
               className={cn(
                 "fixed bottom-14 z-40 rounded-full",
                 "bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg",
-                "flex items-center gap-1.5 px-3 py-2",
+                "flex items-center gap-1.5 px-2 py-1.5",
                 "hover:scale-105 transition-all duration-200",
                 isRTL ? "right-4" : "left-4"
               )}
             >
-              <UserCircle className="w-5 h-5 text-white fill-white/20" />
+              {avatarUrl ? (
+                <img 
+                  src={avatarUrl} 
+                  alt={firstName}
+                  className="w-6 h-6 rounded-full object-cover border border-white/30"
+                />
+              ) : (
+                <UserCircle className="w-6 h-6 text-white fill-white/20" />
+              )}
               <span className="text-xs font-medium text-white">
-                {isRTL ? "חשבון" : "Account"}
+                {firstName || (isRTL ? "חשבון" : "Account")}
               </span>
             </button>
           </DropdownMenuTrigger>
