@@ -100,15 +100,15 @@ const Header = () => {
 
   return (
     <header className={`fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 transition-all duration-500 bg-transparent ${
-      scrolled ? "py-1" : "py-1.5"
+      scrolled ? "py-2" : "py-3"
     }`}>
-      <div className="max-w-7xl mx-auto px-[max(0.75rem,env(safe-area-inset-left))]">
+      <div className="max-w-7xl mx-auto px-[max(1rem,env(safe-area-inset-left))]">
         <div className="flex items-center justify-between">
 
-          {/* Navigation - All devices */}
+          {/* Navigation - Floating pill design */}
           <TooltipProvider delayDuration={100}>
-            <nav className="flex items-center gap-0.5">
-              {navItems.map((item) => {
+            <nav className="flex items-center bg-background/60 backdrop-blur-xl rounded-full p-1 border border-border/50 shadow-lg shadow-black/5">
+              {navItems.map((item, index) => {
                 const IconComponent = item.icon;
                 const isActive = activeSection === item.id;
                 return (
@@ -116,18 +116,29 @@ const Header = () => {
                     <TooltipTrigger asChild>
                       <button
                         onClick={() => scrollToSection(item.id)}
-                        className={`relative p-2 transition-all duration-300 rounded-lg group border ${
+                        className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
                           isActive 
-                            ? "text-primary bg-primary/15 shadow-sm shadow-primary/20 border-primary/20" 
-                            : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20 bg-card/50"
+                            ? "text-primary-foreground" 
+                            : "text-muted-foreground hover:text-foreground"
                         }`}
                       >
-                        <IconComponent className={`w-4 h-4 transition-transform duration-300 ${isActive ? "scale-110" : "group-hover:scale-110"}`} />
+                        {/* Active background blob */}
+                        <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
+                          isActive ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
+                        }`} />
+                        {/* Glow effect */}
+                        <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
+                          isActive ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
+                        }`} />
+                        <IconComponent className={`relative z-10 w-4 h-4 transition-all duration-300 ${
+                          isActive ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"
+                        }`} />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent 
                       side="bottom" 
-                      className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+                      sideOffset={8}
+                      className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
                     >
                       {item.label}
                     </TooltipContent>
@@ -139,7 +150,7 @@ const Header = () => {
 
           {/* Right side - Cart + Theme Toggle + Auth */}
           <TooltipProvider delayDuration={100}>
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center bg-background/60 backdrop-blur-xl rounded-full p-1 border border-border/50 shadow-lg shadow-black/5">
               {/* Cart Button */}
               <CartHeaderButton />
               {/* Theme Toggle */}
@@ -148,13 +159,15 @@ const Header = () => {
               {isLoggedIn ? (
                 <DropdownMenu dir="rtl">
                   <DropdownMenuTrigger asChild>
-                    <button className="relative p-2 transition-all duration-300 rounded-lg group text-primary bg-primary/15 shadow-sm shadow-primary/20 border border-primary/20">
-                      <User className="w-4 h-4 transition-transform duration-300 scale-110" />
+                    <button className="relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden text-primary-foreground">
+                      <span className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80" />
+                      <span className="absolute inset-0 rounded-full shadow-[0_0_20px_hsl(var(--primary)/0.5)]" />
+                      <User className="relative z-10 w-4 h-4 transition-transform duration-300 scale-110 drop-shadow-sm" />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="start"
-                    className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm text-right [direction:rtl]"
+                    className="w-48 rounded-2xl shadow-xl border-border/50 backdrop-blur-xl animate-scale-in text-sm text-right [direction:rtl]"
                   >
                     <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
                       <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
@@ -211,18 +224,25 @@ const Header = () => {
                   <TooltipTrigger asChild>
                     <button
                       onClick={() => setAuthModalOpen(true)}
-                      className={`relative p-2 transition-all duration-300 rounded-lg group border ${
+                      className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
                         authModalOpen
-                          ? "text-primary bg-primary/15 shadow-sm shadow-primary/20 border-primary/20"
-                          : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20 bg-card/50"
+                          ? "text-primary-foreground"
+                          : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
-                      <KeyRound className={`w-4 h-4 transition-transform duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-110"}`} />
+                      <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
+                        authModalOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
+                      }`} />
+                      <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
+                        authModalOpen ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
+                      }`} />
+                      <KeyRound className={`relative z-10 w-4 h-4 transition-all duration-300 ${authModalOpen ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"}`} />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent 
                     side="bottom" 
-                    className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+                    sideOffset={8}
+                    className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
                   >
                     התחברות
                   </TooltipContent>
@@ -269,21 +289,30 @@ const Header = () => {
 const CartHeaderButton = () => {
   const { getTotalItems, setIsCartOpen, isCartOpen } = useCart();
   const totalItems = getTotalItems();
+  const isActive = isCartOpen || totalItems > 0;
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <button
           onClick={() => setIsCartOpen(true)}
-          className={`relative p-2 transition-all duration-300 rounded-lg group border ${
-            isCartOpen || totalItems > 0
-              ? "text-primary bg-primary/15 shadow-sm shadow-primary/20 border-primary/20"
-              : "text-muted-foreground hover:text-primary hover:bg-primary/10 border-transparent hover:border-primary/20 bg-card/50"
+          className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
+            isActive
+              ? "text-primary-foreground"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          <ShoppingBag className={`w-4 h-4 transition-transform duration-300 ${isCartOpen || totalItems > 0 ? "scale-110" : "group-hover:scale-110"}`} />
+          {/* Active/hover background */}
+          <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
+            isActive ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
+          }`} />
+          {/* Glow effect */}
+          <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
+            isActive ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
+          }`} />
+          <ShoppingBag className={`relative z-10 w-4 h-4 transition-all duration-300 ${isActive ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"}`} />
           {totalItems > 0 && (
-            <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold animate-pulse">
+            <span className="absolute -top-0.5 -right-0.5 z-20 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow-lg ring-2 ring-background/80">
               {totalItems}
             </span>
           )}
@@ -291,7 +320,8 @@ const CartHeaderButton = () => {
       </TooltipTrigger>
       <TooltipContent 
         side="bottom" 
-        className="bg-background/95 backdrop-blur-sm border-primary/20 shadow-lg shadow-primary/5 px-3 py-1.5 text-xs font-medium"
+        sideOffset={8}
+        className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
       >
         עגלת קניות {totalItems > 0 && `(${totalItems})`}
       </TooltipContent>
