@@ -346,16 +346,17 @@ const CookiesSection = () => {
 
   return (
     <section id="cookies" ref={sectionRef} className="py-24 relative overflow-hidden">
-      {/* Decorative background - darker rich tones */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/60 to-primary/30" />
-      <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 10% 20%, hsl(var(--primary) / 0.3) 0%, transparent 40%), radial-gradient(circle at 90% 80%, hsl(var(--accent) / 0.25) 0%, transparent 45%), radial-gradient(circle at 50% 50%, hsl(var(--golden-honey) / 0.15) 0%, transparent 60%)' }} />
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAzMGMwLTUuNTIzIDQuNDc3LTEwIDEwLTEwczEwIDQuNDc3IDEwIDEwLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEweiIgZmlsbD0iI2U4NWQ4ZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9nPjwvc3ZnPg==')] opacity-60" />
+      {/* Decorative background - warm baking tones */}
+      <div className="absolute inset-0 bg-gradient-to-b from-amber-50 via-orange-50 to-rose-50 dark:from-amber-950/30 dark:via-orange-950/20 dark:to-background" />
+      <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 10% 20%, hsl(35 85% 55% / 0.2) 0%, transparent 40%), radial-gradient(circle at 90% 80%, hsl(15 75% 60% / 0.15) 0%, transparent 45%), radial-gradient(circle at 50% 50%, hsl(40 90% 55% / 0.1) 0%, transparent 60%)' }} />
+      {/* Cookie pattern overlay */}
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='8' fill='%23d97706' /%3E%3Ccircle cx='26' cy='28' r='2' fill='%234b3621' /%3E%3Ccircle cx='34' cy='32' r='2' fill='%234b3621' /%3E%3Ccircle cx='30' cy='35' r='1.5' fill='%234b3621' /%3E%3C/svg%3E")`, backgroundSize: '80px 80px' }} />
       
       {/* Floating cookie decorations */}
       {floatingElements.map((el) => (
         <div
           key={el.id}
-          className="absolute pointer-events-none opacity-20"
+          className="absolute pointer-events-none opacity-30"
           style={{
             left: `${el.x}%`,
             top: `${el.y}%`,
@@ -364,7 +365,7 @@ const CookiesSection = () => {
           }}
         >
           <Cookie 
-            className="text-primary" 
+            className="text-amber-600" 
             style={{ width: el.size, height: el.size }}
           />
         </div>
@@ -383,18 +384,18 @@ const CookiesSection = () => {
           <div className={`flex items-center justify-center gap-3 mb-4 transition-all duration-700 delay-200 ${
             sectionVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
           }`}>
-            <div className="h-px w-16 bg-gradient-to-r from-transparent via-primary to-transparent" />
-            <Cookie className="h-6 w-6 text-primary animate-bounce" />
-            <div className="h-px w-16 bg-gradient-to-r from-transparent via-primary to-transparent" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
+            <Cookie className="h-6 w-6 text-amber-600 animate-bounce" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
           </div>
           
           <h2 className={`font-display text-5xl md:text-6xl lg:text-7xl font-bold transition-all duration-1000 delay-300 ${
             sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
+            <span className="bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
               {displayedText}
             </span>
-            <span className={`inline-block w-1 h-12 md:h-16 bg-primary ${isRTL ? 'mr-1' : 'ml-1'} animate-blink`} />
+            <span className={`inline-block w-1 h-12 md:h-16 bg-amber-500 ${isRTL ? 'mr-1' : 'ml-1'} animate-blink`} />
           </h2>
           
           {/* Decorative subtitle */}
@@ -415,12 +416,12 @@ const CookiesSection = () => {
               placeholder={t('cookies.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={`${isRTL ? 'pr-8 pl-7' : 'pl-8 pr-7'} py-1.5 h-8 text-sm rounded-full bg-background/50 border-primary/30 focus:border-primary ${isRTL ? 'text-right' : 'text-left'}`}
+              className={`${isRTL ? 'pr-8 pl-7' : 'pl-8 pr-7'} py-1.5 h-8 text-sm rounded-full bg-background border-amber-500/50 focus:border-amber-500 ${isRTL ? 'text-right' : 'text-left'}`}
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className={`absolute ${isRTL ? 'left-2' : 'right-2'} top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-primary transition-all`}
+                className={`absolute ${isRTL ? 'left-2' : 'right-2'} top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-amber-500 transition-all`}
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -439,8 +440,8 @@ const CookiesSection = () => {
               size="sm"
               className={`rounded-full px-3 h-7 text-xs transition-all duration-200 ${
                 activeCategoryKey === category.key 
-                  ? "bg-primary text-primary-foreground" 
-                  : "bg-background/40 hover:bg-background/60"
+                  ? "bg-amber-500 text-white hover:bg-amber-600" 
+                  : "bg-background hover:bg-amber-100 dark:hover:bg-amber-900/30"
               }`}
             >
               {isRTL ? category.he : category.en}
@@ -458,8 +459,8 @@ const CookiesSection = () => {
             onClick={() => setActiveTag("מומלץ")}
             className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
               activeTag === "מומלץ"
-                ? "bg-accent text-accent-foreground"
-                : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
+                ? "bg-amber-500 text-white"
+                : "bg-background text-muted-foreground hover:text-foreground hover:bg-amber-100 dark:hover:bg-amber-900/30"
             }`}
             title={isRTL ? "מומלץ" : "Recommended"}
           >
@@ -469,8 +470,8 @@ const CookiesSection = () => {
             onClick={() => setActiveTag("חדש")}
             className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
               activeTag === "חדש"
-                ? "bg-green-500 text-white"
-                : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
+                ? "bg-emerald-500 text-white"
+                : "bg-background text-muted-foreground hover:text-foreground hover:bg-emerald-100 dark:hover:bg-emerald-900/30"
             }`}
             title={isRTL ? "חדש" : "New"}
           >
@@ -486,8 +487,8 @@ const CookiesSection = () => {
             }}
             className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
               activeTag === "מועדפים"
-                ? "bg-red-500 text-white"
-                : "bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60"
+                ? "bg-rose-500 text-white"
+                : "bg-background text-muted-foreground hover:text-foreground hover:bg-rose-100 dark:hover:bg-rose-900/30"
             }`}
             title={isRTL ? "מועדפים" : "Favorites"}
           >
@@ -499,7 +500,7 @@ const CookiesSection = () => {
           <div className="w-px h-6 bg-border/50" />
 
           {/* Sort */}
-          <div className="flex items-center gap-1 bg-background/40 rounded-full px-2 py-1 h-7">
+          <div className="flex items-center gap-1 bg-background rounded-full px-2 py-1 h-7 border border-border">
             <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
             {sortOptions.map((option) => (
               <button
@@ -507,7 +508,7 @@ const CookiesSection = () => {
                 onClick={() => setSortBy(option.value)}
                 className={`text-xs px-2 py-0.5 rounded-full transition-all ${
                   sortBy === option.value
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-sky-500 text-white"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
