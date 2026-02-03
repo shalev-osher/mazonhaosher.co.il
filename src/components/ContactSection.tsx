@@ -1,13 +1,24 @@
-import { Clock, Navigation } from "lucide-react";
+import { Clock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
+
+// Waze official icon component
+const WazeIcon = ({ className }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    className={className}
+    fill="currentColor"
+  >
+    <path d="M20.54 6.63c-1.44-1.32-3.46-2.13-5.68-2.13-4.45 0-8.07 3.13-8.07 6.99 0 1.83.82 3.51 2.18 4.78-.18.6-.5 1.54-1.1 2.59-.37.66.32 1.39 1.03 1.09 1.5-.64 2.72-1.43 3.67-2.13.72.11 1.47.17 2.24.17 4.45 0 8.07-3.13 8.07-6.99 0-1.73-.73-3.32-1.99-4.56l-.35.19zm-7.79 7.37c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm4 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/>
+  </svg>
+);
 
 const ContactSection = () => {
   const { t, isRTL } = useLanguage();
   
   const openWaze = () => {
-    // Waze deep link to Sderot Kadesh 39, Ashkelon
-    window.open("https://waze.com/ul?ll=31.6689,34.5743&navigate=yes&zoom=17", "_blank");
+    // Waze deep link with address search for Sderot Kadesh 39, Ashkelon
+    window.open("https://waze.com/ul?q=שדרות%20קדש%2039%20אשקלון&navigate=yes", "_blank");
   };
   
   return (
@@ -44,9 +55,9 @@ const ContactSection = () => {
           {/* Waze Navigation Button */}
           <Button
             onClick={openWaze}
-            className="mb-4 bg-[#33ccff] hover:bg-[#29a8d4] text-white font-bold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            className="mb-4 bg-[#05c8f7] hover:bg-[#04b5e0] text-white font-bold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
           >
-            <Navigation className="w-4 h-4 mr-2 rtl:mr-0 rtl:ml-2" />
+            <WazeIcon className="w-5 h-5 mr-2 rtl:mr-0 rtl:ml-2" />
             {isRTL ? "נווט אלינו עם Waze" : "Navigate with Waze"}
           </Button>
 
