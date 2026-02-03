@@ -165,7 +165,11 @@ const ReviewsSection = () => {
 
   return (
     <section id="reviews" ref={sectionRef} className="py-10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-background to-orange-500/10" />
+      {/* Rich warm gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-100 dark:from-amber-950/40 dark:via-orange-950/30 dark:to-yellow-950/40" />
+      <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 15% 25%, hsl(40 90% 60% / 0.3) 0%, transparent 45%), radial-gradient(circle at 85% 75%, hsl(25 85% 55% / 0.25) 0%, transparent 50%), radial-gradient(circle at 50% 50%, hsl(35 90% 65% / 0.15) 0%, transparent 55%)' }} />
+      {/* Star pattern */}
+      <div className="absolute inset-0 opacity-15" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 5 L28 18 L42 18 L31 27 L35 40 L25 32 L15 40 L19 27 L8 18 L22 18 Z' fill='%23f59e0b' /%3E%3C/svg%3E")`, backgroundSize: '80px 80px' }} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className={`text-center mb-6 transition-all duration-700 ${
@@ -196,7 +200,9 @@ const ReviewsSection = () => {
           {/* Add Review Form */}
           <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-amber-500/20">
             <h3 className="font-display text-lg font-bold text-amber-600 mb-4 flex items-center gap-2">
-              <Star className="h-4 w-4 text-amber-500" />
+              <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-md">
+                <Star className="h-4 w-4 text-white fill-white" />
+              </div>
               {t('reviews.addReview')}
             </h3>
 
@@ -323,8 +329,8 @@ const ReviewsSection = () => {
                     className="bg-card/60 backdrop-blur-sm rounded-2xl p-4 border border-amber-500/20"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-amber-500/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <User className="h-5 w-5 text-amber-600" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                        <User className="h-5 w-5 text-white fill-white/20" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
