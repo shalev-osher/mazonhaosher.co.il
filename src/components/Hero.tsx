@@ -140,7 +140,7 @@ const Hero = () => {
           </div>
           
           {/* Logo with glow effect */}
-          <div className="relative mb-2">
+          <div className="relative mb-0">
             <img 
               src={logo}
               alt="מזון האושר"
