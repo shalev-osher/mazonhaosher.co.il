@@ -15,14 +15,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useProfile } from "@/contexts/ProfileContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 import ThemeToggle from "./ThemeToggle";
 import AuthModal from "./AuthModal";
 import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
+import LanguageToggle from "./LanguageToggle";
 
 const Header = () => {
   const { profile, isLoggedIn, logout, user } = useProfile();
+  const { t, isRTL } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
@@ -86,11 +89,11 @@ const Header = () => {
   const firstName = displayName?.split(" ")[0] || "";
 
   const navItems = [
-    { id: "hero", label: "בית", icon: Home, color: "text-blue-500" },
-    { id: "gift-packages", label: "מארזים", icon: Gift, color: "text-pink-500" },
-    { id: "reviews", label: "ביקורות", icon: Star, color: "text-yellow-500" },
-    { id: "faq", label: "שאלות", icon: CircleHelp, color: "text-green-500" },
-    { id: "about", label: "אודות", icon: Users, color: "text-purple-500" },
+    { id: "hero", labelKey: "nav.home", icon: Home, color: "text-primary" },
+    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, color: "text-accent" },
+    { id: "reviews", labelKey: "nav.reviews", icon: Star, color: "text-primary" },
+    { id: "faq", labelKey: "nav.faq", icon: CircleHelp, color: "text-accent" },
+    { id: "about", labelKey: "nav.about", icon: Users, color: "text-primary" },
   ];
 
   return (
@@ -104,6 +107,7 @@ const Header = () => {
           {navItems.map((item) => {
             const IconComponent = item.icon;
             const isActive = activeSection === item.id;
+            const label = item.label || t(item.labelKey);
             return (
               <button
                 key={item.id}
@@ -117,28 +121,32 @@ const Header = () => {
                 <IconComponent className={`w-4 h-4 md:w-[18px] md:h-[18px] transition-all duration-300 ${item.color} ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`} />
-                <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
+                <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{label}</span>
               </button>
             );
           })}
 
+          {/* Language Toggle */}
+          <LanguageToggle />
+          
           {/* Theme Toggle */}
           <ThemeToggle />
+          
           {/* Auth Button */}
           {isLoggedIn ? (
-            <DropdownMenu dir="rtl">
+            <DropdownMenu dir={isRTL ? "rtl" : "ltr"}>
               <DropdownMenuTrigger asChild>
                 <button className="flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg bg-primary/10">
-                  <UserCircle className="w-4 h-4 md:w-[18px] md:h-[18px] text-orange-500" />
+                  <UserCircle className="w-4 h-4 md:w-[18px] md:h-[18px] text-accent" />
                   {firstName && <span className="text-[9px] md:text-[11px] font-medium text-foreground">{firstName}</span>}
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
-                className="w-48 rounded-xl shadow-xl border-border/50 bg-background/90 animate-scale-in text-sm text-right [direction:rtl]"
+                className={`w-48 rounded-xl shadow-xl border-border/50 bg-background/90 animate-scale-in text-sm ${isRTL ? 'text-right [direction:rtl]' : 'text-left [direction:ltr]'}`}
               >
-                <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
-                  <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
+                <div className={`px-2.5 py-1.5 bg-primary/5 rounded-t-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <p className="text-xs font-medium text-foreground">{displayName || (isRTL ? "שלום!" : "Hello!")}</p>
                   <p className="text-[10px] text-muted-foreground">{user?.email}</p>
                 </div>
                 <DropdownMenuSeparator />
@@ -147,21 +155,21 @@ const Header = () => {
                   className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                 >
                   <Package className="w-3.5 h-3.5 text-primary" />
-                  <span>ההזמנות שלי</span>
+                  <span>{t('nav.orderHistory')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setShowEditProfileModal(true)}
                   className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                 >
                   <UserPen className="w-3.5 h-3.5 text-primary" />
-                  <span>עריכת פרופיל</span>
+                  <span>{t('nav.editProfile')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setShowChangePasswordModal(true)}
                   className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                 >
                   <Lock className="w-3.5 h-3.5 text-primary" />
-                  <span>שינוי סיסמה</span>
+                  <span>{t('profile.changePassword')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -169,7 +177,7 @@ const Header = () => {
                   className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                 >
                   <LogOut className="w-3.5 h-3.5 text-primary" />
-                  <span>התנתקות</span>
+                  <span>{t('nav.logout')}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -182,8 +190,8 @@ const Header = () => {
                   : "hover:bg-muted/50"
               }`}
             >
-              <UserCircle className={`w-4 h-4 md:w-[18px] md:h-[18px] text-orange-500 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
-              <span className={`text-[9px] md:text-[11px] font-medium ${authModalOpen ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>כניסה</span>
+              <UserCircle className={`w-4 h-4 md:w-[18px] md:h-[18px] text-accent transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
+              <span className={`text-[9px] md:text-[11px] font-medium ${authModalOpen ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{t('nav.login')}</span>
             </button>
           )}
         </nav>

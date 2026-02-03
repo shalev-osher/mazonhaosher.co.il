@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { Sparkles, Heart } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pauseTime: number = 2000) => {
   const [displayedText, setDisplayedText] = useState("");
@@ -81,8 +82,10 @@ const FloatingSparkle = ({ delay, left, top }: { delay: number; left: string; to
 );
 
 const Hero = () => {
+  const { t, isRTL } = useLanguage();
+  
   const { displayedText, isTyping } = useTypewriter(
-    "אופים לכם אושר",
+    isRTL ? "אופים לכם אושר" : "Baking Happiness",
     60,
     1000,
     3500
@@ -134,7 +137,7 @@ const Hero = () => {
           <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-4 py-1.5 mb-2">
             <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
             <span className="text-accent font-medium tracking-wider uppercase text-sm">
-              מיוצר באהבה
+              {isRTL ? "מיוצר באהבה" : "Made with Love"}
             </span>
             <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
           </div>
@@ -143,7 +146,7 @@ const Hero = () => {
           <div className="relative mb-0">
             <img 
               src={logo}
-              alt="מזון האושר"
+              alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
               className="h-32 md:h-40 lg:h-48 w-auto mx-auto drop-shadow-2xl"
             />
             {/* Glow effect behind logo */}
@@ -180,8 +183,8 @@ const Hero = () => {
             className="animate-glow-pulse hover:scale-105 transition-transform duration-300 text-base px-8"
             onClick={() => document.getElementById('cookies')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            <Sparkles className="h-4 w-4 ml-2" />
-            צפו בתפריט
+            <Sparkles className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            {isRTL ? "צפו בתפריט" : "View Menu"}
           </Button>
         </div>
       </div>
