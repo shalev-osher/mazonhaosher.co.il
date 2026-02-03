@@ -2,6 +2,7 @@ import { Gift, Star, CircleHelp, Users, Home } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "./LanguageToggle";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
   const { t, isRTL } = useLanguage();
@@ -9,11 +10,9 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Detect active section
       const sections = ["hero", "cookies", "gift-packages", "reviews", "faq", "about"];
       let current = "";
       
-      // Check if at top of page
       if (window.scrollY < 100) {
         current = "hero";
       } else {
@@ -48,11 +47,11 @@ const Header = () => {
   };
 
   const navItems = [
-    { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, color: "text-primary" },
-    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, color: "text-accent" },
-    { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, color: "text-primary" },
-    { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, color: "text-accent" },
-    { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, color: "text-primary" },
+    { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, bgColor: "bg-primary/15", iconColor: "text-primary" },
+    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, bgColor: "bg-accent/15", iconColor: "text-accent" },
+    { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, bgColor: "bg-amber-500/15", iconColor: "text-amber-500" },
+    { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, bgColor: "bg-sky-500/15", iconColor: "text-sky-500" },
+    { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, bgColor: "bg-emerald-500/15", iconColor: "text-emerald-500" },
   ];
 
   return (
@@ -76,9 +75,11 @@ const Header = () => {
                     : "hover:bg-muted/50"
                 }`}
               >
-                <IconComponent className={`w-4 h-4 md:w-[18px] md:h-[18px] transition-all duration-300 ${item.color} ${
+                <div className={`p-1 md:p-1.5 rounded-lg transition-all duration-300 ${item.bgColor} ${
                   isActive ? "scale-110" : "group-hover:scale-105"
-                }`} />
+                }`}>
+                  <IconComponent className={`w-3.5 h-3.5 md:w-4 md:h-4 ${item.iconColor}`} />
+                </div>
                 <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
               </button>
             );
@@ -86,6 +87,9 @@ const Header = () => {
 
           {/* Language Toggle */}
           <LanguageToggle />
+          
+          {/* Theme Toggle */}
+          <ThemeToggle />
         </nav>
       </div>
     </header>
