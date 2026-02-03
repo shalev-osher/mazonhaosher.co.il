@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone, Sparkles, MessageSquare } from "lucide-react";
+import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,7 +34,7 @@ interface AuthModalProps {
   onClose: () => void;
 }
 
-type AuthMode = "login" | "register" | "forgot" | "otp" | "sms-login" | "sms-otp";
+type AuthMode = "login" | "register" | "forgot" | "otp-method" | "otp";
 
 // Device fingerprint helpers
 const getDeviceId = (): string => {
@@ -111,37 +111,37 @@ const trustDevice = (email: string, t: (key: string) => string) => {
 };
 
 // Rate limiting for OTP attempts
-const getOtpAttempts = (email: string): { count: number; lockedUntil: number | null } => {
+const getOtpAttempts = (identifier: string): { count: number; lockedUntil: number | null } => {
   try {
-    const data = JSON.parse(sessionStorage.getItem(`otp_attempts_${email}`) || "{}");
+    const data = JSON.parse(sessionStorage.getItem(`otp_attempts_${identifier}`) || "{}");
     return { count: data.count || 0, lockedUntil: data.lockedUntil || null };
   } catch {
     return { count: 0, lockedUntil: null };
   }
 };
 
-const incrementOtpAttempts = (email: string): boolean => {
-  const attempts = getOtpAttempts(email);
+const incrementOtpAttempts = (identifier: string): boolean => {
+  const attempts = getOtpAttempts(identifier);
   const newCount = attempts.count + 1;
   
   if (newCount >= MAX_OTP_ATTEMPTS) {
-    sessionStorage.setItem(`otp_attempts_${email}`, JSON.stringify({
+    sessionStorage.setItem(`otp_attempts_${identifier}`, JSON.stringify({
       count: newCount,
       lockedUntil: Date.now() + LOCKOUT_DURATION
     }));
     return false;
   }
   
-  sessionStorage.setItem(`otp_attempts_${email}`, JSON.stringify({ count: newCount, lockedUntil: null }));
+  sessionStorage.setItem(`otp_attempts_${identifier}`, JSON.stringify({ count: newCount, lockedUntil: null }));
   return true;
 };
 
-const resetOtpAttempts = (email: string) => {
-  sessionStorage.removeItem(`otp_attempts_${email}`);
+const resetOtpAttempts = (identifier: string) => {
+  sessionStorage.removeItem(`otp_attempts_${identifier}`);
 };
 
 const GoogleIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4" ref={ref} {...props}>
+  <svg viewBox="0 0 24 24" className="w-5 h-5" ref={ref} {...props}>
     <path
       fill="#4285F4"
       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -163,14 +163,14 @@ const GoogleIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>
 GoogleIcon.displayName = "GoogleIcon";
 
 const AppleIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" ref={ref} {...props}>
+  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" ref={ref} {...props}>
     <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
   </svg>
 ));
 AppleIcon.displayName = "AppleIcon";
 
 const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
-  const { t, isRTL, language } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const [mode, setMode] = useState<AuthMode>("login");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -179,11 +179,12 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [otpSent, setOtpSent] = useState(false);
   const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
   const [otpResendTimer, setOtpResendTimer] = useState(0);
-  const [pendingAction, setPendingAction] = useState<"login" | "register" | "sms-login" | null>(null);
+  const [pendingAction, setPendingAction] = useState<"login" | "register" | null>(null);
   const [rememberDevice, setRememberDevice] = useState(true);
   const [remainingAttempts, setRemainingAttempts] = useState(MAX_OTP_ATTEMPTS);
   const [lockoutEndTime, setLockoutEndTime] = useState<number | null>(null);
-  const [smsPhone, setSmsPhone] = useState("");
+  const [otpMethod, setOtpMethod] = useState<"email" | "sms">("email");
+  const [verificationPhone, setVerificationPhone] = useState("");
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   
   const [formData, setFormData] = useState({
@@ -221,13 +222,13 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       const timer = setInterval(() => {
         if (lockoutEndTime <= Date.now()) {
           setLockoutEndTime(null);
-          resetOtpAttempts(formData.email);
+          resetOtpAttempts(otpMethod === "email" ? formData.email : verificationPhone);
           setRemainingAttempts(MAX_OTP_ATTEMPTS);
         }
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [lockoutEndTime, formData.email]);
+  }, [lockoutEndTime, formData.email, verificationPhone, otpMethod]);
 
   const resetForm = () => {
     setFormData({ email: "", password: "", fullName: "", phone: "" });
@@ -240,7 +241,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     setRememberDevice(true);
     setRemainingAttempts(MAX_OTP_ATTEMPTS);
     setLockoutEndTime(null);
-    setSmsPhone("");
+    setOtpMethod("email");
+    setVerificationPhone("");
   };
 
   const handleClose = () => {
@@ -270,7 +272,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       newErrors.email = emailResult.error.errors[0].message;
     }
     
-    if (mode !== "forgot" && mode !== "otp") {
+    if (mode !== "forgot") {
       const passwordResult = passwordSchema.safeParse(formData.password);
       if (!passwordResult.success) {
         newErrors.password = passwordResult.error.errors[0].message;
@@ -383,7 +385,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   };
 
-  const sendOTP = async () => {
+  const sendEmailOTP = async () => {
     setIsLoading(true);
     try {
       const response = await supabase.functions.invoke("send-otp", {
@@ -395,6 +397,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
       setOtpSent(true);
       setOtpResendTimer(60);
+      setMode("otp");
       toast({
         title: t('auth.codeSentEmail'),
         description: t('auth.checkEmailInbox'),
@@ -410,17 +413,17 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   };
 
-  const sendSMSOTP = async () => {
-    const phoneResult = smsPhoneSchema.safeParse(smsPhone);
+  const sendSmsOTP = async () => {
+    const phoneResult = smsPhoneSchema.safeParse(verificationPhone);
     if (!phoneResult.success) {
-      setErrors({ smsPhone: phoneResult.error.errors[0].message });
+      setErrors({ verificationPhone: phoneResult.error.errors[0].message });
       return;
     }
 
     setIsLoading(true);
     try {
       const response = await supabase.functions.invoke("send-sms-otp", {
-        body: { phone: smsPhone, action: "send" },
+        body: { phone: verificationPhone, action: "send" },
       });
 
       if (response.error) throw new Error(response.error.message);
@@ -428,7 +431,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
       setOtpSent(true);
       setOtpResendTimer(60);
-      setMode("sms-otp");
+      setMode("otp");
       toast({
         title: t('auth.codeSentSms'),
         description: t('auth.checkSms'),
@@ -444,66 +447,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   };
 
-  const verifySMSOTP = async (): Promise<boolean> => {
-    const code = otpCode.join("");
-    if (code.length !== 6) {
-      setErrors({ otp: t('auth.enter6Digits') });
-      return false;
-    }
-
-    const attempts = getOtpAttempts(smsPhone);
-    if (attempts.lockedUntil && attempts.lockedUntil > Date.now()) {
-      const remainingMinutes = Math.ceil((attempts.lockedUntil - Date.now()) / 60000);
-      setErrors({ otp: t('auth.tooManyAttempts').replace('{minutes}', String(remainingMinutes)) });
-      setLockoutEndTime(attempts.lockedUntil);
-      return false;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await supabase.functions.invoke("send-sms-otp", {
-        body: { phone: smsPhone, action: "verify", code },
-      });
-
-      if (response.error) throw new Error(response.error.message);
-      if (response.data?.error) throw new Error(response.data.error);
-
-      resetOtpAttempts(smsPhone);
-
-      if (response.data?.session) {
-        const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-          access_token: response.data.session.access_token,
-          refresh_token: response.data.session.refresh_token,
-        });
-        
-        if (sessionError || !sessionData.session) {
-          console.error("Error setting session:", sessionError);
-          throw new Error(t('auth.sessionError'));
-        }
-      }
-
-      return true;
-    } catch (error: any) {
-      const canContinue = incrementOtpAttempts(smsPhone);
-      const newAttempts = getOtpAttempts(smsPhone);
-      setRemainingAttempts(MAX_OTP_ATTEMPTS - newAttempts.count);
-      
-      if (!canContinue) {
-        setLockoutEndTime(newAttempts.lockedUntil);
-        setErrors({ otp: t('auth.tooManyAttempts').replace('{minutes}', '15') });
-      } else {
-        setErrors({ otp: `${error.message || t('auth.wrongCode')} (${t('auth.attemptsLeft').replace('{count}', String(MAX_OTP_ATTEMPTS - newAttempts.count))})` });
-      }
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const completeSMSAuth = async () => {
-    handleClose();
-  };
-
   const verifyOTP = async (): Promise<boolean> => {
     const code = otpCode.join("");
     if (code.length !== 6) {
@@ -511,7 +454,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       return false;
     }
 
-    const attempts = getOtpAttempts(formData.email);
+    const identifier = otpMethod === "email" ? formData.email : verificationPhone;
+    const attempts = getOtpAttempts(identifier);
     if (attempts.lockedUntil && attempts.lockedUntil > Date.now()) {
       const remainingMinutes = Math.ceil((attempts.lockedUntil - Date.now()) / 60000);
       setErrors({ otp: t('auth.tooManyAttempts').replace('{minutes}', String(remainingMinutes)) });
@@ -521,14 +465,23 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
     setIsLoading(true);
     try {
-      const response = await supabase.functions.invoke("send-otp", {
-        body: { email: formData.email, action: "verify", code },
-      });
+      if (otpMethod === "email") {
+        const response = await supabase.functions.invoke("send-otp", {
+          body: { email: formData.email, action: "verify", code },
+        });
 
-      if (response.error) throw new Error(response.error.message);
-      if (response.data?.error) throw new Error(response.data.error);
+        if (response.error) throw new Error(response.error.message);
+        if (response.data?.error) throw new Error(response.data.error);
+      } else {
+        const response = await supabase.functions.invoke("send-sms-otp", {
+          body: { phone: verificationPhone, action: "verify", code },
+        });
 
-      resetOtpAttempts(formData.email);
+        if (response.error) throw new Error(response.error.message);
+        if (response.data?.error) throw new Error(response.data.error);
+      }
+
+      resetOtpAttempts(identifier);
       
       if (rememberDevice) {
         trustDevice(formData.email, t);
@@ -536,8 +489,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
       return true;
     } catch (error: any) {
-      const canContinue = incrementOtpAttempts(formData.email);
-      const newAttempts = getOtpAttempts(formData.email);
+      const canContinue = incrementOtpAttempts(identifier);
+      const newAttempts = getOtpAttempts(identifier);
       setRemainingAttempts(MAX_OTP_ATTEMPTS - newAttempts.count);
       
       if (!canContinue) {
@@ -638,19 +591,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       return;
     }
 
-    if (mode === "sms-login") {
-      await sendSMSOTP();
-      return;
-    }
-
-    if (mode === "sms-otp") {
-      const isValid = await verifySMSOTP();
-      if (isValid) {
-        await completeSMSAuth();
-      }
-      return;
-    }
-
     if (mode === "otp") {
       const isValid = await verifyOTP();
       if (isValid) {
@@ -677,15 +617,24 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         await completeAuth();
       } catch (error: any) {
         setPendingAction("login");
-        setMode("otp");
-        await sendOTP();
+        setMode("otp-method");
       }
       return;
     }
     
     setPendingAction(mode as "login" | "register");
-    setMode("otp");
-    await sendOTP();
+    setMode("otp-method");
+  };
+
+  const handleOtpMethodSelect = async (method: "email" | "sms") => {
+    setOtpMethod(method);
+    if (method === "email") {
+      await sendEmailOTP();
+    }
+  };
+
+  const handleSmsVerificationSubmit = async () => {
+    await sendSmsOTP();
   };
 
   const getTitle = () => {
@@ -693,9 +642,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       case "login": return t('auth.loginTitle');
       case "register": return t('auth.registerTitle');
       case "forgot": return t('auth.forgotTitle');
+      case "otp-method": return t('auth.chooseOtpMethod') || "בחירת שיטת אימות";
       case "otp": return t('auth.otpTitle');
-      case "sms-login": return t('auth.smsLoginTitle');
-      case "sms-otp": return t('auth.smsOtpTitle');
     }
   };
 
@@ -703,7 +651,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent variant="luxury" overlayVariant="glass" className="sm:max-w-[380px] p-6" dir={isRTL ? "rtl" : "ltr"}>
+      <DialogContent variant="luxury" overlayVariant="glass" className="sm:max-w-[400px] p-6" dir={isRTL ? "rtl" : "ltr"}>
         <Sparkles className="absolute top-4 left-12 h-4 w-4 auth-sparkle" />
         <Sparkles className="absolute top-8 right-12 h-3 w-3 auth-sparkle" style={{ animationDelay: '0.5s' }} />
         
@@ -717,149 +665,115 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
         <DialogHeader className="pb-2">
           <DialogTitle className="text-lg font-display text-primary text-center flex items-center justify-center gap-2">
-            {(mode === "otp" || mode === "sms-otp") && <Shield className="h-5 w-5" />}
-            {mode === "sms-login" && <MessageSquare className="h-5 w-5" />}
+            {mode === "otp" && <Shield className="h-5 w-5" />}
+            {mode === "otp-method" && <Shield className="h-5 w-5" />}
             {getTitle()}
           </DialogTitle>
         </DialogHeader>
 
-        {mode === "sms-login" ? (
-          <form onSubmit={handleSubmit} className="space-y-4 auth-stagger">
+        {mode === "otp-method" ? (
+          <div className="space-y-4 auth-stagger">
             <p className="text-sm text-center text-muted-foreground">
-              {t('auth.smsLoginDesc')}
+              {isRTL ? "איך תרצה לקבל את קוד האימות?" : "How would you like to receive the verification code?"}
             </p>
             
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
-                <Phone className="h-3 w-3 text-primary" />
-                {t('auth.phoneLabel')}
-              </label>
-              <Input
-                type="tel"
-                value={smsPhone}
-                onChange={(e) => {
-                  setSmsPhone(e.target.value);
-                  setErrors({});
-                }}
-                placeholder="0501234567"
-                className="text-left h-9 text-sm auth-input-luxury"
-                dir="ltr"
-                autoFocus
-              />
-              {errors.smsPhone && (
-                <p className="text-[10px] text-destructive">{errors.smsPhone}</p>
-              )}
+            <div className="space-y-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleOtpMethodSelect("email")}
+                disabled={isLoading}
+                className="w-full h-12 text-sm gap-3 auth-oauth-btn border-2 justify-start px-4"
+              >
+                <div className="p-2 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500">
+                  <Mail className="h-4 w-4 text-white" />
+                </div>
+                <div className="text-right flex-1">
+                  <div className="font-medium">{isRTL ? "קוד למייל" : "Email code"}</div>
+                  <div className="text-xs text-muted-foreground" dir="ltr">{formData.email}</div>
+                </div>
+                {isLoading && otpMethod === "email" && <Loader2 className="h-4 w-4 animate-spin" />}
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOtpMethod("sms")}
+                disabled={isLoading}
+                className="w-full h-12 text-sm gap-3 auth-oauth-btn border-2 justify-start px-4"
+              >
+                <div className="p-2 rounded-full bg-gradient-to-br from-green-500 to-emerald-500">
+                  <Phone className="h-4 w-4 text-white" />
+                </div>
+                <div className="text-right flex-1">
+                  <div className="font-medium">{isRTL ? "קוד ב-SMS" : "SMS code"}</div>
+                  <div className="text-xs text-muted-foreground">{isRTL ? "הזן מספר טלפון" : "Enter phone number"}</div>
+                </div>
+              </Button>
             </div>
 
-            <Button
-              type="submit"
-              disabled={isLoading || !smsPhone}
-              className="w-full h-9 text-sm auth-btn-primary"
-              size="sm"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
-                  <span className="relative z-10">{t('auth.sending')}</span>
-                </>
-              ) : (
-                <span className="relative z-10">{t('auth.sendCode')}</span>
-              )}
-            </Button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setMode("login");
-                setSmsPhone("");
-                setErrors({});
-              }}
-              className="w-full text-xs text-muted-foreground hover:underline"
-            >
-              {t('auth.backToLogin')}
-            </button>
-          </form>
-        ) : mode === "sms-otp" ? (
-          <form onSubmit={handleSubmit} className="space-y-4 auth-stagger">
-            <p className="text-sm text-center text-muted-foreground">
-              {t('auth.codeSentTo')}
-              <br />
-              <span className="font-medium text-foreground" dir="ltr">{smsPhone}</span>
-            </p>
-            
-            <div className="flex justify-center gap-2" dir="ltr" onPaste={handleOtpPaste}>
-              {otpCode.map((digit, index) => (
-                <Input
-                  key={index}
-                  ref={(el) => (otpInputRefs.current[index] = el)}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(index, e.target.value)}
-                  onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                  className="w-11 h-12 text-center text-lg font-bold auth-input-luxury"
-                  autoFocus={index === 0}
-                  disabled={isLockedOut}
-                />
-              ))}
-            </div>
-
-            {errors.otp && (
-              <p className="text-[10px] text-destructive text-center">{errors.otp}</p>
+            {otpMethod === "sms" && (
+              <div className="space-y-3 pt-2 border-t border-border">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
+                    <Phone className="h-3 w-3 text-primary" />
+                    {isRTL ? "מספר טלפון" : "Phone number"}
+                  </label>
+                  <Input
+                    type="tel"
+                    value={verificationPhone}
+                    onChange={(e) => {
+                      setVerificationPhone(e.target.value);
+                      setErrors({});
+                    }}
+                    placeholder="0501234567"
+                    className="text-left h-10 text-sm auth-input-luxury"
+                    dir="ltr"
+                    autoFocus
+                  />
+                  {errors.verificationPhone && (
+                    <p className="text-[10px] text-destructive">{errors.verificationPhone}</p>
+                  )}
+                </div>
+                
+                <Button
+                  type="button"
+                  onClick={handleSmsVerificationSubmit}
+                  disabled={isLoading || !verificationPhone}
+                  className="w-full h-10 text-sm auth-btn-primary"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 ml-2 animate-spin" />
+                      <span>{isRTL ? "שולח..." : "Sending..."}</span>
+                    </>
+                  ) : (
+                    <span>{isRTL ? "שלח קוד" : "Send code"}</span>
+                  )}
+                </Button>
+              </div>
             )}
 
-            <Button
-              type="submit"
-              disabled={isLoading || otpCode.join("").length !== 6 || isLockedOut}
-              className="w-full h-9 text-sm auth-btn-primary"
-              size="sm"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
-                  <span className="relative z-10">{t('auth.verifying')}</span>
-                </>
-              ) : (
-                <span className="relative z-10">{t('auth.verify')}</span>
-              )}
-            </Button>
-
-            <div className="text-center">
-              {otpResendTimer > 0 ? (
-                <p className="text-xs text-muted-foreground">
-                  {t('auth.resendIn').replace('{seconds}', String(otpResendTimer))}
-                </p>
-              ) : (
-                <button
-                  type="button"
-                  onClick={sendSMSOTP}
-                  disabled={isLoading}
-                  className="text-xs text-primary hover:underline"
-                >
-                  {t('auth.resendCode')}
-                </button>
-              )}
-            </div>
-
             <button
               type="button"
               onClick={() => {
-                setMode("sms-login");
-                setOtpCode(["", "", "", "", "", ""]);
-                setErrors({});
+                setMode(pendingAction || "login");
+                setOtpMethod("email");
+                setVerificationPhone("");
               }}
               className="w-full text-xs text-muted-foreground hover:underline"
             >
               {t('auth.back')}
             </button>
-          </form>
+          </div>
         ) : mode === "otp" ? (
           <form onSubmit={handleSubmit} className="space-y-4 auth-stagger">
             <p className="text-sm text-center text-muted-foreground">
-              {t('auth.codeSentTo')}
+              {isRTL ? "קוד נשלח אל" : "Code sent to"}
               <br />
-              <span className="font-medium text-foreground" dir="ltr">{formData.email}</span>
+              <span className="font-medium text-foreground" dir="ltr">
+                {otpMethod === "email" ? formData.email : verificationPhone}
+              </span>
             </p>
             
             <div className="flex justify-center gap-2" dir="ltr" onPaste={handleOtpPaste}>
@@ -899,16 +813,15 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             <Button
               type="submit"
               disabled={isLoading || otpCode.join("").length !== 6 || isLockedOut}
-              className="w-full h-9 text-sm auth-btn-primary"
-              size="sm"
+              className="w-full h-10 text-sm auth-btn-primary"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
-                  <span className="relative z-10">{t('auth.verifying')}</span>
+                  <Loader2 className="h-4 w-4 ml-2 animate-spin" />
+                  <span>{t('auth.verifying')}</span>
                 </>
               ) : (
-                <span className="relative z-10">{t('auth.verifyAndContinue')}</span>
+                <span>{t('auth.verifyAndContinue')}</span>
               )}
             </Button>
 
@@ -920,7 +833,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               ) : (
                 <button
                   type="button"
-                  onClick={sendOTP}
+                  onClick={() => otpMethod === "email" ? sendEmailOTP() : sendSmsOTP()}
                   disabled={isLoading}
                   className="text-xs text-primary hover:underline"
                 >
@@ -932,33 +845,33 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             <button
               type="button"
               onClick={() => {
-                setMode(pendingAction || "login");
+                setMode("otp-method");
                 setOtpSent(false);
                 setOtpCode(["", "", "", "", "", ""]);
               }}
               className="w-full text-xs text-muted-foreground hover:underline"
             >
-              {t('auth.back')}
+              {isRTL ? "שנה שיטת אימות" : "Change verification method"}
             </button>
           </form>
         ) : (
           <div className="auth-stagger">
             {mode !== "forgot" && (
               <>
-                <div className="flex gap-2">
+                <div className="space-y-2">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handleGoogleSignIn}
                     disabled={isGoogleLoading || isAppleLoading}
-                    className="flex-1 h-9 text-sm gap-2 auth-oauth-btn border-0"
+                    className="w-full h-11 text-sm gap-3 auth-oauth-btn border-2"
                   >
                     {isGoogleLoading ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <GoogleIcon />
                     )}
-                    Google
+                    {isRTL ? "המשך עם Google" : "Continue with Google"}
                   </Button>
                   
                   <Button
@@ -966,28 +879,18 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     variant="outline"
                     onClick={handleAppleSignIn}
                     disabled={isAppleLoading || isGoogleLoading}
-                    className="flex-1 h-9 text-sm gap-2 auth-oauth-btn border-0"
+                    className="w-full h-11 text-sm gap-3 auth-oauth-btn border-2"
                   >
                     {isAppleLoading ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <AppleIcon />
                     )}
-                    Apple
+                    {isRTL ? "המשך עם Apple" : "Continue with Apple"}
                   </Button>
                 </div>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setMode("sms-login")}
-                  className="w-full h-9 text-sm gap-2 auth-oauth-btn border-0 mt-2"
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  {t('auth.smsLogin')}
-                </Button>
                 
-                <div className="relative my-4 auth-divider">
+                <div className="relative my-5 auth-divider">
                   <div className="relative flex justify-center text-xs">
                     <span className="bg-transparent px-3 text-muted-foreground">{t('auth.or')}</span>
                   </div>
@@ -1007,7 +910,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                       value={formData.fullName}
                       onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
                       placeholder={t('auth.fullNamePlaceholder')}
-                      className={`h-9 text-sm auth-input-luxury ${isRTL ? 'text-right' : 'text-left'}`}
+                      className={`h-10 text-sm auth-input-luxury ${isRTL ? 'text-right' : 'text-left'}`}
                     />
                     {errors.fullName && (
                       <p className="text-[10px] text-destructive">{errors.fullName}</p>
@@ -1024,7 +927,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                       value={formData.phone}
                       onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="0501234567"
-                      className="text-left h-9 text-sm auth-input-luxury"
+                      className="text-left h-10 text-sm auth-input-luxury"
                       dir="ltr"
                     />
                     {errors.phone && (
@@ -1044,7 +947,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   placeholder="email@example.com"
-                  className="text-left h-9 text-sm auth-input-luxury"
+                  className="text-left h-10 text-sm auth-input-luxury"
                   dir="ltr"
                 />
                 {errors.email && (
@@ -1064,15 +967,15 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       placeholder={t('auth.passwordPlaceholder')}
-                      className="text-left pl-8 h-9 text-sm auth-input-luxury"
+                      className="text-left pl-9 h-10 text-sm auth-input-luxury"
                       dir="ltr"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                   {errors.password && (
@@ -1099,25 +1002,24 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-9 text-sm auth-btn-primary mt-2"
-                size="sm"
+                className="w-full h-10 text-sm auth-btn-primary mt-3"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin relative z-10" />
-                    <span className="relative z-10">
+                    <Loader2 className="h-4 w-4 ml-2 animate-spin" />
+                    <span>
                       {mode === "login" ? t('auth.loggingIn') : mode === "register" ? t('auth.registering') : t('auth.sendingReset')}
                     </span>
                   </>
                 ) : (
-                  <span className="relative z-10">
+                  <span>
                     {mode === "login" ? t('auth.loginBtn') : mode === "register" ? t('auth.registerBtn') : t('auth.sendResetLink')}
                   </span>
                 )}
               </Button>
             </form>
             
-            <div className="text-center pt-2">
+            <div className="text-center pt-3">
               {mode === "forgot" ? (
                 <button
                   onClick={() => {
