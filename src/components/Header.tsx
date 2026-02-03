@@ -111,7 +111,7 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`p-2 transition-all duration-300 rounded-lg group ${
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg group ${
                   isActive 
                     ? "text-primary bg-primary/10" 
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -120,12 +120,10 @@ const Header = () => {
                 <IconComponent className={`w-4 h-4 transition-all duration-300 ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`} />
+                <span className="text-[9px] font-medium">{item.label}</span>
               </button>
             );
           })}
-
-          {/* Separator */}
-          <div className="w-px h-5 bg-border/40 mx-1" />
 
           {/* Cart Button */}
           <CartHeaderButton />
@@ -135,8 +133,9 @@ const Header = () => {
           {isLoggedIn ? (
             <DropdownMenu dir="rtl">
               <DropdownMenuTrigger asChild>
-                <button className="p-2 transition-all duration-300 rounded-lg text-primary bg-primary/10">
+                <button className="flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg text-primary bg-primary/10">
                   <UserCircle className="w-4 h-4" />
+                  <span className="text-[9px] font-medium">חשבון</span>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -196,13 +195,14 @@ const Header = () => {
           ) : (
             <button
               onClick={() => setAuthModalOpen(true)}
-              className={`p-2 transition-all duration-300 rounded-lg group ${
+              className={`flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg group ${
                 authModalOpen
                   ? "text-primary bg-primary/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
               <UserCircle className={`w-4 h-4 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
+              <span className="text-[9px] font-medium">כניסה</span>
             </button>
           )}
         </nav>
@@ -249,18 +249,21 @@ const CartHeaderButton = () => {
   return (
     <button
       onClick={() => setIsCartOpen(true)}
-      className={`relative p-2 transition-all duration-300 rounded-lg group ${
+      className={`relative flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-300 rounded-lg group ${
         isActive
           ? "text-primary bg-primary/10"
           : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
       }`}
     >
-      <ShoppingBag className={`w-4 h-4 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
-      {totalItems > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow-sm">
-          {totalItems}
-        </span>
-      )}
+      <div className="relative">
+        <ShoppingBag className={`w-4 h-4 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
+        {totalItems > 0 && (
+          <span className="absolute -top-1 -right-1.5 bg-accent text-accent-foreground w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shadow-sm">
+            {totalItems}
+          </span>
+        )}
+      </div>
+      <span className="text-[9px] font-medium">עגלה</span>
     </button>
   );
 };
