@@ -52,18 +52,18 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div 
-        className="absolute inset-0 bg-black/30"
+        className="absolute inset-0 bg-black/40"
         onClick={handleClose}
       />
-      <div className="relative bg-background/85 dark:bg-background/80 rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[85vh] flex flex-col animate-scale-in border border-foreground/10">
+      <div className="relative bg-background rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[85vh] flex flex-col animate-scale-in border-2 border-teal-500/30">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border/50">
-          <h2 className="text-2xl font-display font-bold text-foreground">
+        <div className="flex items-center justify-between p-6 border-b border-teal-500/20">
+          <h2 className="text-2xl font-display font-bold text-teal-600">
             {showCheckout ? t('cartModal.completing') : t('cartModal.title')}
           </h2>
           <button 
             onClick={handleClose}
-            className="p-2 hover:bg-primary/10 rounded-full transition-colors"
+            className="p-2 hover:bg-teal-500/20 rounded-full transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
