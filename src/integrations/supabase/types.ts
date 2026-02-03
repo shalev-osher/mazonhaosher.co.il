@@ -312,7 +312,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_cookie_reviews: {
+        Row: {
+          cookie_name: string | null
+          created_at: string | null
+          id: string | null
+          rating: number | null
+          review_text: string | null
+        }
+        Insert: {
+          cookie_name?: string | null
+          created_at?: string | null
+          id?: string | null
+          rating?: number | null
+          review_text?: string | null
+        }
+        Update: {
+          cookie_name?: string | null
+          created_at?: string | null
+          id?: string | null
+          rating?: number | null
+          review_text?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       cleanup_expired_otp_tokens: { Args: never; Returns: undefined }
