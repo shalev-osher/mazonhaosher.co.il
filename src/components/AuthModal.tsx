@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/lib/lovableAuth";
+import { lovable } from "@/integrations/lovable";
 import { z } from "zod";
 import logo from "@/assets/logo.png";
 

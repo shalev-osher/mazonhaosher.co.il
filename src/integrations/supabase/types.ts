@@ -46,7 +46,6 @@ export type Database = {
           cookie_name: string
           created_at: string
           id: string
-          profile_id: string | null
           rating: number
           review_text: string | null
         }
@@ -54,7 +53,6 @@ export type Database = {
           cookie_name: string
           created_at?: string
           id?: string
-          profile_id?: string | null
           rating: number
           review_text?: string | null
         }
@@ -62,19 +60,10 @@ export type Database = {
           cookie_name?: string
           created_at?: string
           id?: string
-          profile_id?: string | null
           rating?: number
           review_text?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "cookie_reviews_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       gift_packages: {
         Row: {
@@ -312,30 +301,7 @@ export type Database = {
       }
     }
     Views: {
-      public_cookie_reviews: {
-        Row: {
-          cookie_name: string | null
-          created_at: string | null
-          id: string | null
-          rating: number | null
-          review_text: string | null
-        }
-        Insert: {
-          cookie_name?: string | null
-          created_at?: string | null
-          id?: string | null
-          rating?: number | null
-          review_text?: string | null
-        }
-        Update: {
-          cookie_name?: string | null
-          created_at?: string | null
-          id?: string | null
-          rating?: number | null
-          review_text?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       cleanup_expired_otp_tokens: { Args: never; Returns: undefined }
