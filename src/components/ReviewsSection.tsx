@@ -358,7 +358,6 @@ const ReviewsSection = () => {
         </div>
       </div>
 
-      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
     </section>
   );
 };
