@@ -68,7 +68,7 @@ const FloatingAuthButton = () => {
             side="top"
             className={`w-52 rounded-xl shadow-xl border-border/50 bg-background animate-scale-in text-sm ${isRTL ? 'text-right [direction:rtl]' : 'text-left [direction:ltr]'}`}
           >
-            <div className={`px-2.5 py-2 bg-cyan-500/10 rounded-t-lg flex items-center gap-2.5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`px-2.5 py-2 bg-cyan-500/10 rounded-t-lg flex items-center gap-2.5 ${isRTL ? 'flex-row' : ''}`}>
               {avatarUrl ? (
                 <img 
                   src={avatarUrl} 
