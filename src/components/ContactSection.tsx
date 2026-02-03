@@ -21,7 +21,7 @@ const ContactSection = () => {
           <div className="rounded-xl overflow-hidden shadow-lg mb-4 border-2 border-white/20">
             <iframe
               src={isRTL 
-                ? "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d847.5!2d34.5712!3d31.6658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502673a5c0d5555%3A0x0!2zNTMg16nXk9eo15XXqiDXp9eT16ksINeQ16nXp9ec15XXnw!5e0!3m2!1siw!2sil!4v1706000000000!5m2!1siw!2sil"
+                ? "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d847.5!2d34.5712!3d31.6658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502673a5c0d5555%3A0x0!2z39 שדרות קדש, אשקלון!5e0!3m2!1siw!2sil!4v1706000000000!5m2!1siw!2sil"
                 : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d847.5!2d34.5712!3d31.6658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502673a5c0d5555%3A0x0!2z39 Sderot Kadesh, Ashkelon!5e0!3m2!1sen!2sil!4v1706000000000!5m2!1sen!2sil"
               }
               width="100%"
