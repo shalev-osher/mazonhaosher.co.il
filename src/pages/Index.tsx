@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 import ScrollDownButton from "@/components/ScrollDownButton";
 import CartModal from "@/components/CartModal";
 import ScrollToTop from "@/components/ScrollToTop";
+import FloatingAuthButton from "@/components/FloatingAuthButton";
 import { CartProvider, useCart } from "@/contexts/CartContext";
 
 const IndexContent = () => {
@@ -36,6 +37,7 @@ const IndexContent = () => {
       <Footer />
       <ScrollDownButton />
       <ScrollToTop />
+      <FloatingAuthButton />
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
