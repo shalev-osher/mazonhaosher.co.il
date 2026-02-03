@@ -167,7 +167,7 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="auth-modal-luxury sm:max-w-[400px]" dir="rtl">
+      <DialogContent className="auth-modal-luxury sm:max-w-[360px] max-h-[85vh] overflow-y-auto" dir="rtl">
         <DialogHeader className="text-right">
           <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
             <User className="w-5 h-5 text-primary" />

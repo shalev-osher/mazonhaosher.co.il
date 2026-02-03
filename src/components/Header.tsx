@@ -166,9 +166,9 @@ const Header = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={handleLogout}
-                  className="gap-2 cursor-pointer hover:bg-muted/50 text-xs py-1.5 justify-start"
+                  className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
                 >
-                  <LogOut className="w-3.5 h-3.5 text-muted-foreground" />
+                  <LogOut className="w-3.5 h-3.5 text-primary" />
                   <span>התנתקות</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
