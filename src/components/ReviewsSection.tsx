@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Star, Send, User } from "lucide-react";
+import { Star, Send, User, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -13,6 +13,8 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { reviewTextSchema, getValidationError } from "@/lib/validation";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useProfile } from "@/contexts/ProfileContext";
+import AuthModal from "./AuthModal";
 
 const cookieOptions = [
   "לוטוס", "קינדר", "קינדר בואנו", "רד וולווט", "קונפטי", "פיסטוק",
@@ -29,6 +31,7 @@ interface Review {
 }
 
 const ReviewsSection = () => {
+  const { isLoggedIn } = useProfile();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedCookie, setSelectedCookie] = useState("");
   const [rating, setRating] = useState(0);
@@ -36,6 +39,7 @@ const ReviewsSection = () => {
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filterCookie, setFilterCookie] = useState<string>("all");
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
 
@@ -93,6 +97,10 @@ const ReviewsSection = () => {
   };
 
   const handleSubmitReview = async () => {
+    if (!isLoggedIn) {
+      setAuthModalOpen(true);
+      return;
+    }
     if (!validateReview()) return;
 
     setIsSubmitting(true);
@@ -172,76 +180,94 @@ const ReviewsSection = () => {
               הוסיפו ביקורת
             </h3>
 
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-right">בחרו מוצר</label>
-                <Select value={selectedCookie} onValueChange={setSelectedCookie}>
-                  <SelectTrigger className="text-right">
-                    <SelectValue placeholder="בחרו מוצר..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cookieOptions.map((cookie) => (
-                      <SelectItem key={cookie} value={cookie}>
-                        {cookie}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">דירוג</label>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      onClick={() => setRating(star)}
-                      className="p-1 transition-transform hover:scale-125"
-                    >
-                      <Star
-                        className={`h-8 w-8 transition-colors ${
-                          star <= (hoverRating || rating)
-                            ? "text-accent fill-accent"
-                            : "text-muted hover:text-accent/50"
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  הביקורת שלכם (אופציונלי, עד 500 תווים)
-                </label>
-                <Textarea
-                  value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value.slice(0, 500))}
-                  placeholder="ספרו לנו מה חשבתם..."
-                  
-                  className="min-h-[100px] text-right"
-                  maxLength={500}
-                />
-                <p className="text-xs text-muted-foreground mt-1 text-left">
-                  {reviewText.length}/500
+            {!isLoggedIn ? (
+              <div className="text-center py-6">
+                <p className="text-sm text-muted-foreground mb-4">
+                  כדי לכתוב ביקורת צריך להתחבר
                 </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => setAuthModalOpen(true)}
+                >
+                  <KeyRound className="h-4 w-4" />
+                  התחברות
+                </Button>
               </div>
+            ) : (
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-right">בחרו מוצר</label>
+                  <Select value={selectedCookie} onValueChange={setSelectedCookie}>
+                    <SelectTrigger className="text-right">
+                      <SelectValue placeholder="בחרו מוצר..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {cookieOptions.map((cookie) => (
+                        <SelectItem key={cookie} value={cookie}>
+                          {cookie}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <Button
-                onClick={handleSubmitReview}
-                disabled={isSubmitting}
-                className="w-full bg-accent hover:bg-accent/90"
-              >
-                {isSubmitting ? "שולח..." : (
-                  <>
-                    <Send className="h-4 w-4 ml-2" />
-                    לשלוח ביקורת
-                  </>
-                )}
-              </Button>
-            </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-right">דירוג</label>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        onClick={() => setRating(star)}
+                        className="p-1 transition-transform hover:scale-125"
+                      >
+                        <Star
+                          className={`h-8 w-8 transition-colors ${
+                            star <= (hoverRating || rating)
+                              ? "text-accent fill-accent"
+                              : "text-muted hover:text-accent/50"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-right">
+                    הביקורת שלכם (אופציונלי, עד 500 תווים)
+                  </label>
+                  <Textarea
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value.slice(0, 500))}
+                    placeholder="ספרו לנו מה חשבתם..."
+                    className="min-h-[100px] text-right"
+                    maxLength={500}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1 text-left">
+                    {reviewText.length}/500
+                  </p>
+                </div>
+
+                <Button
+                  onClick={handleSubmitReview}
+                  disabled={isSubmitting}
+                  className="w-full bg-accent hover:bg-accent/90"
+                >
+                  {isSubmitting ? (
+                    "שולח..."
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4 ml-2" />
+                      לשלוח ביקורת
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Reviews List */}
@@ -309,6 +335,8 @@ const ReviewsSection = () => {
           </div>
         </div>
       </div>
+
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
     </section>
   );
 };
