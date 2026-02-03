@@ -49,9 +49,10 @@ async function sendWelcomeEmail(email: string): Promise<void> {
 
   const resend = new Resend(resendApiKey);
   const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/assets/logo.png";
-  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const unsubscribeToken = generateUnsubscribeToken(email);
-  const unsubscribeUrl = `${supabaseUrl}/functions/v1/newsletter-unsubscribe?token=${unsubscribeToken}`;
+  // Link to a page on the site (more reliably rendered across email clients)
+  const siteUrl = "https://mazonhaosher.lovable.app";
+  const unsubscribeUrl = `${siteUrl}/newsletter/unsubscribe?token=${encodeURIComponent(unsubscribeToken)}`;
 
   try {
     await resend.emails.send({
