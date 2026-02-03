@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { User, Loader2, MapPin, Phone, FileText, Building, Camera, X } from "lucide-react";
+import { User, Loader2, MapPin, Phone, FileText, Building, Camera, X, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +12,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/contexts/ProfileContext";
 import { z } from "zod";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
@@ -324,7 +326,23 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
               "שמור שינויים"
             )}
           </Button>
+
+          {/* Delete Account Button */}
+          <Button
+            variant="ghost"
+            onClick={() => setShowDeleteModal(true)}
+            className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 text-xs"
+          >
+            <Trash2 className="w-3.5 h-3.5 ml-2" />
+            מחיקת חשבון
+          </Button>
         </div>
+
+        {/* Delete Account Modal */}
+        <DeleteAccountModal 
+          isOpen={showDeleteModal} 
+          onClose={() => setShowDeleteModal(false)} 
+        />
       </DialogContent>
     </Dialog>
   );
