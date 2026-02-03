@@ -330,7 +330,6 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
             onClick={() => setShowDeleteModal(true)}
             className="w-full bg-background/80 border border-primary text-foreground hover:bg-primary hover:text-primary-foreground"
           >
-            <Trash2 className="w-3.5 h-3.5 ml-2" />
             מחיקת חשבון
           </Button>
         </div>
