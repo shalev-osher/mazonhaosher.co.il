@@ -1,4 +1,4 @@
-import { ShoppingBag, Moon, UserCircle, LogOut, Package, UserPen, Lock } from "lucide-react";
+import { ShoppingBag, Moon, Sun, UserCircle, LogOut, Package, UserPen, Lock } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -52,8 +52,14 @@ const Footer = () => {
                 className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
                 aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
               >
-                <div className="p-1.5 md:p-2 rounded-xl transition-all duration-300 bg-gradient-to-br from-indigo-500 to-violet-600 shadow-md">
-                  <Moon className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
+                <div className={`p-1.5 md:p-2 rounded-xl transition-all duration-300 shadow-md bg-gradient-to-br ${
+                  theme === 'dark' ? 'from-amber-400 to-orange-500' : 'from-indigo-500 to-violet-600'
+                }`}>
+                  {theme === 'dark' ? (
+                    <Sun className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
+                  ) : (
+                    <Moon className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
+                  )}
                 </div>
               </button>
               
