@@ -44,9 +44,8 @@ const ReviewsSection = () => {
   }, []);
 
   const fetchReviews = async () => {
-    // Use the public view that doesn't expose profile_id
     const { data, error } = await supabase
-      .from("public_cookie_reviews")
+      .from("cookie_reviews")
       .select("id, cookie_name, rating, review_text, created_at")
       .order("created_at", { ascending: false })
       .limit(20);
