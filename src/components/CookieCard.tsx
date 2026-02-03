@@ -1,5 +1,6 @@
 import { Plus, Minus, Trash2, Check, Info, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
@@ -24,7 +25,7 @@ interface CookieCardProps {
   description: string;
   price: string;
   delay?: number;
-  tag?: "מומלץ" | "חדש" | null;
+  tag?: "מומלץ" | "חדש" | "Recommended" | "New" | null;
   viewMode?: "grid" | "list";
   isFavorite?: boolean;
   onToggleFavorite?: () => void;
@@ -32,6 +33,7 @@ interface CookieCardProps {
 
 const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode = "grid", isFavorite = false, onToggleFavorite }: CookieCardProps) => {
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
+  const { t } = useLanguage();
   const [justAdded, setJustAdded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
@@ -119,11 +121,11 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         <div className="relative shrink-0">
           {tag && (
             <div className={`absolute -top-1 -right-1 z-10 px-2 py-0.5 rounded-full text-xs font-bold shadow-lg ${
-              tag === "מומלץ" 
+              tag === "מומלץ" || tag === "Recommended"
                 ? "bg-accent text-accent-foreground" 
                 : "bg-green-500 text-white"
             }`}>
-              {tag === "מומלץ" ? "⭐" : "✨"}
+              {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
             </div>
           )}
           <div className="w-20 h-20 overflow-hidden rounded-full relative bg-card">
@@ -219,12 +221,12 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
               {justAdded ? (
                 <>
                   <Check className="w-3 h-3" />
-                  נוסף!
+                  {t('cookieCard.added')}
                 </>
               ) : (
                 <>
                   <Plus className="w-3 h-3" />
-                  הוסף
+                  {t('cookieCard.add')}
                 </>
               )}
             </Button>
@@ -273,11 +275,11 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         )}
         {tag && (
           <div className={`absolute top-1 left-1 z-10 px-1.5 py-0.5 rounded-full text-[8px] font-bold shadow-sm ${
-            tag === "מומלץ" 
+            tag === "מומלץ" || tag === "Recommended"
               ? "bg-accent text-accent-foreground" 
               : "bg-green-500 text-white"
           }`}>
-            {tag === "מומלץ" ? "⭐" : "✨"}
+            {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
           </div>
         )}
         <TooltipProvider>
@@ -308,11 +310,11 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                 <span className="text-primary font-bold">{price}</span>
                 {tag && (
                   <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    tag === "מומלץ" 
+                    tag === "מומלץ" || tag === "Recommended"
                       ? "bg-accent/20 text-accent-foreground" 
                       : "bg-green-500/20 text-green-700"
                   }`}>
-                    {tag === "מומלץ" ? "⭐ מומלץ" : "✨ חדש"}
+                    {(tag === "מומלץ" || tag === "Recommended") ? `⭐ ${t('cookieCard.recommended')}` : `✨ ${t('cookieCard.new')}`}
                   </span>
                 )}
               </div>
@@ -331,7 +333,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           <DialogTrigger asChild>
             <button
               type="button"
-              aria-label={`קרא עוד על ${name}`}
+              aria-label={`${t('cookieCard.readMore')} ${name}`}
               className="w-full text-center text-muted-foreground text-sm leading-relaxed line-clamp-2 hover:text-foreground transition-colors"
             >
               {description}
@@ -378,7 +380,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                   className="w-full gap-2 bg-primary hover:bg-primary/90"
                 >
                   <Plus className="w-4 h-4" />
-                  הוסף לעגלה
+                  {t('cookieCard.addToCart')}
                 </Button>
               )}
             </div>
@@ -427,7 +429,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
                 </TooltipTrigger>
                 {quantity >= 6 && (
                   <TooltipContent side="top" className="bg-background/90 border border-primary/50 text-foreground">
-                    <p>מקסימום 6 יחידות לפריט</p>
+                    <p>{t('cookieCard.maxItems')}</p>
                   </TooltipContent>
                 )}
               </Tooltip>
