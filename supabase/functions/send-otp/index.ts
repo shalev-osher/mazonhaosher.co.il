@@ -61,7 +61,7 @@ const handler = async (req: Request): Promise<Response> => {
 
       // Send email with OTP
       const emailResponse = await resend.emails.send({
-        from: "מזון האושר <noreply@send.mazonhaosher.co.il>",
+        from: "מזון האושר <noreply@mazonhaosher.co.il>",
         to: [email],
         subject: "קוד אימות - מזון האושר 🍪",
         html: `

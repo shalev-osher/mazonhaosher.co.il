@@ -150,7 +150,7 @@ const handler = async (req: Request): Promise<Response> => {
     const orderNumber = `MH-${Date.now().toString().slice(-6)}`;
 
     const emailResponse = await resend.emails.send({
-      from: "מזון האושר <noreply@send.mazonhaosher.co.il>",
+      from: "מזון האושר <noreply@mazonhaosher.co.il>",
       to: [customerEmail],
       subject: "קבלה והאישור הזמנה - מזון האושר 🍪",
       html: `
