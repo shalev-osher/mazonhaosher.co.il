@@ -39,7 +39,7 @@ const Footer = () => {
           {/* Left side - Facebook, Instagram, GitHub */}
           <div className="flex items-center gap-2">
             <a 
-              href="https://facebook.com" 
+              href="https://www.facebook.com/p/%D7%9E%D7%96%D7%95%D7%9F-%D7%94%D7%90%D7%95%D7%A9%D7%A8-61565573526817/" 
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full bg-[#1877F2]/20 border border-[#1877F2]/30 flex items-center justify-center hover:bg-[#1877F2] hover:border-transparent transition-all duration-300 hover:scale-110 group"
@@ -47,7 +47,7 @@ const Footer = () => {
               <Facebook className="w-4 h-4 text-[#1877F2] group-hover:text-white transition-colors" />
             </a>
             <a 
-              href="https://instagram.com" 
+              href="https://www.instagram.com/mazonaosher/" 
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 border border-pink-500/30 flex items-center justify-center hover:from-purple-500 hover:via-pink-500 hover:to-orange-500 hover:border-transparent transition-all duration-300 hover:scale-110 group"
