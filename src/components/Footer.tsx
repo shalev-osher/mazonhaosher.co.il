@@ -1,8 +1,10 @@
 import { Instagram, Facebook, ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
   const { setIsCartOpen } = useCart();
+  const { isRTL } = useLanguage();
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-40 py-2 md:py-3 bg-background/90 border-t border-border/30">
@@ -33,7 +35,9 @@ const Footer = () => {
           </div>
 
           {/* Center - Copyright + Brand name + Year */}
-          <span className="text-sm md:text-base font-medium text-foreground/80">© מזון האושר 2026</span>
+          <span className="text-sm md:text-base font-medium text-foreground/80">
+            © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
+          </span>
 
           {/* Left side - Facebook, Instagram */}
           <div className="flex items-center gap-2 md:gap-3">

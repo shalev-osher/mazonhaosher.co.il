@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProfileProvider } from "@/contexts/ProfileContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
@@ -73,22 +74,24 @@ const OAuthHandler = ({ children }: { children: React.ReactNode }) => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
-      <TooltipProvider>
-        <ProfileProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <OAuthHandler>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </OAuthHandler>
-          </BrowserRouter>
-        </ProfileProvider>
-      </TooltipProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <ProfileProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <OAuthHandler>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </OAuthHandler>
+            </BrowserRouter>
+          </ProfileProvider>
+        </TooltipProvider>
+      </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
