@@ -102,62 +102,57 @@ const Header = () => {
     <header className={`fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 transition-all duration-500 bg-transparent ${
       scrolled ? "py-2" : "py-3"
     }`}>
-      <div className="max-w-7xl mx-auto px-[max(1rem,env(safe-area-inset-left))]">
-        <div className="flex items-center justify-between">
-
-          {/* Navigation - Floating pill design */}
-          <TooltipProvider delayDuration={100}>
-            <nav className="flex items-center bg-background/60 backdrop-blur-xl rounded-full p-1 border border-border/50 shadow-lg shadow-black/5">
-              {navItems.map((item, index) => {
-                const IconComponent = item.icon;
-                const isActive = activeSection === item.id;
-                return (
-                  <Tooltip key={item.id}>
-                    <TooltipTrigger asChild>
-                      <button
-                        onClick={() => scrollToSection(item.id)}
-                        className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
-                          isActive 
-                            ? "text-primary-foreground" 
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
-                      >
-                        {/* Active background blob */}
-                        <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
-                          isActive ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
-                        }`} />
-                        {/* Glow effect */}
-                        <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
-                          isActive ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
-                        }`} />
-                        <IconComponent className={`relative z-10 w-4 h-4 transition-all duration-300 ${
-                          isActive ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"
-                        }`} />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent 
-                      side="bottom" 
-                      sideOffset={8}
-                      className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
+      <div className="flex justify-center px-4">
+        {/* Single centered floating pill with all icons */}
+        <TooltipProvider delayDuration={100}>
+          <nav className="flex items-center bg-background/60 backdrop-blur-xl rounded-full p-1 border border-border/50 shadow-lg shadow-black/5">
+            {/* Navigation items */}
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              const isActive = activeSection === item.id;
+              return (
+                <Tooltip key={item.id}>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => scrollToSection(item.id)}
+                      className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
+                        isActive 
+                          ? "text-primary-foreground" 
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
                     >
-                      {item.label}
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              })}
-            </nav>
-          </TooltipProvider>
+                      <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
+                        isActive ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
+                      }`} />
+                      <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
+                        isActive ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
+                      }`} />
+                      <IconComponent className={`relative z-10 w-4 h-4 transition-all duration-300 ${
+                        isActive ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"
+                      }`} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent 
+                    side="bottom" 
+                    sideOffset={8}
+                    className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
+                  >
+                    {item.label}
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
 
-          {/* Right side - Cart + Theme Toggle + Auth */}
-          <TooltipProvider delayDuration={100}>
-            <div className="flex items-center bg-background/60 backdrop-blur-xl rounded-full p-1 border border-border/50 shadow-lg shadow-black/5">
-              {/* Cart Button */}
-              <CartHeaderButton />
-              {/* Theme Toggle */}
-              <ThemeToggle />
-              {/* Auth Button */}
-              {isLoggedIn ? (
-                <DropdownMenu dir="rtl">
+            {/* Separator */}
+            <div className="w-px h-5 bg-border/50 mx-1" />
+
+            {/* Cart Button */}
+            <CartHeaderButton />
+            {/* Theme Toggle */}
+            <ThemeToggle />
+            {/* Auth Button */}
+            {isLoggedIn ? (
+              <DropdownMenu dir="rtl">
                   <DropdownMenuTrigger asChild>
                     <button className="relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden text-primary-foreground">
                       <span className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80" />
@@ -248,40 +243,39 @@ const Header = () => {
                   </TooltipContent>
                 </Tooltip>
               )}
-            </div>
-          </TooltipProvider>
-
-          {/* Auth Modal */}
-          <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
-          
-          {/* Trusted Devices Modal */}
-          {user?.email && (
-            <TrustedDevicesModal 
-              isOpen={showDevicesModal} 
-              onClose={() => setShowDevicesModal(false)} 
-              userEmail={user.email}
-            />
-          )}
-
-          {/* Delete Account Modal */}
-          <DeleteAccountModal 
-            isOpen={showDeleteModal} 
-            onClose={() => setShowDeleteModal(false)} 
-          />
-
-          {/* Edit Profile Modal */}
-          <EditProfileModal 
-            isOpen={showEditProfileModal} 
-            onClose={() => setShowEditProfileModal(false)} 
-          />
-
-          {/* Change Password Modal */}
-          <ChangePasswordModal 
-            isOpen={showChangePasswordModal} 
-            onClose={() => setShowChangePasswordModal(false)} 
-          />
-        </div>
+          </nav>
+        </TooltipProvider>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+      
+      {/* Trusted Devices Modal */}
+      {user?.email && (
+        <TrustedDevicesModal 
+          isOpen={showDevicesModal} 
+          onClose={() => setShowDevicesModal(false)} 
+          userEmail={user.email}
+        />
+      )}
+
+      {/* Delete Account Modal */}
+      <DeleteAccountModal 
+        isOpen={showDeleteModal} 
+        onClose={() => setShowDeleteModal(false)} 
+      />
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal 
+        isOpen={showEditProfileModal} 
+        onClose={() => setShowEditProfileModal(false)} 
+      />
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal 
+        isOpen={showChangePasswordModal} 
+        onClose={() => setShowChangePasswordModal(false)} 
+      />
     </header>
   );
 };
