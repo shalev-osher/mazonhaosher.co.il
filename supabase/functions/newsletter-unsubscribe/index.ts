@@ -23,6 +23,35 @@ function htmlResponse(html: string, status: number = 200): Response {
   });
 }
 
+function jsonResponse(body: unknown, status: number = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
+}
+
+const SITE_URL = "https://mazonhaosher.lovable.app";
+
+type ResultStatus = "unsubscribed" | "resubscribed" | "info" | "error";
+
+function redirectToSite(params: {
+  result: ResultStatus;
+  token?: string | null;
+  action?: string | null;
+}): Response {
+  const url = new URL("/newsletter/unsubscribe", SITE_URL);
+  url.searchParams.set("result", params.result);
+  if (params.token) url.searchParams.set("token", params.token);
+  if (params.action) url.searchParams.set("action", params.action);
+  // 303 is safest after potential state change
+  return Response.redirect(url.toString(), 303);
+}
+
 const handler = async (req: Request): Promise<Response> => {
   console.log("Received newsletter request");
 
@@ -40,20 +69,29 @@ const handler = async (req: Request): Promise<Response> => {
     const url = new URL(req.url);
     const token = url.searchParams.get("token");
     const action = url.searchParams.get("action") || "unsubscribe";
+    const wantsJson =
+      url.searchParams.get("format") === "json" ||
+      (req.headers.get("accept") || "").includes("application/json");
 
     if (!token) {
-      return htmlResponse(
-        getHtmlPage("שגיאה", "קישור לא תקין. נא לנסות שוב.", "error", null),
-        400
-      );
+      if (wantsJson) {
+        return jsonResponse(
+          { result: "error", title: "שגיאה", message: "קישור לא תקין. נא לנסות שוב." },
+          400,
+        );
+      }
+      return redirectToSite({ result: "error", action });
     }
 
     const email = decodeToken(token);
     if (!email || !email.includes("@")) {
-      return htmlResponse(
-        getHtmlPage("שגיאה", "קישור לא תקין. נא לנסות שוב.", "error", null),
-        400
-      );
+      if (wantsJson) {
+        return jsonResponse(
+          { result: "error", title: "שגיאה", message: "קישור לא תקין. נא לנסות שוב." },
+          400,
+        );
+      }
+      return redirectToSite({ result: "error", action });
     }
 
     // Create Supabase client with service role
@@ -72,25 +110,36 @@ const handler = async (req: Request): Promise<Response> => {
 
       if (updateError) {
         console.error("Error re-subscribing:", updateError);
-        return htmlResponse(
-          getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", "error", null),
-          500
-        );
+        if (wantsJson) {
+          return jsonResponse(
+            { result: "error", title: "שגיאה", message: "אירעה שגיאה. נא לנסות שוב מאוחר יותר." },
+            500,
+          );
+        }
+        return redirectToSite({ result: "error", token, action });
       }
 
       if (!data || data.length === 0) {
         console.log("Email not found or already subscribed:", email);
-        return htmlResponse(
-          getHtmlPage("כבר רשום/ה", "כתובת המייל שלך כבר רשומה לניוזלטר! 🎉", "info", null),
-          200
-        );
+        if (wantsJson) {
+          return jsonResponse({
+            result: "info",
+            title: "כבר רשום/ה",
+            message: "כתובת המייל שלך כבר רשומה לניוזלטר! 🎉",
+          });
+        }
+        return redirectToSite({ result: "info", token, action });
       }
 
       console.log("Successfully re-subscribed:", email);
-      return htmlResponse(
-        getHtmlPage("נרשמת מחדש!", "ברוכים השבים! תודה שחזרת אלינו 💖", "resubscribed", null),
-        200
-      );
+      if (wantsJson) {
+        return jsonResponse({
+          result: "resubscribed",
+          title: "נרשמת מחדש!",
+          message: "ברוכים השבים! תודה שחזרת אלינו 💖",
+        });
+      }
+      return redirectToSite({ result: "resubscribed", token, action });
     }
 
     // Default: Unsubscribe
@@ -103,10 +152,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     if (updateError) {
       console.error("Error updating subscription:", updateError);
-      return htmlResponse(
-        getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", "error", null),
-        500
-      );
+      if (wantsJson) {
+        return jsonResponse(
+          { result: "error", title: "שגיאה", message: "אירעה שגיאה. נא לנסות שוב מאוחר יותר." },
+          500,
+        );
+      }
+      return redirectToSite({ result: "error", token, action });
     }
 
     if (!data || data.length === 0) {
@@ -115,20 +167,34 @@ const handler = async (req: Request): Promise<Response> => {
       console.log("Successfully unsubscribed:", email);
     }
 
-    return htmlResponse(
-      getHtmlPage("הוסרת בהצלחה", "הוסרת מרשימת התפוצה שלנו. נשמח לראותך שוב בעתיד! 💖", "unsubscribed", token),
-      200
-    );
+    if (wantsJson) {
+      return jsonResponse({
+        result: "unsubscribed",
+        title: "הוסרת בהצלחה",
+        message: "הוסרת מרשימת התפוצה שלנו. נשמח לראותך שוב בעתיד! 💖",
+        token,
+      });
+    }
+    return redirectToSite({ result: "unsubscribed", token, action });
   } catch (error: unknown) {
     console.error("Newsletter action error:", {
       message: error instanceof Error ? error.message : "Unknown error",
       timestamp: new Date().toISOString(),
     });
 
-    return htmlResponse(
-      getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", "error", null),
-      500
-    );
+    const url = new URL(req.url);
+    const wantsJson =
+      url.searchParams.get("format") === "json" ||
+      (req.headers.get("accept") || "").includes("application/json");
+
+    if (wantsJson) {
+      return jsonResponse(
+        { result: "error", title: "שגיאה", message: "אירעה שגיאה. נא לנסות שוב מאוחר יותר." },
+        500,
+      );
+    }
+
+    return redirectToSite({ result: "error" });
   }
 };
 
