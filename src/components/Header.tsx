@@ -1,4 +1,4 @@
-import { Gift, Star, CircleHelp, Users, Home } from "lucide-react";
+import { Gift, Star, CircleHelp, Users, Home, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -53,10 +53,10 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-500/30">
+    <header className="fixed top-0 left-0 right-0 z-50">
       {/* Safe area background - solid color to match theme-color */}
       <div className="absolute inset-x-0 top-0 h-[env(safe-area-inset-top)] bg-background" />
-      <div className="flex items-center justify-center px-1 py-0.5 md:py-1 pt-[calc(0.125rem+env(safe-area-inset-top))] bg-background">
+      <div className="flex items-center justify-center px-1 py-0.5 md:py-1 pt-[calc(0.125rem+env(safe-area-inset-top))] bg-background border-b border-amber-500/30">
         {/* Navigation bar */}
         <nav className="flex items-center gap-0">
           {/* Navigation items */}
@@ -83,6 +83,13 @@ const Header = () => {
             );
           })}
         </nav>
+      </div>
+      {/* Made with love tooltip */}
+      <div className="flex items-center justify-center py-0.5 bg-background/95 backdrop-blur-sm">
+        <div className="flex items-center gap-1 text-[10px] md:text-xs text-muted-foreground">
+          <span>{isRTL ? "מיוצר באהבה" : "Made with love"}</span>
+          <Heart className="w-3 h-3 text-red-500 fill-red-500" />
+        </div>
       </div>
     </header>
   );
