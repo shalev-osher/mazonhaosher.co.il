@@ -455,11 +455,10 @@
   background: hsl(var(--primary) / 0.5);
 }
 
-/* Glass morphism effect */
+/* Solid background style - no glass morphism */
 .glass {
-  background: hsl(var(--background) / 0.7);
-  backdrop-filter: blur(20px);
-  border: 1px solid hsl(var(--border) / 0.3);
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
 }
 
 /* Gradient text */
@@ -500,56 +499,46 @@
   }
 }
 
-/* ===== Luxury Auth Modal Styles - Apple Liquid Glass ===== */
+/* ===== Luxury Auth Modal Styles ===== */
 .auth-modal-luxury {
   /* Compact width */
   max-width: 360px !important;
   width: 90% !important;
   
-  /* Semi-transparent glass background */
-  background: hsl(var(--background) / 0.75) !important;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  /* Solid background - no transparency */
+  background: hsl(var(--background)) !important;
   
-  /* Rounded glass appearance */
+  /* Rounded appearance */
   border-radius: 1.5rem !important;
-  border: 1px solid hsl(var(--foreground) / 0.1) !important;
+  border: 2px solid hsl(var(--amber)) !important;
   
-  /* Elegant shadow with glass glow */
+  /* Elegant shadow */
   box-shadow: 
-    0 0 0 1px hsl(0 0% 100% / 0.15),
-    inset 0 1px 0 0 hsl(0 0% 100% / 0.1),
-    0 25px 60px -15px hsl(var(--foreground) / 0.25),
-    0 0 40px -10px hsl(var(--primary) / 0.2);
+    0 25px 60px -15px hsl(var(--foreground) / 0.2),
+    0 0 40px -10px hsl(var(--amber) / 0.3);
   
-  /* Smooth border glow - no flicker */
+  /* Smooth transition */
   transition: box-shadow 0.4s ease;
 }
 
 .auth-modal-luxury:hover {
   box-shadow: 
-    0 0 0 1px hsl(var(--primary) / 0.25),
-    inset 0 1px 0 0 hsl(0 0% 100% / 0.15),
-    0 25px 60px -15px hsl(var(--foreground) / 0.3),
-    0 0 50px -10px hsl(var(--primary) / 0.3);
+    0 25px 60px -15px hsl(var(--foreground) / 0.25),
+    0 0 50px -10px hsl(var(--amber) / 0.4);
 }
 
 .dark .auth-modal-luxury {
-  background: hsl(var(--background) / 0.7) !important;
-  border-color: hsl(0 0% 100% / 0.12) !important;
+  background: hsl(var(--background)) !important;
+  border-color: hsl(var(--amber)) !important;
   box-shadow: 
-    0 0 0 1px hsl(0 0% 100% / 0.1),
-    inset 0 1px 0 0 hsl(0 0% 100% / 0.08),
-    0 25px 60px -15px hsl(0 0% 0% / 0.5),
-    0 0 40px -10px hsl(var(--primary) / 0.25);
+    0 25px 60px -15px hsl(0 0% 0% / 0.4),
+    0 0 40px -10px hsl(var(--amber) / 0.3);
 }
 
 .dark .auth-modal-luxury:hover {
   box-shadow: 
-    0 0 0 1px hsl(var(--primary) / 0.35),
-    inset 0 1px 0 0 hsl(0 0% 100% / 0.12),
-    0 25px 60px -15px hsl(0 0% 0% / 0.6),
-    0 0 50px -10px hsl(var(--primary) / 0.35);
+    0 25px 60px -15px hsl(0 0% 0% / 0.5),
+    0 0 50px -10px hsl(var(--amber) / 0.4);
 }
 
 /* Auth modal logo glow */
@@ -568,57 +557,52 @@
   }
 }
 
-/* Luxury input fields - Glass style */
+/* Solid input fields */
 .auth-input-luxury {
-  background: hsl(var(--foreground) / 0.03);
-  border: 1px solid hsl(var(--foreground) / 0.08);
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
   border-radius: 0.875rem;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .auth-input-luxury:hover {
-  border-color: hsl(var(--foreground) / 0.15);
-  background: hsl(var(--foreground) / 0.05);
+  border-color: hsl(var(--amber));
+  background: hsl(var(--muted));
 }
 
 .auth-input-luxury:focus {
-  border-color: hsl(var(--primary) / 0.4);
-  box-shadow: 
-    0 0 0 3px hsl(var(--primary) / 0.08),
-    inset 0 0 10px hsl(var(--primary) / 0.03);
-  background: hsl(var(--foreground) / 0.05);
+  border-color: hsl(var(--amber));
+  box-shadow: 0 0 0 3px hsl(var(--amber) / 0.2);
+  background: hsl(var(--muted));
 }
 
-/* Luxury OAuth buttons - Glass style */
+/* Solid OAuth buttons */
 .auth-oauth-btn {
-  background: hsl(var(--foreground) / 0.04);
-  border: 1px solid hsl(var(--foreground) / 0.08) !important;
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border)) !important;
   border-radius: 0.875rem;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .auth-oauth-btn:hover {
-  background: hsl(var(--foreground) / 0.08);
-  border-color: hsl(var(--foreground) / 0.15) !important;
+  background: hsl(var(--secondary));
+  border-color: hsl(var(--amber)) !important;
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px -8px hsl(var(--foreground) / 0.1);
+  box-shadow: 0 8px 20px -8px hsl(var(--amber) / 0.2);
 }
 
-/* Primary button - Glass glow effect */
+/* Primary button - Colorful gradient */
 .auth-btn-primary {
   background: linear-gradient(
     135deg,
-    hsl(var(--primary) / 0.9) 0%,
-    hsl(var(--accent) / 0.85) 100%
+    hsl(var(--amber)) 0%,
+    hsl(var(--coral)) 100%
   );
   border: none;
   border-radius: 0.875rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
 }
 
 .auth-btn-primary::before {
@@ -627,8 +611,8 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    hsl(var(--accent)) 0%,
-    hsl(var(--primary)) 100%
+    hsl(var(--coral)) 0%,
+    hsl(var(--amber)) 100%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -641,8 +625,8 @@
 .auth-btn-primary:hover {
   transform: translateY(-1px);
   box-shadow: 
-    0 10px 25px -8px hsl(var(--primary) / 0.4),
-    0 0 30px -5px hsl(var(--primary) / 0.2);
+    0 10px 25px -8px hsl(var(--amber) / 0.5),
+    0 0 30px -5px hsl(var(--coral) / 0.3);
 }
 
 /* Decorative sparkle */

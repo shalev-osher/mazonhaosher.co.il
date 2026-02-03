@@ -118,13 +118,13 @@ const NewsletterSection = () => {
   if (subscribed) {
     return (
       <section className="py-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-100 via-emerald-50 to-teal-100 dark:from-teal-950/30 dark:via-emerald-950/20 dark:to-teal-950/30" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-md mx-auto text-center bg-card/80 backdrop-blur-sm rounded-2xl p-6 border border-primary/20">
-            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+          <div className="max-w-md mx-auto text-center bg-card rounded-2xl p-6 border-2 border-emerald-500/30 shadow-lg">
+            <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
               <Check className="h-6 w-6 text-white" />
             </div>
-            <h3 className="font-display text-xl font-bold text-primary mb-2">
+            <h3 className="font-display text-xl font-bold text-emerald-600 mb-2">
               {t('newsletter.thankYou')}
             </h3>
             <p className="text-muted-foreground text-sm">
@@ -138,17 +138,18 @@ const NewsletterSection = () => {
 
   return (
     <section className="py-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAzMGMwLTUuNTIzIDQuNDc3LTEwIDEwLTEwczEwIDQuNDc3IDEwIDEwLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEweiIgZmlsbD0iI2U4NWQ4ZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9nPjwvc3ZnPg==')] opacity-30" />
+      <div className="absolute inset-0 bg-gradient-to-r from-indigo-100 via-purple-50 to-indigo-100 dark:from-indigo-950/30 dark:via-purple-950/20 dark:to-indigo-950/30" />
+      {/* Decorative pattern */}
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 10l8 14H12l8-14z' fill='%236366f1' /%3E%3C/svg%3E")`, backgroundSize: '60px 60px' }} />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-md mx-auto text-center bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-primary/20 shadow-lg">
+        <div className="max-w-md mx-auto text-center bg-card rounded-2xl p-4 border-2 border-indigo-500/30 shadow-lg">
           <div className="flex items-center justify-center gap-1 mb-2">
-            <Bell className="h-5 w-5 text-primary animate-bounce" />
-            <Sparkles className="h-4 w-4 text-accent" />
+            <Bell className="h-5 w-5 text-indigo-500 animate-bounce" />
+            <Sparkles className="h-4 w-4 text-purple-500" />
           </div>
           
-          <h3 className="font-display text-xl font-bold text-primary mb-1">
+          <h3 className="font-display text-xl font-bold text-indigo-600 mb-1">
             {t('newsletter.title')}
           </h3>
           <p className="text-muted-foreground text-sm mb-4">
@@ -157,8 +158,8 @@ const NewsletterSection = () => {
 
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-full">
-                <Mail className="h-5 w-5 text-primary" />
+              <div className="p-2 bg-indigo-500/20 rounded-full">
+                <Mail className="h-5 w-5 text-indigo-500" />
               </div>
               <Input
                 type="email"
@@ -172,8 +173,8 @@ const NewsletterSection = () => {
             </div>
             
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-full">
-                <Phone className="h-5 w-5 text-primary" />
+              <div className="p-2 bg-purple-500/20 rounded-full">
+                <Phone className="h-5 w-5 text-purple-500" />
               </div>
               <Input
                 type="tel"
@@ -190,7 +191,7 @@ const NewsletterSection = () => {
               onClick={handleSubscribe}
               disabled={isLoading}
               size="lg"
-              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold"
+              className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold"
             >
               {isLoading ? t('newsletter.submitting') : t('newsletter.button')}
             </Button>
