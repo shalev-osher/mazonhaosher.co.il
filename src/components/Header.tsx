@@ -145,36 +145,36 @@ const Header = () => {
                       <User className="w-4 h-4 transition-transform duration-300 scale-110" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm [direction:rtl]">
+                  <DropdownMenuContent align="start" className="w-48 rounded-lg shadow-lg border-primary/20 animate-scale-in text-sm" dir="rtl">
                     <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
                       <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
                       <p className="text-[10px] text-muted-foreground">{user?.email}</p>
                     </div>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => scrollToSection("order-history")} className="flex-row-reverse gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
-                      <Package className="w-3.5 h-3.5 text-primary" />
+                    <DropdownMenuItem onClick={() => scrollToSection("order-history")} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-end">
                       ההזמנות שלי
+                      <Package className="w-3.5 h-3.5 text-primary" />
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setShowEditProfileModal(true)} className="flex-row-reverse gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
-                      <UserPen className="w-3.5 h-3.5 text-primary" />
+                    <DropdownMenuItem onClick={() => setShowEditProfileModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-end">
                       עריכת פרופיל
+                      <UserPen className="w-3.5 h-3.5 text-primary" />
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setShowChangePasswordModal(true)} className="flex-row-reverse gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
-                      <Lock className="w-3.5 h-3.5 text-primary" />
+                    <DropdownMenuItem onClick={() => setShowChangePasswordModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-end">
                       שינוי סיסמה
+                      <Lock className="w-3.5 h-3.5 text-primary" />
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setShowDevicesModal(true)} className="flex-row-reverse gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5">
-                      <Smartphone className="w-3.5 h-3.5 text-primary" />
+                    <DropdownMenuItem onClick={() => setShowDevicesModal(true)} className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-end">
                       מכשירים מהימנים
+                      <Smartphone className="w-3.5 h-3.5 text-primary" />
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setShowDeleteModal(true)} className="flex-row-reverse gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
-                      <Trash2 className="w-3.5 h-3.5" />
+                    <DropdownMenuItem onClick={() => setShowDeleteModal(true)} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-end">
                       מחיקת חשבון
+                      <Trash2 className="w-3.5 h-3.5" />
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout} className="flex-row-reverse gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5">
-                      <LogOut className="w-3.5 h-3.5" />
+                    <DropdownMenuItem onClick={handleLogout} className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-end">
                       התנתקות
+                      <LogOut className="w-3.5 h-3.5" />
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
