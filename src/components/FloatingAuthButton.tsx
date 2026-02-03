@@ -56,7 +56,7 @@ const FloatingAuthButton = () => {
                   className="w-6 h-6 rounded-full object-cover border border-white/30"
                 />
               ) : (
-                <UserCircle className="w-6 h-6 text-white fill-white/20" />
+                <UserCircle className="w-6 h-6 text-white" />
               )}
               <span className="text-xs font-medium text-white">
                 {firstName || (isRTL ? "חשבון" : "Account")}
@@ -128,7 +128,7 @@ const FloatingAuthButton = () => {
             isRTL ? "right-4" : "left-4"
           )}
         >
-          <UserCircle className="w-5 h-5 text-white fill-white/20" />
+          <UserCircle className="w-5 h-5 text-white" />
           <span className="text-xs font-medium text-white">
             {isRTL ? "התחברות" : "Login"}
           </span>

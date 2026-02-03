@@ -76,7 +76,7 @@ const Header = () => {
                 <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 bg-gradient-to-br ${item.gradient} shadow-md ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`}>
-                  <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white fill-white/20" />
+                  <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
                 </div>
                 <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
               </button>
