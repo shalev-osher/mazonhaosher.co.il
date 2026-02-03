@@ -98,8 +98,10 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/85 border-b border-border/30">
-      <div className="flex items-center justify-center px-2 py-1.5 md:py-2 pt-[calc(0.375rem+env(safe-area-inset-top))]">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/30">
+      {/* Safe area background - solid color to match theme-color */}
+      <div className="absolute inset-x-0 top-0 h-[env(safe-area-inset-top)] bg-background" />
+      <div className="flex items-center justify-center px-2 py-1.5 md:py-2 pt-[calc(0.375rem+env(safe-area-inset-top))] bg-background">
         {/* Navigation bar */}
         <nav className="flex items-center gap-0.5 md:gap-1">
           {/* Navigation items */}
