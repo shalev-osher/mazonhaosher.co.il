@@ -1,4 +1,4 @@
-import { User, KeyRound, LogOut, Package, ChevronDown, Crown, Gift, Star, HelpCircle, Heart, ShoppingBag, Smartphone, Home, Trash2, UserPen, Lock } from "lucide-react";
+import { User, LogOut, Package, ChevronDown, Gift, Star, CircleHelp, Users, ShoppingBag, Smartphone, Home, Trash2, UserPen, Lock, Cookie, UserCircle } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -90,161 +90,131 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   const navItems = [
-    { id: "hero", label: "ראשי", icon: Home },
-    { id: "cookies", label: "הקולקציה שלנו", icon: Crown },
-    { id: "gift-packages", label: "מארזי מתנה", icon: Gift },
-    { id: "reviews", label: "ביקורות לקוחות", icon: Star },
-    { id: "faq", label: "שאלות נפוצות", icon: HelpCircle },
-    { id: "about", label: "אודותינו", icon: Heart },
+    { id: "hero", label: "בית", icon: Home },
+    { id: "cookies", label: "עוגיות", icon: Cookie },
+    { id: "gift-packages", label: "מארזים", icon: Gift },
+    { id: "reviews", label: "ביקורות", icon: Star },
+    { id: "faq", label: "שאלות", icon: CircleHelp },
+    { id: "about", label: "אודות", icon: Users },
   ];
 
   return (
     <header className={`fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 transition-all duration-500 bg-transparent ${
-      scrolled ? "py-2" : "py-3"
+      scrolled ? "py-1.5" : "py-2"
     }`}>
-      <div className="flex justify-center px-4">
-        {/* Single centered floating pill with all icons */}
-        <TooltipProvider delayDuration={100}>
-          <nav className="flex items-center bg-background/60 backdrop-blur-xl rounded-full p-1 border border-border/50 shadow-lg shadow-black/5">
-            {/* Navigation items */}
-            {navItems.map((item) => {
-              const IconComponent = item.icon;
-              const isActive = activeSection === item.id;
-              return (
-                <Tooltip key={item.id}>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={() => scrollToSection(item.id)}
-                      className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
-                        isActive 
-                          ? "text-primary-foreground" 
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
-                        isActive ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
-                      }`} />
-                      <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
-                        isActive ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
-                      }`} />
-                      <IconComponent className={`relative z-10 w-4 h-4 transition-all duration-300 ${
-                        isActive ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"
-                      }`} />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent 
-                    side="bottom" 
-                    sideOffset={8}
-                    className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
-                  >
-                    {item.label}
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })}
+      <div className="flex justify-center px-2">
+        {/* Single centered floating pill with all icons + labels */}
+        <nav className="flex items-center bg-background/70 backdrop-blur-xl rounded-2xl px-2 py-1.5 border border-border/40 shadow-lg shadow-black/5 gap-0.5">
+          {/* Navigation items */}
+          {navItems.map((item) => {
+            const IconComponent = item.icon;
+            const isActive = activeSection === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`relative flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group ${
+                  isActive 
+                    ? "text-primary bg-primary/10" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+              >
+                <IconComponent className={`w-4 h-4 transition-all duration-300 ${
+                  isActive ? "scale-110" : "group-hover:scale-105"
+                }`} />
+                <span className={`text-[10px] font-medium transition-all duration-300 ${
+                  isActive ? "text-primary" : ""
+                }`}>
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
 
-            {/* Separator */}
-            <div className="w-px h-5 bg-border/50 mx-1" />
+          {/* Separator */}
+          <div className="w-px h-8 bg-border/40 mx-1" />
 
-            {/* Cart Button */}
-            <CartHeaderButton />
-            {/* Theme Toggle */}
-            <ThemeToggle />
-            {/* Auth Button */}
-            {isLoggedIn ? (
-              <DropdownMenu dir="rtl">
-                  <DropdownMenuTrigger asChild>
-                    <button className="relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden text-primary-foreground">
-                      <span className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80" />
-                      <span className="absolute inset-0 rounded-full shadow-[0_0_20px_hsl(var(--primary)/0.5)]" />
-                      <User className="relative z-10 w-4 h-4 transition-transform duration-300 scale-110 drop-shadow-sm" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="start"
-                    className="w-48 rounded-2xl shadow-xl border-border/50 backdrop-blur-xl animate-scale-in text-sm text-right [direction:rtl]"
-                  >
-                    <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
-                      <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
-                      <p className="text-[10px] text-muted-foreground">{user?.email}</p>
-                    </div>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => scrollToSection("order-history")}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
-                    >
-                      <Package className="w-3.5 h-3.5 text-primary" />
-                      <span>ההזמנות שלי</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => setShowEditProfileModal(true)}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
-                    >
-                      <UserPen className="w-3.5 h-3.5 text-primary" />
-                      <span>עריכת פרופיל</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => setShowChangePasswordModal(true)}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
-                    >
-                      <Lock className="w-3.5 h-3.5 text-primary" />
-                      <span>שינוי סיסמה</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => setShowDevicesModal(true)}
-                      className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
-                    >
-                      <Smartphone className="w-3.5 h-3.5 text-primary" />
-                      <span>מכשירים מהימנים</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => setShowDeleteModal(true)}
-                      className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                      <span>מחיקת חשבון</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleLogout}
-                      className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>התנתקות</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={() => setAuthModalOpen(true)}
-                      className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
-                        authModalOpen
-                          ? "text-primary-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
-                        authModalOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
-                      }`} />
-                      <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
-                        authModalOpen ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
-                      }`} />
-                      <KeyRound className={`relative z-10 w-4 h-4 transition-all duration-300 ${authModalOpen ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"}`} />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent 
-                    side="bottom" 
-                    sideOffset={8}
-                    className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
-                  >
-                    התחברות
-                  </TooltipContent>
-                </Tooltip>
-              )}
-          </nav>
-        </TooltipProvider>
+          {/* Cart Button */}
+          <CartHeaderButton />
+          {/* Theme Toggle */}
+          <ThemeToggle />
+          {/* Auth Button */}
+          {isLoggedIn ? (
+            <DropdownMenu dir="rtl">
+              <DropdownMenuTrigger asChild>
+                <button className="flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group text-primary bg-primary/10">
+                  <UserCircle className="w-4 h-4" />
+                  <span className="text-[10px] font-medium">חשבון</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                className="w-48 rounded-2xl shadow-xl border-border/50 backdrop-blur-xl animate-scale-in text-sm text-right [direction:rtl]"
+              >
+                <div className="px-2.5 py-1.5 bg-primary/5 rounded-t-lg text-right">
+                  <p className="text-xs font-medium text-foreground">{displayName || "שלום!"}</p>
+                  <p className="text-[10px] text-muted-foreground">{user?.email}</p>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => scrollToSection("order-history")}
+                  className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
+                >
+                  <Package className="w-3.5 h-3.5 text-primary" />
+                  <span>ההזמנות שלי</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setShowEditProfileModal(true)}
+                  className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
+                >
+                  <UserPen className="w-3.5 h-3.5 text-primary" />
+                  <span>עריכת פרופיל</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setShowChangePasswordModal(true)}
+                  className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
+                >
+                  <Lock className="w-3.5 h-3.5 text-primary" />
+                  <span>שינוי סיסמה</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setShowDevicesModal(true)}
+                  className="gap-2 cursor-pointer hover:bg-primary/10 text-xs py-1.5 justify-start"
+                >
+                  <Smartphone className="w-3.5 h-3.5 text-primary" />
+                  <span>מכשירים מהימנים</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setShowDeleteModal(true)}
+                  className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>מחיקת חשבון</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="gap-2 text-destructive cursor-pointer hover:bg-destructive/10 text-xs py-1.5 justify-start"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>התנתקות</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <button
+              onClick={() => setAuthModalOpen(true)}
+              className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group ${
+                authModalOpen
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              <UserCircle className={`w-4 h-4 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
+              <span className="text-[10px] font-medium">כניסה</span>
+            </button>
+          )}
+        </nav>
       </div>
 
       {/* Auth Modal */}
@@ -286,40 +256,24 @@ const CartHeaderButton = () => {
   const isActive = isCartOpen || totalItems > 0;
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className={`relative p-2.5 transition-all duration-400 rounded-full group overflow-hidden ${
-            isActive
-              ? "text-primary-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          {/* Active/hover background */}
-          <span className={`absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary to-primary/80 transition-all duration-400 ${
-            isActive ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-10"
-          }`} />
-          {/* Glow effect */}
-          <span className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
-            isActive ? "opacity-100 shadow-[0_0_20px_hsl(var(--primary)/0.5)]" : "opacity-0"
-          }`} />
-          <ShoppingBag className={`relative z-10 w-4 h-4 transition-all duration-300 ${isActive ? "scale-110 drop-shadow-sm" : "group-hover:scale-105"}`} />
-          {totalItems > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 z-20 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow-lg ring-2 ring-background/80">
-              {totalItems}
-            </span>
-          )}
-        </button>
-      </TooltipTrigger>
-      <TooltipContent 
-        side="bottom" 
-        sideOffset={8}
-        className="bg-background/95 backdrop-blur-xl border-border/50 shadow-xl px-3 py-1.5 text-xs font-medium rounded-full"
-      >
-        עגלת קניות {totalItems > 0 && `(${totalItems})`}
-      </TooltipContent>
-    </Tooltip>
+    <button
+      onClick={() => setIsCartOpen(true)}
+      className={`relative flex flex-col items-center gap-0.5 px-2.5 py-1.5 transition-all duration-300 rounded-xl group ${
+        isActive
+          ? "text-primary bg-primary/10"
+          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+      }`}
+    >
+      <div className="relative">
+        <ShoppingBag className={`w-4 h-4 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
+        {totalItems > 0 && (
+          <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow-sm">
+            {totalItems}
+          </span>
+        )}
+      </div>
+      <span className="text-[10px] font-medium">עגלה</span>
+    </button>
   );
 };
 
