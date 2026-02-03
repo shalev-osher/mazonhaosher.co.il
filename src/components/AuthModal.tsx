@@ -247,6 +247,22 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     onClose();
   };
 
+  // If authentication completes while the modal is open (e.g. hash/OAuth handler finishes), close it.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) {
+        handleClose();
+      }
+    });
+
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     
