@@ -21,13 +21,15 @@ const Footer = () => {
               className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
-              <div className={`p-1.5 md:p-2 rounded-xl transition-all duration-300 shadow-md bg-gradient-to-br ${
-                theme === 'dark' ? 'from-amber-400 to-orange-500' : 'from-indigo-500 to-violet-600'
+              <div className={`p-2 md:p-2.5 rounded-2xl transition-all duration-300 shadow-lg ring-2 ring-offset-2 ring-offset-background bg-gradient-to-br ${
+                theme === 'dark' 
+                  ? 'from-amber-300 via-yellow-400 to-orange-500 ring-amber-400/50 animate-pulse' 
+                  : 'from-indigo-400 via-violet-500 to-purple-600 ring-violet-400/50'
               }`}>
                 {theme === 'dark' ? (
-                  <Sun className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
+                  <Sun className="w-5 h-5 md:w-6 md:h-6 text-white fill-white/30 drop-shadow-lg" />
                 ) : (
-                  <Moon className="w-4 h-4 md:w-5 md:h-5 text-white fill-white/20" />
+                  <Moon className="w-5 h-5 md:w-6 md:h-6 text-white fill-white/30 drop-shadow-lg" />
                 )}
               </div>
             </button>
