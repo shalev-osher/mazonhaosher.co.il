@@ -16,7 +16,7 @@ function decodeToken(token: string): string | null {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  console.log("Received newsletter unsubscribe request");
+  console.log("Received newsletter request");
 
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -26,10 +26,11 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const url = new URL(req.url);
     const token = url.searchParams.get("token");
+    const action = url.searchParams.get("action") || "unsubscribe";
 
     if (!token) {
       return new Response(
-        getHtmlPage("שגיאה", "קישור לא תקין. נא לנסות שוב.", false),
+        getHtmlPage("שגיאה", "קישור לא תקין. נא לנסות שוב.", "error", null),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
       );
     }
@@ -37,7 +38,7 @@ const handler = async (req: Request): Promise<Response> => {
     const email = decodeToken(token);
     if (!email || !email.includes("@")) {
       return new Response(
-        getHtmlPage("שגיאה", "קישור לא תקין. נא לנסות שוב.", false),
+        getHtmlPage("שגיאה", "קישור לא תקין. נא לנסות שוב.", "error", null),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
       );
     }
@@ -47,7 +48,39 @@ const handler = async (req: Request): Promise<Response> => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Update subscription to inactive
+    if (action === "resubscribe") {
+      // Re-subscribe: update is_active to true
+      const { error: updateError, data } = await supabase
+        .from("newsletter_subscriptions")
+        .update({ is_active: true })
+        .eq("email", email)
+        .eq("is_active", false)
+        .select();
+
+      if (updateError) {
+        console.error("Error re-subscribing:", updateError);
+        return new Response(
+          getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", "error", null),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      if (!data || data.length === 0) {
+        console.log("Email not found or already subscribed:", email);
+        return new Response(
+          getHtmlPage("כבר רשום/ה", "כתובת המייל שלך כבר רשומה לניוזלטר! 🎉", "info", null),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      console.log("Successfully re-subscribed:", email);
+      return new Response(
+        getHtmlPage("נרשמת מחדש!", "ברוכים השבים! תודה שחזרת אלינו 💖", "resubscribed", null),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
+      );
+    }
+
+    // Default: Unsubscribe
     const { error: updateError, data } = await supabase
       .from("newsletter_subscriptions")
       .update({ is_active: false })
@@ -58,39 +91,55 @@ const handler = async (req: Request): Promise<Response> => {
     if (updateError) {
       console.error("Error updating subscription:", updateError);
       return new Response(
-        getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", false),
+        getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", "error", null),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
       );
     }
 
     if (!data || data.length === 0) {
-      // Email not found or already unsubscribed - show success anyway to prevent enumeration
       console.log("Email not found or already unsubscribed:", email);
     } else {
       console.log("Successfully unsubscribed:", email);
     }
 
     return new Response(
-      getHtmlPage("הוסרת בהצלחה", "הוסרת מרשימת התפוצה שלנו. נשמח לראותך שוב בעתיד! 💖", true),
+      getHtmlPage("הוסרת בהצלחה", "הוסרת מרשימת התפוצה שלנו. נשמח לראותך שוב בעתיד! 💖", "unsubscribed", token),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
     );
   } catch (error: unknown) {
-    console.error("Unsubscribe error:", {
+    console.error("Newsletter action error:", {
       message: error instanceof Error ? error.message : "Unknown error",
       timestamp: new Date().toISOString(),
     });
 
     return new Response(
-      getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", false),
+      getHtmlPage("שגיאה", "אירעה שגיאה. נא לנסות שוב מאוחר יותר.", "error", null),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" } }
     );
   }
 };
 
-function getHtmlPage(title: string, message: string, success: boolean): string {
+function getHtmlPage(title: string, message: string, status: "unsubscribed" | "resubscribed" | "info" | "error", token: string | null): string {
   const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/assets/logo.png";
-  const iconColor = success ? "#10b981" : "#ef4444";
-  const icon = success ? "✓" : "✕";
+  
+  let iconColor = "#10b981";
+  let icon = "✓";
+  
+  if (status === "error") {
+    iconColor = "#ef4444";
+    icon = "✕";
+  } else if (status === "info") {
+    iconColor = "#3b82f6";
+    icon = "ℹ";
+  } else if (status === "resubscribed") {
+    iconColor = "#10b981";
+    icon = "♥";
+  }
+  
+  // Show re-subscribe button only after successful unsubscribe
+  const resubscribeButton = status === "unsubscribed" && token
+    ? `<a href="?token=${encodeURIComponent(token)}&action=resubscribe" class="resubscribe-link">להירשם מחדש</a>`
+    : "";
 
   return `
     <!DOCTYPE html>
@@ -119,7 +168,7 @@ function getHtmlPage(title: string, message: string, success: boolean): string {
           width: 100%;
           text-align: center;
           overflow: hidden;
-          border: 3px solid #e85d8f;
+          border: 3px solid #f59e0b;
         }
         .logo-section {
           padding: 30px 20px 20px;
@@ -154,15 +203,21 @@ function getHtmlPage(title: string, message: string, success: boolean): string {
           line-height: 1.6;
         }
         .footer {
-          background: #fdf2f8;
+          background: #fffbeb;
           padding: 20px;
           color: #9ca3af;
           font-size: 14px;
         }
+        .buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          align-items: center;
+          margin-top: 24px;
+        }
         .home-link {
           display: inline-block;
-          margin-top: 24px;
-          background: linear-gradient(135deg, #e85d8f 0%, #f472b6 100%);
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
           color: white;
           text-decoration: none;
           padding: 12px 32px;
@@ -171,6 +226,19 @@ function getHtmlPage(title: string, message: string, success: boolean): string {
           transition: transform 0.2s;
         }
         .home-link:hover {
+          transform: scale(1.05);
+        }
+        .resubscribe-link {
+          display: inline-block;
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          color: white;
+          text-decoration: none;
+          padding: 12px 32px;
+          border-radius: 50px;
+          font-weight: 600;
+          transition: transform 0.2s;
+        }
+        .resubscribe-link:hover {
           transform: scale(1.05);
         }
       </style>
@@ -184,7 +252,10 @@ function getHtmlPage(title: string, message: string, success: boolean): string {
           <div class="icon-circle">${icon}</div>
           <h1>${title}</h1>
           <p>${message}</p>
-          <a href="https://mazonhaosher.co.il" class="home-link">חזרה לאתר</a>
+          <div class="buttons">
+            ${resubscribeButton}
+            <a href="https://mazonhaosher.lovable.app" class="home-link">חזרה לאתר</a>
+          </div>
         </div>
         <div class="footer">
           מזון האושר - עוגיות שמביאות אושר 💝
