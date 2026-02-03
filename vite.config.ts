@@ -49,6 +49,8 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2}"],
+        // Exclude OAuth paths from SW navigation - let them pass through to the network
+        navigateFallbackDenylist: [/^\/~oauth/, /^\/auth\/callback/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
