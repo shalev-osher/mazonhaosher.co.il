@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -27,19 +27,18 @@ const ScrollToTop = () => {
     <button
       onClick={scrollToTop}
       className={cn(
-        "fixed bottom-20 z-40 w-10 h-10 rounded-full",
-        "bg-primary/90 text-primary-foreground shadow-lg",
+        "fixed bottom-28 z-40 w-10 h-10 rounded-full",
+        "bg-amber-500 text-white shadow-lg",
         "flex items-center justify-center",
-        "hover:bg-primary hover:scale-110 transition-all duration-300",
-        "backdrop-blur-sm border border-primary/20",
+        "hover:bg-amber-600 transition-colors duration-200",
         isRTL ? "left-4" : "right-4",
         isVisible 
-          ? "opacity-100 translate-y-0" 
-          : "opacity-0 translate-y-4 pointer-events-none"
+          ? "opacity-100" 
+          : "opacity-0 pointer-events-none"
       )}
       aria-label={isRTL ? "חזרה למעלה" : "Back to top"}
     >
-      <ArrowUp className="w-5 h-5" />
+      <ChevronUp className="w-6 h-6" />
     </button>
   );
 };
