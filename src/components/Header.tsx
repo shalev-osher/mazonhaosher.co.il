@@ -91,7 +91,6 @@ const Header = () => {
 
   const navItems = [
     { id: "hero", label: "בית", icon: Home },
-    { id: "cookies", label: "עוגיות", icon: Cookie },
     { id: "gift-packages", label: "מארזים", icon: Gift },
     { id: "reviews", label: "ביקורות", icon: Star },
     { id: "faq", label: "שאלות", icon: CircleHelp },
