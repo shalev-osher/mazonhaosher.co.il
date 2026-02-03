@@ -20,7 +20,7 @@ const IndexContent = () => {
   const { isCartOpen, setIsCartOpen } = useCart();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-14">
       <Header />
       <main>
         <Hero />
