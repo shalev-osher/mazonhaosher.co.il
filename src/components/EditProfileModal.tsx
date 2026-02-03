@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/contexts/ProfileContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { z } from "zod";
 import DeleteAccountModal from "./DeleteAccountModal";
 
@@ -29,6 +30,7 @@ const profileSchema = z.object({
 
 const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
   const { profile, refreshProfile, user } = useProfile();
+  const { t, isRTL } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -86,11 +88,11 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
     // Validate file
     if (!file.type.startsWith("image/")) {
-      setErrors({ avatar: "יש להעלות קובץ תמונה בלבד" });
+      setErrors({ avatar: t('editProfile.imageOnly') });
       return;
     }
     if (file.size > 2 * 1024 * 1024) {
-      setErrors({ avatar: "גודל התמונה מקסימלי 2MB" });
+      setErrors({ avatar: t('editProfile.maxSize') });
       return;
     }
 
@@ -117,11 +119,11 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
       if (updateError) throw updateError;
 
       setAvatarUrl(publicUrl + `?t=${Date.now()}`);
-      setSuccessMessage("התמונה הועלתה בהצלחה!");
+      setSuccessMessage(t('editProfile.uploadSuccess'));
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (error: any) {
       console.error("Avatar upload error:", error);
-      setErrors({ avatar: error.message || "שגיאה בהעלאת התמונה" });
+      setErrors({ avatar: error.message || t('editProfile.uploadError') });
     } finally {
       setIsUploadingAvatar(false);
     }
@@ -154,13 +156,13 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
       if (error) throw error;
 
       await refreshProfile();
-      setSuccessMessage("הפרופיל עודכן בהצלחה! ✨");
+      setSuccessMessage(t('editProfile.success'));
       setTimeout(() => {
         onClose();
       }, 1500);
     } catch (error: any) {
       console.error("Update profile error:", error);
-      setErrors({ submit: error.message || "אירעה שגיאה בעדכון הפרופיל" });
+      setErrors({ submit: error.message || t('general.error') });
     } finally {
       setIsLoading(false);
     }
@@ -186,11 +188,11 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="auth-modal-luxury sm:max-w-[360px] max-h-[85vh] overflow-y-auto" dir="rtl">
-        <DialogHeader className="text-right">
+      <DialogContent className="auth-modal-luxury sm:max-w-[360px] max-h-[85vh] overflow-y-auto" dir={isRTL ? "rtl" : "ltr"}>
+        <DialogHeader className={isRTL ? "text-right" : "text-left"}>
           <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
             <User className="w-5 h-5 text-primary" />
-            עריכת פרופיל
+            {t('editProfile.title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -227,7 +229,7 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
               onChange={handleAvatarUpload}
               className="hidden"
             />
-            <p className="text-[10px] text-muted-foreground">לחץ להחלפת תמונה</p>
+            <p className="text-[10px] text-muted-foreground">{t('editProfile.clickToChange')}</p>
             {errors.avatar && <p className="text-xs text-destructive">{errors.avatar}</p>}
           </div>
 
@@ -240,25 +242,25 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
           {/* Email (read-only) */}
           <div className="space-y-1.5">
-            <label className="text-xs text-muted-foreground">אימייל</label>
+            <label className="text-xs text-muted-foreground">{t('editProfile.emailLabel')}</label>
             <Input
               value={user?.email || ""}
               disabled
-              className="bg-muted/50 text-muted-foreground text-right"
+              className={`bg-muted/50 text-muted-foreground ${isRTL ? "text-right" : "text-left"}`}
               dir="ltr"
             />
           </div>
 
           {/* Full Name */}
           <div className="space-y-1.5">
-            <label className="text-xs text-muted-foreground">שם מלא</label>
+            <label className="text-xs text-muted-foreground">{t('editProfile.fullNameLabel')}</label>
             <div className="relative">
-              <User className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <User className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground`} />
               <Input
                 value={formData.full_name}
                 onChange={(e) => handleChange("full_name", e.target.value)}
-                placeholder="השם שלך"
-                className={`pr-10 text-right bg-background/50 ${errors.full_name ? "border-destructive" : "border-primary/30"}`}
+                placeholder={t('editProfile.namePlaceholder')}
+                className={`${isRTL ? 'pr-10 text-right' : 'pl-10 text-left'} bg-background/50 ${errors.full_name ? "border-destructive" : "border-primary/30"}`}
               />
             </div>
             {errors.full_name && <p className="text-xs text-destructive">{errors.full_name}</p>}
@@ -266,14 +268,14 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
           {/* Phone */}
           <div className="space-y-1.5">
-            <label className="text-xs text-muted-foreground">טלפון *</label>
+            <label className="text-xs text-muted-foreground">{t('editProfile.phoneLabel')}</label>
             <div className="relative">
-              <Phone className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Phone className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground`} />
               <Input
                 value={formData.phone}
                 onChange={(e) => handleChange("phone", e.target.value)}
-                placeholder="054-1234567"
-                className={`pr-10 text-right bg-background/50 ${errors.phone ? "border-destructive" : "border-primary/30"}`}
+                placeholder={t('editProfile.phonePlaceholder')}
+                className={`${isRTL ? 'pr-10 text-right' : 'pl-10 text-left'} bg-background/50 ${errors.phone ? "border-destructive" : "border-primary/30"}`}
                 dir="ltr"
               />
             </div>
@@ -282,14 +284,14 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
           {/* City */}
           <div className="space-y-1.5">
-            <label className="text-xs text-muted-foreground">עיר</label>
+            <label className="text-xs text-muted-foreground">{t('editProfile.cityLabel')}</label>
             <div className="relative">
-              <Building className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Building className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground`} />
               <Input
                 value={formData.city}
                 onChange={(e) => handleChange("city", e.target.value)}
-                placeholder="שם העיר"
-                className={`pr-10 text-right bg-background/50 ${errors.city ? "border-destructive" : "border-primary/30"}`}
+                placeholder={t('editProfile.cityPlaceholder')}
+                className={`${isRTL ? 'pr-10 text-right' : 'pl-10 text-left'} bg-background/50 ${errors.city ? "border-destructive" : "border-primary/30"}`}
               />
             </div>
             {errors.city && <p className="text-xs text-destructive">{errors.city}</p>}
@@ -297,14 +299,14 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
           {/* Address */}
           <div className="space-y-1.5">
-            <label className="text-xs text-muted-foreground">כתובת</label>
+            <label className="text-xs text-muted-foreground">{t('editProfile.addressLabel')}</label>
             <div className="relative">
-              <MapPin className="absolute right-3 top-3 w-4 h-4 text-muted-foreground" />
+              <MapPin className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-3 w-4 h-4 text-muted-foreground`} />
               <Input
                 value={formData.address}
                 onChange={(e) => handleChange("address", e.target.value)}
-                placeholder="רחוב ומספר בית"
-                className={`pr-10 text-right bg-background/50 ${errors.address ? "border-destructive" : "border-primary/30"}`}
+                placeholder={t('editProfile.addressPlaceholder')}
+                className={`${isRTL ? 'pr-10 text-right' : 'pl-10 text-left'} bg-background/50 ${errors.address ? "border-destructive" : "border-primary/30"}`}
               />
             </div>
             {errors.address && <p className="text-xs text-destructive">{errors.address}</p>}
@@ -312,14 +314,14 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
 
           {/* Notes */}
           <div className="space-y-1.5">
-            <label className="text-xs text-muted-foreground">הערות למשלוח</label>
+            <label className="text-xs text-muted-foreground">{t('editProfile.notesLabel')}</label>
             <div className="relative">
-              <FileText className="absolute right-3 top-3 w-4 h-4 text-muted-foreground" />
+              <FileText className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-3 w-4 h-4 text-muted-foreground`} />
               <Textarea
                 value={formData.notes}
                 onChange={(e) => handleChange("notes", e.target.value)}
-                placeholder="קוד בניין, קומה, הוראות מיוחדות..."
-                className={`pr-10 text-right bg-background/50 min-h-[80px] resize-none ${errors.notes ? "border-destructive" : "border-primary/30"}`}
+                placeholder={t('editProfile.notesPlaceholder')}
+                className={`${isRTL ? 'pr-10 text-right' : 'pl-10 text-left'} bg-background/50 min-h-[80px] resize-none ${errors.notes ? "border-destructive" : "border-primary/30"}`}
               />
             </div>
             {errors.notes && <p className="text-xs text-destructive">{errors.notes}</p>}
@@ -339,17 +341,17 @@ const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin ml-2" />
-                שומר...
+                {t('editProfile.saving')}
               </>
             ) : (
-              "שמור שינויים"
+              t('editProfile.save')
             )}
           </Button>
           <Button
             onClick={handleOpenDeleteModal}
             className="w-full bg-destructive/90 border border-destructive text-destructive-foreground font-semibold hover:bg-destructive"
           >
-            מחיקת חשבון
+            {t('editProfile.deleteAccount')}
           </Button>
         </div>
       </DialogContent>
