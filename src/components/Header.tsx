@@ -89,18 +89,18 @@ const Header = () => {
   const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0];
 
   const navItems = [
-    { id: "hero", label: "בית", icon: Home },
-    { id: "gift-packages", label: "מארזים", icon: Gift },
-    { id: "reviews", label: "ביקורות", icon: Star },
-    { id: "faq", label: "שאלות", icon: CircleHelp },
-    { id: "about", label: "אודות", icon: Users },
+    { id: "hero", label: "בית", icon: Home, color: "text-blue-500" },
+    { id: "gift-packages", label: "מארזים", icon: Gift, color: "text-pink-500" },
+    { id: "reviews", label: "ביקורות", icon: Star, color: "text-yellow-500" },
+    { id: "faq", label: "שאלות", icon: CircleHelp, color: "text-green-500" },
+    { id: "about", label: "אודות", icon: Users, color: "text-purple-500" },
   ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/85 border-b border-border/30">
-      <div className="flex items-center justify-center px-2 py-1.5 md:py-2.5 pt-[calc(0.375rem+env(safe-area-inset-top))]">
+      <div className="flex items-center justify-center px-2 py-1.5 md:py-2 pt-[calc(0.375rem+env(safe-area-inset-top))]">
         {/* Navigation bar */}
-        <nav className="flex items-center gap-0.5 md:gap-2">
+        <nav className="flex items-center gap-0.5 md:gap-1">
           {/* Navigation items */}
           {navItems.map((item) => {
             const IconComponent = item.icon;
@@ -109,16 +109,16 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`flex flex-col items-center gap-0.5 md:gap-1 px-2 md:px-4 py-1 md:py-2 transition-all duration-300 rounded-lg group ${
+                className={`flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group ${
                   isActive 
-                    ? "text-primary bg-primary/10" 
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    ? "bg-primary/10" 
+                    : "hover:bg-muted/50"
                 }`}
               >
-                <IconComponent className={`w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${
+                <IconComponent className={`w-4 h-4 md:w-[18px] md:h-[18px] transition-all duration-300 ${item.color} ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`} />
-                <span className="text-[9px] md:text-xs font-medium">{item.label}</span>
+                <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
               </button>
             );
           })}
@@ -129,9 +129,9 @@ const Header = () => {
           {isLoggedIn ? (
             <DropdownMenu dir="rtl">
               <DropdownMenuTrigger asChild>
-                <button className="flex flex-col items-center gap-0.5 md:gap-1 px-2 md:px-4 py-1 md:py-2 transition-all duration-300 rounded-lg text-primary bg-primary/10">
-                  <UserCircle className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="text-[9px] md:text-xs font-medium">חשבון</span>
+                <button className="flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg bg-primary/10">
+                  <UserCircle className="w-4 h-4 md:w-[18px] md:h-[18px] text-orange-500" />
+                  <span className="text-[9px] md:text-[11px] font-medium text-foreground">חשבון</span>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -191,14 +191,14 @@ const Header = () => {
           ) : (
             <button
               onClick={() => setAuthModalOpen(true)}
-              className={`flex flex-col items-center gap-0.5 md:gap-1 px-2 md:px-4 py-1 md:py-2 transition-all duration-300 rounded-lg group ${
+              className={`flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group ${
                 authModalOpen
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  ? "bg-primary/10"
+                  : "hover:bg-muted/50"
               }`}
             >
-              <UserCircle className={`w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
-              <span className="text-[9px] md:text-xs font-medium">כניסה</span>
+              <UserCircle className={`w-4 h-4 md:w-[18px] md:h-[18px] text-orange-500 transition-all duration-300 ${authModalOpen ? "scale-110" : "group-hover:scale-105"}`} />
+              <span className={`text-[9px] md:text-[11px] font-medium ${authModalOpen ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>כניסה</span>
             </button>
           )}
         </nav>
