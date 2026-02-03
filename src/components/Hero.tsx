@@ -131,7 +131,7 @@ const Hero = () => {
           }`}
         >
           {/* Made with love badge */}
-          <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-4 py-1.5 mb-2 animate-bounce-gentle">
+          <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-4 py-1.5 mb-2">
             <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
             <span className="text-accent font-medium tracking-wider uppercase text-sm">
               מיוצר באהבה
