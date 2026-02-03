@@ -59,6 +59,31 @@ const ReviewsSection = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      const { error } = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (error) {
+        toast({
+          title: "שגיאה",
+          description: "התחברות עם Google נכשלה",
+          variant: "destructive",
+        });
+      }
+    } catch (err) {
+      console.error("Google sign-in error:", err);
+      toast({
+        title: "שגיאה",
+        description: "אירעה שגיאה בהתחברות",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   const validateReview = (): boolean => {
     if (!selectedCookie) {
       toast({
