@@ -511,10 +511,6 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   };
 
   const completeSMSAuth = async () => {
-    toast({
-      title: "התחברת בהצלחה! 🎉",
-      description: "ברוך הבא למזון האושר",
-    });
     handleClose();
   };
 
@@ -617,10 +613,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         throw error;
       }
       
-      toast({
-        title: "התחברת בהצלחה! 🎉",
-        description: "ברוך הבא",
-      });
+      // Login successful - no toast needed
     } else if (pendingAction === "register") {
       const redirectUrl = `${window.location.origin}/`;
       
@@ -652,10 +645,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         });
       }
       
-      toast({
-        title: "נרשמת בהצלחה! 🎉",
-        description: "ברוך הבא למשפחת מזון האושר",
-      });
+      // Registration successful - no toast needed
     }
     handleClose();
   };
