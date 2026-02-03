@@ -77,7 +77,7 @@ const FloatingSparkle = ({ delay, left, top }: { delay: number; left: string; to
       animationDuration: '3s'
     }}
   >
-    <Sparkles className="h-4 w-4 text-accent/60" />
+    <Sparkles className="h-4 w-4 text-amber-500/60" />
   </div>
 );
 
@@ -134,12 +134,12 @@ const Hero = () => {
           }`}
         >
           {/* Made with love badge */}
-          <div className="inline-flex items-center gap-2 bg-accent/10 backdrop-blur-sm border border-accent/20 rounded-full px-4 py-1.5 mb-2">
-            <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
-            <span className="text-accent font-medium tracking-wider uppercase text-sm">
+          <div className="inline-flex items-center gap-2 bg-amber-500/10 backdrop-blur-sm border border-amber-500/20 rounded-full px-4 py-1.5 mb-2">
+            <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
+            <span className="text-amber-600 font-medium tracking-wider uppercase text-sm">
               {isRTL ? "מיוצר באהבה" : "Made with Love"}
             </span>
-            <Heart className="h-4 w-4 text-accent fill-accent animate-pulse" />
+            <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
           </div>
           
           {/* Logo with glow effect */}
@@ -151,7 +151,7 @@ const Hero = () => {
             />
             {/* Glow effect behind logo */}
             <div className="absolute inset-0 flex items-center justify-center -z-10">
-              <div className="w-40 md:w-48 lg:w-56 h-40 md:h-48 lg:h-56 bg-accent/20 rounded-full blur-3xl animate-pulse" />
+              <div className="w-40 md:w-48 lg:w-56 h-40 md:h-48 lg:h-56 bg-amber-500/20 rounded-full blur-3xl animate-pulse" />
             </div>
           </div>
           
@@ -161,7 +161,7 @@ const Hero = () => {
               <span className="relative">
                 {displayedText}
                 <span 
-                  className={`inline-block w-0.5 h-7 md:h-8 lg:h-10 bg-accent mr-1 align-middle ${
+                  className={`inline-block w-0.5 h-7 md:h-8 lg:h-10 bg-amber-500 mr-1 align-middle ${
                     isTyping ? 'animate-blink' : 'opacity-0'
                   }`}
                 />
@@ -171,9 +171,9 @@ const Hero = () => {
 
           {/* Decorative line */}
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent via-accent/50 to-accent" />
-            <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent via-accent/50 to-accent" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-500/50 to-amber-500" />
+            <Sparkles className="h-4 w-4 text-amber-500 animate-pulse" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent via-amber-500/50 to-amber-500" />
           </div>
           
           {/* CTA Button */}
