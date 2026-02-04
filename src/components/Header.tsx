@@ -1,10 +1,45 @@
 import { Gift, Star, CircleHelp, Users, Home, Heart } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+// Typewriter hook for "Made with love" effect
+const useTypewriter = (text: string, speed: number = 100, pauseTime: number = 2000) => {
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    
+    if (!isDeleting && displayText === text) {
+      // Pause before deleting
+      timeout = setTimeout(() => setIsDeleting(true), pauseTime);
+    } else if (isDeleting && displayText === '') {
+      // Pause before typing again
+      timeout = setTimeout(() => setIsDeleting(false), 500);
+    } else if (isDeleting) {
+      // Delete characters
+      timeout = setTimeout(() => {
+        setDisplayText(text.substring(0, displayText.length - 1));
+      }, speed / 2);
+    } else {
+      // Type characters
+      timeout = setTimeout(() => {
+        setDisplayText(text.substring(0, displayText.length + 1));
+      }, speed);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, text, speed, pauseTime]);
+
+  return displayText;
+};
 
 const Header = () => {
   const { isRTL } = useLanguage();
   const [activeSection, setActiveSection] = useState<string>("hero");
+  
+  const madeWithLoveText = isRTL ? "מיוצר באהבה" : "Made with love";
+  const typewriterText = useTypewriter(madeWithLoveText, 100, 2000);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,17 +119,13 @@ const Header = () => {
           })}
         </nav>
       </div>
-      {/* Made with love marquee */}
-      <div className="overflow-hidden bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-500/10 border-b border-amber-500/20">
-        <div className="animate-marquee whitespace-nowrap py-0.5 flex">
-          <span className="inline-flex items-center gap-1 mx-4 text-[10px] md:text-xs text-muted-foreground">
-            <span>{isRTL ? "מיוצר באהבה" : "Made with love"}</span>
-            <Heart className="w-3 h-3 text-red-500 fill-red-500" />
+      {/* Made with love typewriter */}
+      <div className="bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-500/10 border-b border-amber-500/20">
+        <div className="flex items-center justify-center gap-1 py-0.5">
+          <span className="text-[10px] md:text-xs text-muted-foreground min-w-[100px] text-center">
+            {typewriterText}
           </span>
-          <span className="inline-flex items-center gap-1 mx-4 text-[10px] md:text-xs text-muted-foreground">
-            <span>{isRTL ? "מיוצר באהבה" : "Made with love"}</span>
-            <Heart className="w-3 h-3 text-red-500 fill-red-500" />
-          </span>
+          <Heart className="w-3 h-3 text-red-500 fill-red-500" />
         </div>
       </div>
     </header>
