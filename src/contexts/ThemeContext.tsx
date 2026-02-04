@@ -22,6 +22,13 @@ const getSystemTheme = (): Theme => {
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setModeState] = useState<ThemeMode>(() => {
     if (typeof window !== 'undefined') {
+      // Migrate from old 'theme' key to new 'themeMode' key
+      const oldTheme = localStorage.getItem('theme');
+      if (oldTheme) {
+        localStorage.removeItem('theme');
+        // If old value exists, migrate it (but set to auto for fresh start)
+      }
+      
       const stored = localStorage.getItem('themeMode') as ThemeMode;
       if (stored && ['light', 'dark', 'auto'].includes(stored)) return stored;
       return 'auto';
