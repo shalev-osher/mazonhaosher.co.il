@@ -57,7 +57,7 @@ const ScrollToTop = () => {
     <button
       onClick={scrollToPreviousSection}
       className={cn(
-        "fixed bottom-[7.5rem] z-40 w-10 h-10 rounded-full",
+        "fixed bottom-[8.5rem] md:bottom-[8.75rem] z-40 w-10 h-10 rounded-full",
         "bg-amber-500 text-white shadow-lg",
         "flex items-center justify-center",
         "hover:bg-amber-600 transition-colors duration-200",
