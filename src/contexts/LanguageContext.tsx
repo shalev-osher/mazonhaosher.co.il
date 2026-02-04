@@ -542,7 +542,7 @@ const translations: Record<Language, Record<string, string>> = {
     'cotw.salePrice': 'Sale Price',
     
     // About
-    'about.title': 'About Mazon HaOsher',
+    'about.title': 'About MazonHaosher',
     'about.ourStory': 'Our Story',
     'about.headline': 'Creating happiness, one creation at a time',
     'about.description': 'Mazon HaOsher started in a small home kitchen with a simple dream: to share the warmth and comfort of homemade baked goods with our community.',

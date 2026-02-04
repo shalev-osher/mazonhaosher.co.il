@@ -36,6 +36,9 @@ export default {
     "via-[#E1306C]",
     "to-[#F77737]",
 
+    // Instagram gradient via
+    "via-[#E1306C]",
+    
     // Cookie glow effect
     "from-[hsl(35,80%,55%)]",
     "border-[hsl(35,80%,55%)]",
