@@ -42,7 +42,7 @@ const FloatingAuthButton = () => {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "fixed bottom-14 z-40 rounded-full",
+                "fixed bottom-[4.5rem] z-40 rounded-full",
                 "bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg",
                 "flex items-center gap-1.5 px-2 py-1.5",
                 "hover:scale-105 transition-all duration-200",
@@ -121,7 +121,7 @@ const FloatingAuthButton = () => {
         <button
           onClick={() => setAuthModalOpen(true)}
           className={cn(
-            "fixed bottom-14 z-40 rounded-full",
+            "fixed bottom-[4.5rem] z-40 rounded-full",
             "bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg",
             "flex items-center gap-1.5 px-3 py-2",
             "hover:scale-105 transition-all duration-200",
