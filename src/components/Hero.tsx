@@ -100,7 +100,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-24 md:pt-28">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Background Image with Parallax */}
       <div 
         className="absolute inset-0 z-0 will-change-transform"
@@ -129,7 +129,7 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div 
-          className={`max-w-2xl mx-auto text-center transition-all duration-1000 ${
+          className={`max-w-2xl mx-auto text-center -mt-12 md:-mt-16 transition-all duration-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
