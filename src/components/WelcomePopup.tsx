@@ -38,7 +38,7 @@ const WelcomePopup = () => {
           </div>
 
           {/* Title */}
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 -mt-2">
             ברוכים הבאים! 🍪
           </h2>
 
