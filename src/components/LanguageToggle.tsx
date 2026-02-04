@@ -13,7 +13,7 @@ const LanguageToggle = () => {
     <button
       onClick={toggleLanguage}
       className={cn(
-        "w-12 md:w-14 flex flex-col items-center gap-0 py-0.5 md:py-1",
+        "w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1",
         "transition-all duration-300 rounded-lg group hover:bg-muted"
       )}
       aria-label={language === 'he' ? 'Switch to English' : 'עבור לעברית'}
