@@ -84,6 +84,17 @@ const Header = () => {
           })}
         </nav>
       </div>
+      {/* Made with love marquee */}
+      <div className="overflow-hidden bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-500/10 border-b border-amber-500/20">
+        <div className="animate-marquee whitespace-nowrap py-0.5">
+          {[...Array(10)].map((_, i) => (
+            <span key={i} className="inline-flex items-center gap-1 mx-4 text-[10px] md:text-xs text-muted-foreground">
+              <span>{isRTL ? "מיוצר באהבה" : "Made with love"}</span>
+              <Heart className="w-3 h-3 text-red-500 fill-red-500" />
+            </span>
+          ))}
+        </div>
+      </div>
     </header>
   );
 };
