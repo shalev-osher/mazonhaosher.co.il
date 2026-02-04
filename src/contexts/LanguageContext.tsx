@@ -472,7 +472,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.editProfile': 'Edit Profile',
     
     // Hero
-    'hero.title': 'Mazon HaOsher',
+    'hero.title': 'MazonHaosher',
     'hero.subtitle': 'Giant American Cookies',
     'hero.description': 'Handcrafted giant American cookies made from the finest ingredients',
     'hero.cta': 'View Our Cookies',
