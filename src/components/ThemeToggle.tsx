@@ -17,17 +17,6 @@ const ThemeToggle = () => {
     }
   };
 
-  const getGradient = () => {
-    switch (mode) {
-      case 'auto':
-        return 'from-emerald-500 to-teal-600';
-      case 'light':
-        return 'from-amber-400 to-orange-500';
-      case 'dark':
-        return 'from-indigo-500 to-violet-600';
-    }
-  };
-
   const getLabel = () => {
     switch (mode) {
       case 'auto':
@@ -39,13 +28,20 @@ const ThemeToggle = () => {
     }
   };
 
+  // Use explicit class names so Tailwind can detect them
+  const gradientClasses = {
+    auto: 'bg-gradient-to-br from-emerald-500 to-teal-600',
+    light: 'bg-gradient-to-br from-amber-400 to-orange-500',
+    dark: 'bg-gradient-to-br from-indigo-500 to-violet-600',
+  };
+
   return (
     <button
       onClick={toggleTheme}
       className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
       aria-label="Toggle theme"
     >
-      <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md bg-gradient-to-br ${getGradient()}`}>
+      <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md ${gradientClasses[mode]}`}>
         {getIcon()}
       </div>
       <span className="text-[8px] md:text-[10px] font-medium text-muted-foreground group-hover:text-foreground">
