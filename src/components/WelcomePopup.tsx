@@ -51,9 +51,9 @@ const WelcomePopup = () => {
               </span>
             </div>
             <p className="text-sm text-muted-foreground">
-              אנחנו עובדים קשה להשלמת האתר. 
+              ייתכנו שינויים ושיפורים בימים הקרובים.
               <br />
-              תודה על הסבלנות!
+              תודה על ההבנה!
             </p>
           </div>
 
