@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 import { useState, useEffect, useCallback } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
-import { Sparkles, Heart } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pauseTime: number = 2000) => {
@@ -133,14 +133,6 @@ const Hero = () => {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          {/* Made with love badge */}
-          <div className="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900 border-2 border-amber-500 rounded-full px-4 py-1.5 mb-2">
-            <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
-            <span className="text-amber-700 dark:text-amber-300 font-medium tracking-wider uppercase text-sm">
-              {isRTL ? "מיוצר באהבה" : "Made with Love"}
-            </span>
-            <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
-          </div>
           
           {/* Logo with glow effect */}
           <div className="relative mb-0">
