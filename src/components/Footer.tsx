@@ -1,13 +1,12 @@
-import { ShoppingBag, Moon, Sun } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useTheme } from "@/contexts/ThemeContext";
 import LanguageToggle from "./LanguageToggle";
+import ThemeToggle from "./ThemeToggle";
 
 const Footer = () => {
   const { setIsCartOpen } = useCart();
   const { isRTL } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
 
   return (
     <>
@@ -24,24 +23,7 @@ const Footer = () => {
         <div className="w-full px-2 md:px-4">
           <div className="flex items-center justify-center gap-0">
             {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 shadow-md bg-gradient-to-br group-hover:scale-105 ${
-                theme === 'dark' ? 'from-amber-400 to-orange-500' : 'from-indigo-500 to-violet-600'
-              }`}>
-                {theme === 'dark' ? (
-                  <Sun className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
-                ) : (
-                  <Moon className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
-                )}
-              </div>
-              <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground truncate">
-                {theme === 'dark' ? (isRTL ? 'בהיר' : 'Light') : (isRTL ? 'כהה' : 'Dark')}
-              </span>
-            </button>
+            <ThemeToggle />
             
             {/* Cart */}
             <button 
