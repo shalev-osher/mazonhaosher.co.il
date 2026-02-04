@@ -11,8 +11,8 @@ const Footer = () => {
   return (
     <>
       {/* Copyright bar above footer */}
-      <div className="fixed bottom-[2.9rem] md:bottom-[3.25rem] left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900/50 border-t border-amber-500/20">
-        <div className="flex items-center justify-center h-8">
+      <div className="fixed bottom-[2.9rem] md:bottom-[3.25rem] left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900/50 border-t border-amber-500/20 shadow-sm">
+        <div className="flex items-center justify-center h-8 leading-none">
           <span className="text-xs md:text-sm text-muted-foreground">
             © {isRTL ? "מזון האושר" : "Food of Happiness"} 2026
           </span>
