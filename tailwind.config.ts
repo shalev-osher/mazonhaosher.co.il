@@ -3,7 +3,7 @@ import type { Config } from "tailwindcss";
 export default {
   darkMode: ["class"],
   safelist: [
-    // Prevent “missing colors” when classes are composed dynamically in TS/JS
+    // Prevent "missing colors" when classes are composed dynamically in TS/JS
     "bg-gradient-to-br",
     "bg-gradient-to-r",
     "from-orange-500",
@@ -16,6 +16,9 @@ export default {
     "to-cyan-600",
     "from-emerald-500",
     "to-teal-600",
+    "from-cyan-500",
+    "to-blue-600",
+    "from-red-500",
 
     // Common status/icon colors used across the app
     "bg-yellow-500",
@@ -23,8 +26,17 @@ export default {
     "bg-purple-500",
     "bg-green-500",
     "bg-red-500",
+    "bg-orange-500",
     "bg-gray-500",
+    "bg-amber-500",
+    "bg-amber-100",
+    "dark:bg-amber-900/50",
     "text-red-500",
+    "text-amber-500",
+    "text-amber-600",
+    "text-emerald-500",
+    "text-cyan-500",
+    "text-purple-500",
     "fill-red-500",
     "stroke-red-500",
     "fill-current",
