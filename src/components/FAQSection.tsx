@@ -78,7 +78,7 @@ const FAQSection = () => {
                 <AccordionTrigger className={`hover:no-underline py-3 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                   <div className="flex items-center gap-2">
                     <div className="p-2 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-xl shadow-md">
-                      <faq.icon className="h-4 w-4 text-white fill-white/20" />
+                      <faq.icon className="h-4 w-4 text-white" />
                     </div>
                     <span className="font-semibold text-sm">{faq.question}</span>
                   </div>
