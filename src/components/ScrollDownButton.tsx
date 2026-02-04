@@ -49,7 +49,7 @@ const ScrollDownButton = () => {
     <button
       onClick={scrollToNextSection}
       className={cn(
-        "fixed bottom-[6.5rem] z-40 w-10 h-10 rounded-full",
+        "fixed bottom-[5.25rem] md:bottom-[5.5rem] z-40 w-10 h-10 rounded-full",
         "bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg",
         "flex items-center justify-center",
         "hover:bg-amber-600 transition-colors duration-200",
