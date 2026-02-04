@@ -28,7 +28,7 @@ const WelcomePopup = () => {
       <DialogContent className="max-w-sm sm:max-w-md p-0 border-0 overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10">
         <div className="flex flex-col items-center text-center p-6 sm:p-8">
           {/* Logo */}
-          <div className="mb-3 relative">
+          <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 blur-2xl rounded-full scale-150" />
             <img 
               src={logo} 
