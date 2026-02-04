@@ -33,7 +33,7 @@ const WelcomePopup = () => {
             <img 
               src={logo} 
               alt="מזון האושר" 
-              className="w-24 h-24 sm:w-32 sm:h-32 object-contain relative z-10 drop-shadow-lg"
+              className="w-32 h-32 sm:w-44 sm:h-44 object-contain relative z-10 drop-shadow-lg"
             />
           </div>
 
