@@ -44,7 +44,7 @@ const ThemeToggle = () => {
       <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md ${gradientClasses[mode]}`}>
         {getIcon()}
       </div>
-      <span className="text-[8px] md:text-[10px] font-medium text-muted-foreground group-hover:text-foreground">
+      <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground">
         {getLabel()}
       </span>
     </button>
