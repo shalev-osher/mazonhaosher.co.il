@@ -3,9 +3,12 @@ import type { Config } from "tailwindcss";
 export default {
   darkMode: ["class"],
   safelist: [
-    // Prevent "missing colors" when classes are composed dynamically in TS/JS
+    // Gradient directions
     "bg-gradient-to-br",
     "bg-gradient-to-r",
+    "bg-gradient-to-b",
+    
+    // Navigation icon gradients
     "from-orange-500",
     "to-amber-600",
     "from-pink-500",
@@ -19,8 +22,25 @@ export default {
     "from-cyan-500",
     "to-blue-600",
     "from-red-500",
+    "from-rose-500",
+    "to-pink-600",
 
-    // Common status/icon colors used across the app
+    // Social media brand colors (hex)
+    "from-[#25D366]",
+    "to-[#128C7E]",
+    "bg-[#25D366]",
+    "hover:bg-[#128C7E]",
+    "from-[#1877F2]",
+    "to-[#0d5fc4]",
+    "from-[#833AB4]",
+    "via-[#E1306C]",
+    "to-[#F77737]",
+
+    // Cookie glow effect
+    "from-[hsl(35,80%,55%)]",
+    "border-[hsl(35,80%,55%)]",
+
+    // Common status/icon colors
     "bg-yellow-500",
     "bg-blue-500",
     "bg-purple-500",
@@ -40,6 +60,7 @@ export default {
     "fill-red-500",
     "stroke-red-500",
     "fill-current",
+    "fill-white",
     "text-white",
   ],
   content: [
