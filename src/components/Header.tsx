@@ -80,11 +80,41 @@ const Header = () => {
   };
 
   const navItems = [
-    { id: "hero", labelKey: "nav.home", label: isRTL ? "בית" : "Home", icon: Home, gradient: "from-orange-500 to-amber-600" },
-    { id: "gift-packages", labelKey: "gift.title", label: isRTL ? "מארזים" : "Packages", icon: Gift, gradient: "from-pink-500 to-rose-600" },
-    { id: "reviews", labelKey: "nav.reviews", label: isRTL ? "ביקורות" : "Reviews", icon: Star, gradient: "from-amber-500 to-orange-600" },
-    { id: "faq", labelKey: "nav.faq", label: isRTL ? "שאלות" : "FAQ", icon: CircleHelp, gradient: "from-sky-500 to-cyan-600" },
-    { id: "about", labelKey: "nav.about", label: isRTL ? "אודות" : "About", icon: Users, gradient: "from-emerald-500 to-teal-600" },
+    {
+      id: "hero",
+      labelKey: "nav.home",
+      label: isRTL ? "בית" : "Home",
+      icon: Home,
+      gradientClass: "bg-gradient-to-br from-orange-500 to-amber-600",
+    },
+    {
+      id: "gift-packages",
+      labelKey: "gift.title",
+      label: isRTL ? "מארזים" : "Packages",
+      icon: Gift,
+      gradientClass: "bg-gradient-to-br from-pink-500 to-rose-600",
+    },
+    {
+      id: "reviews",
+      labelKey: "nav.reviews",
+      label: isRTL ? "ביקורות" : "Reviews",
+      icon: Star,
+      gradientClass: "bg-gradient-to-br from-amber-500 to-orange-600",
+    },
+    {
+      id: "faq",
+      labelKey: "nav.faq",
+      label: isRTL ? "שאלות" : "FAQ",
+      icon: CircleHelp,
+      gradientClass: "bg-gradient-to-br from-sky-500 to-cyan-600",
+    },
+    {
+      id: "about",
+      labelKey: "nav.about",
+      label: isRTL ? "אודות" : "About",
+      icon: Users,
+      gradientClass: "bg-gradient-to-br from-emerald-500 to-teal-600",
+    },
   ];
 
   return (
@@ -108,7 +138,7 @@ const Header = () => {
                     : "hover:bg-muted"
                 }`}
               >
-                <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 bg-gradient-to-br ${item.gradient} shadow-md ${
+                <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 ${item.gradientClass} shadow-md ${
                   isActive ? "scale-110" : "group-hover:scale-105"
                 }`}>
                   <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
