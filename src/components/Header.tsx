@@ -120,12 +120,12 @@ const Header = () => {
         </nav>
       </div>
       {/* Made with love typewriter */}
-      <div className="bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-500/10 border-b border-amber-500/20">
-        <div className="flex items-center justify-center gap-1 py-0.5">
-          <span className="text-[10px] md:text-xs text-muted-foreground min-w-[100px] text-center">
+      <div className="bg-amber-100 dark:bg-amber-900/50 border-b border-amber-500/20">
+        <div className="flex items-center justify-center py-0.5">
+          <span className="text-[10px] md:text-xs text-muted-foreground">
             {typewriterText}
           </span>
-          <Heart className="w-3 h-3 text-red-500 fill-red-500" />
+          <Heart className="w-3 h-3 text-red-500 fill-red-500 ml-1 rtl:ml-0 rtl:mr-1" />
         </div>
       </div>
     </header>
