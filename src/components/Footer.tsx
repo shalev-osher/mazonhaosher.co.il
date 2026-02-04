@@ -16,7 +16,7 @@ const Footer = () => {
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="w-12 md:w-14 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
+            className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 shadow-md bg-gradient-to-br group-hover:scale-105 ${
@@ -36,7 +36,7 @@ const Footer = () => {
           {/* Cart */}
           <button 
             onClick={() => setIsCartOpen(true)}
-            className="w-12 md:w-14 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
+            className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
           >
             <div className="p-1 md:p-1.5 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-md group-hover:scale-105 transition-all duration-300">
               <ShoppingBag className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
@@ -54,7 +54,7 @@ const Footer = () => {
             href="https://wa.me/972546791198"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-12 md:w-14 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
+            className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
           >
             <div className="p-1 md:p-1.5 rounded-xl bg-gradient-to-br from-[#25D366] to-[#128C7E] shadow-md group-hover:scale-105 transition-all duration-300">
               <svg 
@@ -75,7 +75,7 @@ const Footer = () => {
             href="https://www.facebook.com/p/%D7%9E%D7%96%D7%95%D7%9F-%D7%94%D7%90%D7%95%D7%A9%D7%A8-61565573526817/" 
             target="_blank"
             rel="noopener noreferrer"
-            className="w-12 md:w-14 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
+            className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
           >
             <div className="p-1 md:p-1.5 rounded-xl bg-gradient-to-br from-[#1877F2] to-[#0d5fc4] shadow-md group-hover:scale-105 transition-all duration-300">
               <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -92,7 +92,7 @@ const Footer = () => {
             href="https://www.instagram.com/mazonaosher/" 
             target="_blank"
             rel="noopener noreferrer"
-            className="w-12 md:w-14 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
+            className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
           >
             <div className="p-1 md:p-1.5 rounded-xl bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#F77737] shadow-md group-hover:scale-105 transition-all duration-300">
               <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
