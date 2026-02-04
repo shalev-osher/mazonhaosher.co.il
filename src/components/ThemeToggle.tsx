@@ -42,7 +42,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="flex flex-col items-center gap-0.5 px-2 md:px-3 py-1 md:py-1.5 transition-all duration-300 rounded-lg group hover:bg-muted"
+      className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
       aria-label="Toggle theme"
     >
       <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md bg-gradient-to-br ${getGradient()}`}>
