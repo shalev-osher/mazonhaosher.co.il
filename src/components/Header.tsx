@@ -121,9 +121,9 @@ const Header = () => {
       </div>
       {/* Made with love typewriter */}
       <div className="bg-amber-100 dark:bg-amber-900/50 border-b border-amber-500/20">
-        <div className="flex items-center justify-center py-0.5">
+        <div className="flex items-center justify-center py-0.5 h-5">
           <span className="text-[10px] md:text-xs text-muted-foreground">
-            {typewriterText}
+            {typewriterText || '\u00A0'}
             {typewriterText === madeWithLoveText && (
               <Heart className="w-3 h-3 text-red-500 fill-red-500 inline-block ml-1 rtl:ml-0 rtl:mr-1" />
             )}
