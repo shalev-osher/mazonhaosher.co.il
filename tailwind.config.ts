@@ -99,11 +99,16 @@ export default {
           "10%, 30%, 50%, 70%, 90%": { transform: "translateX(-2px)" },
           "20%, 40%, 60%, 80%": { transform: "translateX(2px)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         shake: "shake 0.5s ease-in-out",
+        marquee: "marquee 20s linear infinite",
       },
     },
   },
