@@ -14,6 +14,7 @@ import ScrollDownButton from "@/components/ScrollDownButton";
 import CartModal from "@/components/CartModal";
 import ScrollToTop from "@/components/ScrollToTop";
 import FloatingAuthButton from "@/components/FloatingAuthButton";
+import WelcomePopup from "@/components/WelcomePopup";
 import { CartProvider, useCart } from "@/contexts/CartContext";
 
 const IndexContent = () => {
@@ -39,6 +40,7 @@ const IndexContent = () => {
       <ScrollToTop />
       <FloatingAuthButton />
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <WelcomePopup />
     </div>
   );
 };
