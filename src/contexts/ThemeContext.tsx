@@ -24,6 +24,22 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     return 'light';
   });
 
+  // Listen for system theme changes in real-time
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      // Only auto-switch if user hasn't manually set a preference
+      const stored = localStorage.getItem('theme');
+      if (!stored) {
+        setThemeState(e.matches ? 'dark' : 'light');
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove('light', 'dark');
