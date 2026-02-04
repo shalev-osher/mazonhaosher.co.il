@@ -17,8 +17,8 @@ export default defineConfig(({ mode }) => ({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "pwa-192x192.png", "pwa-512x512.png"],
       manifest: {
-        name: "מזון האושר - עוגיות ביתיות",
-        short_name: "מזון האושר",
+        name: "מזון האושר",
+        short_name: "MazonHaosher",
         description: "עוגיות קראמבל ביתיות אפויות בעבודת יד עם אהבה",
         theme_color: "#e85d8f",
         background_color: "#1a1a2e",
