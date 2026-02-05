@@ -53,11 +53,11 @@ const FloatingAuthButton = () => {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "fixed bottom-16 md:bottom-[4.5rem] z-40 rounded-full",
-                "shadow-lg",
-                "flex items-center gap-1.5 px-2 py-1.5",
+                "fixed bottom-14 z-40 rounded-full",
+                "shadow-md",
+                "flex items-center gap-1 px-1.5 py-1",
                 "hover:scale-105 transition-all duration-200",
-                isRTL ? "right-4" : "left-4"
+                isRTL ? "right-3" : "left-3"
               )}
               style={authButtonGradient}
             >
@@ -65,10 +65,10 @@ const FloatingAuthButton = () => {
                 <img 
                   src={avatarUrl} 
                   alt={firstName}
-                  className="w-6 h-6 rounded-full object-cover border border-white/30"
+                  className="w-5 h-5 rounded-full object-cover border border-white/30"
                 />
               ) : (
-                <UserCircleIcon size={24} />
+                <UserCircleIcon size={20} />
               )}
               <span className="text-xs font-medium text-white">
                 {firstName || (isRTL ? "חשבון" : "Account")}
@@ -133,16 +133,16 @@ const FloatingAuthButton = () => {
         <button
           onClick={() => setAuthModalOpen(true)}
           className={cn(
-            "fixed bottom-16 md:bottom-[4.5rem] z-40 rounded-full",
-            "shadow-lg",
-            "flex items-center gap-1.5 px-3 py-2",
+            "fixed bottom-14 z-40 rounded-full",
+            "shadow-md",
+            "flex items-center gap-1 px-2 py-1.5",
             "hover:scale-105 transition-all duration-200",
-            isRTL ? "right-4" : "left-4"
+            isRTL ? "right-3" : "left-3"
           )}
           style={authButtonGradient}
         >
-          <UserCircleIcon size={20} />
-          <span className="text-xs font-medium text-white">
+          <UserCircleIcon size={18} />
+          <span className="text-[10px] font-medium text-white">
             {isRTL ? "התחברות" : "Login"}
           </span>
         </button>
