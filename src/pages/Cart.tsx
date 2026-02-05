@@ -571,10 +571,42 @@ const Cart = () => {
                     <div className="grid grid-cols-2 gap-1.5">
                       <Input name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder={t('checkoutForm.fullName')} className="text-right h-8 text-xs" maxLength={100} />
                       <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder={t('checkoutForm.email')} className="text-right h-8 text-xs" dir="ltr" maxLength={255} />
-                      <Input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder={t('checkoutForm.phone')} className="text-right h-8 text-xs" dir="ltr" maxLength={10} />
-                      <Input name="city" value={formData.city} onChange={handleInputChange} placeholder={t('checkoutForm.city')} className="text-right h-8 text-xs" maxLength={50} />
-                      <Input name="address" value={formData.address} onChange={handleInputChange} placeholder={t('checkoutForm.address')} className="text-right h-8 text-xs col-span-2" maxLength={200} />
+                      <Input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder={t('checkoutForm.phone')} className="text-right h-8 text-xs col-span-2" dir="ltr" maxLength={10} />
                     </div>
+                    {/* Delivery method toggle */}
+                    <div className="flex gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setDeliveryMethod("pickup")}
+                        className={`flex-1 flex items-center justify-center gap-1.5 p-2 rounded-lg text-xs font-medium transition-all ${
+                          deliveryMethod === "pickup"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+                        }`}
+                      >
+                        <Package className="w-3.5 h-3.5" />
+                        {isRTL ? "איסוף עצמי" : "Pickup"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDeliveryMethod("delivery")}
+                        className={`flex-1 flex items-center justify-center gap-1.5 p-2 rounded-lg text-xs font-medium transition-all ${
+                          deliveryMethod === "delivery"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+                        }`}
+                      >
+                        <Truck className="w-3.5 h-3.5" />
+                        {isRTL ? "משלוח" : "Delivery"}
+                      </button>
+                    </div>
+                    {/* Address fields - only show for delivery */}
+                    {deliveryMethod === "delivery" && (
+                      <div className="grid grid-cols-2 gap-1.5">
+                        <Input name="city" value={formData.city} onChange={handleInputChange} placeholder={t('checkoutForm.city')} className="text-right h-8 text-xs" maxLength={50} />
+                        <Input name="address" value={formData.address} onChange={handleInputChange} placeholder={t('checkoutForm.address')} className="text-right h-8 text-xs" maxLength={200} />
+                      </div>
+                    )}
                     <Textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notes')} className="text-right resize-none text-xs min-h-[50px]" rows={1} maxLength={500} />
                     <div className="flex items-center justify-between bg-secondary/50 rounded-lg p-2">
                       <span className="font-semibold text-xs">{t('checkoutForm.totalPayment')}</span>
