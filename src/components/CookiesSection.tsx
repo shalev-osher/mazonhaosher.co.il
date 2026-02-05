@@ -397,13 +397,6 @@ const CookiesSection = () => {
             </span>
             <span className={`inline-block w-1 h-8 md:h-10 bg-amber-500 ${isRTL ? 'mr-1' : 'ml-1'} animate-blink`} />
           </h2>
-          
-          {/* Decorative subtitle */}
-          <p className={`mt-2 text-muted-foreground text-base transition-all duration-700 delay-500 ${
-            sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}>
-            {t('cookies.subtitle')}
-          </p>
         </div>
 
         {/* Minimal Controls */}
