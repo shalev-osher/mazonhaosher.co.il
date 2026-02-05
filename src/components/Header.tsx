@@ -54,12 +54,12 @@ const CookieIcon = () => (
 
 // Gradient styles for nav items
 const navGradients = {
-  home: { background: 'linear-gradient(to bottom right, #f97316, #d97706)' },
-  cookies: { background: 'linear-gradient(to bottom right, #d97706, #b45309)' },
-  packages: { background: 'linear-gradient(to bottom right, #ec4899, #e11d48)' },
-  reviews: { background: 'linear-gradient(to bottom right, #f59e0b, #ea580c)' },
-  faq: { background: 'linear-gradient(to bottom right, #0ea5e9, #0891b2)' },
-  about: { background: 'linear-gradient(to bottom right, #10b981, #0d9488)' },
+  home: { background: 'linear-gradient(to bottom right, #f97316, #ea580c)' },
+  cookies: { background: 'linear-gradient(to bottom right, #a855f7, #7c3aed)' },
+  packages: { background: 'linear-gradient(to bottom right, #ec4899, #db2777)' },
+  reviews: { background: 'linear-gradient(to bottom right, #f59e0b, #d97706)' },
+  faq: { background: 'linear-gradient(to bottom right, #3b82f6, #2563eb)' },
+  contact: { background: 'linear-gradient(to bottom right, #10b981, #059669)' },
 };
 
 const Header = () => {
