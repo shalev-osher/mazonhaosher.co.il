@@ -542,9 +542,17 @@ const Cart = () => {
                       )}
                       {/* Credit Card fields */}
                       <div className="border border-primary/30 rounded-lg p-2 space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-1">
-                          <CreditCard className="w-3.5 h-3.5" />
-                          {isRTL ? "פרטי תשלום" : "Payment Details"}
+                        <div className="flex items-center justify-between text-xs font-medium text-primary mb-1">
+                          <div className="flex items-center gap-1.5">
+                            <CreditCard className="w-3.5 h-3.5" />
+                            {isRTL ? "פרטי תשלום" : "Payment Details"}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <svg className="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                            </svg>
+                            <span className="text-[10px] text-emerald-600 font-medium">SSL</span>
+                          </div>
                         </div>
                         <Input 
                           name="cardNumber" 
