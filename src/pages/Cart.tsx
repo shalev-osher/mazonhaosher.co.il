@@ -541,8 +541,8 @@ const Cart = () => {
                     </div>
                     <Textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notes')} className="text-right resize-none text-xs min-h-[50px]" rows={1} maxLength={500} />
                     <div className="flex items-center justify-between bg-secondary/50 rounded-lg p-2">
-                      <span className="font-bold text-primary text-lg">₪{totalPrice}</span>
                       <span className="font-semibold text-xs">{t('checkoutForm.totalPayment')}</span>
+                      <span className="font-bold text-primary text-lg">₪{totalPrice}</span>
                     </div>
                     <Button onClick={handleSubmitOrder} disabled={isLoading} className="w-full h-9 text-xs gap-1.5">
                       {isLoading ? t('checkoutForm.sending') : (<>{isRTL ? "שלח הזמנה" : "Submit Order"}<Mail className="w-3.5 h-3.5" /></>)}
