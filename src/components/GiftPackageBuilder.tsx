@@ -13,16 +13,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 
-import cookieLotus from "@/assets/cookie-lotus.jpg";
-import cookieKinder from "@/assets/cookie-kinder.jpg";
-import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
-import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
-import cookiePistachio from "@/assets/cookie-pistachio.jpg";
-import cookieOreo from "@/assets/cookie-oreo.jpg";
-import cookiePeanut from "@/assets/cookie-peanut.jpg";
-import cookieSaltedCaramel from "@/assets/cookie-salted-caramel.jpg";
-import cookieChocolate from "@/assets/cookie-chocolate.jpg";
-import cookieConfetti from "@/assets/cookie-confetti.jpg";
+const placeholderImage = "/placeholder.svg";
 
 // SVG icons with inline styles to prevent Tailwind purging
 const GiftIcon = ({ size = 28 }: { size?: number }) => (
@@ -55,28 +46,28 @@ const giftGradientStyle = { background: 'linear-gradient(to bottom right, #a855f
 
 const availableCookiesData = {
   he: [
-    { name: "לוטוס", image: cookieLotus, price: 25 },
-    { name: "קינדר", image: cookieKinder, price: 25 },
-    { name: "קינדר בואנו", image: cookieKinderBueno, price: 25 },
-    { name: "רד וולווט", image: cookieRedVelvet, price: 25 },
-    { name: "פיסטוק", image: cookiePistachio, price: 25 },
-    { name: "אוראו", image: cookieOreo, price: 25 },
-    { name: "חמאת בוטנים", image: cookiePeanut, price: 25 },
-    { name: "קרמל מלוח", image: cookieSaltedCaramel, price: 25 },
-    { name: "שוקולד צ׳יפס", image: cookieChocolate, price: 25 },
-    { name: "קונפטי", image: cookieConfetti, price: 25 },
+    { name: "לוטוס", image: placeholderImage, price: 25 },
+    { name: "קינדר", image: placeholderImage, price: 25 },
+    { name: "קינדר בואנו", image: placeholderImage, price: 25 },
+    { name: "רד וולווט", image: placeholderImage, price: 25 },
+    { name: "פיסטוק", image: placeholderImage, price: 25 },
+    { name: "אוראו", image: placeholderImage, price: 25 },
+    { name: "חמאת בוטנים", image: placeholderImage, price: 25 },
+    { name: "קרמל מלוח", image: placeholderImage, price: 25 },
+    { name: "שוקולד צ׳יפס", image: placeholderImage, price: 25 },
+    { name: "קונפטי", image: placeholderImage, price: 25 },
   ],
   en: [
-    { name: "Lotus", image: cookieLotus, price: 25 },
-    { name: "Kinder", image: cookieKinder, price: 25 },
-    { name: "Kinder Bueno", image: cookieKinderBueno, price: 25 },
-    { name: "Red Velvet", image: cookieRedVelvet, price: 25 },
-    { name: "Pistachio", image: cookiePistachio, price: 25 },
-    { name: "Oreo", image: cookieOreo, price: 25 },
-    { name: "Peanut Butter", image: cookiePeanut, price: 25 },
-    { name: "Salted Caramel", image: cookieSaltedCaramel, price: 25 },
-    { name: "Chocolate Chip", image: cookieChocolate, price: 25 },
-    { name: "Confetti", image: cookieConfetti, price: 25 },
+    { name: "Lotus", image: placeholderImage, price: 25 },
+    { name: "Kinder", image: placeholderImage, price: 25 },
+    { name: "Kinder Bueno", image: placeholderImage, price: 25 },
+    { name: "Red Velvet", image: placeholderImage, price: 25 },
+    { name: "Pistachio", image: placeholderImage, price: 25 },
+    { name: "Oreo", image: placeholderImage, price: 25 },
+    { name: "Peanut Butter", image: placeholderImage, price: 25 },
+    { name: "Salted Caramel", image: placeholderImage, price: 25 },
+    { name: "Chocolate Chip", image: placeholderImage, price: 25 },
+    { name: "Confetti", image: placeholderImage, price: 25 },
   ],
 };
 
@@ -156,7 +147,7 @@ const GiftPackageBuilder = () => {
     addToCart({
       name: `🎁 ${name}`,
       price: `₪${finalPrice}`,
-      image: selectedCookies[0]?.image || cookieLotus,
+      image: selectedCookies[0]?.image || placeholderImage,
     });
 
     toast({
