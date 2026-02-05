@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Minus, Plus, Trash2, ShoppingBag, User, LogIn, Mail, Package, Truck, CreditCard } from "lucide-react";
+import { ArrowRight, Minus, Plus, Trash2, ShoppingBag, User, LogIn, Mail, Package, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
