@@ -90,6 +90,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         getTotalPrice,
         isCartOpen,
         setIsCartOpen,
+        orderNumber,
       }}
     >
       {children}
