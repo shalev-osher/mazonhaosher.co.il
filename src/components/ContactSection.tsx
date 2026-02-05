@@ -102,21 +102,21 @@ const ContactSection = () => {
                 placeholder={isRTL ? "שם מלא" : "Full Name"}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-white text-foreground placeholder:text-muted-foreground border-0"
+                className="bg-white text-black placeholder:text-gray-500 border-0"
                 disabled={isSubmitting}
               />
               <Input
                 placeholder={isRTL ? "טלפון" : "Phone"}
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-white text-foreground placeholder:text-muted-foreground border-0"
+                className="bg-white text-black placeholder:text-gray-500 border-0"
                 disabled={isSubmitting}
               />
               <Textarea
                 placeholder={isRTL ? "הודעה..." : "Message..."}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="bg-white text-foreground placeholder:text-muted-foreground border-0 min-h-[80px]"
+                className="bg-white text-black placeholder:text-gray-500 border-0 min-h-[80px]"
                 disabled={isSubmitting}
               />
               <Button
