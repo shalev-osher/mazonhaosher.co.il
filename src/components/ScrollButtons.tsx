@@ -103,7 +103,7 @@ const ScrollButtons = () => {
       <button
         onClick={scrollToPreviousSection}
         className={cn(
-          "w-10 h-10 flex items-center justify-center",
+          "w-9 h-9 flex items-center justify-center",
           "text-white hover:brightness-110 transition-all duration-200",
           showUp ? "opacity-100" : "opacity-0 pointer-events-none h-0"
         )}
