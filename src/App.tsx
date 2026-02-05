@@ -7,10 +7,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProfileProvider } from "@/contexts/ProfileContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { CartProvider } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Cart from "./pages/Cart";
+import ThankYou from "./pages/ThankYou";
 import NotFound from "./pages/NotFound";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 
@@ -78,19 +81,23 @@ const App = () => (
       <LanguageProvider>
         <TooltipProvider>
           <ProfileProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <OAuthHandler>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                   <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </OAuthHandler>
-            </BrowserRouter>
+            <CartProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <OAuthHandler>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/thank-you" element={<ThankYou />} />
+                    <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </OAuthHandler>
+              </BrowserRouter>
+            </CartProvider>
           </ProfileProvider>
         </TooltipProvider>
       </LanguageProvider>

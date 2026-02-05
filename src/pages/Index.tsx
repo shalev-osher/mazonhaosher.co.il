@@ -11,15 +11,11 @@ import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import ScrollDownButton from "@/components/ScrollDownButton";
-import CartModal from "@/components/CartModal";
 import ScrollToTop from "@/components/ScrollToTop";
 import FloatingAuthButton from "@/components/FloatingAuthButton";
 import WelcomePopup from "@/components/WelcomePopup";
-import { CartProvider, useCart } from "@/contexts/CartContext";
 
-const IndexContent = () => {
-  const { isCartOpen, setIsCartOpen } = useCart();
-
+const Index = () => {
   return (
     <div className="min-h-screen bg-background pb-14">
       <Header />
@@ -39,17 +35,8 @@ const IndexContent = () => {
       <ScrollDownButton />
       <ScrollToTop />
       <FloatingAuthButton />
-      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <WelcomePopup />
     </div>
-  );
-};
-
-const Index = () => {
-  return (
-    <CartProvider>
-      <IndexContent />
-    </CartProvider>
   );
 };
 
