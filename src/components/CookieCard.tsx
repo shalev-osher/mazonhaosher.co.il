@@ -70,16 +70,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       >
         {/* Image with lazy loading */}
         <div className="relative shrink-0">
-          {tag && (
-            <div className={`absolute -top-1 -right-1 z-10 px-2 py-0.5 rounded-full text-xs font-bold shadow-lg ${
-              tag === "מומלץ" || tag === "Recommended"
-                ? "bg-amber-500 text-white" 
-                : "bg-emerald-500 text-white"
-            }`}>
-              {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
-            </div>
-          )}
-          <div className="w-20 h-20 overflow-hidden rounded-full relative bg-card">
+          <div className="w-20 h-20 overflow-hidden rounded-full relative bg-white">
             <img
               src={image}
               alt={name}
