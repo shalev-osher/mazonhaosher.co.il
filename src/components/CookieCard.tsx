@@ -83,25 +83,9 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="font-display text-lg font-semibold text-foreground">
-              {name}
-            </h3>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="text-muted-foreground hover:text-sky-500 transition-colors">
-                    <Info className="h-4 w-4" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
-                  <p className="font-medium">{name}</p>
-                  <p className="text-sm text-muted-foreground">{description}</p>
-                  <p className="text-sm text-amber-600 font-bold mt-1">{price}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          <h3 className="font-display text-lg font-semibold text-foreground">
+            {name}
+          </h3>
           <p className="text-muted-foreground text-sm truncate">{description}</p>
         </div>
 
