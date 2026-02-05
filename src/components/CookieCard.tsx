@@ -4,13 +4,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -30,12 +23,11 @@ interface CookieCardProps {
   onToggleFavorite?: () => void;
 }
 
-const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode = "grid", isFavorite = false, onToggleFavorite }: CookieCardProps) => {
+const CookieCard = ({ image, name, price, delay = 0, viewMode = "grid", isFavorite = false, onToggleFavorite }: CookieCardProps) => {
   const { addToCart, removeFromCart, updateQuantity, items } = useCart();
   const { t } = useLanguage();
   const [justAdded, setJustAdded] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
   const itemInCart = items.find((i) => i.name === name);
@@ -78,7 +70,6 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           <h3 className="font-display text-lg font-semibold text-foreground">
             {name}
           </h3>
-          <p className="text-muted-foreground text-sm truncate">{description}</p>
         </div>
 
         {/* Favorite Button */}
@@ -147,163 +138,107 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
     );
   }
 
-  // Grid view layout (original)
+  // Grid view layout
   return (
-    <Dialog>
-      <div 
-        ref={cardRef}
-        className="group bg-card rounded-xl overflow-hidden shadow-soft flex flex-col cursor-pointer border-2 border-amber-500/30"
-      >
-        {/* Image section */}
-        <div className="p-2 pb-0 relative">
-          {/* Favorite Button */}
-          {onToggleFavorite && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite();
-              }}
-              className={`absolute top-1 right-1 z-10 p-1 rounded-full bg-card shadow-sm ${
-                isFavorite 
-                  ? "text-red-500" 
-                  : "text-muted-foreground hover:text-red-500"
-              }`}
-            >
-              <Heart className={`h-3 w-3 ${isFavorite ? "fill-current" : ""}`} />
-            </button>
-          )}
-          {/* Image opens dialog */}
-          <DialogTrigger asChild>
-            <div className="aspect-[4/3] rounded-md cursor-pointer bg-white border border-amber-200 shadow-sm" />
-          </DialogTrigger>
-        </div>
-        
-        {/* Content section */}
-        <div className="p-2 pt-1.5 flex-1 text-center">
-          <h3 className="font-display text-sm font-semibold text-foreground line-clamp-1 mb-1">
-            {name}
-          </h3>
-          <span className="text-amber-600 font-bold text-sm block mb-1">{price}</span>
-          <DialogTrigger asChild>
-            <button
-              type="button"
-              aria-label={`${t('cookieCard.readMore')} ${name}`}
-              className="w-full text-center text-muted-foreground text-xs leading-relaxed line-clamp-2 hover:text-foreground transition-colors"
-            >
-              {description}
-            </button>
-          </DialogTrigger>
-        </div>
-
-        {/* Dialog Content */}
-        <DialogContent className="max-w-sm text-center" dir="rtl">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-40 h-40 rounded-full bg-white border border-amber-200 shadow-elevated" />
-            <DialogHeader className="text-center">
-              <DialogTitle className="font-display text-2xl text-amber-600">{name}</DialogTitle>
-            </DialogHeader>
-            <p className="text-muted-foreground leading-relaxed">{description}</p>
-            <span className="text-amber-600 font-bold text-xl">{price}</span>
-            
-            {/* Quantity controls in dialog */}
-            {quantity > 0 ? (
-              <div className="flex items-center gap-3 w-full">
-                <Button
-                  onClick={handleDecrement}
-                  variant="outline"
-                  size="icon"
-                  className="h-10 w-10 rounded-full"
-                >
-                  {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
-                </Button>
-                <span className="flex-1 text-center font-bold text-lg">{quantity}</span>
-                <Button
-                  onClick={handleIncrement}
-                  size="icon"
-                  className="h-10 w-10 rounded-full bg-amber-500 hover:bg-amber-600"
-                >
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : (
-              <Button
-                onClick={handleAddToCart}
-                className="w-full gap-2 bg-amber-500 hover:bg-amber-600"
-              >
-                <Plus className="w-4 h-4" />
-                {t('cookieCard.addToCart')}
-              </Button>
-            )}
-          </div>
-        </DialogContent>
-      
-        {/* Button section */}
-        <div className="px-3 pb-3 pt-2 flex justify-center">
-          {quantity > 0 ? (
-            <div className="flex items-center gap-2">
-              <Button
-                onClick={handleDecrement}
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full shrink-0"
-              >
-                {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
-              </Button>
-              <div className="w-8 text-center font-bold text-base text-foreground">
-                {quantity}
-              </div>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      onClick={() => {
-                        if (quantity >= 6) {
-                          setIsShaking(true);
-                          setTimeout(() => setIsShaking(false), 500);
-                        } else {
-                          handleIncrement();
-                        }
-                      }}
-                      size="icon"
-                      className={cn(
-                        "h-8 w-8 rounded-full shrink-0 transition-all duration-200",
-                        quantity >= 6 
-                          ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" 
-                          : "bg-amber-500 hover:bg-amber-600",
-                        isShaking && "animate-[shake_0.5s_ease-in-out]"
-                      )}
-                    >
-                      <Plus className="w-4 h-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  {quantity >= 6 && (
-                    <TooltipContent side="top" className="bg-background/90 border border-amber-500/50 text-foreground">
-                      <p>{t('cookieCard.maxItems')}</p>
-                    </TooltipContent>
-                  )}
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          ) : (
-            <Button
-              onClick={handleAddToCart}
-              size="icon"
-              className={`h-9 w-9 rounded-full transition-all duration-300 ${
-                justAdded 
-                  ? "bg-emerald-500 hover:bg-emerald-500" 
-                  : "bg-amber-500 hover:bg-amber-600"
-              }`}
-            >
-              {justAdded ? (
-                <Check className="w-5 h-5" />
-              ) : (
-                <Plus className="w-5 h-5" />
-              )}
-            </Button>
-          )}
-        </div>
+    <div 
+      ref={cardRef}
+      className="group bg-card rounded-xl overflow-hidden shadow-soft flex flex-col border-2 border-amber-500/30"
+    >
+      {/* Image section */}
+      <div className="p-2 pb-0 relative">
+        {/* Favorite Button */}
+        {onToggleFavorite && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite();
+            }}
+            className={`absolute top-1 right-1 z-10 p-1 rounded-full bg-card shadow-sm ${
+              isFavorite 
+                ? "text-red-500" 
+                : "text-muted-foreground hover:text-red-500"
+            }`}
+          >
+            <Heart className={`h-3 w-3 ${isFavorite ? "fill-current" : ""}`} />
+          </button>
+        )}
+        <div className="aspect-[4/3] rounded-md bg-white border border-amber-200 shadow-sm" />
       </div>
-    </Dialog>
+      
+      {/* Content section */}
+      <div className="p-2 pt-1.5 flex-1 text-center">
+        <h3 className="font-display text-sm font-semibold text-foreground line-clamp-1 mb-1">
+          {name}
+        </h3>
+        <span className="text-amber-600 font-bold text-sm block">{price}</span>
+      </div>
+    
+      {/* Button section */}
+      <div className="px-3 pb-3 pt-2 flex justify-center">
+        {quantity > 0 ? (
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleDecrement}
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 rounded-full shrink-0"
+            >
+              {quantity === 1 ? <Trash2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
+            </Button>
+            <div className="w-8 text-center font-bold text-base text-foreground">
+              {quantity}
+            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={() => {
+                      if (quantity >= 6) {
+                        setIsShaking(true);
+                        setTimeout(() => setIsShaking(false), 500);
+                      } else {
+                        handleIncrement();
+                      }
+                    }}
+                    size="icon"
+                    className={cn(
+                      "h-8 w-8 rounded-full shrink-0 transition-all duration-200",
+                      quantity >= 6 
+                        ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" 
+                        : "bg-amber-500 hover:bg-amber-600",
+                      isShaking && "animate-[shake_0.5s_ease-in-out]"
+                    )}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                {quantity >= 6 && (
+                  <TooltipContent side="top" className="bg-background/90 border border-amber-500/50 text-foreground">
+                    <p>{t('cookieCard.maxItems')}</p>
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        ) : (
+          <Button
+            onClick={handleAddToCart}
+            size="icon"
+            className={`h-9 w-9 rounded-full transition-all duration-300 ${
+              justAdded 
+                ? "bg-emerald-500 hover:bg-emerald-500" 
+                : "bg-amber-500 hover:bg-amber-600"
+            }`}
+          >
+            {justAdded ? (
+              <Check className="w-5 h-5" />
+            ) : (
+              <Plus className="w-5 h-5" />
+            )}
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 
