@@ -41,7 +41,7 @@ const Footer = () => {
                     {itemCount}
                   </span>
                 )}
-                <span className="text-[10px] md:text-xs font-medium text-muted-foreground group-hover:text-foreground">
+                <span className="text-[9px] md:text-[10px] font-medium text-muted-foreground group-hover:text-foreground">
                   {isRTL ? 'עגלה' : 'Cart'}
                 </span>
               </button>
