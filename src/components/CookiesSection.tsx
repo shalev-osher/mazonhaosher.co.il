@@ -407,7 +407,7 @@ const CookiesSection = () => {
         </div>
 
         {/* All Controls - Compact Layout */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
           {/* Search */}
           <div className="relative w-48">
             <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground`} />
