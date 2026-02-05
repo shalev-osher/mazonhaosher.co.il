@@ -266,6 +266,7 @@ const Cart = () => {
           customerPhone: formData.phone.trim(),
           orderDetails,
           totalPrice,
+          isDarkMode,
         },
       });
 
