@@ -716,9 +716,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 disabled={isLoading}
                 className="w-full h-12 text-sm gap-3 auth-oauth-btn border-2 justify-start px-4"
               >
-                <div className="p-2 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500">
-                  <Mail className="h-4 w-4 text-white" />
-                </div>
+                <MailIconWithGradient />
                 <div className="text-right flex-1">
                   <div className="font-medium">{isRTL ? "קוד למייל" : "Email code"}</div>
                   <div className="text-xs text-muted-foreground" dir="ltr">{formData.email}</div>
@@ -733,9 +731,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 disabled={isLoading}
                 className="w-full h-12 text-sm gap-3 auth-oauth-btn border-2 justify-start px-4"
               >
-                <div className="p-2 rounded-full bg-gradient-to-br from-green-500 to-emerald-500">
-                  <Phone className="h-4 w-4 text-white" />
-                </div>
+                <PhoneIconWithGradient />
                 <div className="text-right flex-1">
                   <div className="font-medium">{isRTL ? "קוד ב-SMS" : "SMS code"}</div>
                   <div className="text-xs text-muted-foreground">{isRTL ? "הזן מספר טלפון" : "Enter phone number"}</div>
@@ -747,7 +743,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               <div className="space-y-3 pt-2 border-t border-border">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
-                    <Phone className="h-3 w-3 text-primary" />
+                    <PhoneIconSmall />
                     {isRTL ? "מספר טלפון" : "Phone number"}
                   </label>
                   <Input
