@@ -111,37 +111,57 @@ const handler = async (req: Request): Promise<Response> => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
-      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a2e; direction: rtl;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-          <!-- Logo -->
-          <div style="text-align: center; margin-bottom: 20px;">
-            <img src="${logoUrl}" alt="מזון האושר" style="height: 80px; width: auto;" />
+      <body style="margin: 0; padding: 0; font-family: Georgia, 'Times New Roman', serif; background-color: #f8f5f0; direction: rtl;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+          
+          <!-- Elegant Header with Logo -->
+          <div style="text-align: center; margin-bottom: 32px;">
+            <img src="${logoUrl}" alt="מזון האושר" style="height: 100px; width: auto;" />
           </div>
           
           <!-- Main Card -->
-          <div style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 3px solid #e85d8f;">
+          <div style="background: #ffffff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);">
+            
+            <!-- Gold Accent Line -->
+            <div style="height: 4px; background: linear-gradient(90deg, #d4a574, #c9956c, #d4a574);"></div>
+            
             <!-- Header -->
-            <div style="background: linear-gradient(135deg, #e85d8f, #d4447a); padding: 24px; text-align: right;">
-              <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 600;">📬 הודעה חדשה מהאתר</h1>
+            <div style="padding: 32px 40px 24px; border-bottom: 1px solid #f0ebe3; text-align: center;">
+              <h1 style="color: #2c2c2c; margin: 0; font-size: 22px; font-weight: 400; letter-spacing: 1px;">הודעה חדשה מהאתר</h1>
             </div>
             
             <!-- Content -->
-            <div style="padding: 28px; text-align: right;">
-              <div style="background-color: #fdf2f8; border-radius: 12px; padding: 20px; margin-bottom: 20px; border-right: 4px solid #e85d8f;">
-                <h3 style="color: #be185d; margin: 0 0 16px 0; font-size: 16px;">פרטי השולח</h3>
-                <p style="margin: 10px 0; color: #374151; font-size: 15px;"><strong style="color: #1f2937;">שם:</strong> ${safeName}</p>
-                <p style="margin: 10px 0; color: #374151; font-size: 15px;"><strong style="color: #1f2937;">טלפון:</strong> <a href="tel:${safePhone}" style="color: #e85d8f; text-decoration: none; font-weight: 500;">${safePhone}</a></p>
+            <div style="padding: 32px 40px;">
+              
+              <!-- Sender Info -->
+              <div style="margin-bottom: 28px;">
+                <h3 style="color: #c9956c; margin: 0 0 16px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600;">פרטי הפונה</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr>
+                    <td style="padding: 10px 0; color: #888; font-size: 14px; width: 70px; vertical-align: top;">שם:</td>
+                    <td style="padding: 10px 0; color: #2c2c2c; font-size: 16px;">${safeName}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; color: #888; font-size: 14px; vertical-align: top;">טלפון:</td>
+                    <td style="padding: 10px 0;"><a href="tel:${safePhone}" style="color: #c9956c; text-decoration: none; font-size: 16px;">${safePhone}</a></td>
+                  </tr>
+                </table>
               </div>
               
-              <div style="background-color: #fffbeb; border-radius: 12px; padding: 20px; border-right: 4px solid #f59e0b;">
-                <h3 style="color: #b45309; margin: 0 0 16px 0; font-size: 16px;">ההודעה</h3>
-                <p style="margin: 0; white-space: pre-wrap; line-height: 1.7; color: #374151; font-size: 15px;">${safeMessage}</p>
+              <!-- Divider -->
+              <div style="height: 1px; background: #f0ebe3; margin: 24px 0;"></div>
+              
+              <!-- Message -->
+              <div>
+                <h3 style="color: #c9956c; margin: 0 0 16px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600;">תוכן ההודעה</h3>
+                <p style="margin: 0; white-space: pre-wrap; line-height: 1.9; color: #444; font-size: 15px; background: #faf8f5; padding: 20px; border-radius: 4px; border-right: 3px solid #d4a574;">${safeMessage}</p>
               </div>
             </div>
             
             <!-- Footer -->
-            <div style="background-color: #fdf2f8; padding: 18px; text-align: center; border-top: 1px solid #fce7f3;">
-              <p style="color: #9d174d; margin: 0; font-size: 14px; font-weight: 500;">מזון האושר 🍪 עוגיות בוטיק</p>
+            <div style="background: #faf8f5; padding: 24px 40px; text-align: center; border-top: 1px solid #f0ebe3;">
+              <p style="color: #999; margin: 0; font-size: 12px; letter-spacing: 1px;">מזון האושר · עוגיות בוטיק</p>
+              <p style="color: #c9956c; margin: 8px 0 0 0; font-size: 11px;">✦</p>
             </div>
           </div>
         </div>
