@@ -1,4 +1,4 @@
-import { Plus, Minus, Trash2, Check, Info, Heart } from "lucide-react";
+import { Plus, Minus, Trash2, Check, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -70,16 +70,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
       >
         {/* Image with lazy loading */}
         <div className="relative shrink-0">
-          {tag && (
-            <div className={`absolute -top-1 -right-1 z-10 px-2 py-0.5 rounded-full text-xs font-bold shadow-lg ${
-              tag === "מומלץ" || tag === "Recommended"
-                ? "bg-amber-500 text-white" 
-                : "bg-emerald-500 text-white"
-            }`}>
-              {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
-            </div>
-          )}
-          <div className="w-20 h-20 overflow-hidden rounded-full relative bg-card">
+          <div className="w-20 h-20 overflow-hidden rounded-full relative bg-white">
             <img
               src={image}
               alt={name}
@@ -92,25 +83,9 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="font-display text-lg font-semibold text-foreground">
-              {name}
-            </h3>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="text-muted-foreground hover:text-sky-500 transition-colors">
-                    <Info className="h-4 w-4" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-xs text-right" dir="rtl">
-                  <p className="font-medium">{name}</p>
-                  <p className="text-sm text-muted-foreground">{description}</p>
-                  <p className="text-sm text-amber-600 font-bold mt-1">{price}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          <h3 className="font-display text-lg font-semibold text-foreground">
+            {name}
+          </h3>
           <p className="text-muted-foreground text-sm truncate">{description}</p>
         </div>
 
@@ -204,15 +179,6 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
             >
               <Heart className={`h-3 w-3 ${isFavorite ? "fill-current" : ""}`} />
             </button>
-          )}
-          {tag && (
-            <div className={`absolute top-1 left-1 z-10 px-1.5 py-0.5 rounded-full text-[8px] font-bold shadow-sm ${
-              tag === "מומלץ" || tag === "Recommended"
-                ? "bg-amber-500 text-white" 
-                : "bg-emerald-500 text-white"
-            }`}>
-              {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
-            </div>
           )}
           {/* Image opens dialog */}
           <DialogTrigger asChild>
