@@ -5,7 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 
 // SVG icon with inline styles to prevent Tailwind purging
 const ShoppingBagIcon = () => (
-  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-4 h-4 md:w-5 md:h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
     <path d="M3 6h18"/>
     <path d="M16 10a4 4 0 0 1-8 0"/>
