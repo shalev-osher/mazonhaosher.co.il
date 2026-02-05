@@ -4,42 +4,93 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { HelpCircle, Truck, CreditCard, Clock, Package, AlertTriangle } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+// SVG icons as components with inline styles to prevent Tailwind purging
+const TruckIcon = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+    <path d="M15 18H9"/>
+    <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+    <circle cx="17" cy="18" r="2"/>
+    <circle cx="7" cy="18" r="2"/>
+  </svg>
+);
+
+const CreditCardIcon = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="20" height="14" x="2" y="5" rx="2"/>
+    <line x1="2" x2="22" y1="10" y2="10"/>
+  </svg>
+);
+
+const ClockIcon = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+  </svg>
+);
+
+const AlertTriangleIcon = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+    <path d="M12 9v4"/>
+    <path d="M12 17h.01"/>
+  </svg>
+);
+
+const PackageIcon = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m7.5 4.27 9 5.15"/>
+    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+    <path d="m3.3 7 8.7 5 8.7-5"/>
+    <path d="M12 22V12"/>
+  </svg>
+);
+
+const HelpCircleIcon = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+    <path d="M12 17h.01"/>
+  </svg>
+);
 
 const FAQSection = () => {
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollReveal({ threshold: 0.1 });
   const { t, isRTL } = useLanguage();
 
+  const iconGradientStyle = { background: 'linear-gradient(to bottom right, #0ea5e9, #06b6d4)' };
+
   const faqs = [
     {
-      icon: Truck,
+      icon: TruckIcon,
       question: t('faq.delivery'),
       answer: t('faq.deliveryAnswer'),
     },
     {
-      icon: CreditCard,
+      icon: CreditCardIcon,
       question: t('faq.payment'),
       answer: t('faq.paymentAnswer'),
     },
     {
-      icon: Clock,
+      icon: ClockIcon,
       question: t('faq.freshness'),
       answer: t('faq.freshnessAnswer'),
     },
     {
-      icon: AlertTriangle,
+      icon: AlertTriangleIcon,
       question: t('faq.allergens'),
       answer: t('faq.allergensAnswer'),
     },
     {
-      icon: Package,
+      icon: PackageIcon,
       question: t('faq.events'),
       answer: t('faq.eventsAnswer'),
     },
     {
-      icon: HelpCircle,
+      icon: HelpCircleIcon,
       question: t('faq.contact'),
       answer: t('faq.contactAnswer'),
     },
@@ -77,8 +128,8 @@ const FAQSection = () => {
               >
                 <AccordionTrigger className={`hover:no-underline py-3 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                   <div className="flex items-center gap-2">
-                    <div className="p-2 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-xl shadow-md">
-                      <faq.icon className="h-4 w-4 text-white" />
+                    <div className="p-2 rounded-xl shadow-md" style={iconGradientStyle}>
+                      <faq.icon />
                     </div>
                     <span className="font-semibold text-sm">{faq.question}</span>
                   </div>

@@ -1,6 +1,60 @@
-import { Gift, Star, CircleHelp, Users, Home, Heart } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+// SVG icons as components with inline styles to prevent Tailwind purging
+const HomeIcon = () => (
+  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </svg>
+);
+
+const GiftIcon = () => (
+  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="8" width="18" height="4" rx="1"/>
+    <path d="M12 8v13"/>
+    <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+    <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+  </svg>
+);
+
+const StarIcon = () => (
+  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </svg>
+);
+
+const CircleHelpIcon = () => (
+  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+    <path d="M12 17h.01"/>
+  </svg>
+);
+
+const UsersIcon = () => (
+  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+    <circle cx="9" cy="7" r="4"/>
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </svg>
+);
+
+const HeartIcon = () => (
+  <svg style={{ width: '12px', height: '12px', color: '#ef4444', fill: '#ef4444' }} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+  </svg>
+);
+
+// Gradient styles for nav items
+const navGradients = {
+  home: { background: 'linear-gradient(to bottom right, #f97316, #d97706)' },
+  packages: { background: 'linear-gradient(to bottom right, #ec4899, #e11d48)' },
+  reviews: { background: 'linear-gradient(to bottom right, #f59e0b, #ea580c)' },
+  faq: { background: 'linear-gradient(to bottom right, #0ea5e9, #0891b2)' },
+  about: { background: 'linear-gradient(to bottom right, #10b981, #0d9488)' },
+};
 
 // Typewriter hook for "Made with love" effect
 const useTypewriter = (text: string, speed: number = 100, pauseTime: number = 2000) => {
@@ -84,36 +138,36 @@ const Header = () => {
       id: "hero",
       labelKey: "nav.home",
       label: isRTL ? "בית" : "Home",
-      icon: Home,
-      gradientClass: "bg-gradient-to-br from-orange-500 to-amber-600",
+      icon: HomeIcon,
+      gradientStyle: navGradients.home,
     },
     {
       id: "gift-packages",
       labelKey: "gift.title",
       label: isRTL ? "מארזים" : "Packages",
-      icon: Gift,
-      gradientClass: "bg-gradient-to-br from-pink-500 to-rose-600",
+      icon: GiftIcon,
+      gradientStyle: navGradients.packages,
     },
     {
       id: "reviews",
       labelKey: "nav.reviews",
       label: isRTL ? "ביקורות" : "Reviews",
-      icon: Star,
-      gradientClass: "bg-gradient-to-br from-amber-500 to-orange-600",
+      icon: StarIcon,
+      gradientStyle: navGradients.reviews,
     },
     {
       id: "faq",
       labelKey: "nav.faq",
       label: isRTL ? "שאלות" : "FAQ",
-      icon: CircleHelp,
-      gradientClass: "bg-gradient-to-br from-sky-500 to-cyan-600",
+      icon: CircleHelpIcon,
+      gradientStyle: navGradients.faq,
     },
     {
       id: "about",
       labelKey: "nav.about",
       label: isRTL ? "אודות" : "About",
-      icon: Users,
-      gradientClass: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      icon: UsersIcon,
+      gradientStyle: navGradients.about,
     },
   ];
 
@@ -126,7 +180,6 @@ const Header = () => {
         <nav className="flex items-center gap-0">
           {/* Navigation items */}
           {navItems.map((item) => {
-            const IconComponent = item.icon;
             const isActive = activeSection === item.id;
             return (
               <button
@@ -138,10 +191,13 @@ const Header = () => {
                     : "hover:bg-muted"
                 }`}
               >
-                <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 ${item.gradientClass} shadow-md ${
+                <div 
+                  className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 shadow-md ${
                   isActive ? "scale-110" : "group-hover:scale-105"
-                }`}>
-                  <IconComponent className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
+                  }`}
+                  style={item.gradientStyle}
+                >
+                  <item.icon />
                 </div>
                 <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
               </button>
@@ -155,7 +211,7 @@ const Header = () => {
           <span className="text-xs md:text-sm text-muted-foreground">
             {typewriterText || '\u00A0'}
             {typewriterText === madeWithLoveText && (
-              <Heart className="w-3 h-3 text-red-500 fill-red-500 inline-block ml-1 rtl:ml-0 rtl:mr-1" />
+              <span className="inline-block ml-1 rtl:ml-0 rtl:mr-1 align-middle"><HeartIcon /></span>
             )}
           </span>
         </div>

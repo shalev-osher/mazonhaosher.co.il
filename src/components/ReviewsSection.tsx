@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Star, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -16,6 +15,43 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useProfile } from "@/contexts/ProfileContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AuthModal from "@/components/AuthModal";
+
+// SVG icons with inline styles to prevent Tailwind purging
+const StarIconFilled = ({ filled = false, size = 16 }: { filled?: boolean; size?: number }) => (
+  <svg 
+    style={{ width: `${size}px`, height: `${size}px` }} 
+    viewBox="0 0 24 24" 
+    fill={filled ? "currentColor" : "none"} 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </svg>
+);
+
+const StarIconWhite = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white', fill: 'white' }} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </svg>
+);
+
+const SendIcon = () => (
+  <svg style={{ width: '16px', height: '16px' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m22 2-7 20-4-9-9-4Z"/>
+    <path d="M22 2 11 13"/>
+  </svg>
+);
+
+const UserIcon = () => (
+  <svg style={{ width: '20px', height: '20px', color: 'white', fill: 'rgba(255,255,255,0.2)' }} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+);
+
+const reviewIconGradient = { background: 'linear-gradient(to bottom right, #f59e0b, #f97316)' };
 
 interface Review {
   id: string;
@@ -181,14 +217,9 @@ const ReviewsSection = () => {
           <div className="flex items-center justify-center gap-2 text-sm">
             <div className="flex">
               {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`h-4 w-4 ${
-                      star <= Math.round(Number(averageRating))
-                        ? "text-amber-500 fill-amber-500"
-                        : "text-muted"
-                    }`}
-                  />
+                  <span key={star} className={star <= Math.round(Number(averageRating)) ? "text-amber-500" : "text-muted"}>
+                    <StarIconFilled filled={star <= Math.round(Number(averageRating))} />
+                  </span>
                 ))}
               </div>
               <span className="font-bold text-amber-600">{averageRating}</span>
@@ -200,8 +231,8 @@ const ReviewsSection = () => {
           {/* Add Review Form */}
           <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-amber-500/20">
             <h3 className="font-display text-lg font-bold text-amber-600 mb-4 flex items-center gap-2">
-              <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-md">
-                <Star className="h-4 w-4 text-white fill-white" />
+              <div className="p-2 rounded-xl shadow-md" style={reviewIconGradient}>
+                <StarIconWhite />
               </div>
               {t('reviews.addReview')}
             </h3>
@@ -252,13 +283,13 @@ const ReviewsSection = () => {
                         onClick={() => setRating(star)}
                         className="p-1 transition-transform hover:scale-125"
                       >
-                        <Star
-                          className={`h-8 w-8 transition-colors ${
-                            star <= (hoverRating || rating)
-                              ? "text-amber-500 fill-amber-500"
-                              : "text-muted hover:text-amber-500/50"
-                          }`}
-                        />
+                        <span className={`block transition-colors ${
+                          star <= (hoverRating || rating)
+                            ? "text-amber-500"
+                            : "text-muted hover:text-amber-500/50"
+                        }`}>
+                          <StarIconFilled filled={star <= (hoverRating || rating)} size={32} />
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -289,7 +320,7 @@ const ReviewsSection = () => {
                     t('reviews.submitting')
                   ) : (
                     <>
-                      <Send className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      <span className={isRTL ? 'ml-2' : 'mr-2'}><SendIcon /></span>
                       {t('reviews.submit')}
                     </>
                   )}
@@ -329,22 +360,17 @@ const ReviewsSection = () => {
                     className="bg-card/60 backdrop-blur-sm rounded-2xl p-4 border border-amber-500/20"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                        <User className="h-5 w-5 text-white fill-white/20" />
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md" style={reviewIconGradient}>
+                        <UserIcon />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-semibold text-amber-600">{getCookieName(review.cookie_name)}</span>
                           <div className="flex">
                             {[1, 2, 3, 4, 5].map((star) => (
-                              <Star
-                                key={star}
-                                className={`h-4 w-4 ${
-                                  star <= review.rating
-                                    ? "text-amber-500 fill-amber-500"
-                                    : "text-muted"
-                                }`}
-                              />
+                              <span key={star} className={star <= review.rating ? "text-amber-500" : "text-muted"}>
+                                <StarIconFilled filled={star <= review.rating} />
+                              </span>
                             ))}
                           </div>
                         </div>

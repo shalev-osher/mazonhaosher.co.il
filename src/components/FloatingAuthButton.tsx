@@ -1,4 +1,4 @@
-import { UserCircle, LogOut, Package, UserPen, Lock } from "lucide-react";
+import { LogOut, Package, UserPen, Lock } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useProfile } from "@/contexts/ProfileContext";
@@ -13,6 +13,17 @@ import {
 import AuthModal from "./AuthModal";
 import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
+
+// SVG icon with inline styles to prevent Tailwind purging
+const UserCircleIcon = ({ size = 24 }: { size?: number }) => (
+  <svg style={{ width: `${size}px`, height: `${size}px`, color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <circle cx="12" cy="10" r="3"/>
+    <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
+  </svg>
+);
+
+const authButtonGradient = { background: 'linear-gradient(to bottom right, #06b6d4, #2563eb)' };
 
 const FloatingAuthButton = () => {
   const { t, isRTL } = useLanguage();
@@ -43,11 +54,12 @@ const FloatingAuthButton = () => {
             <button
               className={cn(
                 "fixed bottom-[5.25rem] md:bottom-[5.5rem] z-40 rounded-full",
-                "bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg",
+                "shadow-lg",
                 "flex items-center gap-1.5 px-2 py-1.5",
                 "hover:scale-105 transition-all duration-200",
                 isRTL ? "right-4" : "left-4"
               )}
+              style={authButtonGradient}
             >
               {avatarUrl ? (
                 <img 
@@ -56,7 +68,7 @@ const FloatingAuthButton = () => {
                   className="w-6 h-6 rounded-full object-cover border border-white/30"
                 />
               ) : (
-                <UserCircle className="w-6 h-6 text-white" />
+                <UserCircleIcon size={24} />
               )}
               <span className="text-xs font-medium text-white">
                 {firstName || (isRTL ? "חשבון" : "Account")}
@@ -76,8 +88,8 @@ const FloatingAuthButton = () => {
                   className="w-9 h-9 rounded-full object-cover border-2 border-cyan-500/30 shrink-0"
                 />
               ) : (
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shrink-0">
-                  <UserCircle className="w-5 h-5 text-white" />
+                <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={authButtonGradient}>
+                  <UserCircleIcon size={20} />
                 </div>
               )}
               <div className={`min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -122,13 +134,14 @@ const FloatingAuthButton = () => {
           onClick={() => setAuthModalOpen(true)}
           className={cn(
             "fixed bottom-[5.25rem] md:bottom-[5.5rem] z-40 rounded-full",
-            "bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg",
+            "shadow-lg",
             "flex items-center gap-1.5 px-3 py-2",
             "hover:scale-105 transition-all duration-200",
             isRTL ? "right-4" : "left-4"
           )}
+          style={authButtonGradient}
         >
-          <UserCircle className="w-5 h-5 text-white" />
+          <UserCircleIcon size={20} />
           <span className="text-xs font-medium text-white">
             {isRTL ? "התחברות" : "Login"}
           </span>
