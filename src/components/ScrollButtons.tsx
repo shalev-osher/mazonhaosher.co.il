@@ -95,8 +95,8 @@ const ScrollButtons = () => {
   return (
     <div 
       className={cn(
-        "fixed bottom-20 md:bottom-24 z-40 flex flex-col rounded-full overflow-hidden shadow-lg",
-        isRTL ? "left-4" : "right-4"
+        "fixed bottom-[9.5rem] md:bottom-[10rem] z-40 flex flex-col rounded-full overflow-hidden shadow-lg",
+        isRTL ? "right-4" : "left-4"
       )}
     >
       {/* Up button */}
