@@ -1,4 +1,4 @@
-import { Plus, Minus, Trash2, Check, Info, Heart } from "lucide-react";
+import { Plus, Minus, Trash2, Check, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
