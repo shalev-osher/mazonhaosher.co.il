@@ -81,21 +81,23 @@ const App = () => (
       <LanguageProvider>
         <TooltipProvider>
           <ProfileProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <OAuthHandler>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/thank-you" element={<ThankYou />} />
-                  <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </OAuthHandler>
-            </BrowserRouter>
+            <CartProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <OAuthHandler>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/thank-you" element={<ThankYou />} />
+                    <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </OAuthHandler>
+              </BrowserRouter>
+            </CartProvider>
           </ProfileProvider>
         </TooltipProvider>
       </LanguageProvider>
