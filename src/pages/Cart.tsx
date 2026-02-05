@@ -89,14 +89,15 @@ const Cart = () => {
   // Pre-fill form with profile data
   useEffect(() => {
     if (profile) {
-      setFormData({
+      setFormData(prev => ({
+        ...prev,
         fullName: profile.full_name || "",
         email: user?.email || "",
         phone: profile.phone || "",
         address: profile.address || "",
         city: profile.city || "",
         notes: profile.notes || "",
-      });
+      }));
     } else if (user) {
       setFormData(prev => ({
         ...prev,
