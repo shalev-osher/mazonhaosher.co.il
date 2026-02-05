@@ -22,7 +22,7 @@ const BUNDLE_SIZE = 4;
 const REGULAR_PRICE = 25;
 
 const CartModal = ({ isOpen, onClose }: CartModalProps) => {
-  const { items, updateQuantity, removeFromCart, getTotalItems } = useCart();
+  const { items, updateQuantity, removeFromCart, getTotalItems, orderNumber } = useCart();
   const { t } = useLanguage();
   const [showCheckout, setShowCheckout] = useState(false);
 
