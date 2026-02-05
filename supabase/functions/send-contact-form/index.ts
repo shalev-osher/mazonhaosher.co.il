@@ -140,7 +140,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "מזון האושר <noreply@mazonhaosher.lovable.app>",
+      from: "מזון האושר <noreply@mazonhaosher.co.il>",
       to: ownerEmails,
       subject: `📬 הודעה חדשה מ${safeName}`,
       html: emailHtml,
