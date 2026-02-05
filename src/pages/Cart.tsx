@@ -415,7 +415,7 @@ const Cart = () => {
               </div>
 
               {/* Checkout section */}
-              <div className="bg-secondary/30 rounded-2xl p-6">
+              <div className="bg-secondary/30 rounded-2xl p-4">
                 {!showCheckoutForm ? (
                   // Continue to checkout button
                   <div className="flex flex-col items-center justify-center py-8 space-y-4">
