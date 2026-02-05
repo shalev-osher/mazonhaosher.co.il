@@ -18,7 +18,7 @@ const LanguageToggle = () => {
       aria-label={language === "he" ? "Switch to English" : "עבור לעברית"}
     >
       <div 
-        className="p-1.5 md:p-2 rounded-xl shadow-md group-hover:scale-105 transition-all duration-300"
+        className="p-1 md:p-1.5 rounded-lg shadow-sm group-hover:scale-105 transition-all duration-300"
         style={{ background: "linear-gradient(to bottom right, #f43f5e, #db2777)" }}
       >
         <svg 
