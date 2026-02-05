@@ -216,7 +216,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           )}
           {/* Image opens dialog */}
           <DialogTrigger asChild>
-            <div className="aspect-[4/3] overflow-hidden relative rounded-md cursor-pointer bg-transparent">
+            <div className="aspect-[4/3] overflow-hidden relative rounded-md cursor-pointer bg-white">
               <img
                 src={image}
                 alt={name}
