@@ -87,7 +87,9 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
-                   <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/thank-you" element={<ThankYou />} />
+                  <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
