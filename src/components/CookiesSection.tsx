@@ -448,20 +448,6 @@ const CookiesSection = () => {
             {favorites.length > 0 && <span>{favorites.length}</span>}
           </button>
         </div>
-            </button>
-          </div>
-
-          {/* Reset */}
-          {hasActiveFilters && (
-            <button
-              onClick={resetAllFilters}
-              className="flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full bg-card/80 text-muted-foreground hover:text-primary transition-all"
-              title={isRTL ? "איפוס" : "Reset"}
-            >
-              <RotateCcw className="h-3 w-3" />
-            </button>
-          )}
-        </div>
 
         <div 
           className={`transition-all duration-300 ${
