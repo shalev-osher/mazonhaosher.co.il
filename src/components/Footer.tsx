@@ -69,7 +69,7 @@ const Footer = () => {
             {/* Facebook */}
             <div className="w-14 md:w-20 flex justify-center">
               <a href="https://www.facebook.com/p/%D7%9E%D7%96%D7%95%D7%9F-%D7%94%D7%90%D7%95%D7%A9%D7%A8-61565573526817/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2">
-                <div className="p-2 md:p-2.5 rounded-xl bg-gradient-to-br from-[#1877F2] to-[#0d5fc4] shadow-md group-hover:scale-105 transition-all duration-300">
+                <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-[#1877F2] to-[#0d5fc4] shadow-md group-hover:scale-105 transition-all duration-300">
                   <svg className="w-5 h-5 md:w-6 md:h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                   </svg>
