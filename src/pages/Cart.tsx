@@ -401,7 +401,18 @@ const Cart = () => {
                   </div>
                 ))}
 
-                {/* Price summary */}
+                {/* Delivery item - shown when delivery is selected */}
+                {deliveryMethod === "delivery" && (
+                  <div className="flex items-center gap-4 bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+                    <div className="w-20 h-20 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                      <Truck className="w-10 h-10 text-blue-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-foreground">{isRTL ? "משלוח" : "Delivery"}</h3>
+                      <p className="text-blue-500 font-medium">₪{DELIVERY_FEE}</p>
+                    </div>
+                  </div>
+                )}
                 <div className="bg-primary/10 rounded-xl p-4 mt-6">
                   <div className="flex justify-between items-center text-sm text-muted-foreground mb-2">
                     <span>{getTotalItems()} {t('cartModal.cookies')}</span>
