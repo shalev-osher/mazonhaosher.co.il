@@ -178,29 +178,30 @@ const Header = () => {
       <div className="flex items-center justify-center px-1 py-0.5 md:py-1 pt-[calc(0.125rem+env(safe-area-inset-top))] bg-background border-b border-amber-500/30">
         {/* Navigation bar */}
         <nav className="flex items-center gap-0">
-          {/* Navigation items */}
+          {/* Navigation items - matching footer sizing */}
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`flex flex-col items-center gap-0 px-1.5 md:px-2.5 py-0.5 md:py-1 transition-all duration-300 rounded-lg group ${
-                  isActive 
-                    ? "bg-amber-500/20" 
-                    : "hover:bg-muted"
-                }`}
-              >
-                <div 
-                  className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 shadow-md ${
-                  isActive ? "scale-110" : "group-hover:scale-105"
+              <div key={item.id} className="w-14 md:w-20 flex justify-center">
+                <button
+                  onClick={() => scrollToSection(item.id)}
+                  className={`flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group px-2 ${
+                    isActive 
+                      ? "bg-amber-500/20" 
+                      : "hover:bg-muted"
                   }`}
-                  style={item.gradientStyle}
                 >
-                  <item.icon />
-                </div>
-                <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
-              </button>
+                  <div 
+                    className={`p-1.5 md:p-2 rounded-xl transition-all duration-300 shadow-md ${
+                    isActive ? "scale-110" : "group-hover:scale-105"
+                    }`}
+                    style={item.gradientStyle}
+                  >
+                    <item.icon />
+                  </div>
+                  <span className={`text-[10px] md:text-xs font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
+                </button>
+              </div>
             );
           })}
         </nav>
