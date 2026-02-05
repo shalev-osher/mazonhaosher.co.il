@@ -34,6 +34,7 @@ import {
 const BUNDLE_PRICE = 80;
 const BUNDLE_SIZE = 4;
 const REGULAR_PRICE = 25;
+const DELIVERY_FEE = 30;
 
 const Cart = () => {
   const navigate = useNavigate();
