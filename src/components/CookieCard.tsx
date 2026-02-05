@@ -68,17 +68,9 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         ref={cardRef}
         className="group bg-card rounded-2xl overflow-hidden shadow-soft flex items-center gap-4 p-4 border-2 border-amber-500/30"
       >
-        {/* Image with lazy loading */}
+        {/* Image placeholder */}
         <div className="relative shrink-0">
-          <div className="w-20 h-20 overflow-hidden rounded-full relative bg-white">
-            <img
-              src={image}
-              alt={name}
-              loading="lazy"
-              onLoad={() => setImageLoaded(true)}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <div className="w-20 h-20 rounded-full bg-white border border-amber-200 shadow-sm" />
         </div>
 
         {/* Content */}
@@ -182,15 +174,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           )}
           {/* Image opens dialog */}
           <DialogTrigger asChild>
-            <div className="aspect-[4/3] overflow-hidden relative rounded-md cursor-pointer bg-white">
-              <img
-                src={image}
-                alt={name}
-                loading="lazy"
-                onLoad={() => setImageLoaded(true)}
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
+            <div className="aspect-[4/3] rounded-md cursor-pointer bg-white border border-amber-200 shadow-sm" />
           </DialogTrigger>
         </div>
         
@@ -214,13 +198,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         {/* Dialog Content */}
         <DialogContent className="max-w-sm text-center" dir="rtl">
           <div className="flex flex-col items-center gap-4">
-            <div className="w-40 h-40 rounded-full overflow-hidden shadow-elevated">
-              <img 
-                src={image} 
-                alt={name} 
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <div className="w-40 h-40 rounded-full bg-white border border-amber-200 shadow-elevated" />
             <DialogHeader className="text-center">
               <DialogTitle className="font-display text-2xl text-amber-600">{name}</DialogTitle>
             </DialogHeader>
