@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useMemo } from "react";
 
 export interface CartItem {
   name: string;
@@ -17,13 +17,22 @@ interface CartContextType {
   getTotalPrice: () => number;
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
+  orderNumber: string | null;
 }
+
+// Generate 8-digit numeric order number
+const generateOrderNumber = (): string => {
+  const timestamp = Date.now().toString();
+  const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
+  return (timestamp.slice(-5) + random).slice(0, 8);
+};
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
   const addToCart = (item: Omit<CartItem, "quantity">) => {
     setItems((prev) => {
