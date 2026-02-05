@@ -59,16 +59,16 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
+      className="flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2"
       aria-label="Toggle theme"
     >
       <div 
-        className="p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md"
+        className="p-1.5 md:p-2 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md"
         style={gradientStyles[mode]}
       >
         {getIcon()}
       </div>
-      <span className="text-[8px] md:text-[10px] font-medium text-muted-foreground group-hover:text-foreground">
+      <span className="text-[10px] md:text-xs font-medium text-muted-foreground group-hover:text-foreground">
         {getLabel()}
       </span>
     </button>
