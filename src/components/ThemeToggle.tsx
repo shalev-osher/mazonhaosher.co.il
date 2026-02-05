@@ -1,4 +1,3 @@
-import { Moon, Sun, Monitor } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -7,13 +6,38 @@ const ThemeToggle = () => {
   const { isRTL } = useLanguage();
 
   const getIcon = () => {
+    const iconStyle = { width: '14px', height: '14px', color: 'white' };
+    const mdIconStyle = { width: '16px', height: '16px', color: 'white' };
+    
     switch (mode) {
       case 'auto':
-        return <Monitor className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white" />;
+        return (
+          <svg style={iconStyle} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        );
       case 'light':
-        return <Sun className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white" />;
+        return (
+          <svg style={iconStyle} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        );
       case 'dark':
-        return <Moon className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-300 text-white" />;
+        return (
+          <svg style={iconStyle} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        );
     }
   };
 
@@ -28,11 +52,11 @@ const ThemeToggle = () => {
     }
   };
 
-  // Use explicit class names so Tailwind can detect them
-  const gradientClasses = {
-    auto: 'bg-gradient-to-br from-emerald-500 to-teal-600',
-    light: 'bg-gradient-to-br from-amber-400 to-orange-500',
-    dark: 'bg-gradient-to-br from-indigo-500 to-violet-600',
+  // Use inline styles to prevent Tailwind purging issues
+  const gradientStyles = {
+    auto: { background: 'linear-gradient(to bottom right, #10b981, #0d9488)' },
+    light: { background: 'linear-gradient(to bottom right, #fbbf24, #f97316)' },
+    dark: { background: 'linear-gradient(to bottom right, #6366f1, #8b5cf6)' },
   };
 
   return (
@@ -41,7 +65,10 @@ const ThemeToggle = () => {
       className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted"
       aria-label="Toggle theme"
     >
-      <div className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md ${gradientClasses[mode]}`}>
+      <div 
+        className="p-1 md:p-1.5 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md"
+        style={gradientStyles[mode]}
+      >
         {getIcon()}
       </div>
       <span className="text-[8px] md:text-[10px] font-medium text-muted-foreground group-hover:text-foreground">

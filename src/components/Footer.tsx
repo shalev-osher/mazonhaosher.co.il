@@ -14,8 +14,8 @@ const Footer = () => {
       {/* Copyright bar above footer */}
       <div className="fixed bottom-[3.25rem] md:bottom-[3.5rem] left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900/50 border-t border-amber-500/20 shadow-sm">
         <div className="h-8 leading-none flex items-start justify-center">
-          <span className="text-xs md:text-sm text-muted-foreground">
-            © {isRTL ? "מזון האושר" : "MazonHaosher"} 2026
+          <span className="text-xs md:text-sm text-muted-foreground text-center">
+            © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
           </span>
         </div>
       </div>
