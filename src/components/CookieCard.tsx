@@ -180,15 +180,6 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
               <Heart className={`h-3 w-3 ${isFavorite ? "fill-current" : ""}`} />
             </button>
           )}
-          {tag && (
-            <div className={`absolute top-1 left-1 z-10 px-1.5 py-0.5 rounded-full text-[8px] font-bold shadow-sm ${
-              tag === "מומלץ" || tag === "Recommended"
-                ? "bg-amber-500 text-white" 
-                : "bg-emerald-500 text-white"
-            }`}>
-              {(tag === "מומלץ" || tag === "Recommended") ? "⭐" : "✨"}
-            </div>
-          )}
           {/* Image opens dialog */}
           <DialogTrigger asChild>
             <div className="aspect-[4/3] overflow-hidden relative rounded-md cursor-pointer bg-white">
