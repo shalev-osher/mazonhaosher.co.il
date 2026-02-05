@@ -61,6 +61,15 @@ const Cart = () => {
     const totalItems = getTotalItems();
     const bundles = Math.floor(totalItems / BUNDLE_SIZE);
     const remaining = totalItems % BUNDLE_SIZE;
+    const itemsTotal = bundles * BUNDLE_PRICE + remaining * REGULAR_PRICE;
+    const deliveryTotal = deliveryMethod === "delivery" ? DELIVERY_FEE : 0;
+    return itemsTotal + deliveryTotal;
+  };
+
+  const getItemsPrice = () => {
+    const totalItems = getTotalItems();
+    const bundles = Math.floor(totalItems / BUNDLE_SIZE);
+    const remaining = totalItems % BUNDLE_SIZE;
     return bundles * BUNDLE_PRICE + remaining * REGULAR_PRICE;
   };
 
@@ -69,7 +78,7 @@ const Cart = () => {
   };
 
   const getSavings = () => {
-    return getOriginalPrice() - calculateTotalPrice();
+    return getOriginalPrice() - getItemsPrice();
   };
 
   const totalPrice = calculateTotalPrice();
