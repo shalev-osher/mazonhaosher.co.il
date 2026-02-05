@@ -67,7 +67,7 @@ const Footer = () => {
             </div>
             
             {/* Facebook */}
-            <div className="w-14 md:w-20 flex justify-center">
+            <div className="w-12 md:w-16 flex justify-center">
               <a href="https://www.facebook.com/p/%D7%9E%D7%96%D7%95%D7%9F-%D7%94%D7%90%D7%95%D7%A9%D7%A8-61565573526817/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2">
                 <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-[#1877F2] to-[#0d5fc4] shadow-md group-hover:scale-105 transition-all duration-300">
                   <svg className="w-4 h-4 md:w-5 md:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
