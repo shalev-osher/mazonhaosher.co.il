@@ -141,9 +141,9 @@ const Header = () => {
       gradientStyle: navGradients.faq,
     },
     {
-      id: "about",
-      labelKey: "nav.about",
-      label: isRTL ? "אודות" : "About",
+      id: "contact",
+      labelKey: "nav.contact",
+      label: isRTL ? "צור קשר" : "Contact",
       icon: UsersIcon,
       gradientStyle: navGradients.about,
     },
