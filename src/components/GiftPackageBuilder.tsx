@@ -147,7 +147,7 @@ const GiftPackageBuilder = () => {
     addToCart({
       name: `🎁 ${name}`,
       price: `₪${finalPrice}`,
-      image: selectedCookies[0]?.image || cookieLotus,
+      image: selectedCookies[0]?.image || placeholderImage,
     });
 
     toast({

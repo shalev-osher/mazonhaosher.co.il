@@ -100,20 +100,15 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      {/* Background Image with Parallax */}
+      {/* Background Gradient */}
       <div 
-        className="absolute inset-0 z-0 will-change-transform"
+        className="absolute inset-0 z-0 will-change-transform bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 dark:from-amber-950/50 dark:via-orange-950/30 dark:to-background"
         style={{ 
           transform: `translateY(${parallaxOffset}px) scale(1.1)`,
           top: '-5%',
           height: '110%'
         }}
       >
-        <img
-          src={heroImage}
-          alt="עוגיות קראמבל טריות מהתנור"
-          className="w-full h-full object-cover"
-        />
         <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/50 to-background" />
       </div>
 

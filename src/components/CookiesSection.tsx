@@ -33,7 +33,7 @@ const CookiesSection = () => {
 
   const cookies = [
     {
-      image: cookieLotus,
+      image: placeholderImage,
       nameHe: "לוטוס",
       nameEn: "Lotus",
       descHe: "ביסקוויט לוטוס וממרח קרמל",
@@ -43,7 +43,7 @@ const CookiesSection = () => {
       tag: "מומלץ" as Tag,
     },
     {
-      image: cookieKinder,
+      image: placeholderImage,
       nameHe: "קינדר",
       nameEn: "Kinder",
       descHe: "שוקולד קינדר וכדורי שוקולד צבעוניים",
@@ -53,7 +53,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookieKinderBueno,
+      image: placeholderImage,
       nameHe: "קינדר בואנו",
       nameEn: "Kinder Bueno",
       descHe: "קינדר בואנו, שוקולד חלב וציפוי שוקולד",
@@ -63,7 +63,7 @@ const CookiesSection = () => {
       tag: "חדש" as Tag,
     },
     {
-      image: cookieRedVelvet,
+      image: placeholderImage,
       nameHe: "רד וולווט",
       nameEn: "Red Velvet",
       descHe: "בצק רד וולווט, שוקולד לבן ופירורי פטל",
@@ -73,7 +73,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookieConfetti,
+      image: placeholderImage,
       nameHe: "קונפטי",
       nameEn: "Confetti",
       descHe: "סוכריות צבעוניות וסמארטיז",
@@ -83,7 +83,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookiePistachio,
+      image: placeholderImage,
       nameHe: "פיסטוק",
       nameEn: "Pistachio",
       descHe: "שוקולד לבן, פיסטוקים קלויים וגרגירי רימון",
@@ -93,7 +93,7 @@ const CookiesSection = () => {
       tag: "מומלץ" as Tag,
     },
     {
-      image: cookiePretzel,
+      image: placeholderImage,
       nameHe: "בייגלה",
       nameEn: "Pretzel",
       descHe: "בייגלה מלוח, שוקולד לבן וצ׳יפס שוקולד",
@@ -103,7 +103,7 @@ const CookiesSection = () => {
       tag: "חדש" as Tag,
     },
     {
-      image: cookieChocolate,
+      image: placeholderImage,
       nameHe: "שוקולד צ׳יפס",
       nameEn: "Chocolate Chip",
       descHe: "צ׳יפס שוקולד בלגי מריר ושוקולד חלב",
@@ -113,7 +113,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookieOreo,
+      image: placeholderImage,
       nameHe: "אוראו",
       nameEn: "Oreo",
       descHe: "פירורי אוראו, שוקולד לבן וקרם וניל",
@@ -123,7 +123,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookiePeanut,
+      image: placeholderImage,
       nameHe: "חמאת בוטנים",
       nameEn: "Peanut Butter",
       descHe: "חמאת בוטנים, בוטנים קלויים ושוקולד",
@@ -133,7 +133,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookieLemon,
+      image: placeholderImage,
       nameHe: "לימון",
       nameEn: "Lemon",
       descHe: "גרידת לימון טרי וציפוי סוכר",
@@ -143,7 +143,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookieMacadamia,
+      image: placeholderImage,
       nameHe: "מקדמיה",
       nameEn: "Macadamia",
       descHe: "אגוזי מקדמיה ושוקולד לבן",
@@ -153,7 +153,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookieOatmeal,
+      image: placeholderImage,
       nameHe: "שיבולת שועל",
       nameEn: "Oatmeal",
       descHe: "שיבולת שועל, צימוקים וקינמון",
@@ -163,7 +163,7 @@ const CookiesSection = () => {
       tag: null as Tag,
     },
     {
-      image: cookieSaltedCaramel,
+      image: placeholderImage,
       nameHe: "קרמל מלוח",
       nameEn: "Salted Caramel",
       descHe: "קרמל ביתי וקריסטלי מלח ים",
@@ -173,7 +173,7 @@ const CookiesSection = () => {
       tag: "מומלץ" as Tag,
     },
     {
-      image: cookieTahini,
+      image: placeholderImage,
       nameHe: "טחינה",
       nameEn: "Tahini",
       descHe: "טחינה גולמית, שומשום ודבש",
