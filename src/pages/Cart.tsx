@@ -496,14 +496,16 @@ const Cart = () => {
                           {isRTL ? "משלוח" : "Delivery"}
                         </button>
                       </div>
-                      {/* Address fields - only show for delivery */}
+                      {/* Address fields and notes - only show for delivery */}
                       {deliveryMethod === "delivery" && (
-                        <div className="grid grid-cols-2 gap-1.5">
-                          <Input name="city" value={formData.city} onChange={handleInputChange} placeholder={t('checkoutForm.city')} className="text-right h-8 text-xs" maxLength={50} />
-                          <Input name="address" value={formData.address} onChange={handleInputChange} placeholder={t('checkoutForm.address')} className="text-right h-8 text-xs" maxLength={200} />
-                        </div>
+                        <>
+                          <div className="grid grid-cols-2 gap-1.5">
+                            <Input name="city" value={formData.city} onChange={handleInputChange} placeholder={t('checkoutForm.city')} className="text-right h-8 text-xs" maxLength={50} />
+                            <Input name="address" value={formData.address} onChange={handleInputChange} placeholder={t('checkoutForm.address')} className="text-right h-8 text-xs" maxLength={200} />
+                          </div>
+                          <Textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notes')} className="text-right resize-none text-xs min-h-[50px]" rows={1} maxLength={500} />
+                        </>
                       )}
-                      <Textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notes')} className="text-right resize-none text-xs min-h-[50px]" rows={1} maxLength={500} />
                       <div className="flex items-center justify-between bg-secondary/50 rounded-lg p-2">
                         <span className="font-semibold text-xs">{t('checkoutForm.totalPayment')}</span>
                         <span className="font-bold text-primary text-lg">₪{totalPrice}</span>
