@@ -461,32 +461,32 @@ const Cart = () => {
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/30 rounded-xl">
-                      <User className="w-5 h-5 text-primary" />
-                      <span className="text-sm text-foreground">
+              <div className="space-y-3">
+                    <div className="flex items-center gap-2 p-2 bg-primary/10 border border-primary/30 rounded-lg">
+                      <User className="w-4 h-4 text-primary" />
+                      <span className="text-xs text-foreground">
                         {t('checkoutForm.connectedAs')} <strong>{profile?.full_name || user?.email}</strong>
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-display font-bold text-foreground">{t('checkoutForm.orderDetails')}</h3>
+                    <h3 className="text-base font-display font-bold text-foreground">{t('checkoutForm.orderDetails')}</h3>
                     
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="fullName">{t('checkoutForm.fullName')}</Label>
+                    <div className="space-y-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="fullName" className="text-xs">{t('checkoutForm.fullName')}</Label>
                         <Input
                           id="fullName"
                           name="fullName"
                           value={formData.fullName}
                           onChange={handleInputChange}
                           placeholder={t('checkoutForm.namePlaceholder')}
-                          className={isRTL ? "text-right" : "text-left"}
+                          className={`${isRTL ? "text-right" : "text-left"} h-9 text-sm`}
                           maxLength={100}
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="email">{t('checkoutForm.email')}</Label>
+                      <div className="space-y-1">
+                        <Label htmlFor="email" className="text-xs">{t('checkoutForm.email')}</Label>
                         <Input
                           id="email"
                           name="email"
@@ -494,14 +494,14 @@ const Cart = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           placeholder="example@email.com"
-                          className="text-left"
+                          className="text-left h-9 text-sm"
                           dir="ltr"
                           maxLength={255}
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="phone">{t('checkoutForm.phone')}</Label>
+                      <div className="space-y-1">
+                        <Label htmlFor="phone" className="text-xs">{t('checkoutForm.phone')}</Label>
                         <Input
                           id="phone"
                           name="phone"
@@ -509,77 +509,77 @@ const Cart = () => {
                           value={formData.phone}
                           onChange={handleInputChange}
                           placeholder="0501234567"
-                          className="text-left"
+                          className="text-left h-9 text-sm"
                           dir="ltr"
                           maxLength={10}
                         />
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="city">{t('checkoutForm.city')}</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                          <Label htmlFor="city" className="text-xs">{t('checkoutForm.city')}</Label>
                           <Input
                             id="city"
                             name="city"
                             value={formData.city}
                             onChange={handleInputChange}
                             placeholder={t('checkoutForm.cityPlaceholder')}
-                            className={isRTL ? "text-right" : "text-left"}
+                            className={`${isRTL ? "text-right" : "text-left"} h-9 text-sm`}
                             maxLength={50}
                           />
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="address">{t('checkoutForm.address')}</Label>
+                        <div className="space-y-1">
+                          <Label htmlFor="address" className="text-xs">{t('checkoutForm.address')}</Label>
                           <Input
                             id="address"
                             name="address"
                             value={formData.address}
                             onChange={handleInputChange}
                             placeholder={t('checkoutForm.addressPlaceholder')}
-                            className={isRTL ? "text-right" : "text-left"}
+                            className={`${isRTL ? "text-right" : "text-left"} h-9 text-sm`}
                             maxLength={200}
                           />
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="notes">{t('checkoutForm.notes')}</Label>
+                      <div className="space-y-1">
+                        <Label htmlFor="notes" className="text-xs">{t('checkoutForm.notes')}</Label>
                         <Textarea
                           id="notes"
                           name="notes"
                           value={formData.notes}
                           onChange={handleInputChange}
                           placeholder={t('checkoutForm.notesPlaceholder')}
-                          className={`${isRTL ? "text-right" : "text-left"} resize-none`}
+                          className={`${isRTL ? "text-right" : "text-left"} resize-none text-sm`}
                           rows={2}
                           maxLength={500}
                         />
                       </div>
                     </div>
 
-                    <div className="bg-secondary/50 rounded-xl p-4 space-y-2">
+                    <div className="bg-secondary/50 rounded-lg p-3 space-y-1">
                       <div className="flex justify-between items-center">
-                        <span className="font-semibold">{t('checkoutForm.totalPayment')}</span>
-                        <span className="font-bold text-primary text-2xl">₪{totalPrice}</span>
+                        <span className="font-semibold text-sm">{t('checkoutForm.totalPayment')}</span>
+                        <span className="font-bold text-primary text-xl">₪{totalPrice}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">{t('checkoutForm.cashPayment')}</p>
+                      <p className="text-xs text-muted-foreground">{t('checkoutForm.cashPayment')}</p>
                     </div>
 
                     <Button
                       onClick={handleSubmitOrder}
                       disabled={isLoading}
-                      className="w-full h-14 text-lg gap-2"
+                      className="w-full h-11 text-sm gap-2"
                     >
                       {isLoading ? (
                         t('checkoutForm.sending')
                       ) : (
                         <>
-                          <Mail className="w-5 h-5" />
+                          <Mail className="w-4 h-4" />
                           {isRTL ? "שלח הזמנה" : "Submit Order"}
                         </>
                       )}
                     </Button>
-                    <p className="text-xs text-center text-muted-foreground">
+                    <p className="text-[10px] text-center text-muted-foreground">
                       <Mail className="w-3 h-3 inline ml-1" />
                       {t('checkoutForm.confirmationSent')}
                     </p>
