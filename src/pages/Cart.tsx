@@ -525,56 +525,28 @@ const Cart = () => {
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 p-2 bg-primary/10 border border-primary/30 rounded-lg">
-                      <User className="w-4 h-4 text-primary" />
-                      <span className="text-xs text-foreground">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-1.5 bg-primary/10 border border-primary/30 rounded-lg text-[11px]">
+                      <User className="w-3 h-3 text-primary" />
+                      <span className="text-foreground">
                         {t('checkoutForm.connectedAs')} <strong>{profile?.full_name || user?.email}</strong>
                       </span>
                     </div>
-                    <h3 className="text-base font-display font-bold text-foreground">{t('checkoutForm.orderDetails')}</h3>
-                    <div className="space-y-2">
-                      <div className="space-y-1">
-                        <Label htmlFor="fullName" className="text-xs">{t('checkoutForm.fullName')}</Label>
-                        <Input id="fullName" name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder={t('checkoutForm.namePlaceholder')} className={`${isRTL ? "text-right" : "text-left"} h-9 text-sm`} maxLength={100} />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="email" className="text-xs">{t('checkoutForm.email')}</Label>
-                        <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="example@email.com" className="text-left h-9 text-sm" dir="ltr" maxLength={255} />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="phone" className="text-xs">{t('checkoutForm.phone')}</Label>
-                        <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="0501234567" className="text-left h-9 text-sm" dir="ltr" maxLength={10} />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="space-y-1">
-                          <Label htmlFor="city" className="text-xs">{t('checkoutForm.city')}</Label>
-                          <Input id="city" name="city" value={formData.city} onChange={handleInputChange} placeholder={t('checkoutForm.cityPlaceholder')} className={`${isRTL ? "text-right" : "text-left"} h-9 text-sm`} maxLength={50} />
-                        </div>
-                        <div className="space-y-1">
-                          <Label htmlFor="address" className="text-xs">{t('checkoutForm.address')}</Label>
-                          <Input id="address" name="address" value={formData.address} onChange={handleInputChange} placeholder={t('checkoutForm.addressPlaceholder')} className={`${isRTL ? "text-right" : "text-left"} h-9 text-sm`} maxLength={200} />
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="notes" className="text-xs">{t('checkoutForm.notes')}</Label>
-                        <Textarea id="notes" name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notesPlaceholder')} className={`${isRTL ? "text-right" : "text-left"} resize-none text-sm`} rows={2} maxLength={500} />
-                      </div>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <Input name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder={t('checkoutForm.fullName')} className={`${isRTL ? "text-right" : "text-left"} h-8 text-xs`} maxLength={100} />
+                      <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder={t('checkoutForm.email')} className="text-left h-8 text-xs" dir="ltr" maxLength={255} />
+                      <Input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder={t('checkoutForm.phone')} className="text-left h-8 text-xs" dir="ltr" maxLength={10} />
+                      <Input name="city" value={formData.city} onChange={handleInputChange} placeholder={t('checkoutForm.city')} className={`${isRTL ? "text-right" : "text-left"} h-8 text-xs`} maxLength={50} />
+                      <Input name="address" value={formData.address} onChange={handleInputChange} placeholder={t('checkoutForm.address')} className={`${isRTL ? "text-right" : "text-left"} h-8 text-xs col-span-2`} maxLength={200} />
                     </div>
-                    <div className="bg-secondary/50 rounded-lg p-3 space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="font-semibold text-sm">{t('checkoutForm.totalPayment')}</span>
-                        <span className="font-bold text-primary text-xl">₪{totalPrice}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{t('checkoutForm.cashPayment')}</p>
+                    <Textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notes')} className={`${isRTL ? "text-right" : "text-left"} resize-none text-xs min-h-[50px]`} rows={1} maxLength={500} />
+                    <div className="flex items-center justify-between bg-secondary/50 rounded-lg p-2">
+                      <span className="font-semibold text-xs">{t('checkoutForm.totalPayment')}</span>
+                      <span className="font-bold text-primary text-lg">₪{totalPrice}</span>
                     </div>
-                    <Button onClick={handleSubmitOrder} disabled={isLoading} className="w-full h-11 text-sm gap-2">
-                      {isLoading ? t('checkoutForm.sending') : (<><Mail className="w-4 h-4" />{isRTL ? "שלח הזמנה" : "Submit Order"}</>)}
+                    <Button onClick={handleSubmitOrder} disabled={isLoading} className="w-full h-9 text-xs gap-1.5">
+                      {isLoading ? t('checkoutForm.sending') : (<><Mail className="w-3.5 h-3.5" />{isRTL ? "שלח הזמנה" : "Submit Order"}</>)}
                     </Button>
-                    <p className="text-[10px] text-center text-muted-foreground">
-                      <Mail className="w-3 h-3 inline ml-1" />
-                      {t('checkoutForm.confirmationSent')}
-                    </p>
                   </div>
                 )}
               </div>
