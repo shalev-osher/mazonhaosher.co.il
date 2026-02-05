@@ -188,10 +188,6 @@ const ContactSection = () => {
             {isRTL ? "נווט אלינו עם Waze" : "Navigate with Waze"}
           </Button>
 
-          <div className="flex items-center justify-center gap-1.5 text-white/90 text-sm hover:scale-105 transition-transform duration-300">
-            <Clock className="w-4 h-4" />
-            <span>{t('contact.hours')}</span>
-          </div>
         </div>
       </div>
     </section>
