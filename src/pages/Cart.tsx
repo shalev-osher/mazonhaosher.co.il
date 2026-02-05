@@ -325,9 +325,9 @@ const Cart = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8 items-start">
-              {/* Cart items */}
-              <div className="space-y-4">
+            <div className="flex flex-col md:grid md:grid-cols-2 gap-8 items-start">
+              {/* Cart items - First on both mobile and desktop */}
+              <div className="space-y-4 md:order-1">
                 <h2 className="text-xl font-semibold mb-4">{isRTL ? "פריטים בעגלה" : "Cart Items"}</h2>
                 {items.map((item) => (
                   <div 
