@@ -33,7 +33,7 @@ const Footer = () => {
             {/* Cart */}
             <div className="w-14 md:w-20 flex justify-center">
               <button onClick={() => navigate("/cart")} className="relative flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2">
-                <div className="p-2 md:p-2.5 rounded-xl shadow-md group-hover:scale-105 transition-all duration-300" style={cartGradientStyle}>
+                <div className="p-1.5 md:p-2 rounded-xl shadow-md group-hover:scale-105 transition-all duration-300" style={cartGradientStyle}>
                   <ShoppingBagIcon />
                 </div>
                 {itemCount > 0 && (
