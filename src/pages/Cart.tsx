@@ -40,7 +40,8 @@ const Cart = () => {
   const { items, updateQuantity, removeFromCart, clearCart, getTotalItems, orderNumber } = useCart();
   const { profile, setProfile, isLoggedIn, user } = useProfile();
   const { t, isRTL } = useLanguage();
-  const { isDarkMode } = useTheme();
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
   const [isLoading, setIsLoading] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [formData, setFormData] = useState({
