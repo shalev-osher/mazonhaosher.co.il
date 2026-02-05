@@ -151,7 +151,7 @@ const Header = () => {
                   }`}
                 >
                   <div 
-                    className={`p-1.5 md:p-2 rounded-xl transition-all duration-300 shadow-md ${
+                    className={`p-1 md:p-1.5 rounded-lg transition-all duration-300 shadow-sm ${
                     isActive ? "scale-110" : "group-hover:scale-105"
                     }`}
                     style={item.gradientStyle}
