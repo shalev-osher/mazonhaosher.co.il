@@ -81,7 +81,7 @@ const Footer = () => {
             </div>
 
             {/* Instagram */}
-            <div className="w-14 md:w-20 flex justify-center">
+            <div className="w-12 md:w-16 flex justify-center">
               <a href="https://www.instagram.com/mazonaosher/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2">
                 <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#F77737] shadow-md group-hover:scale-105 transition-all duration-300">
                   <svg className="w-4 h-4 md:w-5 md:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
