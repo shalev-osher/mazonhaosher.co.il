@@ -140,7 +140,7 @@ const ContactSection = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-white text-purple-600 hover:bg-white/90 font-bold"
+                className="bg-white text-blue-600 hover:bg-white/90 font-bold"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2 rtl:mr-0 rtl:ml-2" />
