@@ -454,11 +454,11 @@ const Cart = () => {
                     </div>
                   ) : (
                     <div className="space-y-2 text-right">
-                      <div className="flex items-center justify-end gap-2 p-1.5 bg-primary/10 border border-primary/30 rounded-lg text-[11px]">
+                      <div className="flex items-center gap-2 p-1.5 bg-primary/10 border border-primary/30 rounded-lg text-[11px]">
+                        <User className="w-3 h-3 text-primary" />
                         <span className="text-foreground">
                           {t('checkoutForm.connectedAs')} <strong>{profile?.full_name || user?.email}</strong>
                         </span>
-                        <User className="w-3 h-3 text-primary" />
                       </div>
                       <div className="grid grid-cols-2 gap-1.5">
                         <Input name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder={t('checkoutForm.fullName')} className="text-right h-8 text-xs" maxLength={100} />
@@ -526,11 +526,11 @@ const Cart = () => {
                   </div>
                 ) : (
                   <div className="space-y-2 text-right">
-                    <div className="flex items-center justify-end gap-2 p-1.5 bg-primary/10 border border-primary/30 rounded-lg text-[11px]">
+                    <div className="flex items-center gap-2 p-1.5 bg-primary/10 border border-primary/30 rounded-lg text-[11px]">
+                      <User className="w-3 h-3 text-primary" />
                       <span className="text-foreground">
                         {t('checkoutForm.connectedAs')} <strong>{profile?.full_name || user?.email}</strong>
                       </span>
-                      <User className="w-3 h-3 text-primary" />
                     </div>
                     <div className="grid grid-cols-2 gap-1.5">
                       <Input name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder={t('checkoutForm.fullName')} className="text-right h-8 text-xs" maxLength={100} />
