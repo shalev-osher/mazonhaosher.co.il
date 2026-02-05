@@ -121,13 +121,6 @@ const Header = () => {
       icon: CircleHelpIcon,
       gradientStyle: navGradients.faq,
     },
-    {
-      id: "about",
-      labelKey: "nav.about",
-      label: isRTL ? "אודות" : "About",
-      icon: UsersIcon,
-      gradientStyle: navGradients.about,
-    },
   ];
 
   return (
