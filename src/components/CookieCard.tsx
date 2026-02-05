@@ -229,16 +229,16 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         </div>
         
         {/* Content section */}
-        <div className="p-3 pt-3 flex-1 text-center">
-          <h3 className="font-display text-base font-semibold text-foreground line-clamp-1 mb-2">
+        <div className="p-2 pt-1.5 flex-1 text-center">
+          <h3 className="font-display text-sm font-semibold text-foreground line-clamp-1 mb-1">
             {name}
           </h3>
-          <span className="text-amber-600 font-bold text-base block mb-2">{price}</span>
+          <span className="text-amber-600 font-bold text-sm block mb-1">{price}</span>
           <DialogTrigger asChild>
             <button
               type="button"
               aria-label={`${t('cookieCard.readMore')} ${name}`}
-              className="w-full text-center text-muted-foreground text-sm leading-relaxed line-clamp-2 hover:text-foreground transition-colors"
+              className="w-full text-center text-muted-foreground text-xs leading-relaxed line-clamp-2 hover:text-foreground transition-colors"
             >
               {description}
             </button>
