@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Minus, Plus, Trash2, ShoppingBag, User, LogIn, Mail, Package, Truck } from "lucide-react";
+import { ArrowRight, Minus, Plus, Trash2, ShoppingBag, User, LogIn, Mail, Package, Truck, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,6 +54,9 @@ const Cart = () => {
     address: "",
     city: "",
     notes: "",
+    cardNumber: "",
+    cardExpiry: "",
+    cardCvv: "",
   });
 
   // Calculate price with bundle discount
@@ -86,14 +89,15 @@ const Cart = () => {
   // Pre-fill form with profile data
   useEffect(() => {
     if (profile) {
-      setFormData({
+      setFormData(prev => ({
+        ...prev,
         fullName: profile.full_name || "",
         email: user?.email || "",
         phone: profile.phone || "",
         address: profile.address || "",
         city: profile.city || "",
         notes: profile.notes || "",
-      });
+      }));
     } else if (user) {
       setFormData(prev => ({
         ...prev,
@@ -536,6 +540,56 @@ const Cart = () => {
                           <Textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notes')} className="text-right resize-none text-xs min-h-[50px]" rows={1} maxLength={500} />
                         </>
                       )}
+                      {/* Credit Card fields */}
+                      <div className="border border-primary/30 rounded-lg p-2 space-y-1.5">
+                        <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-1">
+                          <CreditCard className="w-3.5 h-3.5" />
+                          {isRTL ? "פרטי תשלום" : "Payment Details"}
+                        </div>
+                        <Input 
+                          name="cardNumber" 
+                          value={formData.cardNumber} 
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '').slice(0, 16);
+                            const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+                            setFormData(prev => ({ ...prev, cardNumber: formatted }));
+                          }}
+                          placeholder={isRTL ? "מספר כרטיס" : "Card Number"}
+                          className="h-8 text-xs" 
+                          dir="ltr"
+                          maxLength={19}
+                        />
+                        <div className="grid grid-cols-2 gap-1.5">
+                          <Input 
+                            name="cardExpiry" 
+                            value={formData.cardExpiry} 
+                            onChange={(e) => {
+                              let value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                              if (value.length >= 2) {
+                                value = value.slice(0, 2) + '/' + value.slice(2);
+                              }
+                              setFormData(prev => ({ ...prev, cardExpiry: value }));
+                            }}
+                            placeholder="MM/YY"
+                            className="h-8 text-xs" 
+                            dir="ltr"
+                            maxLength={5}
+                          />
+                          <Input 
+                            name="cardCvv" 
+                            value={formData.cardCvv} 
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                              setFormData(prev => ({ ...prev, cardCvv: value }));
+                            }}
+                            placeholder="CVV"
+                            className="h-8 text-xs" 
+                            dir="ltr"
+                            maxLength={4}
+                            type="password"
+                          />
+                        </div>
+                      </div>
                       <div className="flex items-center justify-between bg-secondary/50 rounded-lg p-2">
                         <span className="font-semibold text-xs">{t('checkoutForm.totalPayment')}</span>
                         <span className="font-bold text-primary text-lg">₪{totalPrice}</span>
@@ -642,6 +696,56 @@ const Cart = () => {
                         <Textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder={t('checkoutForm.notes')} className="text-right resize-none text-xs min-h-[50px]" rows={1} maxLength={500} />
                       </>
                     )}
+                    {/* Credit Card fields */}
+                    <div className="border border-primary/30 rounded-lg p-2 space-y-1.5">
+                      <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-1">
+                        <CreditCard className="w-3.5 h-3.5" />
+                        {isRTL ? "פרטי תשלום" : "Payment Details"}
+                      </div>
+                      <Input 
+                        name="cardNumber" 
+                        value={formData.cardNumber} 
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '').slice(0, 16);
+                          const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+                          setFormData(prev => ({ ...prev, cardNumber: formatted }));
+                        }}
+                        placeholder={isRTL ? "מספר כרטיס" : "Card Number"}
+                        className="h-8 text-xs" 
+                        dir="ltr"
+                        maxLength={19}
+                      />
+                      <div className="grid grid-cols-2 gap-1.5">
+                        <Input 
+                          name="cardExpiry" 
+                          value={formData.cardExpiry} 
+                          onChange={(e) => {
+                            let value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                            if (value.length >= 2) {
+                              value = value.slice(0, 2) + '/' + value.slice(2);
+                            }
+                            setFormData(prev => ({ ...prev, cardExpiry: value }));
+                          }}
+                          placeholder="MM/YY"
+                          className="h-8 text-xs" 
+                          dir="ltr"
+                          maxLength={5}
+                        />
+                        <Input 
+                          name="cardCvv" 
+                          value={formData.cardCvv} 
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                            setFormData(prev => ({ ...prev, cardCvv: value }));
+                          }}
+                          placeholder="CVV"
+                          className="h-8 text-xs" 
+                          dir="ltr"
+                          maxLength={4}
+                          type="password"
+                        />
+                      </div>
+                    </div>
                     <div className="flex items-center justify-between bg-secondary/50 rounded-lg p-2">
                       <span className="font-semibold text-xs">{t('checkoutForm.totalPayment')}</span>
                       <span className="font-bold text-primary text-lg">₪{totalPrice}</span>
