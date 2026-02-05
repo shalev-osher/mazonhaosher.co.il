@@ -10,8 +10,7 @@ import OrderHistory from "@/components/OrderHistory";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import ScrollDownButton from "@/components/ScrollDownButton";
-import ScrollToTop from "@/components/ScrollToTop";
+import ScrollButtons from "@/components/ScrollButtons";
 import FloatingAuthButton from "@/components/FloatingAuthButton";
 import WelcomePopup from "@/components/WelcomePopup";
 
@@ -32,8 +31,7 @@ const Index = () => {
         <ContactSection />
       </main>
       <Footer />
-      <ScrollDownButton />
-      <ScrollToTop />
+      <ScrollButtons />
       <FloatingAuthButton />
       <WelcomePopup />
     </div>
