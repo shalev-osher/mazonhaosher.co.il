@@ -65,10 +65,10 @@ const FloatingAuthButton = () => {
                 <img 
                   src={avatarUrl} 
                   alt={firstName}
-                  className="w-6 h-6 rounded-full object-cover border border-white/30"
+                  className="w-5 h-5 rounded-full object-cover border border-white/30"
                 />
               ) : (
-                <UserCircleIcon size={24} />
+                <UserCircleIcon size={20} />
               )}
               <span className="text-xs font-medium text-white">
                 {firstName || (isRTL ? "חשבון" : "Account")}
