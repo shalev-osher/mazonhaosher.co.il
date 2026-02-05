@@ -206,7 +206,7 @@ const Header = () => {
         </nav>
       </div>
       {/* Made with love typewriter */}
-      <div className="bg-amber-100 dark:bg-amber-900/50 border-b border-amber-500/20">
+      <div className="bg-amber-100 dark:bg-amber-900 border-b border-amber-500/20">
         <div className="flex items-center justify-center py-1 h-7">
           <span className="text-xs md:text-sm text-muted-foreground">
             {typewriterText || '\u00A0'}
