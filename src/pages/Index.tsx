@@ -17,7 +17,7 @@ import WelcomePopup from "@/components/WelcomePopup";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background pb-14">
+    <div className="min-h-screen bg-background pb-28">
       <Header />
       <main>
         <Hero />
