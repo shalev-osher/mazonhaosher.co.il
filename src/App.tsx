@@ -16,6 +16,7 @@ import Cart from "./pages/Cart";
 import ThankYou from "./pages/ThankYou";
 import NotFound from "./pages/NotFound";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
+import FloatingSiteLock from "./components/FloatingSiteLock";
 
 const queryClient = new QueryClient();
 
