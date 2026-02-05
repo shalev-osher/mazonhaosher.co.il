@@ -33,19 +33,6 @@ const Footer = () => {
         <div className="w-full px-2">
           <div className="flex items-center justify-center gap-1">
             <TooltipProvider delayDuration={200}>
-              {/* SiteLock Badge */}
-              <button
-                onClick={() => window.open('https://www.sitelock.com/verify.php?site=mazonhaosher.co.il', 'SiteLock', 'width=600,height=600,left=160,top=170')}
-                className="transition-transform hover:scale-105"
-              >
-                <img 
-                  src="https://shield.sitelock.com/shield/mazonhaosher.co.il" 
-                  alt="SiteLock" 
-                  title="SiteLock" 
-                  className="h-7"
-                />
-              </button>
-              
               {/* Theme Toggle */}
               <ThemeToggle />
               
