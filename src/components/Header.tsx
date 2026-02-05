@@ -134,14 +134,14 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Safe area background - solid color to match theme-color */}
       <div className="absolute inset-x-0 top-0 h-[env(safe-area-inset-top)] bg-background" />
-      <div className="flex items-center justify-center px-1 py-0.5 pt-[calc(0.125rem+env(safe-area-inset-top))] bg-background border-b border-amber-500/30">
+      <div className="flex items-center justify-center px-1 py-0.5 pt-[env(safe-area-inset-top)] bg-background border-b border-amber-500/30">
         {/* Navigation bar */}
-        <nav className="flex items-center gap-1 md:gap-2">
+        <nav className="flex items-center gap-0">
           {/* Navigation items - matching footer sizing */}
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <div key={item.id} className="w-12 md:w-16 flex justify-center">
+              <div key={item.id} className="w-11 md:w-14 flex justify-center">
                 <button
                   onClick={() => scrollToSection(item.id)}
                   className={`flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group px-2 ${
