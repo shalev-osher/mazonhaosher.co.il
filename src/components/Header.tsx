@@ -158,7 +158,7 @@ const Header = () => {
                   >
                     <item.icon />
                   </div>
-                  <span className={`text-[10px] md:text-xs font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
+                  <span className={`text-[9px] md:text-[10px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
                 </button>
               </div>
             );
