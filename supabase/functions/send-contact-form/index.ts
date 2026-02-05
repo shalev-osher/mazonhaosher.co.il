@@ -100,7 +100,7 @@ const handler = async (req: Request): Promise<Response> => {
     const safePhone = escapeHtml(phone);
     const safeMessage = escapeHtml(message);
 
-    const ownerEmails = ["shalev@osher.cc", "almog21072013@gmail.com"];
+    const ownerEmails = ["almog@mazonhaosher.co.il", "almog21072013@gmail.com"];
 
     const emailHtml = `
       <!DOCTYPE html>
@@ -140,7 +140,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "מזון האושר <noreply@mazonhaosher.lovable.app>",
+      from: "מזון האושר <noreply@mazonhaosher.co.il>",
       to: ownerEmails,
       subject: `📬 הודעה חדשה מ${safeName}`,
       html: emailHtml,
