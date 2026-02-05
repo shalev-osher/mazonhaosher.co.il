@@ -5,21 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Search, X, ArrowUpDown, Star, Sparkles, RotateCcw, LayoutGrid, List, Heart, Trash2, Cookie } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLanguage } from "@/contexts/LanguageContext";
-import cookieKinder from "@/assets/cookie-kinder.jpg";
-import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
-import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
-import cookieConfetti from "@/assets/cookie-confetti.jpg";
-import cookieLotus from "@/assets/cookie-lotus.jpg";
-import cookiePistachio from "@/assets/cookie-pistachio.jpg";
-import cookiePretzel from "@/assets/cookie-pretzel.jpg";
-import cookieChocolate from "@/assets/cookie-chocolate.jpg";
-import cookieOreo from "@/assets/cookie-oreo.jpg";
-import cookiePeanut from "@/assets/cookie-peanut.jpg";
-import cookieLemon from "@/assets/cookie-lemon.jpg";
-import cookieMacadamia from "@/assets/cookie-macadamia.jpg";
-import cookieOatmeal from "@/assets/cookie-oatmeal.jpg";
-import cookieSaltedCaramel from "@/assets/cookie-salted-caramel.jpg";
-import cookieTahini from "@/assets/cookie-tahini.jpg";
+
+const placeholderImage = "/placeholder.svg";
 
 type SortOption = "default" | "name" | "price";
 type Tag = "מומלץ" | "חדש" | null;

@@ -13,16 +13,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 
-import cookieLotus from "@/assets/cookie-lotus.jpg";
-import cookieKinder from "@/assets/cookie-kinder.jpg";
-import cookieKinderBueno from "@/assets/cookie-kinderbueno.jpg";
-import cookieRedVelvet from "@/assets/cookie-redvelvet.jpg";
-import cookiePistachio from "@/assets/cookie-pistachio.jpg";
-import cookieOreo from "@/assets/cookie-oreo.jpg";
-import cookiePeanut from "@/assets/cookie-peanut.jpg";
-import cookieSaltedCaramel from "@/assets/cookie-salted-caramel.jpg";
-import cookieChocolate from "@/assets/cookie-chocolate.jpg";
-import cookieConfetti from "@/assets/cookie-confetti.jpg";
+const placeholderImage = "/placeholder.svg";
 
 // SVG icons with inline styles to prevent Tailwind purging
 const GiftIcon = ({ size = 28 }: { size?: number }) => (
