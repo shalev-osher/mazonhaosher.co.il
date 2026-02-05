@@ -330,7 +330,7 @@ const Cart = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 md:items-start">
               {/* Cart items */}
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold mb-4">{isRTL ? "פריטים בעגלה" : "Cart Items"}</h2>
@@ -412,10 +412,15 @@ const Cart = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Checkout section - Mobile only (after price summary) */}
+                <div className="md:hidden">
+                  <CheckoutSection />
+                </div>
               </div>
 
-              {/* Checkout section */}
-              <div className="bg-secondary/30 rounded-2xl p-4">
+              {/* Checkout section - Desktop only (side by side) */}
+              <div className="hidden md:block bg-secondary/30 rounded-2xl p-4">
                 {!showCheckoutForm ? (
                   // Continue to checkout button
                   <div className="flex flex-col items-center justify-center py-8 space-y-4">
