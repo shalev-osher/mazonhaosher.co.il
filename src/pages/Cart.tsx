@@ -44,6 +44,7 @@ const Cart = () => {
   const isDarkMode = theme === 'dark';
   const [isLoading, setIsLoading] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
