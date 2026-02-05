@@ -188,7 +188,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         className="group bg-card rounded-xl overflow-hidden shadow-soft flex flex-col cursor-pointer border-2 border-amber-500/30"
       >
         {/* Image section */}
-        <div className="p-3 pb-0 relative">
+        <div className="p-2 pb-0 relative">
           {/* Favorite Button */}
           {onToggleFavorite && (
             <button
@@ -216,7 +216,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           )}
           {/* Image opens dialog */}
           <DialogTrigger asChild>
-            <div className="aspect-square overflow-hidden relative rounded-md cursor-pointer bg-card">
+            <div className="aspect-[4/3] overflow-hidden relative rounded-md cursor-pointer bg-card">
               <img
                 src={image}
                 alt={name}
