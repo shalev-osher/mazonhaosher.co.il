@@ -1,6 +1,14 @@
-import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
+
+// SVG icon with inline styles to prevent Tailwind purging
+const ChevronDownIcon = () => (
+  <svg style={{ width: '24px', height: '24px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m6 9 6 6 6-6"/>
+  </svg>
+);
+
+const scrollButtonGradient = { background: 'linear-gradient(to bottom right, #f59e0b, #ea580c)' };
 
 const sections = [
   "cookies",
@@ -50,14 +58,15 @@ const ScrollDownButton = () => {
       onClick={scrollToNextSection}
       className={cn(
         "fixed bottom-[5.25rem] md:bottom-[5.5rem] z-40 w-10 h-10 rounded-full",
-        "bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg",
+        "text-white shadow-lg",
         "flex items-center justify-center",
         "hover:bg-amber-600 transition-colors duration-200",
         isRTL ? "left-4" : "right-4"
       )}
+      style={scrollButtonGradient}
       aria-label={isRTL ? "גלול למטה" : "Scroll down"}
     >
-      <ChevronDown className="w-6 h-6" />
+      <ChevronDownIcon />
     </button>
   );
 };

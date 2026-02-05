@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gift, Plus, Minus, ShoppingBag, X, Package } from "lucide-react";
+import { Plus, Minus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,6 +23,35 @@ import cookiePeanut from "@/assets/cookie-peanut.jpg";
 import cookieSaltedCaramel from "@/assets/cookie-salted-caramel.jpg";
 import cookieChocolate from "@/assets/cookie-chocolate.jpg";
 import cookieConfetti from "@/assets/cookie-confetti.jpg";
+
+// SVG icons with inline styles to prevent Tailwind purging
+const GiftIcon = ({ size = 28 }: { size?: number }) => (
+  <svg style={{ width: `${size}px`, height: `${size}px`, color: 'white', fill: 'rgba(255,255,255,0.2)' }} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="8" width="18" height="4" rx="1"/>
+    <path d="M12 8v13"/>
+    <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+    <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+  </svg>
+);
+
+const PackageIcon = () => (
+  <svg style={{ width: '16px', height: '16px', color: 'white', fill: 'rgba(255,255,255,0.2)' }} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m7.5 4.27 9 5.15"/>
+    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+    <path d="m3.3 7 8.7 5 8.7-5"/>
+    <path d="M12 22V12"/>
+  </svg>
+);
+
+const ShoppingBagIcon = () => (
+  <svg style={{ width: '20px', height: '20px' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+    <path d="M3 6h18"/>
+    <path d="M16 10a4 4 0 0 1-8 0"/>
+  </svg>
+);
+
+const giftGradientStyle = { background: 'linear-gradient(to bottom right, #a855f7, #7c3aed)' };
 
 const availableCookiesData = {
   he: [
@@ -177,8 +206,8 @@ const GiftPackageBuilder = () => {
                 <button
                   className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20 hover:border-purple-500/40 hover:shadow-lg transition-all duration-300 text-center group"
                 >
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform shadow-lg">
-                    <Gift className="h-7 w-7 text-white fill-white/20" />
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform shadow-lg" style={giftGradientStyle}>
+                    <GiftIcon size={28} />
                   </div>
                   <h3 className="font-display text-lg font-bold text-purple-600 mb-1">{t(pkg.nameKey)}</h3>
                   <p className="text-muted-foreground text-xs mb-2">{t(pkg.descKey)}</p>
@@ -193,8 +222,8 @@ const GiftPackageBuilder = () => {
               <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" dir={isRTL ? "rtl" : "ltr"}>
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl text-purple-600 flex items-center gap-2">
-                    <div className="p-2 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl shadow-md">
-                      <Gift className="h-5 w-5 text-white fill-white/20" />
+                    <div className="p-2 rounded-xl shadow-md" style={giftGradientStyle}>
+                      <GiftIcon size={20} />
                     </div>
                     {t(pkg.nameKey)} - {pkg.count} {t('gift.cookies')}
                   </DialogTitle>
@@ -234,8 +263,8 @@ const GiftPackageBuilder = () => {
                   {selectedCookies.length > 0 && (
                     <div className="bg-card rounded-2xl p-4 border border-purple-500/20">
                       <h4 className="font-semibold mb-3 flex items-center gap-2">
-                        <div className="p-1.5 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg shadow-sm">
-                          <Package className="h-4 w-4 text-white fill-white/20" />
+                        <div className="p-1.5 rounded-lg shadow-sm" style={giftGradientStyle}>
+                          <PackageIcon />
                         </div>
                         {t('gift.yourCookies')}
                       </h4>
@@ -315,7 +344,7 @@ const GiftPackageBuilder = () => {
                     size="lg"
                     className="w-full bg-purple-500 hover:bg-purple-600"
                   >
-                    <ShoppingBag className="h-5 w-5 ml-2" />
+                    <span className="ml-2"><ShoppingBagIcon /></span>
                     {t('gift.addToCart')}
                   </Button>
                 </div>

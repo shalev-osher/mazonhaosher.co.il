@@ -1,8 +1,19 @@
-import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "./LanguageToggle";
 import ThemeToggle from "./ThemeToggle";
+
+// SVG icon with inline styles to prevent Tailwind purging
+const ShoppingBagIcon = () => (
+  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+    <path d="M3 6h18"/>
+    <path d="M16 10a4 4 0 0 1-8 0"/>
+  </svg>
+);
+
+const cartGradientStyle = { background: 'linear-gradient(to bottom right, #f59e0b, #ea580c)' };
+
 const Footer = () => {
   const {
     setIsCartOpen
@@ -28,8 +39,8 @@ const Footer = () => {
             
             {/* Cart */}
             <button onClick={() => setIsCartOpen(true)} className="w-14 md:w-16 flex flex-col items-center gap-0 py-0.5 md:py-1 transition-all duration-300 rounded-lg group hover:bg-muted">
-              <div className="p-1 md:p-1.5 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-md group-hover:scale-105 transition-all duration-300">
-                <ShoppingBag className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
+              <div className="p-1 md:p-1.5 rounded-xl shadow-md group-hover:scale-105 transition-all duration-300" style={cartGradientStyle}>
+                <ShoppingBagIcon />
               </div>
               <span className="text-[9px] md:text-[11px] font-medium text-muted-foreground group-hover:text-foreground truncate">
                 {isRTL ? 'עגלה' : 'Cart'}

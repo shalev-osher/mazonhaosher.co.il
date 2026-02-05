@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Mail, Lock, User, Phone, Loader2, Eye, EyeOff, Shield, Smartphone, Sparkles } from "lucide-react";
+import { Lock, User, Loader2, Eye, EyeOff, Shield, Smartphone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,6 +15,37 @@ import { lovable } from "@/integrations/lovable";
 import { z } from "zod";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+// SVG icons with inline styles to prevent Tailwind purging
+const MailIconWithGradient = () => (
+  <div className="p-2 rounded-full" style={{ background: 'linear-gradient(to bottom right, #3b82f6, #06b6d4)' }}>
+    <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="16" x="2" y="4" rx="2"/>
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+    </svg>
+  </div>
+);
+
+const PhoneIconWithGradient = () => (
+  <div className="p-2 rounded-full" style={{ background: 'linear-gradient(to bottom right, #22c55e, #10b981)' }}>
+    <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+  </div>
+);
+
+const PhoneIconSmall = () => (
+  <svg style={{ width: '12px', height: '12px' }} className="text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+  </svg>
+);
+
+const MailIconSmall = () => (
+  <svg style={{ width: '12px', height: '12px' }} className="text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="20" height="16" x="2" y="4" rx="2"/>
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+  </svg>
+);
 
 // Trusted devices storage key
 const TRUSTED_DEVICES_KEY = "mazon_haosher_trusted_devices";
@@ -685,9 +716,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 disabled={isLoading}
                 className="w-full h-12 text-sm gap-3 auth-oauth-btn border-2 justify-start px-4"
               >
-                <div className="p-2 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500">
-                  <Mail className="h-4 w-4 text-white" />
-                </div>
+                <MailIconWithGradient />
                 <div className="text-right flex-1">
                   <div className="font-medium">{isRTL ? "קוד למייל" : "Email code"}</div>
                   <div className="text-xs text-muted-foreground" dir="ltr">{formData.email}</div>
@@ -702,9 +731,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 disabled={isLoading}
                 className="w-full h-12 text-sm gap-3 auth-oauth-btn border-2 justify-start px-4"
               >
-                <div className="p-2 rounded-full bg-gradient-to-br from-green-500 to-emerald-500">
-                  <Phone className="h-4 w-4 text-white" />
-                </div>
+                <PhoneIconWithGradient />
                 <div className="text-right flex-1">
                   <div className="font-medium">{isRTL ? "קוד ב-SMS" : "SMS code"}</div>
                   <div className="text-xs text-muted-foreground">{isRTL ? "הזן מספר טלפון" : "Enter phone number"}</div>
@@ -716,7 +743,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               <div className="space-y-3 pt-2 border-t border-border">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
-                    <Phone className="h-3 w-3 text-primary" />
+                    <PhoneIconSmall />
                     {isRTL ? "מספר טלפון" : "Phone number"}
                   </label>
                   <Input
@@ -919,7 +946,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   
                   <div className="space-y-1.5">
                     <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
-                      <Phone className="h-3 w-3 text-primary" />
+                      <PhoneIconSmall />
                       {t('auth.phoneOptional')}
                     </label>
                     <Input
@@ -939,7 +966,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               
               <div className="space-y-1.5">
                 <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
-                  <Mail className="h-3 w-3 text-primary" />
+                  <MailIconSmall />
                   {t('auth.emailLabel')}
                 </label>
                 <Input
