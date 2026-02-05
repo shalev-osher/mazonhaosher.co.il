@@ -22,7 +22,7 @@ const Footer = () => {
   const itemCount = getTotalItems();
   return (
     <>
-      <footer className="fixed bottom-0 left-0 right-0 z-40 py-1 md:py-1.5 bg-background border-t border-amber-500/30">
+      <footer className="fixed bottom-0 left-0 right-0 z-40 py-1 bg-background border-t border-amber-500/30">
         <div className="w-full px-4 md:px-8">
           <div className="flex items-center justify-center gap-2 md:gap-4">
             {/* Theme Toggle */}
