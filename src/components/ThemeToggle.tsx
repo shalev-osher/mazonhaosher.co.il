@@ -63,7 +63,7 @@ const ThemeToggle = () => {
       aria-label="Toggle theme"
     >
       <div 
-        className="p-1.5 md:p-2 rounded-xl transition-all duration-300 group-hover:scale-105 shadow-md"
+        className="p-1 md:p-1.5 rounded-lg transition-all duration-300 group-hover:scale-105 shadow-sm"
         style={gradientStyles[mode]}
       >
         {getIcon()}
