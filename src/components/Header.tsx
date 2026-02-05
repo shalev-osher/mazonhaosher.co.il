@@ -101,6 +101,13 @@ const Header = () => {
       gradientStyle: navGradients.home,
     },
     {
+      id: "cookies",
+      labelKey: "nav.cookies",
+      label: isRTL ? "קולקציה" : "Collection",
+      icon: CookieIcon,
+      gradientStyle: navGradients.cookies,
+    },
+    {
       id: "gift-packages",
       labelKey: "gift.title",
       label: isRTL ? "מארזים" : "Packages",
@@ -120,6 +127,13 @@ const Header = () => {
       label: isRTL ? "שאלות" : "FAQ",
       icon: CircleHelpIcon,
       gradientStyle: navGradients.faq,
+    },
+    {
+      id: "about",
+      labelKey: "nav.about",
+      label: isRTL ? "אודות" : "About",
+      icon: UsersIcon,
+      gradientStyle: navGradients.about,
     },
   ];
 
