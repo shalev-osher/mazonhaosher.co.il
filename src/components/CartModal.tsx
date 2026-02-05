@@ -22,7 +22,7 @@ const BUNDLE_SIZE = 4;
 const REGULAR_PRICE = 25;
 
 const CartModal = ({ isOpen, onClose }: CartModalProps) => {
-  const { items, updateQuantity, removeFromCart, getTotalItems } = useCart();
+  const { items, updateQuantity, removeFromCart, getTotalItems, orderNumber } = useCart();
   const { t } = useLanguage();
   const [showCheckout, setShowCheckout] = useState(false);
 
@@ -58,9 +58,16 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
       <div className="relative bg-background rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[85vh] flex flex-col animate-scale-in border-2 border-teal-500/30">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-teal-500/20">
-          <h2 className="text-2xl font-display font-bold text-teal-600">
-            {showCheckout ? t('cartModal.completing') : t('cartModal.title')}
-          </h2>
+          <div className="flex flex-col">
+            <h2 className="text-2xl font-display font-bold text-teal-600">
+              {showCheckout ? t('cartModal.completing') : t('cartModal.title')}
+            </h2>
+            {orderNumber && items.length > 0 && (
+              <span className="text-sm text-muted-foreground mt-1">
+                {t('cartModal.orderNumber')}: <span className="font-semibold text-primary">{orderNumber}</span>
+              </span>
+            )}
+          </div>
           <button 
             onClick={handleClose}
             className="p-2 hover:bg-teal-500/20 rounded-full transition-colors"

@@ -266,6 +266,7 @@ const translations: Record<Language, Record<string, string>> = {
     'cartModal.total': 'סה״כ:',
     'cartModal.continue': 'המשך להזמנה',
     'cartModal.maxItems': 'מקסימום 6 יחידות לפריט',
+    'cartModal.orderNumber': 'מספר הזמנה',
     
     // Checkout Form
     'checkoutForm.back': 'חזרה לעגלה',
@@ -776,6 +777,7 @@ const translations: Record<Language, Record<string, string>> = {
     'cartModal.total': 'Total:',
     'cartModal.continue': 'Continue to Order',
     'cartModal.maxItems': 'Maximum 6 items per product',
+    'cartModal.orderNumber': 'Order number',
     
     // Checkout Form
     'checkoutForm.back': 'Back to cart',
