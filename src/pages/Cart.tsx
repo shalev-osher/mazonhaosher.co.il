@@ -542,9 +542,17 @@ const Cart = () => {
                       )}
                       {/* Credit Card fields */}
                       <div className="border border-primary/30 rounded-lg p-2 space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-1">
-                          <CreditCard className="w-3.5 h-3.5" />
-                          {isRTL ? "פרטי תשלום" : "Payment Details"}
+                        <div className="flex items-center justify-between text-xs font-medium text-primary mb-1">
+                          <div className="flex items-center gap-1.5">
+                            <CreditCard className="w-3.5 h-3.5" />
+                            {isRTL ? "פרטי תשלום" : "Payment Details"}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <svg className="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                            </svg>
+                            <span className="text-[10px] text-emerald-600 font-medium">SSL</span>
+                          </div>
                         </div>
                         <Input 
                           name="cardNumber" 
@@ -597,6 +605,27 @@ const Cart = () => {
                       <Button onClick={handleSubmitOrder} disabled={isLoading} className="w-full h-9 text-xs gap-1.5">
                         {isLoading ? t('checkoutForm.sending') : (<>{isRTL ? "שלח הזמנה" : "Submit Order"}<Mail className="w-3.5 h-3.5" /></>)}
                       </Button>
+                      {/* Security Trust Badges */}
+                      <div className="flex items-center justify-center gap-3 pt-2 border-t border-primary/10">
+                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                          <svg className="w-3 h-3 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                          </svg>
+                          <span>{isRTL ? "מאובטח" : "Secure"}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                          <svg className="w-3 h-3 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                          </svg>
+                          <span>{isRTL ? "מוגן" : "Protected"}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                          <svg className="w-3 h-3 text-amber-500" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                          </svg>
+                          <span>{isRTL ? "אמין" : "Trusted"}</span>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -698,9 +727,17 @@ const Cart = () => {
                     )}
                     {/* Credit Card fields */}
                     <div className="border border-primary/30 rounded-lg p-2 space-y-1.5">
-                      <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-1">
-                        <CreditCard className="w-3.5 h-3.5" />
-                        {isRTL ? "פרטי תשלום" : "Payment Details"}
+                      <div className="flex items-center justify-between text-xs font-medium text-primary mb-1">
+                        <div className="flex items-center gap-1.5">
+                          <CreditCard className="w-3.5 h-3.5" />
+                          {isRTL ? "פרטי תשלום" : "Payment Details"}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <svg className="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                          </svg>
+                          <span className="text-[10px] text-emerald-600 font-medium">SSL</span>
+                        </div>
                       </div>
                       <Input 
                         name="cardNumber" 
@@ -753,6 +790,27 @@ const Cart = () => {
                     <Button onClick={handleSubmitOrder} disabled={isLoading} className="w-full h-9 text-xs gap-1.5">
                       {isLoading ? t('checkoutForm.sending') : (<>{isRTL ? "שלח הזמנה" : "Submit Order"}<Mail className="w-3.5 h-3.5" /></>)}
                     </Button>
+                    {/* Security Trust Badges */}
+                    <div className="flex items-center justify-center gap-3 pt-2 border-t border-primary/10">
+                      <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                        <svg className="w-3 h-3 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                        <span>{isRTL ? "מאובטח" : "Secure"}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                        <svg className="w-3 h-3 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                        </svg>
+                        <span>{isRTL ? "מוגן" : "Protected"}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                        <svg className="w-3 h-3 text-amber-500" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <span>{isRTL ? "אמין" : "Trusted"}</span>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
