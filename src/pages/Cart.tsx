@@ -324,8 +324,7 @@ const Cart = () => {
             // Empty cart
             <div className="text-center py-16 bg-background rounded-2xl">
               <ShoppingBag className="w-20 h-20 mx-auto text-muted-foreground/50 mb-6" />
-              <p className="text-muted-foreground text-xl mb-2">{t('cartModal.empty')}</p>
-              <p className="text-muted-foreground text-sm mb-6">{t('cartModal.addCookies')}</p>
+              <p className="text-muted-foreground text-xl mb-6">{t('cartModal.empty')}</p>
               <Button onClick={() => navigate("/")} variant="outline">
                 {isRTL ? "חזרה לחנות" : "Back to Shop"}
               </Button>
