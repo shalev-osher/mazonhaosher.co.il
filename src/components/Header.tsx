@@ -134,33 +134,24 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Safe area background - solid color to match theme-color */}
       <div className="absolute inset-x-0 top-0 h-[env(safe-area-inset-top)] bg-background" />
-      <div className="flex items-center justify-center px-1 py-0.5 pt-[env(safe-area-inset-top)] bg-background border-b border-amber-500/30">
+      <div className="flex items-center justify-center px-2 py-1 pt-[calc(0.25rem+env(safe-area-inset-top))] bg-background border-b border-amber-500/30">
         {/* Navigation bar */}
-        <nav className="flex items-center gap-0">
+        <nav className="flex items-center gap-1">
           {/* Navigation items - matching footer sizing */}
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <div key={item.id} className="w-10 md:w-12 flex justify-center">
-                <button
-                  onClick={() => scrollToSection(item.id)}
-                  className={`flex flex-col items-center gap-0 py-0.5 transition-all duration-300 rounded-lg group px-1 ${
-                    isActive 
-                      ? "bg-amber-500/20" 
-                      : "hover:bg-muted"
-                  }`}
-                >
-                  <div 
-                    className={`p-1 rounded-full transition-all duration-300 shadow-sm ${
-                    isActive ? "scale-110" : "group-hover:scale-105"
-                    }`}
-                    style={item.gradientStyle}
-                  >
-                    <item.icon />
-                  </div>
-                  <span className={`text-[8px] md:text-[9px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
-                </button>
-              </div>
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`p-2.5 rounded-full shadow-md hover:scale-105 transition-all duration-300 ${
+                  isActive ? "ring-2 ring-amber-500/50" : ""
+                }`}
+                style={item.gradientStyle}
+                aria-label={item.label}
+              >
+                <item.icon />
+              </button>
             );
           })}
         </nav>
