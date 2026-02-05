@@ -1,6 +1,12 @@
-import { Clock } from "lucide-react";
+import { Clock, Send, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
 
 // Waze official colorful icon component
 const WazeIcon = ({ className }: { className?: string }) => (
@@ -21,19 +27,66 @@ const WazeIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "שם חייב להכיל לפחות 2 תווים").max(100, "שם ארוך מדי"),
+  phone: z.string().regex(/^[0-9\-\s]{9,15}$/, "מספר טלפון לא תקין"),
+  message: z.string().trim().min(10, "הודעה חייבת להכיל לפחות 10 תווים").max(1000, "הודעה ארוכה מדי"),
+});
+
 const ContactSection = () => {
   const { t, isRTL } = useLanguage();
+  const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const openWaze = () => {
-    // Waze deep link with address search for Sderot Kadesh 39, Ashkelon
     window.open("https://waze.com/ul?q=שדרות%20קדש%2039%20אשקלון&navigate=yes", "_blank");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const validation = contactSchema.safeParse(formData);
+    if (!validation.success) {
+      toast({
+        title: isRTL ? "שגיאה" : "Error",
+        description: validation.error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-form", {
+        body: formData,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: isRTL ? "נשלח בהצלחה!" : "Sent successfully!",
+        description: isRTL ? "נחזור אליך בהקדם" : "We'll get back to you soon",
+      });
+
+      setFormData({ name: "", phone: "", message: "" });
+    } catch (error: any) {
+      console.error("Contact form error:", error);
+      toast({
+        title: isRTL ? "שגיאה" : "Error",
+        description: isRTL ? "שגיאה בשליחת ההודעה, נסו שוב" : "Error sending message, please try again",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
     <section id="contact" className="py-6 relative overflow-hidden">
-      {/* Decorative gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-red-500" />
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 0% 0%, hsl(40 90% 55%) 0%, transparent 40%), radial-gradient(circle at 100% 100%, hsl(25 90% 50% / 0.5) 0%, transparent 50%)' }} />
+      {/* Decorative gradient background - Changed from orange to teal/emerald */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-500 via-emerald-500 to-cyan-600" />
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 0% 0%, hsl(160 90% 55%) 0%, transparent 40%), radial-gradient(circle at 100% 100%, hsl(175 90% 50% / 0.5) 0%, transparent 50%)' }} />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -41,6 +94,45 @@ const ContactSection = () => {
           <h2 className="font-display text-xl md:text-2xl font-bold mb-4">
             {t('contact.title')}
           </h2>
+
+          {/* Contact Form */}
+          <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
+            <div className="grid gap-3">
+              <Input
+                placeholder={isRTL ? "שם מלא" : "Full Name"}
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="bg-white/90 text-foreground placeholder:text-muted-foreground border-0"
+                disabled={isSubmitting}
+              />
+              <Input
+                placeholder={isRTL ? "טלפון" : "Phone"}
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="bg-white/90 text-foreground placeholder:text-muted-foreground border-0"
+                disabled={isSubmitting}
+              />
+              <Textarea
+                placeholder={isRTL ? "הודעה..." : "Message..."}
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className="bg-white/90 text-foreground placeholder:text-muted-foreground border-0 min-h-[80px]"
+                disabled={isSubmitting}
+              />
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-white text-emerald-600 hover:bg-white/90 font-bold"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="w-4 h-4 animate-spin mr-2 rtl:mr-0 rtl:ml-2" />
+                ) : (
+                  <Send className="w-4 h-4 mr-2 rtl:mr-0 rtl:ml-2" />
+                )}
+                {isRTL ? "שלח הודעה" : "Send Message"}
+              </Button>
+            </div>
+          </form>
 
           {/* Map */}
           <div className="rounded-xl overflow-hidden shadow-lg mb-3 border-2 border-white/20">
