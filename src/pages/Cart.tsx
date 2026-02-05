@@ -124,20 +124,23 @@ const Cart = () => {
       return false;
     }
 
-    try {
-      addressSchema.parse(formData.address.trim());
-    } catch (error) {
-      const message = getValidationError(error);
-      toast.error(message || t('checkoutForm.orderError'));
-      return false;
-    }
+    // Only validate address fields if delivery is selected
+    if (deliveryMethod === "delivery") {
+      try {
+        addressSchema.parse(formData.address.trim());
+      } catch (error) {
+        const message = getValidationError(error);
+        toast.error(message || t('checkoutForm.orderError'));
+        return false;
+      }
 
-    try {
-      citySchema.parse(formData.city.trim());
-    } catch (error) {
-      const message = getValidationError(error);
-      toast.error(message || t('checkoutForm.orderError'));
-      return false;
+      try {
+        citySchema.parse(formData.city.trim());
+      } catch (error) {
+        const message = getValidationError(error);
+        toast.error(message || t('checkoutForm.orderError'));
+        return false;
+      }
     }
 
     if (formData.notes) {
