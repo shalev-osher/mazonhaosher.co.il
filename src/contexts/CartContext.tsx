@@ -35,6 +35,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
   const addToCart = (item: Omit<CartItem, "quantity">) => {
+    // Generate order number when first item is added
+    if (items.length === 0 && !orderNumber) {
+      setOrderNumber(generateOrderNumber());
+    }
+    
     setItems((prev) => {
       const existing = prev.find((i) => i.name === item.name);
       if (existing) {
