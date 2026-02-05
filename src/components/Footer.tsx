@@ -26,7 +26,7 @@ const Footer = () => {
         <div className="w-full px-4 md:px-8">
           <div className="flex items-center justify-center gap-2 md:gap-4">
             {/* Theme Toggle */}
-            <div className="w-14 md:w-20 flex justify-center">
+            <div className="w-12 md:w-16 flex justify-center">
               <ThemeToggle />
             </div>
             
