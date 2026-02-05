@@ -406,10 +406,10 @@ const CookiesSection = () => {
           </p>
         </div>
 
-        {/* All Controls - Compact Layout */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
+        {/* Minimal Controls */}
+        <div className="flex items-center justify-center gap-3 mb-4">
           {/* Search */}
-          <div className="relative w-48">
+          <div className="relative w-52">
             <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground`} />
             <Input
               type="text"
@@ -428,55 +428,7 @@ const CookiesSection = () => {
             )}
           </div>
 
-          {/* Divider */}
-          <div className="w-px h-6 bg-border/50" />
-
-          {/* Category Filter */}
-          {categories.map((category) => (
-            <Button
-              key={category.key}
-              onClick={() => handleCategoryChange(category.key)}
-              variant={activeCategoryKey === category.key ? "default" : "ghost"}
-              size="sm"
-              className={`rounded-full px-3 h-7 text-xs transition-all duration-200 ${
-                activeCategoryKey === category.key 
-                  ? "bg-amber-500 text-white hover:bg-amber-600" 
-                  : "bg-background hover:bg-amber-100 dark:hover:bg-amber-900/30"
-              }`}
-            >
-              {isRTL ? category.he : category.en}
-              <span className={`${isRTL ? 'mr-1' : 'ml-1'} text-[10px] opacity-70`}>
-                {getCategoryCount(category.key)}
-              </span>
-            </Button>
-          ))}
-
-          {/* Divider */}
-          <div className="w-px h-6 bg-border/50" />
-
-          {/* Tags */}
-          <button
-            onClick={() => setActiveTag("מומלץ")}
-            className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
-              activeTag === "מומלץ"
-                ? "bg-amber-500 text-white"
-                : "bg-background text-muted-foreground hover:text-foreground hover:bg-amber-100 dark:hover:bg-amber-900/30"
-            }`}
-            title={isRTL ? "מומלץ" : "Recommended"}
-          >
-            <Star className="h-3 w-3" />
-          </button>
-          <button
-            onClick={() => setActiveTag("חדש")}
-            className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
-              activeTag === "חדש"
-                ? "bg-emerald-500 text-white"
-                : "bg-background text-muted-foreground hover:text-foreground hover:bg-emerald-100 dark:hover:bg-emerald-900/30"
-            }`}
-            title={isRTL ? "חדש" : "New"}
-          >
-            <Sparkles className="h-3 w-3" />
-          </button>
+          {/* Favorites */}
           <button
             onClick={() => {
               setIsTransitioning(true);
@@ -485,72 +437,16 @@ const CookiesSection = () => {
                 setIsTransitioning(false);
               }, 200);
             }}
-            className={`flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full transition-all ${
+            className={`flex items-center gap-1 text-xs px-3 py-1.5 h-8 rounded-full transition-all ${
               activeTag === "מועדפים"
                 ? "bg-rose-500 text-white"
-                : "bg-background text-muted-foreground hover:text-foreground hover:bg-rose-100 dark:hover:bg-rose-900/30"
+                : "bg-background text-muted-foreground hover:text-foreground hover:bg-rose-100 dark:hover:bg-rose-900/30 border border-rose-500/50"
             }`}
             title={isRTL ? "מועדפים" : "Favorites"}
           >
-            <Heart className={`h-3 w-3 ${favorites.length > 0 ? "fill-current" : ""}`} />
+            <Heart className={`h-3.5 w-3.5 ${favorites.length > 0 ? "fill-current" : ""}`} />
             {favorites.length > 0 && <span>{favorites.length}</span>}
           </button>
-
-          {/* Divider */}
-          <div className="w-px h-6 bg-border/50" />
-
-          {/* Sort */}
-          <div className="flex items-center gap-1 bg-background rounded-full px-2 py-1 h-7 border border-border">
-            <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
-            {sortOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => setSortBy(option.value)}
-                className={`text-xs px-2 py-0.5 rounded-full transition-all ${
-                  sortBy === option.value
-                    ? "bg-sky-500 text-white"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {isRTL ? option.he : option.en}
-              </button>
-            ))}
-          </div>
-
-          {/* View Toggle */}
-          <div className="flex items-center bg-card/80 rounded-full p-0.5 h-7">
-            <button
-              onClick={() => handleViewModeChange("grid")}
-              className={`p-1.5 rounded-full transition-all ${
-                viewMode === "grid"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <LayoutGrid className="h-3 w-3" />
-            </button>
-            <button
-              onClick={() => handleViewModeChange("list")}
-              className={`p-1.5 rounded-full transition-all ${
-                viewMode === "list"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <List className="h-3 w-3" />
-            </button>
-          </div>
-
-          {/* Reset */}
-          {hasActiveFilters && (
-            <button
-              onClick={resetAllFilters}
-              className="flex items-center gap-1 text-xs px-2.5 py-1 h-7 rounded-full bg-card/80 text-muted-foreground hover:text-primary transition-all"
-              title={isRTL ? "איפוס" : "Reset"}
-            >
-              <RotateCcw className="h-3 w-3" />
-            </button>
-          )}
         </div>
 
         <div 
