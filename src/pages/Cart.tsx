@@ -54,6 +54,9 @@ const Cart = () => {
     address: "",
     city: "",
     notes: "",
+    cardNumber: "",
+    cardExpiry: "",
+    cardCvv: "",
   });
 
   // Calculate price with bundle discount
