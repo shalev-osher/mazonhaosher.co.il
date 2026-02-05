@@ -48,7 +48,7 @@ const Footer = () => {
             </div>
 
             {/* Language Toggle */}
-            <div className="w-14 md:w-20 flex justify-center">
+            <div className="w-12 md:w-16 flex justify-center">
               <LanguageToggle />
             </div>
 
