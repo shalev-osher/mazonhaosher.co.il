@@ -1,6 +1,5 @@
 import { Button } from "./ui/button";
 import { useState, useEffect, useCallback } from "react";
-import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
