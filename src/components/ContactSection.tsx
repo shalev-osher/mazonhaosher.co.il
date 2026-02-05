@@ -1,4 +1,4 @@
-import { Clock, Send, Loader2 } from "lucide-react";
+import { Clock, Send, Loader2, CheckCircle2, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +37,7 @@ const ContactSection = () => {
   const { t, isRTL } = useLanguage();
   const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   
   const openWaze = () => {
     window.open("https://waze.com/ul?q=שדרות%20קדש%2039%20אשקלון&navigate=yes", "_blank");
@@ -64,12 +65,11 @@ const ContactSection = () => {
 
       if (error) throw error;
 
-      toast({
-        title: isRTL ? "נשלח בהצלחה!" : "Sent successfully!",
-        description: isRTL ? "נחזור אליך בהקדם" : "We'll get back to you soon",
-      });
-
+      setShowSuccess(true);
       setFormData({ name: "", phone: "", message: "" });
+      
+      // Hide success after 5 seconds
+      setTimeout(() => setShowSuccess(false), 5000);
     } catch (error: any) {
       console.error("Contact form error:", error);
       toast({
