@@ -102,6 +102,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     const ownerEmails = ["almog@mazonhaosher.co.il", "almog21072013@gmail.com"];
 
+    const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/email-assets/logo.png";
+
     const emailHtml = `
       <!DOCTYPE html>
       <html dir="rtl" lang="he">
@@ -109,30 +111,38 @@ const handler = async (req: Request): Promise<Response> => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
-      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-          <!-- Header -->
-          <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 30px; text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">📬 הודעה חדשה מהאתר</h1>
+      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a2e; direction: rtl;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+          <!-- Logo -->
+          <div style="text-align: center; margin-bottom: 20px;">
+            <img src="${logoUrl}" alt="מזון האושר" style="height: 80px; width: auto;" />
           </div>
           
-          <!-- Content -->
-          <div style="padding: 30px;">
-            <div style="background-color: #f0fdf4; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-              <h3 style="color: #059669; margin: 0 0 15px 0;">פרטי השולח</h3>
-              <p style="margin: 8px 0;"><strong>שם:</strong> ${safeName}</p>
-              <p style="margin: 8px 0;"><strong>טלפון:</strong> <a href="tel:${safePhone}" style="color: #059669;">${safePhone}</a></p>
+          <!-- Main Card -->
+          <div style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 3px solid #e85d8f;">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #e85d8f, #d4447a); padding: 24px; text-align: right;">
+              <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 600;">📬 הודעה חדשה מהאתר</h1>
             </div>
             
-            <div style="background-color: #fefce8; border-radius: 8px; padding: 20px;">
-              <h3 style="color: #ca8a04; margin: 0 0 15px 0;">ההודעה</h3>
-              <p style="margin: 0; white-space: pre-wrap; line-height: 1.6;">${safeMessage}</p>
+            <!-- Content -->
+            <div style="padding: 28px; text-align: right;">
+              <div style="background-color: #fdf2f8; border-radius: 12px; padding: 20px; margin-bottom: 20px; border-right: 4px solid #e85d8f;">
+                <h3 style="color: #be185d; margin: 0 0 16px 0; font-size: 16px;">פרטי השולח</h3>
+                <p style="margin: 10px 0; color: #374151; font-size: 15px;"><strong style="color: #1f2937;">שם:</strong> ${safeName}</p>
+                <p style="margin: 10px 0; color: #374151; font-size: 15px;"><strong style="color: #1f2937;">טלפון:</strong> <a href="tel:${safePhone}" style="color: #e85d8f; text-decoration: none; font-weight: 500;">${safePhone}</a></p>
+              </div>
+              
+              <div style="background-color: #fffbeb; border-radius: 12px; padding: 20px; border-right: 4px solid #f59e0b;">
+                <h3 style="color: #b45309; margin: 0 0 16px 0; font-size: 16px;">ההודעה</h3>
+                <p style="margin: 0; white-space: pre-wrap; line-height: 1.7; color: #374151; font-size: 15px;">${safeMessage}</p>
+              </div>
             </div>
-          </div>
-          
-          <!-- Footer -->
-          <div style="background-color: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
-            <p style="color: #6b7280; margin: 0; font-size: 14px;">מזון האושר 🍪</p>
+            
+            <!-- Footer -->
+            <div style="background-color: #fdf2f8; padding: 18px; text-align: center; border-top: 1px solid #fce7f3;">
+              <p style="color: #9d174d; margin: 0; font-size: 14px; font-weight: 500;">מזון האושר 🍪 עוגיות בוטיק</p>
+            </div>
           </div>
         </div>
       </body>
