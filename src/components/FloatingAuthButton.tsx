@@ -53,11 +53,11 @@ const FloatingAuthButton = () => {
           <DropdownMenuTrigger asChild>
             <button
               className={cn(
-                "fixed bottom-16 md:bottom-[4.5rem] z-40 rounded-full",
-                "shadow-lg",
-                "flex items-center gap-1.5 px-2 py-1.5",
+                "fixed bottom-14 z-40 rounded-full",
+                "shadow-md",
+                "flex items-center gap-1 px-1.5 py-1",
                 "hover:scale-105 transition-all duration-200",
-                isRTL ? "right-4" : "left-4"
+                isRTL ? "right-3" : "left-3"
               )}
               style={authButtonGradient}
             >
