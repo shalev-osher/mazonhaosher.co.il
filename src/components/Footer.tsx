@@ -37,10 +37,15 @@ const Footer = () => {
             <ThemeToggle />
             
             {/* Cart */}
-            <button onClick={() => setIsCartOpen(true)} className="flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2">
+            <button onClick={() => navigate("/cart")} className="relative flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2">
               <div className="p-1.5 md:p-2 rounded-xl shadow-md group-hover:scale-105 transition-all duration-300" style={cartGradientStyle}>
                 <ShoppingBagIcon />
               </div>
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
               <span className="text-[10px] md:text-xs font-medium text-muted-foreground group-hover:text-foreground">
                 {isRTL ? 'עגלה' : 'Cart'}
               </span>
