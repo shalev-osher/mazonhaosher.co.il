@@ -377,7 +377,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Customer email sent successfully:", customerEmailResponse);
 
     // Send owner emails
-    const ownerEmails = ["almog@mazonhaosher.co.il", "almog21072103@gmail.com"];
+    const ownerEmails = ["almog@mazonhaosher.co.il", "almog21072013@gmail.com"];
     
     const ownerEmailResponse = await resend.emails.send({
       from: "מזון האושר <noreply@mazonhaosher.co.il>",
