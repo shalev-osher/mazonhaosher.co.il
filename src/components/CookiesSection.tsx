@@ -374,32 +374,32 @@ const CookiesSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         {/* Animated title section */}
         <div 
-          className={`text-center mb-12 transition-all duration-1000 ${
+          className={`text-center mb-6 transition-all duration-1000 ${
             sectionVisible 
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-16'
           }`}
         >
           {/* Decorative top element */}
-          <div className={`flex items-center justify-center gap-3 mb-4 transition-all duration-700 delay-200 ${
+          <div className={`flex items-center justify-center gap-3 mb-2 transition-all duration-700 delay-200 ${
             sectionVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
           }`}>
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
-            <Cookie className="h-6 w-6 text-amber-600 animate-bounce" />
+            <Cookie className="h-5 w-5 text-amber-600 animate-bounce" />
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
           </div>
           
-          <h2 className={`font-display text-5xl md:text-6xl lg:text-7xl font-bold transition-all duration-1000 delay-300 ${
+          <h2 className={`font-display text-3xl md:text-4xl lg:text-5xl font-bold transition-all duration-1000 delay-300 ${
             sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
             <span className="bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
               {displayedText}
             </span>
-            <span className={`inline-block w-1 h-12 md:h-16 bg-amber-500 ${isRTL ? 'mr-1' : 'ml-1'} animate-blink`} />
+            <span className={`inline-block w-1 h-8 md:h-10 bg-amber-500 ${isRTL ? 'mr-1' : 'ml-1'} animate-blink`} />
           </h2>
           
           {/* Decorative subtitle */}
-          <p className={`mt-4 text-muted-foreground text-lg transition-all duration-700 delay-500 ${
+          <p className={`mt-2 text-muted-foreground text-base transition-all duration-700 delay-500 ${
             sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}>
             {t('cookies.subtitle')}
