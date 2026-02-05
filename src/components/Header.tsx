@@ -1,5 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // SVG icons as components with inline styles to match footer icons
 const HomeIcon = () => (
@@ -68,7 +74,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["hero", "cookies", "gift-packages", "reviews", "faq", "about"];
+      const sections = ["hero", "cookies", "gift-packages", "reviews", "faq", "contact"];
       let current = "";
       
       if (window.scrollY < 100) {
@@ -107,42 +113,36 @@ const Header = () => {
   const navItems = [
     {
       id: "hero",
-      labelKey: "nav.home",
       label: isRTL ? "בית" : "Home",
       icon: HomeIcon,
       gradientStyle: navGradients.home,
     },
     {
       id: "cookies",
-      labelKey: "nav.cookies",
       label: isRTL ? "קולקציה" : "Collection",
       icon: CookieIcon,
       gradientStyle: navGradients.cookies,
     },
     {
       id: "gift-packages",
-      labelKey: "gift.title",
       label: isRTL ? "מארזים" : "Packages",
       icon: GiftIcon,
       gradientStyle: navGradients.packages,
     },
     {
       id: "reviews",
-      labelKey: "nav.reviews",
       label: isRTL ? "ביקורות" : "Reviews",
       icon: StarIcon,
       gradientStyle: navGradients.reviews,
     },
     {
       id: "faq",
-      labelKey: "nav.faq",
       label: isRTL ? "שאלות" : "FAQ",
       icon: CircleHelpIcon,
       gradientStyle: navGradients.faq,
     },
     {
       id: "contact",
-      labelKey: "nav.contact",
       label: isRTL ? "צור קשר" : "Contact",
       icon: UsersIcon,
       gradientStyle: navGradients.contact,
@@ -156,23 +156,30 @@ const Header = () => {
       <div className="flex items-center justify-center px-2 py-1 pt-[calc(0.25rem+env(safe-area-inset-top))] bg-background border-b border-amber-500/30">
         {/* Navigation bar */}
         <nav className="flex items-center gap-1">
-          {/* Navigation items - matching footer sizing */}
-          {navItems.map((item) => {
-            const isActive = activeSection === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`p-2.5 rounded-full shadow-md hover:scale-105 transition-all duration-300 ${
-                  isActive ? "ring-2 ring-amber-500/50" : ""
-                }`}
-                style={item.gradientStyle}
-                aria-label={item.label}
-              >
-                <item.icon />
-              </button>
-            );
-          })}
+          <TooltipProvider delayDuration={200}>
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <Tooltip key={item.id}>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => scrollToSection(item.id)}
+                      className={`p-2.5 rounded-full shadow-md hover:scale-105 transition-all duration-300 ${
+                        isActive ? "ring-2 ring-amber-500/50" : ""
+                      }`}
+                      style={item.gradientStyle}
+                      aria-label={item.label}
+                    >
+                      <item.icon />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="text-xs">
+                    {item.label}
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
+          </TooltipProvider>
         </nav>
       </div>
     </header>
