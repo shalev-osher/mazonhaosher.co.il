@@ -41,12 +41,6 @@ const UsersIcon = () => (
   </svg>
 );
 
-const HeartIcon = () => (
-  <svg style={{ width: '12px', height: '12px', color: '#ef4444', fill: '#ef4444' }} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-  </svg>
-);
-
 // Gradient styles for nav items
 const navGradients = {
   home: { background: 'linear-gradient(to bottom right, #f97316, #d97706)' },
@@ -56,44 +50,9 @@ const navGradients = {
   about: { background: 'linear-gradient(to bottom right, #10b981, #0d9488)' },
 };
 
-// Typewriter hook for "Made with love" effect
-const useTypewriter = (text: string, speed: number = 100, pauseTime: number = 2000) => {
-  const [displayText, setDisplayText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    
-    if (!isDeleting && displayText === text) {
-      // Pause before deleting
-      timeout = setTimeout(() => setIsDeleting(true), pauseTime);
-    } else if (isDeleting && displayText === '') {
-      // Pause before typing again
-      timeout = setTimeout(() => setIsDeleting(false), 500);
-    } else if (isDeleting) {
-      // Delete characters
-      timeout = setTimeout(() => {
-        setDisplayText(text.substring(0, displayText.length - 1));
-      }, speed / 2);
-    } else {
-      // Type characters
-      timeout = setTimeout(() => {
-        setDisplayText(text.substring(0, displayText.length + 1));
-      }, speed);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, text, speed, pauseTime]);
-
-  return displayText;
-};
-
 const Header = () => {
   const { isRTL } = useLanguage();
   const [activeSection, setActiveSection] = useState<string>("hero");
-  
-  const madeWithLoveText = isRTL ? "מיוצר באהבה" : "Made with love";
-  const typewriterText = useTypewriter(madeWithLoveText, 100, 2000);
 
   useEffect(() => {
     const handleScroll = () => {
