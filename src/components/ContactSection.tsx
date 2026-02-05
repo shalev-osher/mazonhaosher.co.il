@@ -95,6 +95,24 @@ const ContactSection = () => {
             {t('contact.title')}
           </h2>
 
+          {/* Map */}
+          <div className="rounded-xl overflow-hidden shadow-lg mb-4 border-2 border-white/20">
+            <iframe
+              src={isRTL 
+                ? "https://maps.google.com/maps?q=שדרות+קדש+39+אשקלון+ישראל&t=&z=17&ie=UTF8&iwloc=&output=embed&hl=he"
+                : "https://maps.google.com/maps?q=Sderot+Kadesh+39+Ashkelon+Israel&t=&z=17&ie=UTF8&iwloc=&output=embed&hl=en"
+              }
+              width="100%"
+              height="200"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title={isRTL ? "מפה - שדרות קדש 39, אשקלון" : "Map - Sderot Kadesh 39, Ashkelon"}
+              className="w-full"
+            />
+          </div>
+
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
             <div className="grid gap-3">
@@ -122,7 +140,7 @@ const ContactSection = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-white text-emerald-600 hover:bg-white/90 font-bold"
+                className="bg-white text-purple-600 hover:bg-white/90 font-bold"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2 rtl:mr-0 rtl:ml-2" />
@@ -133,24 +151,6 @@ const ContactSection = () => {
               </Button>
             </div>
           </form>
-
-          {/* Map */}
-          <div className="rounded-xl overflow-hidden shadow-lg mb-3 border-2 border-white/20">
-            <iframe
-              src={isRTL 
-                ? "https://maps.google.com/maps?q=שדרות+קדש+39+אשקלון+ישראל&t=&z=17&ie=UTF8&iwloc=&output=embed&hl=he"
-                : "https://maps.google.com/maps?q=Sderot+Kadesh+39+Ashkelon+Israel&t=&z=17&ie=UTF8&iwloc=&output=embed&hl=en"
-              }
-              width="100%"
-              height="200"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={isRTL ? "מפה - שדרות קדש 39, אשקלון" : "Map - Sderot Kadesh 39, Ashkelon"}
-              className="w-full"
-            />
-          </div>
 
           {/* Waze Navigation Button */}
           <Button
