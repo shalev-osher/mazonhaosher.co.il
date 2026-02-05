@@ -22,10 +22,12 @@ const Footer = () => {
   const itemCount = getTotalItems();
   return <>
       {/* Copyright bar above footer */}
-      <div className="fixed bottom-[3.25rem] md:bottom-[3.75rem] left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900 border-t border-amber-500/20 shadow-sm h-7 md:h-8 grid place-items-center">
-        <span className="text-xs md:text-sm text-muted-foreground">
-          © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
-        </span>
+      <div className="fixed bottom-[3.25rem] md:bottom-[3.75rem] left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900 border-t border-amber-500/20 shadow-sm h-8 md:h-9">
+        <div className="h-full flex items-center justify-center">
+          <span className="text-xs md:text-sm text-muted-foreground leading-none">
+            © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
+          </span>
+        </div>
       </div>
       
       <footer className="fixed bottom-0 left-0 right-0 z-40 py-1 md:py-1.5 bg-background border-t border-amber-500/30">
