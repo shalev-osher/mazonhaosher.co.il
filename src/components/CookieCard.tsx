@@ -198,13 +198,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
         {/* Dialog Content */}
         <DialogContent className="max-w-sm text-center" dir="rtl">
           <div className="flex flex-col items-center gap-4">
-            <div className="w-40 h-40 rounded-full overflow-hidden shadow-elevated">
-              <img 
-                src={image} 
-                alt={name} 
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <div className="w-40 h-40 rounded-full bg-white border border-amber-200 shadow-elevated" />
             <DialogHeader className="text-center">
               <DialogTitle className="font-display text-2xl text-amber-600">{name}</DialogTitle>
             </DialogHeader>
