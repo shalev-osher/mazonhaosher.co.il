@@ -409,16 +409,25 @@ const Cart = () => {
                       <span className="line-through">₪{getOriginalPrice()}</span>
                     )}
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-lg">{t('cartModal.total')}</span>
-                    <div className="flex items-center gap-2">
-                      {getSavings() > 0 && (
-                        <span className="text-sm text-green-600 font-medium">
-                          {t('cartModal.saved')} ₪{getSavings()}!
-                        </span>
-                      )}
-                      <span className="font-bold text-primary text-2xl">₪{totalPrice}</span>
+                  <div className="flex justify-between items-center text-sm text-muted-foreground mb-2">
+                    <span>{isRTL ? "סכום עוגיות" : "Items subtotal"}</span>
+                    <span>₪{getItemsPrice()}</span>
+                  </div>
+                  {deliveryMethod === "delivery" && (
+                    <div className="flex justify-between items-center text-sm text-muted-foreground mb-2">
+                      <span>{isRTL ? "משלוח" : "Delivery"}</span>
+                      <span>₪{DELIVERY_FEE}</span>
                     </div>
+                  )}
+                  {getSavings() > 0 && (
+                    <div className="flex justify-between items-center text-sm text-emerald-600 mb-2">
+                      <span>{t('cartModal.saved')}</span>
+                      <span>-₪{getSavings()}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between items-center border-t border-primary/20 pt-2 mt-2">
+                    <span className="font-semibold text-lg">{t('cartModal.total')}</span>
+                    <span className="font-bold text-primary text-2xl">₪{totalPrice}</span>
                   </div>
                 </div>
 
