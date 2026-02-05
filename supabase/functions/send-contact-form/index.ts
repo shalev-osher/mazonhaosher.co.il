@@ -100,7 +100,7 @@ const handler = async (req: Request): Promise<Response> => {
     const safePhone = escapeHtml(phone);
     const safeMessage = escapeHtml(message);
 
-    const ownerEmails = ["shalev@osher.cc", "almog21072013@gmail.com"];
+    const ownerEmails = ["almog@mazonhaosher.co.il", "almog21072013@gmail.com"];
 
     const emailHtml = `
       <!DOCTYPE html>
