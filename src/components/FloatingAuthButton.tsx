@@ -133,7 +133,7 @@ const FloatingAuthButton = () => {
         <button
           onClick={() => setAuthModalOpen(true)}
           className={cn(
-            "fixed bottom-[6.5rem] md:bottom-[7rem] z-40 rounded-full",
+            "fixed bottom-16 md:bottom-[4.5rem] z-40 rounded-full",
             "shadow-lg",
             "flex items-center gap-1.5 px-3 py-2",
             "hover:scale-105 transition-all duration-200",
