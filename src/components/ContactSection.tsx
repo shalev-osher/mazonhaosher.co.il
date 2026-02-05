@@ -1,4 +1,4 @@
-import { Clock, Send, Loader2 } from "lucide-react";
+import { Clock, Send, Loader2, CheckCircle2, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +37,7 @@ const ContactSection = () => {
   const { t, isRTL } = useLanguage();
   const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   
   const openWaze = () => {
     window.open("https://waze.com/ul?q=שדרות%20קדש%2039%20אשקלון&navigate=yes", "_blank");
@@ -64,12 +65,11 @@ const ContactSection = () => {
 
       if (error) throw error;
 
-      toast({
-        title: isRTL ? "נשלח בהצלחה!" : "Sent successfully!",
-        description: isRTL ? "נחזור אליך בהקדם" : "We'll get back to you soon",
-      });
-
+      setShowSuccess(true);
       setFormData({ name: "", phone: "", message: "" });
+      
+      // Hide success after 5 seconds
+      setTimeout(() => setShowSuccess(false), 5000);
     } catch (error: any) {
       console.error("Contact form error:", error);
       toast({
@@ -95,44 +95,71 @@ const ContactSection = () => {
             {t('contact.title')}
           </h2>
 
-          {/* Contact Form */}
-          <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
-            <div className="grid gap-3">
-              <Input
-                placeholder={isRTL ? "שם מלא" : "Full Name"}
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-white text-black placeholder:text-gray-500 border-0"
-                disabled={isSubmitting}
-              />
-              <Input
-                placeholder={isRTL ? "טלפון" : "Phone"}
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-white text-black placeholder:text-gray-500 border-0"
-                disabled={isSubmitting}
-              />
-              <Textarea
-                placeholder={isRTL ? "הודעה..." : "Message..."}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="bg-white text-black placeholder:text-gray-500 border-0 min-h-[80px]"
-                disabled={isSubmitting}
-              />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-white text-blue-600 hover:bg-white/90 font-bold"
-              >
-                {isSubmitting ? (
-                  <Loader2 className="w-4 h-4 animate-spin mr-2 rtl:mr-0 rtl:ml-2" />
-                ) : (
-                  <Send className="w-4 h-4 mr-2 rtl:mr-0 rtl:ml-2" />
-                )}
-                {isRTL ? "שלח הודעה" : "Send Message"}
-              </Button>
+          {/* Contact Form or Success State */}
+          {showSuccess ? (
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 mb-4 border border-white/20 animate-scale-in">
+              <div className="flex flex-col items-center gap-4">
+                <div className="relative">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center animate-fade-in">
+                    <CheckCircle2 className="w-10 h-10 text-white" />
+                  </div>
+                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-amber-400 animate-pulse" />
+                  <Sparkles className="absolute -bottom-1 -left-3 w-5 h-5 text-pink-400 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                </div>
+                <h3 className="text-xl font-bold text-white">
+                  {isRTL ? "ההודעה נשלחה בהצלחה! ✨" : "Message Sent Successfully! ✨"}
+                </h3>
+                <p className="text-white/80 text-sm">
+                  {isRTL ? "תודה שפנית אלינו, נחזור אליך בהקדם האפשרי" : "Thank you for contacting us, we'll get back to you soon"}
+                </p>
+                <Button
+                  onClick={() => setShowSuccess(false)}
+                  variant="outline"
+                  className="mt-2 border-white/30 text-white hover:bg-white/10"
+                >
+                  {isRTL ? "שלח הודעה נוספת" : "Send Another Message"}
+                </Button>
+              </div>
             </div>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
+              <div className="grid gap-3">
+                <Input
+                  placeholder={isRTL ? "שם מלא" : "Full Name"}
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="bg-white text-black placeholder:text-gray-500 border-0"
+                  disabled={isSubmitting}
+                />
+                <Input
+                  placeholder={isRTL ? "טלפון" : "Phone"}
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="bg-white text-black placeholder:text-gray-500 border-0"
+                  disabled={isSubmitting}
+                />
+                <Textarea
+                  placeholder={isRTL ? "הודעה..." : "Message..."}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="bg-white text-black placeholder:text-gray-500 border-0 min-h-[80px]"
+                  disabled={isSubmitting}
+                />
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-white text-blue-600 hover:bg-white/90 font-bold"
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="w-4 h-4 animate-spin mr-2 rtl:mr-0 rtl:ml-2" />
+                  ) : (
+                    <Send className="w-4 h-4 mr-2 rtl:mr-0 rtl:ml-2" />
+                  )}
+                  {isRTL ? "שלח הודעה" : "Send Message"}
+                </Button>
+              </div>
+            </form>
+          )}
 
           {/* Map */}
           <div className="rounded-xl overflow-hidden shadow-lg mb-4 border-2 border-white/20">
