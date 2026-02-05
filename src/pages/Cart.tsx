@@ -313,11 +313,6 @@ const Cart = () => {
             <h1 className="text-3xl font-display font-bold text-foreground">
               {t('cartModal.title')}
             </h1>
-            {orderNumber && items.length > 0 && (
-              <p className="text-muted-foreground mt-2">
-                {t('cartModal.orderNumber')}: <span className="font-semibold text-primary">{orderNumber}</span>
-              </p>
-            )}
           </div>
 
           {items.length === 0 ? (
