@@ -41,9 +41,21 @@ const UsersIcon = () => (
   </svg>
 );
 
+const CookieIcon = () => (
+  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/>
+    <path d="M8.5 8.5v.01"/>
+    <path d="M16 15.5v.01"/>
+    <path d="M12 12v.01"/>
+    <path d="M11 17v.01"/>
+    <path d="M7 14v.01"/>
+  </svg>
+);
+
 // Gradient styles for nav items
 const navGradients = {
   home: { background: 'linear-gradient(to bottom right, #f97316, #d97706)' },
+  cookies: { background: 'linear-gradient(to bottom right, #d97706, #b45309)' },
   packages: { background: 'linear-gradient(to bottom right, #ec4899, #e11d48)' },
   reviews: { background: 'linear-gradient(to bottom right, #f59e0b, #ea580c)' },
   faq: { background: 'linear-gradient(to bottom right, #0ea5e9, #0891b2)' },
