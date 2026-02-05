@@ -84,9 +84,9 @@ const ContactSection = () => {
   
   return (
     <section id="contact" className="py-6 relative overflow-hidden">
-      {/* Decorative gradient background - Changed from orange to teal/emerald */}
-      <div className="absolute inset-0 bg-gradient-to-br from-teal-500 via-emerald-500 to-cyan-600" />
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 0% 0%, hsl(160 90% 55%) 0%, transparent 40%), radial-gradient(circle at 100% 100%, hsl(175 90% 50% / 0.5) 0%, transparent 50%)' }} />
+      {/* Decorative gradient background - Blue theme */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-indigo-500 to-sky-600" />
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 0% 0%, hsl(220 90% 55%) 0%, transparent 40%), radial-gradient(circle at 100% 100%, hsl(200 90% 50% / 0.5) 0%, transparent 50%)' }} />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -140,7 +140,7 @@ const ContactSection = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-white text-purple-600 hover:bg-white/90 font-bold"
+                className="bg-white text-blue-600 hover:bg-white/90 font-bold"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2 rtl:mr-0 rtl:ml-2" />
