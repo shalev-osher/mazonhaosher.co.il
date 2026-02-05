@@ -145,7 +145,7 @@ const Header = () => {
       labelKey: "nav.contact",
       label: isRTL ? "צור קשר" : "Contact",
       icon: UsersIcon,
-      gradientStyle: navGradients.about,
+      gradientStyle: navGradients.contact,
     },
   ];
 
