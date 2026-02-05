@@ -509,7 +509,7 @@ const Cart = () => {
               </div>
 
               {/* Checkout section - Desktop only (side by side) */}
-              <div className="hidden md:block bg-secondary/30 rounded-2xl p-4">
+              <div className="hidden md:block bg-secondary/30 rounded-2xl p-4 md:order-2">
                 {!showCheckoutForm ? (
                   <div className="flex flex-col items-center justify-center py-6 space-y-3">
                     <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center">
