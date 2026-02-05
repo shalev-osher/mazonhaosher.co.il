@@ -946,7 +946,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   
                   <div className="space-y-1.5">
                     <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
-                      <Phone className="h-3 w-3 text-primary" />
+                      <PhoneIconSmall />
                       {t('auth.phoneOptional')}
                     </label>
                     <Input
@@ -966,7 +966,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               
               <div className="space-y-1.5">
                 <label className="block text-xs font-medium flex items-center gap-1.5 text-foreground/80">
-                  <Mail className="h-3 w-3 text-primary" />
+                  <MailIconSmall />
                   {t('auth.emailLabel')}
                 </label>
                 <Input
