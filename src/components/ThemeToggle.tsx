@@ -1,7 +1,14 @@
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ThemeToggle = () => {
   const { mode, toggleTheme } = useTheme();
+  const { language } = useLanguage();
 
   const getIcon = () => {
     switch (mode) {
@@ -36,6 +43,17 @@ const ThemeToggle = () => {
     }
   };
 
+  const getLabel = () => {
+    switch (mode) {
+      case 'auto':
+        return language === 'he' ? 'אוטומטי' : 'Auto';
+      case 'light':
+        return language === 'he' ? 'בהיר' : 'Light';
+      case 'dark':
+        return language === 'he' ? 'כהה' : 'Dark';
+    }
+  };
+
   // Use inline styles to prevent Tailwind purging issues
   const gradientStyles = {
     auto: { background: 'linear-gradient(to bottom right, #10b981, #0d9488)' },
@@ -44,14 +62,21 @@ const ThemeToggle = () => {
   };
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="p-2.5 rounded-full shadow-md hover:scale-105 transition-all duration-300"
-      style={gradientStyles[mode]}
-      aria-label="Toggle theme"
-    >
-      {getIcon()}
-    </button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          onClick={toggleTheme}
+          className="p-2.5 rounded-full shadow-md hover:scale-105 transition-all duration-300"
+          style={gradientStyles[mode]}
+          aria-label="Toggle theme"
+        >
+          {getIcon()}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="text-xs">
+        {getLabel()}
+      </TooltipContent>
+    </Tooltip>
   );
 };
 
