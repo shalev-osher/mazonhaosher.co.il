@@ -415,9 +415,32 @@ const Cart = () => {
                 </div>
               </div>
 
-              {/* Checkout form */}
+              {/* Checkout section */}
               <div className="bg-secondary/30 rounded-2xl p-6">
-                {!isLoggedIn ? (
+                {!showCheckoutForm ? (
+                  // Continue to checkout button
+                  <div className="flex flex-col items-center justify-center py-8 space-y-4">
+                    <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
+                      <ShoppingBag className="w-8 h-8 text-primary" />
+                    </div>
+                    <div className="text-center space-y-2">
+                      <h3 className="text-xl font-display font-bold text-foreground">
+                        {isRTL ? "מוכנים להזמין?" : "Ready to order?"}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {isRTL ? "לחצו להמשך ומילוי פרטי המשלוח" : "Click to continue and fill in delivery details"}
+                      </p>
+                    </div>
+                    <Button 
+                      onClick={() => setShowCheckoutForm(true)} 
+                      size="lg" 
+                      className="gap-2 w-full"
+                    >
+                      <ArrowRight className={`w-5 h-5 ${!isRTL ? 'rotate-180' : ''}`} />
+                      {isRTL ? "המשך להזמנה" : "Continue to Checkout"}
+                    </Button>
+                  </div>
+                ) : !isLoggedIn ? (
                   // Login required
                   <div className="flex flex-col items-center justify-center py-12 space-y-6">
                     <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center">
