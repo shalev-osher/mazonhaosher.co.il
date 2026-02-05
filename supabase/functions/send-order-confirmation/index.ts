@@ -311,12 +311,6 @@ const handler = async (req: Request): Promise<Response> => {
               </span>
             </div>
             
-            <!-- Theme indicator -->
-            <div style="text-align: center; margin-bottom: 20px;">
-              <span style="background: ${isDarkMode ? '#374151' : '#f3f4f6'}; color: ${isDarkMode ? '#f9fafb' : '#374151'}; padding: 6px 16px; border-radius: 20px; font-size: 12px; display: inline-block;">
-                ${isDarkMode ? '🌙 הזמנה ממצב כהה' : '☀️ הזמנה ממצב בהיר'}
-              </span>
-            </div>
             
             <!-- Order Number -->
             <div style="text-align: center; margin-bottom: 30px;">
