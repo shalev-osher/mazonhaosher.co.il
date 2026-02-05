@@ -70,7 +70,12 @@ const CookieOfTheWeek = () => {
         .single();
 
       if (data && !error) {
-        setCookieOfWeek(data);
+        // Check if the discount is still valid
+        const validUntil = new Date(data.valid_until).getTime();
+        const now = new Date().getTime();
+        if (validUntil > now) {
+          setCookieOfWeek(data);
+        }
       }
     };
 
