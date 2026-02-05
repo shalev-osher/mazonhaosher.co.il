@@ -46,6 +46,13 @@ function validateName(name: string): boolean {
   return nameRegex.test(name) && name.length >= 1 && name.length <= 100;
 }
 
+// Generate numeric order number (6 digits)
+function generateOrderNumber(): string {
+  const timestamp = Date.now().toString();
+  const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
+  return (timestamp.slice(-6) + random).slice(0, 8);
+}
+
 interface OrderConfirmationRequest {
   customerName: string;
   customerEmail: string;
@@ -147,93 +154,185 @@ const handler = async (req: Request): Promise<Response> => {
       minute: "2-digit",
     });
 
-    const orderNumber = `MH-${Date.now().toString().slice(-6)}`;
+    const orderNumber = generateOrderNumber();
     const logoUrl = "https://ffhnameizeueevuqvjfi.supabase.co/storage/v1/object/public/assets/logo.png";
 
-    const emailResponse = await resend.emails.send({
-      from: "מזון האושר <noreply@mazonhaosher.co.il>",
-      to: [customerEmail],
-      subject: "אישור הזמנה - מזון האושר",
-      html: `
-        <!DOCTYPE html>
-        <html dir="rtl" lang="he">
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif; background-color: #fdf8f6;">
-          <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-            <!-- Solid luxurious container -->
-            <div style="background: #ffffff; border-radius: 24px; padding: 50px 40px; border: 2px solid #e85d8f; box-shadow: 0 20px 60px rgba(232, 93, 143, 0.15);">
-              
-              <!-- Large Logo -->
-              <div style="text-align: center; margin-bottom: 35px;">
-                <img src="${logoUrl}" alt="מזון האושר" style="max-width: 220px; height: auto; filter: drop-shadow(0 4px 12px rgba(232, 93, 143, 0.3));" />
-              </div>
-              
-              <!-- Decorative divider -->
-              <div style="text-align: center; margin-bottom: 30px;">
-                <div style="height: 2px; background: linear-gradient(90deg, transparent, #e85d8f, transparent); max-width: 200px; margin: 0 auto;"></div>
-              </div>
-              
-              <!-- Order Number Badge -->
-              <div style="text-align: center; margin-bottom: 30px;">
-                <span style="background: linear-gradient(135deg, #e85d8f 0%, #d14d7f 100%); color: white; padding: 12px 28px; border-radius: 30px; font-size: 15px; font-weight: 600; display: inline-block; box-shadow: 0 4px 15px rgba(232, 93, 143, 0.4);">
-                  הזמנה ${orderNumber}
-                </span>
-                <p style="font-size: 13px; color: #888; margin: 12px 0 0 0;">${orderDate}</p>
-              </div>
-              
-              <!-- Greeting -->
-              <p style="font-size: 22px; color: #333; text-align: center; margin: 0 0 15px 0; font-weight: 600;">שלום ${safeName} 🍪</p>
-              <p style="color: #666; text-align: center; margin: 0 0 35px 0; font-size: 16px; line-height: 1.6;">תודה שבחרת בנו! קיבלנו את הזמנתך ונחזור אליך בהקדם.</p>
-              
-              <!-- Order Details Box -->
-              <div style="background: #fdf8f6; border-radius: 20px; padding: 30px; margin-bottom: 25px; border: 1px solid #f0d5dc;">
-                <h2 style="color: #e85d8f; font-size: 18px; margin: 0 0 20px 0; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 22px;">📋</span> פירוט ההזמנה
-                </h2>
-                <pre style="white-space: pre-wrap; font-family: 'Heebo', Arial, sans-serif; margin: 0; font-size: 15px; line-height: 2; color: #444;">${safeOrderDetails}</pre>
-                <div style="border-top: 2px dashed #e85d8f; margin-top: 25px; padding-top: 20px;">
-                  <table style="width: 100%;">
-                    <tr>
-                      <td style="font-size: 18px; font-weight: 600; color: #333;">סה״כ לתשלום:</td>
-                      <td style="font-size: 28px; font-weight: bold; color: #e85d8f; text-align: left;">₪${safePrice}</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-              
-              <!-- Customer Info Box -->
-              <div style="background: #f9f9f9; border-radius: 16px; padding: 25px; margin-bottom: 25px; border: 1px solid #eee;">
-                <h3 style="margin: 0 0 15px 0; color: #e85d8f; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 18px;">📦</span> פרטי המזמין
-                </h3>
-                <p style="margin: 8px 0; font-size: 15px; color: #555;"><strong>שם:</strong> ${safeName}</p>
-                <p style="margin: 8px 0; font-size: 15px; color: #555;"><strong>טלפון:</strong> ${safePhone}</p>
-                <p style="margin: 8px 0; font-size: 15px; color: #555;"><strong>מייל:</strong> ${safeEmail}</p>
-              </div>
-              
-              <!-- Payment Notice -->
-              <div style="background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%); padding: 18px 24px; border-radius: 16px; border-right: 4px solid #f5a623;">
-                <p style="margin: 0; font-size: 15px; color: #666;"><strong>💵 אופן תשלום:</strong> מזומן בעת המשלוח</p>
-              </div>
-              
-              <!-- Footer -->
-              <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid #f0d5dc;">
-                <p style="color: #888; margin: 0; font-size: 15px;">בברכה,</p>
-                <p style="color: #e85d8f; font-weight: 700; font-size: 20px; margin: 10px 0 0 0;">מזון האושר 🍪</p>
+    // Customer email - luxurious RTL aligned design
+    const customerEmailHtml = `
+      <!DOCTYPE html>
+      <html dir="rtl" lang="he">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif; background-color: #fdf8f6; direction: rtl;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+          <!-- Solid luxurious container -->
+          <div style="background: #ffffff; border-radius: 24px; padding: 50px 40px; border: 2px solid #e85d8f; box-shadow: 0 20px 60px rgba(232, 93, 143, 0.15);">
+            
+            <!-- Large Logo -->
+            <div style="text-align: center; margin-bottom: 35px;">
+              <img src="${logoUrl}" alt="מזון האושר" style="max-width: 220px; height: auto; filter: drop-shadow(0 4px 12px rgba(232, 93, 143, 0.3));" />
+            </div>
+            
+            <!-- Decorative divider -->
+            <div style="text-align: center; margin-bottom: 30px;">
+              <div style="height: 2px; background: linear-gradient(90deg, transparent, #e85d8f, transparent); max-width: 200px; margin: 0 auto;"></div>
+            </div>
+            
+            <!-- Order Number Badge -->
+            <div style="text-align: center; margin-bottom: 30px;">
+              <span style="background: linear-gradient(135deg, #e85d8f 0%, #d14d7f 100%); color: white; padding: 14px 32px; border-radius: 30px; font-size: 18px; font-weight: 700; display: inline-block; box-shadow: 0 4px 15px rgba(232, 93, 143, 0.4); letter-spacing: 2px;">
+                ${orderNumber}
+              </span>
+              <p style="font-size: 14px; color: #e85d8f; margin: 15px 0 0 0; font-weight: 600;">מספר הזמנה</p>
+              <p style="font-size: 13px; color: #888; margin: 8px 0 0 0;">${orderDate}</p>
+            </div>
+            
+            <!-- Greeting -->
+            <div style="text-align: center; margin-bottom: 35px;">
+              <p style="font-size: 24px; color: #333; margin: 0 0 15px 0; font-weight: 700;">שלום ${safeName} 🍪</p>
+              <p style="color: #666; margin: 0; font-size: 16px; line-height: 1.8;">תודה שבחרת בנו!<br/>קיבלנו את הזמנתך ונחזור אליך בהקדם.</p>
+            </div>
+            
+            <!-- Order Details Box -->
+            <div style="background: #fdf8f6; border-radius: 20px; padding: 30px; margin-bottom: 25px; border: 1px solid #f0d5dc; text-align: right;">
+              <h2 style="color: #e85d8f; font-size: 18px; margin: 0 0 20px 0; font-weight: 700; text-align: right;">
+                📋 פירוט ההזמנה
+              </h2>
+              <pre style="white-space: pre-wrap; font-family: 'Heebo', Arial, sans-serif; margin: 0; font-size: 15px; line-height: 2.2; color: #444; text-align: right;">${safeOrderDetails}</pre>
+              <div style="border-top: 2px dashed #e85d8f; margin-top: 25px; padding-top: 20px;">
+                <table style="width: 100%;" dir="rtl">
+                  <tr>
+                    <td style="font-size: 18px; font-weight: 600; color: #333; text-align: right;">סה״כ לתשלום:</td>
+                    <td style="font-size: 28px; font-weight: bold; color: #e85d8f; text-align: left;">₪${safePrice}</td>
+                  </tr>
+                </table>
               </div>
             </div>
+            
+            <!-- Customer Info Box -->
+            <div style="background: #f9f9f9; border-radius: 16px; padding: 25px; margin-bottom: 25px; border: 1px solid #eee; text-align: right;">
+              <h3 style="margin: 0 0 15px 0; color: #e85d8f; font-size: 16px; font-weight: 700; text-align: right;">
+                📦 פרטי המזמין
+              </h3>
+              <p style="margin: 10px 0; font-size: 15px; color: #555;"><strong>שם:</strong> ${safeName}</p>
+              <p style="margin: 10px 0; font-size: 15px; color: #555;"><strong>טלפון:</strong> <span dir="ltr">${safePhone}</span></p>
+              <p style="margin: 10px 0; font-size: 15px; color: #555;"><strong>מייל:</strong> <span dir="ltr">${safeEmail}</span></p>
+            </div>
+            
+            <!-- Payment Notice -->
+            <div style="background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%); padding: 20px 24px; border-radius: 16px; border-right: 4px solid #f5a623; text-align: right;">
+              <p style="margin: 0; font-size: 15px; color: #666;"><strong>💵 אופן תשלום:</strong> מזומן בעת המשלוח</p>
+            </div>
+            
+            <!-- Footer -->
+            <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid #f0d5dc;">
+              <p style="color: #888; margin: 0; font-size: 15px;">בברכה,</p>
+              <p style="color: #e85d8f; font-weight: 700; font-size: 22px; margin: 12px 0 0 0;">מזון האושר 🍪</p>
+            </div>
           </div>
-        </body>
-        </html>
-      `,
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Owner email - different wording for business owner
+    const ownerEmailHtml = `
+      <!DOCTYPE html>
+      <html dir="rtl" lang="he">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body style="margin: 0; padding: 0; font-family: 'Heebo', Arial, sans-serif; background-color: #fdf8f6; direction: rtl;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+          <!-- Solid luxurious container -->
+          <div style="background: #ffffff; border-radius: 24px; padding: 50px 40px; border: 2px solid #e85d8f; box-shadow: 0 20px 60px rgba(232, 93, 143, 0.15);">
+            
+            <!-- Large Logo -->
+            <div style="text-align: center; margin-bottom: 35px;">
+              <img src="${logoUrl}" alt="מזון האושר" style="max-width: 180px; height: auto;" />
+            </div>
+            
+            <!-- Alert Badge -->
+            <div style="text-align: center; margin-bottom: 30px;">
+              <span style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; padding: 14px 32px; border-radius: 30px; font-size: 18px; font-weight: 700; display: inline-block; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);">
+                🎉 הזמנה חדשה!
+              </span>
+            </div>
+            
+            <!-- Order Number -->
+            <div style="text-align: center; margin-bottom: 30px;">
+              <p style="font-size: 28px; color: #333; margin: 0; font-weight: 700; letter-spacing: 2px;">${orderNumber}</p>
+              <p style="font-size: 14px; color: #e85d8f; margin: 10px 0 0 0; font-weight: 600;">מספר הזמנה</p>
+              <p style="font-size: 13px; color: #888; margin: 8px 0 0 0;">${orderDate}</p>
+            </div>
+            
+            <!-- Customer Info Box - Prominent for owner -->
+            <div style="background: linear-gradient(135deg, #e85d8f15 0%, #e85d8f08 100%); border-radius: 20px; padding: 25px; margin-bottom: 25px; border: 2px solid #e85d8f; text-align: right;">
+              <h3 style="margin: 0 0 18px 0; color: #e85d8f; font-size: 18px; font-weight: 700; text-align: right;">
+                👤 פרטי הלקוח
+              </h3>
+              <p style="margin: 12px 0; font-size: 16px; color: #333;"><strong>שם:</strong> ${safeName}</p>
+              <p style="margin: 12px 0; font-size: 16px; color: #333;"><strong>טלפון:</strong> <a href="tel:${safePhone}" style="color: #e85d8f; text-decoration: none; font-weight: 600;" dir="ltr">${safePhone}</a></p>
+              <p style="margin: 12px 0; font-size: 16px; color: #333;"><strong>מייל:</strong> <a href="mailto:${safeEmail}" style="color: #e85d8f; text-decoration: none;" dir="ltr">${safeEmail}</a></p>
+            </div>
+            
+            <!-- Order Details Box -->
+            <div style="background: #fdf8f6; border-radius: 20px; padding: 30px; margin-bottom: 25px; border: 1px solid #f0d5dc; text-align: right;">
+              <h2 style="color: #e85d8f; font-size: 18px; margin: 0 0 20px 0; font-weight: 700; text-align: right;">
+                📋 פירוט ההזמנה
+              </h2>
+              <pre style="white-space: pre-wrap; font-family: 'Heebo', Arial, sans-serif; margin: 0; font-size: 15px; line-height: 2.2; color: #444; text-align: right;">${safeOrderDetails}</pre>
+              <div style="border-top: 2px dashed #e85d8f; margin-top: 25px; padding-top: 20px;">
+                <table style="width: 100%;" dir="rtl">
+                  <tr>
+                    <td style="font-size: 18px; font-weight: 600; color: #333; text-align: right;">סה״כ לגבייה:</td>
+                    <td style="font-size: 32px; font-weight: bold; color: #22c55e; text-align: left;">₪${safePrice}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+            <!-- Action reminder -->
+            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 20px 24px; border-radius: 16px; border-right: 4px solid #3b82f6; text-align: right;">
+              <p style="margin: 0; font-size: 15px; color: #1e40af;"><strong>📞 לזכור:</strong> ליצור קשר עם הלקוח לתיאום משלוח</p>
+            </div>
+            
+            <!-- Footer -->
+            <div style="text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid #f0d5dc;">
+              <p style="color: #888; margin: 0; font-size: 14px;">מייל זה נשלח אוטומטית ממערכת ההזמנות</p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Send customer email
+    const customerEmailResponse = await resend.emails.send({
+      from: "מזון האושר <noreply@mazonhaosher.co.il>",
+      to: [customerEmail],
+      subject: `אישור הזמנה ${orderNumber} - מזון האושר`,
+      html: customerEmailHtml,
     });
 
-    console.log("Email sent successfully:", emailResponse);
+    console.log("Customer email sent successfully:", customerEmailResponse);
 
-    return new Response(JSON.stringify({ success: true }), {
+    // Send owner emails
+    const ownerEmails = ["almog@mazonhaosher.co.il", "almog21072103@gmail.com"];
+    
+    const ownerEmailResponse = await resend.emails.send({
+      from: "מזון האושר <noreply@mazonhaosher.co.il>",
+      to: ownerEmails,
+      subject: `🎉 הזמנה חדשה ${orderNumber} - ${safeName}`,
+      html: ownerEmailHtml,
+    });
+
+    console.log("Owner email sent successfully:", ownerEmailResponse);
+
+    return new Response(JSON.stringify({ success: true, orderNumber }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
