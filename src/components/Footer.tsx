@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "./LanguageToggle";
@@ -15,12 +16,10 @@ const ShoppingBagIcon = () => (
 const cartGradientStyle = { background: 'linear-gradient(to bottom right, #f59e0b, #ea580c)' };
 
 const Footer = () => {
-  const {
-    setIsCartOpen
-  } = useCart();
-  const {
-    isRTL
-  } = useLanguage();
+  const navigate = useNavigate();
+  const { getTotalItems } = useCart();
+  const { isRTL } = useLanguage();
+  const itemCount = getTotalItems();
   return <>
       {/* Copyright bar above footer */}
       <div className="fixed bottom-[3.25rem] md:bottom-[3.75rem] left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900/50 border-t border-amber-500/20 shadow-sm">
