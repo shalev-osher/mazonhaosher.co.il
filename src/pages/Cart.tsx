@@ -325,7 +325,7 @@ const Cart = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8 md:items-start">
+            <div className="grid md:grid-cols-2 gap-8 items-start">
               {/* Cart items */}
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold mb-4">{isRTL ? "פריטים בעגלה" : "Cart Items"}</h2>
