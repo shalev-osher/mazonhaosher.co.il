@@ -1,16 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-// SVG icons as components with inline styles to prevent Tailwind purging
+// SVG icons as components with inline styles to match footer icons
 const HomeIcon = () => (
-  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} className="md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
     <polyline points="9 22 9 12 15 12 15 22"/>
   </svg>
 );
 
 const GiftIcon = () => (
-  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} className="md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="8" width="18" height="4" rx="1"/>
     <path d="M12 8v13"/>
     <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
@@ -19,13 +19,13 @@ const GiftIcon = () => (
 );
 
 const StarIcon = () => (
-  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} className="md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
   </svg>
 );
 
 const CircleHelpIcon = () => (
-  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} className="md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
     <path d="M12 17h.01"/>
@@ -33,7 +33,7 @@ const CircleHelpIcon = () => (
 );
 
 const UsersIcon = () => (
-  <svg style={{ width: '14px', height: '14px', color: 'white' }} className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg style={{ width: '16px', height: '16px', color: 'white' }} className="md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
     <circle cx="9" cy="7" r="4"/>
     <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
@@ -178,29 +178,30 @@ const Header = () => {
       <div className="flex items-center justify-center px-1 py-0.5 md:py-1 pt-[calc(0.125rem+env(safe-area-inset-top))] bg-background border-b border-amber-500/30">
         {/* Navigation bar */}
         <nav className="flex items-center gap-0">
-          {/* Navigation items */}
+          {/* Navigation items - matching footer sizing */}
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`flex flex-col items-center gap-0 px-1.5 md:px-2.5 py-0.5 md:py-1 transition-all duration-300 rounded-lg group ${
-                  isActive 
-                    ? "bg-amber-500/20" 
-                    : "hover:bg-muted"
-                }`}
-              >
-                <div 
-                  className={`p-1 md:p-1.5 rounded-xl transition-all duration-300 shadow-md ${
-                  isActive ? "scale-110" : "group-hover:scale-105"
+              <div key={item.id} className="w-14 md:w-20 flex justify-center">
+                <button
+                  onClick={() => scrollToSection(item.id)}
+                  className={`flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group px-2 ${
+                    isActive 
+                      ? "bg-amber-500/20" 
+                      : "hover:bg-muted"
                   }`}
-                  style={item.gradientStyle}
                 >
-                  <item.icon />
-                </div>
-                <span className={`text-[9px] md:text-[11px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
-              </button>
+                  <div 
+                    className={`p-1.5 md:p-2 rounded-xl transition-all duration-300 shadow-md ${
+                    isActive ? "scale-110" : "group-hover:scale-105"
+                    }`}
+                    style={item.gradientStyle}
+                  >
+                    <item.icon />
+                  </div>
+                  <span className={`text-[10px] md:text-xs font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
+                </button>
+              </div>
             );
           })}
         </nav>
