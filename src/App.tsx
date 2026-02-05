@@ -86,6 +86,7 @@ const App = () => (
               <Toaster />
               <Sonner />
               <BrowserRouter>
+                <FloatingSiteLock />
                 <OAuthHandler>
                   <Routes>
                     <Route path="/" element={<Index />} />
