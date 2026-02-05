@@ -141,24 +141,24 @@ const Header = () => {
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <div key={item.id} className="w-11 md:w-14 flex justify-center">
+              <div key={item.id} className="w-10 md:w-12 flex justify-center">
                 <button
                   onClick={() => scrollToSection(item.id)}
-                  className={`flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group px-2 ${
+                  className={`flex flex-col items-center gap-0 py-0.5 transition-all duration-300 rounded-lg group px-1 ${
                     isActive 
                       ? "bg-amber-500/20" 
                       : "hover:bg-muted"
                   }`}
                 >
                   <div 
-                    className={`p-1 md:p-1.5 rounded-lg transition-all duration-300 shadow-sm ${
+                    className={`p-1 rounded-full transition-all duration-300 shadow-sm ${
                     isActive ? "scale-110" : "group-hover:scale-105"
                     }`}
                     style={item.gradientStyle}
                   >
                     <item.icon />
                   </div>
-                  <span className={`text-[9px] md:text-[10px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
+                  <span className={`text-[8px] md:text-[9px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>{item.label}</span>
                 </button>
               </div>
             );

@@ -95,15 +95,15 @@ const ScrollButtons = () => {
   return (
     <div 
       className={cn(
-        "fixed bottom-16 md:bottom-[4.5rem] z-40 flex flex-col rounded-full overflow-hidden shadow-lg",
-        isRTL ? "left-4" : "right-4"
+        "fixed bottom-14 z-40 flex flex-col rounded-full overflow-hidden shadow-md",
+        isRTL ? "left-3" : "right-3"
       )}
     >
       {/* Up button */}
       <button
         onClick={scrollToPreviousSection}
         className={cn(
-          "w-10 h-10 flex items-center justify-center",
+          "w-9 h-9 flex items-center justify-center",
           "text-white hover:brightness-110 transition-all duration-200",
           showUp ? "opacity-100" : "opacity-0 pointer-events-none h-0"
         )}
@@ -117,7 +117,7 @@ const ScrollButtons = () => {
       <button
         onClick={scrollToNextSection}
         className={cn(
-          "w-10 h-10 flex items-center justify-center",
+          "w-9 h-9 flex items-center justify-center",
           "text-white hover:brightness-110 transition-all duration-200"
         )}
         style={scrollButtonGradient}
