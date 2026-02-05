@@ -141,7 +141,7 @@ const Header = () => {
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <div key={item.id} className="w-12 md:w-16 flex justify-center">
+              <div key={item.id} className="w-11 md:w-14 flex justify-center">
                 <button
                   onClick={() => scrollToSection(item.id)}
                   className={`flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group px-2 ${
