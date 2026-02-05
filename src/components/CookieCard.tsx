@@ -174,15 +174,7 @@ const CookieCard = ({ image, name, description, price, delay = 0, tag, viewMode 
           )}
           {/* Image opens dialog */}
           <DialogTrigger asChild>
-            <div className="aspect-[4/3] overflow-hidden relative rounded-md cursor-pointer bg-white">
-              <img
-                src={image}
-                alt={name}
-                loading="lazy"
-                onLoad={() => setImageLoaded(true)}
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
+            <div className="aspect-[4/3] rounded-md cursor-pointer bg-white border border-amber-200 shadow-sm" />
           </DialogTrigger>
         </div>
         
