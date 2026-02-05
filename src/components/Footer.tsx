@@ -53,7 +53,7 @@ const Footer = () => {
             </div>
 
             {/* WhatsApp */}
-            <div className="w-14 md:w-20 flex justify-center">
+            <div className="w-12 md:w-16 flex justify-center">
               <a href="https://wa.me/972546791198" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-0.5 py-0.5 transition-all duration-300 rounded-lg group hover:bg-muted px-2">
                 <div className="p-1.5 md:p-2 rounded-xl bg-gradient-to-br from-[#25D366] to-[#128C7E] shadow-md group-hover:scale-105 transition-all duration-300">
                   <svg className="w-4 h-4 md:w-5 md:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
