@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Cart from "./pages/Cart";
+import ThankYou from "./pages/ThankYou";
 import NotFound from "./pages/NotFound";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 
