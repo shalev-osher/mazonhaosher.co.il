@@ -45,6 +45,7 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [deliveryMethod, setDeliveryMethod] = useState<"pickup" | "delivery">("pickup");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
