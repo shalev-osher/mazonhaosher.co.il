@@ -88,6 +88,7 @@ const App = () => (
               <Sonner />
               <BrowserRouter>
                 <FloatingSiteLock />
+                <FloatingCopyright />
                 <OAuthHandler>
                   <Routes>
                     <Route path="/" element={<Index />} />
