@@ -4,9 +4,9 @@ const FloatingCopyright = () => {
   const { isRTL } = useLanguage();
 
   return (
-    <div className={`fixed bottom-28 z-50 ${isRTL ? 'left-0' : 'right-0'}`}>
-      <div className={`flex flex-col items-center py-3 px-4 bg-background/95 backdrop-blur-sm border border-border shadow-lg ${isRTL ? 'border-l-0 rounded-r-xl' : 'border-r-0 rounded-l-xl'}`}>
-        <span className="text-xs font-medium text-foreground">
+    <div className={`fixed bottom-[72px] z-40 ${isRTL ? 'left-3' : 'right-3'}`}>
+      <div className="flex items-center px-3 py-1.5 bg-background/95 backdrop-blur-sm border border-border rounded-full shadow-lg">
+        <span className="text-[10px] font-medium text-muted-foreground">
           {isRTL ? "© מזון האושר 2026" : "© Mazon HaOsher 2026"}
         </span>
       </div>
