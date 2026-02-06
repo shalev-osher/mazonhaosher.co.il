@@ -1,13 +1,35 @@
-- name: Setup SSH
-  shell: bash
-  run: |
-    set -e
+name: Deploy Website
 
-    mkdir -p ~/.ssh
-    chmod 700 ~/.ssh
+on:
+  push:
+    branches:
+      - main
 
-    printf '%s' "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | base64 --decode > ~/.ssh/id_ed25519
-    chmod 600 ~/.ssh/id_ed25519
+concurrency:
+  group: deploy-mazonhaosher
+  cancel-in-progress: true
 
-    ssh-keyscan -H "${{ secrets.SERVER_IP }}" >> ~/.ssh/known_hosts
-    chmod 600 ~/.ssh/known_hosts
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        shell: bash
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s' "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | base64 --decode > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.SERVER_IP }}" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        shell: bash
+        run: |
+          set -e
+          ssh -i ~/.ssh/id_ed25519 \
+            -o StrictHostKeyChecking=yes \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}" \
+            "bash -lc '/usr/local/bin/deploy-mazonhaosher'"
