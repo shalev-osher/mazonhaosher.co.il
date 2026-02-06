@@ -1,40 +1,13 @@
-name: Deploy Website
+- name: Setup SSH
+  shell: bash
+  run: |
+    set -e
 
-on:
-  push:
-    branches:
-      - main
+    mkdir -p ~/.ssh
+    chmod 700 ~/.ssh
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+    printf '%s' "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | base64 --decode > ~/.ssh/id_ed25519
+    chmod 600 ~/.ssh/id_ed25519
 
-    steps:
-      - name: Setup SSH
-        shell: bash
-        run: |
-          set -e
-
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-
-          # Decode private key safely
-          printf '%s' "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | base64 --decode > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-
-          # Validate SSH key
-          ssh-keygen -l -f ~/.ssh/id_ed25519
-
-          # Add server to known_hosts
-          ssh-keyscan -H "${{ secrets.SERVER_IP }}" >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
-      - name: Deploy to server
-        shell: bash
-        run: |
-          set -e
-
-          ssh -i ~/.ssh/id_ed25519 \
-              -o StrictHostKeyChecking=yes \
-              "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}" \
-              "bash -lc '/usr/local/bin/deploy-mazonhaosher'"
+    ssh-keyscan -H "${{ secrets.SERVER_IP }}" >> ~/.ssh/known_hosts
+    chmod 600 ~/.ssh/known_hosts
