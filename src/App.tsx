@@ -17,6 +17,7 @@ import ThankYou from "./pages/ThankYou";
 import NotFound from "./pages/NotFound";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 import FloatingSiteLock from "./components/FloatingSiteLock";
+import FloatingCopyright from "./components/FloatingCopyright";
 
 const queryClient = new QueryClient();
 
