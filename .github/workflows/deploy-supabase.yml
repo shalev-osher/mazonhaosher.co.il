@@ -15,8 +15,8 @@ jobs:
         with:
           version: latest
 
-      - name: Install netcat (for tunnel check)
-        run: sudo apt-get update && sudo apt-get install -y netcat-openbsd
+      - name: Install tools (ssh + nc)
+        run: sudo apt-get update && sudo apt-get install -y openssh-client netcat-openbsd
 
       - name: Start SSH tunnel to DB host
         env:
@@ -29,9 +29,10 @@ jobs:
           chmod 700 ~/.ssh
           printf "%s" "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
-          # Tunnel runner:15432 -> server:127.0.0.1:5432
+          # Start tunnel runner:15432 -> server:127.0.0.1:5432
           ssh -i ~/.ssh/id_ed25519 \
             -o StrictHostKeyChecking=yes \
             -o ExitOnForwardFailure=yes \
@@ -39,10 +40,12 @@ jobs:
             -o ServerAliveCountMax=3 \
             -N -L 15432:127.0.0.1:5432 "$SSH_USER@$SSH_HOST" &
 
+          # Wait until local port is open
           for i in $(seq 1 30); do
             nc -z 127.0.0.1 15432 && echo "Tunnel OK" && exit 0
             sleep 1
           done
+
           echo "Tunnel did not come up" >&2
           exit 1
 
