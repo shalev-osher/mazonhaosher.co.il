@@ -2,24 +2,20 @@ name: Deploy Supabase DB
 
 on:
   push:
-    branches:
-      - main
-      - dev
-      - dev
+    branches: [main, dev]
 
 jobs:
   deploy-db:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Supabase CLI
-        run: npm install -g supabase
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
 
-      - name: Run migrations to self hosted Supabase
+      - name: Run migrations to self-hosted Supabase
         env:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
-        run: |
-          supabase db push --db-url "$SUPABASE_DB_URL"
+        run: supabase db push --db-url "$SUPABASE_DB_URL"
