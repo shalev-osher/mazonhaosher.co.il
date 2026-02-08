@@ -1,4 +1,4 @@
-name: Deploy Supabase DB (GOD)
+name: Deploy Supabase DB (Self Hosted Stable)
 
 on:
   push:
@@ -26,74 +26,12 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
-      - name: GOD migrations
+      - name: Run migrations inside docker
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          ssh $SSH_USER@$SSH_HOST "bash -s" <<'EOSSH'
-          set -euo pipefail
-          cd ~/mazonhaosher.co.il
-
-          echo "=== INIT MIGRATION INFRA ==="
-
-          docker exec supabase-db psql -U postgres -d postgres <<'SQL'
-          CREATE TABLE IF NOT EXISTS schema_migrations (
-            version TEXT PRIMARY KEY,
-            checksum TEXT NOT NULL,
-            executed_at TIMESTAMP DEFAULT now()
-          );
-
-          CREATE TABLE IF NOT EXISTS migration_lock (
-            id INT PRIMARY KEY,
-            locked_at TIMESTAMP
-          );
-
-          INSERT INTO migration_lock(id)
-          VALUES (1)
-          ON CONFLICT DO NOTHING;
-          SQL
-
-          echo "=== LOCKING ==="
-
-          docker exec supabase-db psql -U postgres -d postgres -c \
-            "UPDATE migration_lock SET locked_at=now() WHERE id=1;"
-
-          echo "=== MIGRATION START ==="
-
-          for file in $(ls supabase/migrations/*.sql | sort); do
-
-            version=$(basename "$file")
-            checksum=$(sha256sum "$file" | awk '{print $1}')
-
-            existing_checksum=$(docker exec supabase-db psql -U postgres -d postgres -tAc \
-              "SELECT checksum FROM schema_migrations WHERE version='$version';")
-
-            if [ "$existing_checksum" != "" ]; then
-              if [ "$existing_checksum" != "$checksum" ]; then
-                echo "DRIFT DETECTED in $version"
-                exit 1
-              fi
-              echo "SKIP $version"
-              continue
-            fi
-
-            echo "APPLY $version"
-
-            docker exec supabase-db psql -U postgres -d postgres <<SQL
-BEGIN;
-\i /workspace/$file
-INSERT INTO schema_migrations(version, checksum)
-VALUES ('$version','$checksum');
-COMMIT;
-SQL
-
-          done
-
-          echo "=== UNLOCK ==="
-
-          docker exec supabase-db psql -U postgres -d postgres -c \
-            "UPDATE migration_lock SET locked_at=NULL WHERE id=1;"
-
-          echo "=== COMPLETE ==="
-EOSSH
+          ssh $SSH_USER@$SSH_HOST '
+            cd ~/mazonhaosher.co.il &&
+            docker exec -i supabase-db psql -U postgres -d postgres < <(cat supabase/migrations/*.sql)
+          '
