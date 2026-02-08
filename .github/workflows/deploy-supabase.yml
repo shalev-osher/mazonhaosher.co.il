@@ -2,24 +2,45 @@ name: Deploy Supabase DB
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    branches: [ main, dev ]
 
 jobs:
   deploy-db:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
           version: latest
 
-      - name: Run migrations to self hosted Supabase
+      - name: Start SSH tunnel to DB host
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=yes -N \
+            -L 15432:127.0.0.1:5432 "$SSH_USER@$SSH_HOST" &
+
+          for i in $(seq 1 30); do
+            nc -z 127.0.0.1 15432 && exit 0
+            sleep 1
+          done
+          echo "Tunnel did not come up" >&2
+          exit 1
+
+      - name: Run migrations (via tunnel)
         env:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
-          supabase db push --db-url "$SUPABASE_DB_URL"
+          DB_URL="${SUPABASE_DB_URL/:5432/:15432}"
+          supabase db push --db-url "$DB_URL"
