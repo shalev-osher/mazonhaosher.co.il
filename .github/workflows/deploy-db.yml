@@ -1,4 +1,4 @@
-name: Deploy Supabase DB (Stable)
+name: Deploy Supabase DB (Enterprise)
 
 on:
   push:
@@ -9,8 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Install SSH client
         run: sudo apt-get update && sudo apt-get install -y openssh-client
@@ -27,13 +26,48 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
-      - name: Run migrations on server
+      - name: Run enterprise migrations
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          ssh $SSH_USER@$SSH_HOST "
-            set -e
-            cd ~/mazonhaosher.co.il
-            docker exec -i supabase-db psql -U postgres -d postgres < <(cat supabase/migrations/*.sql)
-          "
+          ssh $SSH_USER@$SSH_HOST "bash -s" <<'EOSSH'
+          set -euo pipefail
+          cd ~/mazonhaosher.co.il
+
+          echo "=== Preparing migration table ==="
+          docker exec supabase-db psql -U postgres -d postgres <<'SQL'
+          CREATE TABLE IF NOT EXISTS schema_migrations (
+            version TEXT PRIMARY KEY,
+            checksum TEXT NOT NULL,
+            executed_at TIMESTAMP DEFAULT now()
+          );
+          SQL
+
+          echo "=== Running migrations ==="
+
+          for file in $(ls supabase/migrations/*.sql | sort); do
+            version=$(basename "$file")
+            checksum=$(sha256sum "$file" | awk '{print $1}')
+
+            exists=$(docker exec supabase-db psql -U postgres -d postgres -tAc \
+              "SELECT 1 FROM schema_migrations WHERE version='$version';")
+
+            if [ "$exists" = "1" ]; then
+              echo "SKIP $version"
+              continue
+            fi
+
+            echo "APPLY $version"
+
+            if docker exec -i supabase-db psql -U postgres -d postgres < "$file"; then
+              docker exec supabase-db psql -U postgres -d postgres \
+                -c "INSERT INTO schema_migrations(version, checksum) VALUES ('$version','$checksum');"
+            else
+              echo "FAILED migration $version"
+              exit 1
+            fi
+          done
+
+          echo "=== DONE ==="
+EOSSH
