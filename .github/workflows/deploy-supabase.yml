@@ -15,6 +15,9 @@ jobs:
         with:
           version: latest
 
+      - name: Install netcat (for tunnel check)
+        run: sudo apt-get update && sudo apt-get install -y netcat-openbsd
+
       - name: Start SSH tunnel to DB host
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
@@ -24,9 +27,8 @@ jobs:
           set -euo pipefail
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf "%s" "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
           # Tunnel runner:15432 -> server:127.0.0.1:5432
@@ -35,21 +37,17 @@ jobs:
             -o ExitOnForwardFailure=yes \
             -o ServerAliveInterval=30 \
             -o ServerAliveCountMax=3 \
-            -fN -L 15432:127.0.0.1:5432 \
-            "$SSH_USER@$SSH_HOST"
+            -N -L 15432:127.0.0.1:5432 "$SSH_USER@$SSH_HOST" &
 
-          # Wait for local port to open (no nc needed)
           for i in $(seq 1 30); do
-            (echo > /dev/tcp/127.0.0.1/15432) >/dev/null 2>&1 && exit 0
+            nc -z 127.0.0.1 15432 && echo "Tunnel OK" && exit 0
             sleep 1
           done
           echo "Tunnel did not come up" >&2
           exit 1
 
-      - name: Run migrations (via tunnel)
+      - name: Run migrations to self hosted Supabase (via tunnel)
         env:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
-          set -euo pipefail
-          DB_URL="${SUPABASE_DB_URL/:5432/:15432}"
-          supabase db push --db-url "$DB_URL" --debug
+          supabase db push --db-url "$SUPABASE_DB_URL"
