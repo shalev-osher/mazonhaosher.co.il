@@ -35,5 +35,5 @@ jobs:
           set -e
           cd ~/mazonhaosher.co.il
           docker exec -i supabase-db psql -U postgres -d postgres < <(cat supabase/migrations/*.sql)
-          echo "✅ Supabase migrations completed"
+          echo "Supabase migrations completed"
           EOF
