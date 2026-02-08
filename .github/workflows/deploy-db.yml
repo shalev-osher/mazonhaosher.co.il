@@ -31,9 +31,9 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          ssh $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
           set -e
           cd ~/mazonhaosher.co.il
           docker exec -i supabase-db psql -U postgres -d postgres < <(cat supabase/migrations/*.sql)
-          echo "✅ Migrations completed"
+          echo "✅ Supabase migrations completed"
           EOF
