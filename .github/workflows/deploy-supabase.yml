@@ -12,36 +12,42 @@ jobs:
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
-        with:
-          version: latest
 
-      - name: Install tools (ssh + nc)
+      - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y openssh-client netcat-openbsd
 
-      - name: Start SSH tunnel to DB host
+      - name: Start SSH tunnel
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          set -euo pipefail
+          set -e
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          printf "%s" "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
-          ssh -i ~/.ssh/id_ed25519             -o StrictHostKeyChecking=yes             -o ExitOnForwardFailure=yes             -o ServerAliveInterval=30             -o ServerAliveCountMax=3             -N -L 15432:127.0.0.1:5432 "$SSH_USER@$SSH_HOST" &
+          ssh \
+            -i ~/.ssh/id_ed25519 \
+            -o StrictHostKeyChecking=yes \
+            -o ExitOnForwardFailure=yes \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=3 \
+            -N -L 15432:127.0.0.1:5432 \
+            "$SSH_USER@$SSH_HOST" &
 
           for i in $(seq 1 30); do
-            nc -z 127.0.0.1 15432 && echo "Tunnel OK" && exit 0
+            nc -z 127.0.0.1 15432 && exit 0
             sleep 1
           done
 
-          echo "Tunnel did not come up" >&2
+          echo "Tunnel failed"
           exit 1
 
-      - name: Run migrations to self hosted Supabase (via tunnel)
+      - name: Push migrations
         env:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
