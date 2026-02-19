@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -41,7 +41,6 @@ const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pa
     };
 
     timeout = setTimeout(animate, delay);
-
     return () => clearTimeout(timeout);
   }, [text, speed, delay, pauseTime]);
 
@@ -63,6 +62,37 @@ const useParallax = (speed: number = 0.5) => {
   }, [handleScroll]);
 
   return offset;
+};
+
+// Cookie cursor follower hook
+const useCookieCursor = () => {
+  const [pos, setPos] = useState({ x: -100, y: -100 });
+  const targetRef = useRef({ x: -100, y: -100 });
+  const animRef = useRef<number>();
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      targetRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const animate = () => {
+      setPos(prev => ({
+        x: prev.x + (targetRef.current.x - prev.x) * 0.15,
+        y: prev.y + (targetRef.current.y - prev.y) * 0.15,
+      }));
+      animRef.current = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener('mousemove', onMove);
+    animRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      if (animRef.current) cancelAnimationFrame(animRef.current);
+    };
+  }, []);
+
+  return pos;
 };
 
 // Cookie crumb particle component
@@ -98,6 +128,7 @@ const Hero = () => {
 
   const parallaxOffset = useParallax(0.4);
   const [isVisible, setIsVisible] = useState(false);
+  const cursorPos = useCookieCursor();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 200);
@@ -108,7 +139,6 @@ const Hero = () => {
     ? ["🍪 עוגיות בוטיק", "🎁 מארזי מתנה", "🚚 משלוחים עד הבית", "❤️ אפייה באהבה"]
     : ["🍪 Boutique Cookies", "🎁 Gift Packages", "🚚 Home Delivery", "❤️ Baked with Love"];
 
-  // Generate stable crumb particles
   const crumbs = useMemo(() => 
     Array.from({ length: 15 }, (_, i) => ({
       id: i,
@@ -121,7 +151,6 @@ const Hero = () => {
 
   return (
     <>
-      {/* Crumb fall + spin keyframes */}
       <style>{`
         @keyframes crumbFall {
           0% { transform: translateY(-10px); opacity: 0; }
@@ -139,10 +168,44 @@ const Hero = () => {
           80% { transform: scale(0.95) translateY(2px); }
           100% { transform: scale(1) translateY(0); opacity: 1; }
         }
+        @keyframes shimmer {
+          0% { transform: translateX(-150%) skewX(-15deg); }
+          100% { transform: translateX(150%) skewX(-15deg); }
+        }
+        @keyframes gradientShift {
+          0% { background-position: 0% 50%; }
+          25% { background-position: 50% 100%; }
+          50% { background-position: 100% 50%; }
+          75% { background-position: 50% 0%; }
+          100% { background-position: 0% 50%; }
+        }
       `}</style>
+
+      {/* Cookie cursor follower */}
+      <div
+        className="fixed z-[9999] pointer-events-none select-none"
+        style={{
+          left: cursorPos.x - 12,
+          top: cursorPos.y - 12,
+          transition: 'opacity 0.3s',
+          opacity: cursorPos.x > 0 ? 0.8 : 0,
+        }}
+      >
+        <span className="text-2xl drop-shadow-lg" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>🍪</span>
+      </div>
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Animated gradient overlay */}
+        <div
+          className="absolute inset-0 z-[0] opacity-40"
+          style={{
+            background: 'linear-gradient(135deg, rgba(139,69,19,0.6) 0%, rgba(210,105,30,0.4) 25%, rgba(184,115,51,0.5) 50%, rgba(101,67,33,0.6) 75%, rgba(139,69,19,0.6) 100%)',
+            backgroundSize: '400% 400%',
+            animation: 'gradientShift 12s ease infinite',
+          }}
+        />
+
         {/* Background Image with Parallax */}
         <div 
           className="absolute inset-0 z-0 will-change-transform"
@@ -175,13 +238,23 @@ const Hero = () => {
             }`}
           >
             
-            {/* Logo */}
+            {/* Logo with shimmer */}
             <div className="relative mb-4">
-              <img 
-                src={logo}
-                alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
-                className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl"
-              />
+              <div className="relative inline-block overflow-hidden">
+                <img 
+                  src={logo}
+                  alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
+                  className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl relative z-10"
+                />
+                {/* Shimmer overlay */}
+                <div
+                  className="absolute inset-0 z-20 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
+                    animation: 'shimmer 3s ease-in-out infinite',
+                  }}
+                />
+              </div>
               <div className="absolute inset-0 flex items-center justify-center -z-10">
                 <div className="w-48 md:w-56 lg:w-64 h-48 md:h-56 lg:h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)' }} />
               </div>
@@ -235,7 +308,7 @@ const Hero = () => {
                 <span className="text-xs text-white/60 font-light">WhatsApp</span>
               </a>
 
-              {/* Instagram - center, highest */}
+              {/* Instagram */}
               <a
                 href="https://www.instagram.com/mazon_haosher"
                 target="_blank"
@@ -296,7 +369,6 @@ const Hero = () => {
             ))}
           </div>
           
-          {/* Bottom tagline */}
           <p className="text-center text-muted-foreground text-base md:text-lg mt-8">
             {isRTL ? "© מזון האושר 2026 · כל הזכויות שמורות" : "© Mazon HaOsher 2026 · All rights reserved"}
           </p>
