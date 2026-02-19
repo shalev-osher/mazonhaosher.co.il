@@ -146,7 +146,20 @@ const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
   );
 };
 
+const useScrollReveal = (threshold = 0.2) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setRevealed(true); obs.disconnect(); } }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, revealed };
+};
 const Hero = () => {
+
   const { isRTL } = useLanguage();
   const phrases = useMemo(() =>
     isRTL
@@ -160,6 +173,7 @@ const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
+  const highlightsReveal = useScrollReveal(0.3);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 300);
@@ -238,6 +252,19 @@ const Hero = () => {
         @keyframes cinematic {
           0% { opacity: 0; transform: scale(1.1) translateY(30px); filter: blur(8px); }
           100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+        @keyframes gradientText {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes goldWave {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        @keyframes highlightReveal {
+          0% { opacity: 0; transform: translateY(25px) scale(0.95); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
       `}</style>
 
@@ -323,18 +350,24 @@ const Hero = () => {
               </p>
             </div>
 
-            {/* Subtitle with cinematic delay */}
+            {/* Animated gradient subtitle */}
             <p
-              className="text-base md:text-lg text-white/70 mb-6 font-light"
+              className="text-base md:text-lg mb-6 font-light"
               style={{
                 opacity: 0,
                 animation: isVisible ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) 0.9s forwards' : 'none',
+                background: 'linear-gradient(90deg, hsla(40,90%,70%,1), hsla(350,65%,70%,1), hsla(280,60%,70%,1), hsla(40,90%,70%,1))',
+                backgroundSize: '300% 100%',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                ...(isVisible ? { animationName: 'cinematic, gradientText', animationDuration: '1s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0.9s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
               }}
             >
               {isRTL ? "עוגיות בוטיק בעבודת יד · טעמים שלא תשכחו" : "Handcrafted boutique cookies · Flavors you won't forget"}
             </p>
 
-            {/* Decorative line */}
+            {/* Animated gold wave separator */}
             <div
               className="flex items-center justify-center gap-3 mb-8"
               style={{
@@ -342,9 +375,15 @@ const Hero = () => {
                 animation: isVisible ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s forwards' : 'none',
               }}
             >
-              <div className="h-px w-20" style={{ background: 'linear-gradient(to right, transparent, hsla(40,90%,55%,0.6), hsla(40,90%,55%,0.8))' }} />
+              <div className="relative h-px w-24 overflow-hidden">
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent, hsla(40,90%,55%,0.4))' }} />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.9), transparent)', animation: 'goldWave 3s ease-in-out infinite' }} />
+              </div>
               <span className="text-lg">🍪</span>
-              <div className="h-px w-20" style={{ background: 'linear-gradient(to left, transparent, hsla(40,90%,55%,0.6), hsla(40,90%,55%,0.8))' }} />
+              <div className="relative h-px w-24 overflow-hidden">
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to left, transparent, hsla(40,90%,55%,0.4))' }} />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.9), transparent)', animation: 'goldWave 3s ease-in-out infinite reverse' }} />
+              </div>
             </div>
 
             {/* Social Icons */}
@@ -385,14 +424,23 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Highlights */}
-      <section className="relative z-20 bg-background py-10">
+      {/* Gold wave divider */}
+      <div className="relative z-20 bg-background overflow-hidden">
+        <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(40,90%,55%,0.3) 30%, hsla(40,90%,55%,0.6) 50%, hsla(40,90%,55%,0.3) 70%, transparent 90%)' }} />
+      </div>
+
+      {/* Highlights with scroll reveal */}
+      <section ref={highlightsReveal.ref} className="relative z-20 bg-background py-10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
             {highlights.map((item, i) => (
               <div
                 key={i}
-                className="text-center py-4 px-3 rounded-2xl border border-border/50 bg-card/50 hover:bg-card transition-colors duration-300"
+                className="text-center py-4 px-3 rounded-2xl border border-border/50 bg-card/50 hover:bg-card transition-all duration-500 hover:shadow-lg hover:-translate-y-1"
+                style={{
+                  opacity: 0,
+                  animation: highlightsReveal.revealed ? `highlightReveal 0.6s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s forwards` : 'none',
+                }}
               >
                 <p className="text-sm md:text-base font-medium text-foreground">{item}</p>
               </div>
