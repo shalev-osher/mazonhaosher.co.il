@@ -180,7 +180,7 @@ const Hero = () => {
               className="animate-glow-pulse hover:scale-105 transition-transform duration-300 text-base px-8"
             >
               <Sparkles className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isRTL ? "הזמינו בוואטסאפ" : "Order on WhatsApp"}
+              {isRTL ? "הזמינו" : "Order Now"}
             </Button>
           </a>
         </div>
