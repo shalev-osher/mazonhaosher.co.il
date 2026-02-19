@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import FloatingCopyright from "./components/FloatingCopyright";
+
 
 const queryClient = new QueryClient();
 
@@ -62,7 +62,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <FloatingCopyright />
+            
             <OAuthHandler>
               <Routes>
                 <Route path="/" element={<Index />} />
