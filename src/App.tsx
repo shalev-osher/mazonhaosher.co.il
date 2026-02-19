@@ -11,11 +11,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Cart from "./pages/Cart";
-import ThankYou from "./pages/ThankYou";
 import NotFound from "./pages/NotFound";
-import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 
 import FloatingCopyright from "./components/FloatingCopyright";
 
@@ -92,11 +88,6 @@ const App = () => (
                 <OAuthHandler>
                   <Routes>
                     <Route path="/" element={<Index />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/thank-you" element={<ThankYou />} />
-                    <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </OAuthHandler>

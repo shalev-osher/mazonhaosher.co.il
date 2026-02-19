@@ -1,37 +1,11 @@
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import CookieOfTheWeek from "@/components/CookieOfTheWeek";
-import CookiesSection from "@/components/CookiesSection";
-import GiftPackageBuilder from "@/components/GiftPackageBuilder";
-import ReviewsSection from "@/components/ReviewsSection";
-import FAQSection from "@/components/FAQSection";
-import NewsletterSection from "@/components/NewsletterSection";
-import OrderHistory from "@/components/OrderHistory";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
-import ScrollButtons from "@/components/ScrollButtons";
-import FloatingAuthButton from "@/components/FloatingAuthButton";
-import WelcomePopup from "@/components/WelcomePopup";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background pb-28">
-      <Header />
-      <main>
-        <Hero />
-        <CookieOfTheWeek />
-        <CookiesSection />
-        <GiftPackageBuilder />
-        <OrderHistory />
-        <ReviewsSection />
-        <FAQSection />
-        <NewsletterSection />
-        <ContactSection />
-      </main>
-      <Footer />
-      <ScrollButtons />
-      <FloatingAuthButton />
-      <WelcomePopup />
+    <div className="min-h-screen bg-background">
+      <Hero />
+      <FloatingWhatsApp />
     </div>
   );
 };

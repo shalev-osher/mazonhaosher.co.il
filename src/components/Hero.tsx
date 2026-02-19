@@ -168,16 +168,21 @@ const Hero = () => {
             <div className="h-px w-16 bg-gradient-to-l from-transparent via-amber-500/50 to-amber-500" />
           </div>
           
-          {/* CTA Button */}
-          <Button 
-            variant="honey" 
-            size="lg"
-            className="animate-glow-pulse hover:scale-105 transition-transform duration-300 text-base px-8"
-            onClick={() => document.getElementById('cookies')?.scrollIntoView({ behavior: 'smooth' })}
+          {/* CTA Button - WhatsApp */}
+          <a
+            href="https://wa.me/972546791198?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F%20%D7%A2%D7%95%D7%92%D7%99%D7%95%D7%AA%20%F0%9F%8D%AA"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <Sparkles className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            {isRTL ? "צפו בתפריט" : "View Menu"}
-          </Button>
+            <Button 
+              variant="honey" 
+              size="lg"
+              className="animate-glow-pulse hover:scale-105 transition-transform duration-300 text-base px-8"
+            >
+              <Sparkles className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {isRTL ? "הזמינו בוואטסאפ" : "Order on WhatsApp"}
+            </Button>
+          </a>
         </div>
       </div>
 
