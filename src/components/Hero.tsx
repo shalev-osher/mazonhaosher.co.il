@@ -128,7 +128,7 @@ const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duratio
 const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
   const phrases = useMemo(() =>
     isRTL
-      ? ["🍪 מוזמנים לקניון ברנע מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"]
+      ? ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"]
       : ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
     [isRTL]
   );
