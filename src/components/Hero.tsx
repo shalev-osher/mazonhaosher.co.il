@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -65,6 +65,27 @@ const useParallax = (speed: number = 0.5) => {
   return offset;
 };
 
+// Cookie crumb particle component
+const CookieCrumb = ({ delay, duration, left, size }: { delay: number; duration: number; left: string; size: number }) => (
+  <div
+    className="absolute top-0 pointer-events-none opacity-0"
+    style={{
+      left,
+      animation: `crumbFall ${duration}s ${delay}s ease-in infinite`,
+    }}
+  >
+    <div
+      className="rounded-full"
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        background: `radial-gradient(circle, rgba(210,160,90,0.8) 0%, rgba(180,130,60,0.4) 100%)`,
+        animation: `crumbSpin ${duration * 0.7}s ${delay}s linear infinite`,
+      }}
+    />
+  </div>
+);
+
 const Hero = () => {
   const { isRTL } = useLanguage();
   
@@ -87,8 +108,39 @@ const Hero = () => {
     ? ["🍪 עוגיות בוטיק", "🎁 מארזי מתנה", "🚚 משלוחים עד הבית", "❤️ אפייה באהבה"]
     : ["🍪 Boutique Cookies", "🎁 Gift Packages", "🚚 Home Delivery", "❤️ Baked with Love"];
 
+  // Generate stable crumb particles
+  const crumbs = useMemo(() => 
+    Array.from({ length: 15 }, (_, i) => ({
+      id: i,
+      delay: i * 1.2 + Math.random() * 2,
+      duration: 6 + Math.random() * 4,
+      left: `${5 + (i * 6.5) % 90}%`,
+      size: 3 + Math.random() * 5,
+    })), []
+  );
+
   return (
     <>
+      {/* Crumb fall + spin keyframes */}
+      <style>{`
+        @keyframes crumbFall {
+          0% { transform: translateY(-10px); opacity: 0; }
+          10% { opacity: 0.7; }
+          90% { opacity: 0.3; }
+          100% { transform: translateY(100vh); opacity: 0; }
+        }
+        @keyframes crumbSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes bounceIn {
+          0% { transform: scale(0) translateY(20px); opacity: 0; }
+          60% { transform: scale(1.15) translateY(-5px); opacity: 1; }
+          80% { transform: scale(0.95) translateY(2px); }
+          100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+      `}</style>
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image with Parallax */}
@@ -106,6 +158,13 @@ const Hero = () => {
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.85) 100%)' }} />
+        </div>
+
+        {/* Cookie crumb particles */}
+        <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
+          {crumbs.map((c) => (
+            <CookieCrumb key={c.id} delay={c.delay} duration={c.duration} left={c.left} size={c.size} />
+          ))}
         </div>
 
         {/* Content */}
@@ -155,7 +214,7 @@ const Hero = () => {
               <div className="h-px w-20" style={{ background: 'linear-gradient(to left, transparent, rgba(245,158,11,0.6), rgba(245,158,11,0.8))' }} />
             </div>
             
-            {/* Social CTA Buttons - Arc Layout */}
+            {/* Social CTA Buttons - Arc Layout with bounce-in */}
             <div className="flex items-end justify-center gap-5 md:gap-7 mb-6">
               {/* WhatsApp */}
               <a
@@ -163,6 +222,7 @@ const Hero = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-2 translate-y-3"
+                style={{ animation: isVisible ? 'bounceIn 0.6s 0.8s both' : 'none' }}
               >
                 <div
                   className="w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-full flex items-center justify-center shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
@@ -181,6 +241,7 @@ const Hero = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-2 -translate-y-2"
+                style={{ animation: isVisible ? 'bounceIn 0.6s 1.0s both' : 'none' }}
               >
                 <div
                   className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
@@ -199,6 +260,7 @@ const Hero = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-2 translate-y-3"
+                style={{ animation: isVisible ? 'bounceIn 0.6s 1.2s both' : 'none' }}
               >
                 <div
                   className="w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-full flex items-center justify-center shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
