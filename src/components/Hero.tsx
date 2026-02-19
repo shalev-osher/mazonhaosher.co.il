@@ -128,8 +128,8 @@ const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duratio
 const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
   const phrases = useMemo(() =>
     isRTL
-      ? ["🍪 מוזמנים לקניון ברנע מדי יום ו׳ בין השעות 7:30-14:30", "🚚 משלוחים לכל הארץ", "🎁 מארזים מיוחדים לאירועים"]
-      : ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "🚚 Delivery nationwide", "🎁 Special event packages"],
+      ? ["🍪 מוזמנים לקניון ברנע מדי יום ו׳ בין השעות 7:30-14:30", "🚚 בקרוב משלוחים לכל הארץ", "🎁 מארזים מיוחדים לאירועים"]
+      : ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "🚚 Delivery nationwide coming soon", "🎁 Special event packages"],
     [isRTL]
   );
   const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
