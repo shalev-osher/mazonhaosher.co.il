@@ -125,17 +125,21 @@ const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duratio
   </div>
 );
 
-// Running marquee banner
 const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
-  const text = isRTL
-    ? "🍪 מוזמנים לקניון ברנע מדי יום ו׳ בין השעות 7:30-14:30"
-    : "🍪 Visit us at Barnea Mall every Friday 7:30-14:30";
+  const phrases = useMemo(() =>
+    isRTL
+      ? ["🍪 מוזמנים לקניון ברנע מדי יום ו׳ בין השעות 7:30-14:30", "🚚 משלוחים לכל הארץ", "🎁 מארזים מיוחדים לאירועים"]
+      : ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "🚚 Delivery nationwide", "🎁 Special event packages"],
+    [isRTL]
+  );
+  const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
 
   return (
     <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm">
+      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm min-w-[280px] justify-center">
         <span className="text-sm md:text-base font-medium text-muted-foreground whitespace-nowrap">
-          {text}
+          {displayedText}
+          <span className="inline-block w-0.5 h-4 mr-1 align-middle animate-blink bg-muted-foreground/50" />
         </span>
       </div>
     </div>
