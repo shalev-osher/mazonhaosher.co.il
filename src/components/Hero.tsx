@@ -235,8 +235,8 @@ const Hero = () => {
           </div>
           
           {/* Bottom tagline */}
-          <p className="text-center text-muted-foreground text-sm mt-8">
-            {isRTL ? "© מזון האושר · כל הזכויות שמורות" : "© Mazon HaOsher · All rights reserved"}
+          <p className="text-center text-muted-foreground text-base md:text-lg mt-8">
+            {isRTL ? "© מזון האושר 2026 · כל הזכויות שמורות" : "© Mazon HaOsher 2026 · All rights reserved"}
           </p>
         </div>
       </section>
