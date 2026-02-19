@@ -305,7 +305,51 @@ const Hero = () => {
           0%, 100% { opacity: 0.2; transform: scale(0.8); }
           50% { opacity: 1; transform: scale(1.3); }
         }
+        @keyframes luxuryLoader {
+          0% { transform: scale(0.6) rotate(0deg); opacity: 0; filter: blur(10px); }
+          50% { transform: scale(1.1) rotate(180deg); opacity: 1; filter: blur(0); }
+          100% { transform: scale(1) rotate(360deg); opacity: 0; filter: blur(5px); }
+        }
+        @keyframes loaderFade {
+          0% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { opacity: 0; pointer-events: none; }
+        }
+        @keyframes glowText {
+          0%, 100% { text-shadow: 0 0 4px hsla(40,90%,55%,0.3); }
+          50% { text-shadow: 0 0 16px hsla(40,90%,55%,0.7), 0 0 40px hsla(40,90%,55%,0.3); }
+        }
+        html { scroll-behavior: smooth; }
       `}</style>
+
+      {/* Luxury loading overlay */}
+      {!isVisible && (
+        <div
+          className="fixed inset-0 z-[9998] flex items-center justify-center bg-background"
+          style={{ animation: 'loaderFade 1.8s ease-out 0.5s forwards' }}
+        >
+          <div className="flex flex-col items-center gap-4">
+            <img
+              src={logo}
+              alt=""
+              className="w-24 h-24 object-contain"
+              style={{ animation: 'luxuryLoader 1.6s cubic-bezier(0.16,1,0.3,1) forwards' }}
+            />
+            <div className="flex gap-1.5">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    background: 'hsla(40,90%,55%,0.8)',
+                    animation: `twinkle 1.2s ease-in-out ${i * 0.2}s infinite`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Running marquee banner */}
       <MarqueeBanner isRTL={isRTL} />
@@ -487,18 +531,40 @@ const Hero = () => {
       <section ref={highlightsReveal.ref} className="relative z-20 bg-background py-10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {highlights.map((item, i) => (
-              <div
-                key={i}
-                className="text-center py-4 px-3 rounded-2xl border border-border/50 bg-card/50 hover:bg-card transition-all duration-500 hover:shadow-lg hover:-translate-y-1"
-                style={{
-                  opacity: 0,
-                  animation: highlightsReveal.revealed ? `highlightReveal 0.6s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s forwards` : 'none',
-                }}
-              >
-                <p className="text-sm md:text-base font-medium text-foreground">{item}</p>
-              </div>
-            ))}
+            {highlights.map((item, i) => {
+              const handleTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
+                const y = ((e.clientY - rect.top) / rect.height - 0.5) * -12;
+                e.currentTarget.style.transform = `perspective(400px) rotateY(${x}deg) rotateX(${y}deg) translateY(-4px)`;
+              };
+              const resetTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+                e.currentTarget.style.transform = 'perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0)';
+              };
+              return (
+                <div
+                  key={i}
+                  className="text-center py-4 px-3 rounded-2xl border border-border/50 bg-card/50 hover:bg-card hover:shadow-lg group"
+                  onMouseMove={handleTilt}
+                  onMouseLeave={resetTilt}
+                  style={{
+                    opacity: 0,
+                    animation: highlightsReveal.revealed ? `highlightReveal 0.6s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s forwards` : 'none',
+                    transition: 'transform 0.15s ease-out, box-shadow 0.5s ease, background 0.5s ease',
+                    transformStyle: 'preserve-3d',
+                  }}
+                >
+                  <p
+                    className="text-sm md:text-base font-medium text-foreground transition-all duration-300"
+                    style={{ animation: 'none' }}
+                    onMouseEnter={(e) => { (e.currentTarget.style.animation as string) ; e.currentTarget.style.animation = 'glowText 1.5s ease-in-out infinite'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.animation = 'none'; e.currentTarget.style.textShadow = 'none'; }}
+                  >
+                    {item}
+                  </p>
+                </div>
+              );
+            })}
           </div>
           <p className="text-center text-muted-foreground text-base md:text-lg mt-8">
             {isRTL ? "© מזון האושר 2026 · כל הזכויות שמורות" : "© Mazon HaOsher 2026 · All rights reserved"}
