@@ -128,19 +128,15 @@ const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duratio
 // Running marquee banner
 const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
   const text = isRTL
-    ? "🍪 מוזמנים לקניון ברנע מדי יום ו׳ בין השעות 7:30-14:30 🍪"
-    : "🍪 Visit us at Barnea Mall every Friday 7:30-14:30 🍪";
+    ? "🍪 מוזמנים לקניון ברנע מדי יום ו׳ בין השעות 7:30-14:30"
+    : "🍪 Visit us at Barnea Mall every Friday 7:30-14:30";
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-foreground overflow-hidden">
-      <div className="marquee-track py-2">
-        <div className="marquee-content">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <span key={i} className="text-xs md:text-sm font-medium text-background mx-8 whitespace-nowrap">
-              {text}
-            </span>
-          ))}
-        </div>
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm">
+        <span className="text-sm md:text-base font-medium text-muted-foreground whitespace-nowrap">
+          {text}
+        </span>
       </div>
     </div>
   );
@@ -238,16 +234,6 @@ const Hero = () => {
         @keyframes cinematic {
           0% { opacity: 0; transform: scale(1.1) translateY(30px); filter: blur(8px); }
           100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-        }
-        @keyframes marqueeScroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .marquee-track { overflow: hidden; }
-        .marquee-content {
-          display: flex;
-          width: max-content;
-          animation: marqueeScroll 25s linear infinite;
         }
       `}</style>
 
