@@ -109,33 +109,21 @@ const useHoverSound = () => {
   return playClick;
 };
 
-// Cookie crumb shapes
-const crumbShapes = [
-  // Irregular cookie chunk
-  "M4,1 Q6,0 8,1.5 Q10,3 9,5 Q8,7 6,7.5 Q3,8 1.5,6 Q0,4 1,2.5 Q2,0.5 4,1Z",
-  // Rounded chip
-  "M3,0.5 Q6,-0.5 8,1 Q10,2.5 9.5,5 Q9,7.5 6.5,8 Q3,8.5 1,6.5 Q-0.5,4.5 0.5,2 Q1.5,0.5 3,0.5Z",
-  // Crescent piece
-  "M2,0 Q5,-1 8,1 Q10,3 8,6 Q6,8 4,7 Q2,6 1,4 Q0,2 2,0Z",
-];
-
-const CookieCrumb = ({ delay, duration, left, size }: { delay: number; duration: number; left: string; size: number }) => (
+// Gentle golden sparkle particle
+const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duration: number; left: string; size: number }) => (
   <div
     className="absolute top-0 pointer-events-none opacity-0"
     style={{ left, animation: `crumbFall ${duration}s ${delay}s ease-in infinite` }}
   >
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 10 8"
-      style={{ animation: `crumbSpin ${duration * 0.7}s ${delay}s linear infinite` }}
-    >
-      <path
-        d={crumbShapes[Math.floor(delay * 10) % crumbShapes.length]}
-        fill={`hsl(${30 + (delay * 5) % 15}, ${60 + (delay * 3) % 20}%, ${50 + (delay * 2) % 15}%)`}
-        opacity="0.7"
-      />
-    </svg>
+    <div
+      className="rounded-full"
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        background: `radial-gradient(circle, hsla(40,85%,65%,0.9) 0%, hsla(35,80%,50%,0.3) 60%, transparent 100%)`,
+        boxShadow: `0 0 ${size}px hsla(40,90%,55%,0.4)`,
+      }}
+    />
   </div>
 );
 
@@ -163,13 +151,13 @@ const Hero = () => {
     ? ["🍪 עוגיות בוטיק", "🎁 מארזי מתנה", "🚚 משלוחים עד הבית", "❤️ אפייה באהבה"]
     : ["🍪 Boutique Cookies", "🎁 Gift Packages", "🚚 Home Delivery", "❤️ Baked with Love"];
 
-  const crumbs = useMemo(() =>
-    Array.from({ length: 12 }, (_, i) => ({
+  const sparkles = useMemo(() =>
+    Array.from({ length: 10 }, (_, i) => ({
       id: i,
-      delay: i * 1.4 + Math.random() * 2,
-      duration: 7 + Math.random() * 4,
-      left: `${5 + (i * 7.5) % 90}%`,
-      size: 12 + Math.random() * 14,
+      delay: i * 1.8 + Math.random() * 3,
+      duration: 8 + Math.random() * 5,
+      left: `${8 + (i * 9) % 85}%`,
+      size: 4 + Math.random() * 4,
     })), []
   );
 
@@ -274,10 +262,10 @@ const Hero = () => {
           <div className="absolute w-48 h-48 rounded-full blur-3xl" style={{ bottom: '20%', right: '10%', background: 'radial-gradient(circle, hsla(350,65%,55%,0.1) 0%, transparent 70%)', animation: 'goldFloat 10s ease-in-out 2s infinite' }} />
         </div>
 
-        {/* Cookie crumbs */}
+        {/* Golden sparkles */}
         <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
-          {crumbs.map((c) => (
-            <CookieCrumb key={c.id} delay={c.delay} duration={c.duration} left={c.left} size={c.size} />
+          {sparkles.map((c) => (
+            <GoldenSparkle key={c.id} delay={c.delay} duration={c.duration} left={c.left} size={c.size} />
           ))}
         </div>
 
@@ -340,8 +328,6 @@ const Hero = () => {
                       animation: `socialGlow 3s ease-in-out infinite`,
                     } as React.CSSProperties}
                   >
-                    {/* Inner ring for luxury feel */}
-                    <div className="absolute inset-1 rounded-full border border-white/20" />
                     <svg viewBox="0 0 24 24" className={`${s.iconSize} fill-white relative z-10 drop-shadow-md`}>
                       <path d={s.path} />
                     </svg>
