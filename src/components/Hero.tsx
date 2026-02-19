@@ -125,6 +125,20 @@ const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duratio
   </div>
 );
 
+// Twinkling star
+const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; size: number; delay: number }) => (
+  <div
+    className="absolute pointer-events-none rounded-full"
+    style={{
+      top, left,
+      width: `${size}px`,
+      height: `${size}px`,
+      background: 'hsla(40,90%,80%,0.9)',
+      boxShadow: `0 0 ${size * 2}px hsla(40,90%,65%,0.6), 0 0 ${size * 4}px hsla(40,90%,55%,0.3)`,
+      animation: `twinkle ${2.5 + delay * 0.5}s ease-in-out ${delay}s infinite`,
+    }}
+  />
+);
 const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
   const phrases = useMemo(() =>
     isRTL
@@ -174,6 +188,27 @@ const Hero = () => {
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
   const highlightsReveal = useScrollReveal(0.3);
+  const heroRef = useRef<HTMLElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+
+  const handleHeroMouse = useCallback((e: React.MouseEvent) => {
+    const rect = heroRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setMousePos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  }, []);
+
+  const stars = useMemo(() =>
+    Array.from({ length: 18 }, (_, i) => ({
+      id: i,
+      top: `${5 + Math.random() * 85}%`,
+      left: `${5 + Math.random() * 90}%`,
+      size: 1.5 + Math.random() * 2.5,
+      delay: Math.random() * 3,
+    })), []
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 300);
@@ -266,6 +301,10 @@ const Hero = () => {
           0% { opacity: 0; transform: translateY(25px) scale(0.95); }
           100% { opacity: 1; transform: translateY(0) scale(1); }
         }
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.2; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.3); }
+        }
       `}</style>
 
       {/* Running marquee banner */}
@@ -284,7 +323,15 @@ const Hero = () => {
         <span className="text-2xl drop-shadow-lg">🍪</span>
       </div>
 
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8">
+      <section ref={heroRef} onMouseMove={handleHeroMouse} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8">
+        {/* Mouse-reactive radial glow */}
+        <div
+          className="absolute inset-0 z-[1] pointer-events-none transition-opacity duration-500"
+          style={{
+            background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, hsla(40,90%,55%,0.12) 0%, transparent 60%)`,
+          }}
+        />
+
         {/* Background with stronger Parallax */}
         <div
           className="absolute inset-0 z-0 will-change-transform"
@@ -292,6 +339,13 @@ const Hero = () => {
         >
           <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)' }} />
+        </div>
+
+        {/* Twinkling stars */}
+        <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
+          {stars.map((s) => (
+            <TwinkleStar key={s.id} top={s.top} left={s.left} size={s.size} delay={s.delay} />
+          ))}
         </div>
 
         {/* Luxury floating gold orbs */}
