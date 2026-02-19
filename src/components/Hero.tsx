@@ -552,55 +552,60 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Gold wave divider */}
-      <div className="relative z-20 bg-background overflow-hidden">
-        <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(40,90%,55%,0.3) 30%, hsla(40,90%,55%,0.6) 50%, hsla(40,90%,55%,0.3) 70%, transparent 90%)' }} />
-      </div>
-
-      {/* Highlights with scroll reveal */}
-      <section ref={highlightsReveal.ref} className="relative z-20 bg-background py-10">
+      {/* Highlights - elegant inline style */}
+      <section ref={highlightsReveal.ref} className="relative z-20 bg-background py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {highlights.map((item, i) => {
-              const handleTilt = (e: React.MouseEvent<HTMLDivElement>) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
-                const y = ((e.clientY - rect.top) / rect.height - 0.5) * -12;
-                e.currentTarget.style.transform = `perspective(400px) rotateY(${x}deg) rotateX(${y}deg) translateY(-4px)`;
-              };
-              const resetTilt = (e: React.MouseEvent<HTMLDivElement>) => {
-                e.currentTarget.style.transform = 'perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0)';
-              };
-              return (
-                <div
-                  key={i}
-                  className="text-center py-4 px-3 rounded-2xl border border-border/50 bg-card/50 hover:bg-card hover:shadow-lg group"
-                  onMouseMove={handleTilt}
-                  onMouseLeave={resetTilt}
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 max-w-3xl mx-auto">
+            {highlights.map((item, i) => (
+              <div
+                key={i}
+                className="relative group cursor-default"
+                style={{
+                  opacity: 0,
+                  animation: highlightsReveal.revealed ? `highlightReveal 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.15}s forwards` : 'none',
+                }}
+              >
+                <p
+                  className="text-base md:text-lg font-semibold text-foreground transition-all duration-500 group-hover:scale-110"
                   style={{
-                    opacity: 0,
-                    animation: highlightsReveal.revealed ? `highlightReveal 0.6s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s forwards` : 'none',
-                    transition: 'transform 0.15s ease-out, box-shadow 0.5s ease, background 0.5s ease',
-                    transformStyle: 'preserve-3d',
+                    transition: 'text-shadow 0.4s ease, transform 0.4s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.textShadow = '0 0 20px hsla(40,90%,55%,0.8), 0 0 40px hsla(40,90%,55%,0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.textShadow = 'none';
                   }}
                 >
-                  <p
-                    className="text-sm md:text-base font-medium text-foreground transition-all duration-300"
-                    style={{ animation: 'none' }}
-                    onMouseEnter={(e) => { (e.currentTarget.style.animation as string) ; e.currentTarget.style.animation = 'glowText 1.5s ease-in-out infinite'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.animation = 'none'; e.currentTarget.style.textShadow = 'none'; }}
-                  >
-                    {item}
-                  </p>
-                </div>
-              );
-            })}
+                  {item}
+                </p>
+                {/* Gold underline on hover */}
+                <div
+                  className="h-0.5 mx-auto mt-1 rounded-full transition-all duration-500 group-hover:w-full w-0"
+                  style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,55%,0.8), transparent)' }}
+                />
+              </div>
+            ))}
           </div>
+
+          {/* Gold separator */}
+          <div className="flex items-center justify-center gap-3 mt-10 mb-4">
+            <div className="relative h-px w-32 overflow-hidden">
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent, hsla(40,90%,55%,0.3))' }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.8), transparent)', animation: 'goldWave 3s ease-in-out infinite' }} />
+            </div>
+            <span className="text-sm">✨</span>
+            <div className="relative h-px w-32 overflow-hidden">
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to left, transparent, hsla(40,90%,55%,0.3))' }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.8), transparent)', animation: 'goldWave 3s ease-in-out infinite reverse' }} />
+            </div>
+          </div>
+
           <p
-            className="text-center text-muted-foreground text-base md:text-lg mt-8"
+            className="text-center text-muted-foreground text-sm mt-4"
             style={{
               opacity: 0,
-              animation: highlightsReveal.revealed ? 'scrollRevealText 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s forwards' : 'none',
+              animation: highlightsReveal.revealed ? 'scrollRevealText 0.8s cubic-bezier(0.16,1,0.3,1) 0.6s forwards' : 'none',
             }}
           >
             {isRTL ? "© מזון האושר 2026 · כל הזכויות שמורות" : "© Mazon HaOsher 2026 · All rights reserved"}
