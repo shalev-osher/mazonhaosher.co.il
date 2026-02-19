@@ -3,20 +3,24 @@ import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pauseTime: number = 2000) => {
+// Multi-phrase typewriter hook
+const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pauseTime = 2500, delay = 500) => {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-    let currentIndex = 0;
+    let phraseIndex = 0;
+    let charIndex = 0;
     let isDeleting = false;
-    
+
     const animate = () => {
+      const currentPhrase = phrases[phraseIndex];
+
       if (!isDeleting) {
-        if (currentIndex < text.length) {
-          setDisplayedText(text.slice(0, currentIndex + 1));
-          currentIndex++;
+        if (charIndex < currentPhrase.length) {
+          setDisplayedText(currentPhrase.slice(0, charIndex + 1));
+          charIndex++;
           setIsTyping(true);
           timeout = setTimeout(animate, speed);
         } else {
@@ -27,13 +31,14 @@ const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pa
           }, pauseTime);
         }
       } else {
-        if (currentIndex > 0) {
-          currentIndex--;
-          setDisplayedText(text.slice(0, currentIndex));
+        if (charIndex > 0) {
+          charIndex--;
+          setDisplayedText(currentPhrase.slice(0, charIndex));
           setIsTyping(true);
-          timeout = setTimeout(animate, speed / 2);
+          timeout = setTimeout(animate, deleteSpeed);
         } else {
           isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
           setIsTyping(false);
           timeout = setTimeout(animate, delay);
         }
@@ -42,7 +47,7 @@ const useTypewriter = (text: string, speed: number = 50, delay: number = 500, pa
 
     timeout = setTimeout(animate, delay);
     return () => clearTimeout(timeout);
-  }, [text, speed, delay, pauseTime]);
+  }, [phrases, speed, deleteSpeed, pauseTime, delay]);
 
   return { displayedText, isTyping };
 };
@@ -95,6 +100,40 @@ const useCookieCursor = () => {
   return pos;
 };
 
+// Hover sound hook
+const useHoverSound = () => {
+  const audioContextRef = useRef<AudioContext | null>(null);
+
+  const playClick = useCallback(() => {
+    try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new AudioContext();
+      }
+      const ctx = audioContextRef.current;
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, ctx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.05);
+      oscillator.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
+
+      gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + 0.15);
+    } catch (e) {
+      // Silently fail if audio not supported
+    }
+  }, []);
+
+  return playClick;
+};
+
 // Cookie crumb particle component
 const CookieCrumb = ({ delay, duration, left, size }: { delay: number; duration: number; left: string; size: number }) => (
   <div
@@ -118,17 +157,20 @@ const CookieCrumb = ({ delay, duration, left, size }: { delay: number; duration:
 
 const Hero = () => {
   const { isRTL } = useLanguage();
-  
-  const { displayedText, isTyping } = useTypewriter(
-    isRTL ? "אופים לכם אושר" : "Baking Happiness",
-    60,
-    1000,
-    3500
+
+  const phrases = useMemo(() =>
+    isRTL
+      ? ["אופים לכם אושר", "טעם של בית", "כל עוגיה סיפור", "מתוק מהלב"]
+      : ["Baking Happiness", "Taste of Home", "Every Cookie a Story", "Sweet from the Heart"],
+    [isRTL]
   );
+  
+  const { displayedText, isTyping } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
 
   const parallaxOffset = useParallax(0.4);
   const [isVisible, setIsVisible] = useState(false);
   const cursorPos = useCookieCursor();
+  const playClick = useHoverSound();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 200);
@@ -168,10 +210,12 @@ const Hero = () => {
           80% { transform: scale(0.95) translateY(2px); }
           100% { transform: scale(1) translateY(0); opacity: 1; }
         }
-        @keyframes goldenRing {
-          0% { transform: scale(0.8); opacity: 0; box-shadow: 0 0 0 0 rgba(245,158,11,0.6); }
-          50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 30px 10px rgba(245,158,11,0.3); }
-          100% { transform: scale(1.2); opacity: 0; box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+        @keyframes logo3D {
+          0% { transform: perspective(800px) rotateY(0deg); }
+          25% { transform: perspective(800px) rotateY(8deg); }
+          50% { transform: perspective(800px) rotateY(0deg); }
+          75% { transform: perspective(800px) rotateY(-8deg); }
+          100% { transform: perspective(800px) rotateY(0deg); }
         }
         @keyframes gradientShift {
           0% { background-position: 0% 50%; }
@@ -239,30 +283,14 @@ const Hero = () => {
             }`}
           >
             
-            {/* Logo with golden ring pulse */}
+            {/* Logo with 3D rotation */}
             <div className="relative mb-4">
               <div className="relative inline-block">
                 <img 
                   src={logo}
                   alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
-                  className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl relative z-10"
-                />
-                {/* Golden ring pulse */}
-                <div
-                  className="absolute inset-0 rounded-full z-0 pointer-events-none"
-                  style={{
-                    animation: 'goldenRing 3s ease-out infinite',
-                    border: '2px solid rgba(245,158,11,0.4)',
-                    margin: '-10%',
-                  }}
-                />
-                <div
-                  className="absolute inset-0 rounded-full z-0 pointer-events-none"
-                  style={{
-                    animation: 'goldenRing 3s 1.5s ease-out infinite',
-                    border: '2px solid rgba(245,158,11,0.3)',
-                    margin: '-10%',
-                  }}
+                  className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl"
+                  style={{ animation: 'logo3D 6s ease-in-out infinite' }}
                 />
               </div>
               <div className="absolute inset-0 flex items-center justify-center -z-10">
@@ -270,7 +298,7 @@ const Hero = () => {
               </div>
             </div>
             
-            {/* Typewriter */}
+            {/* Multi-phrase Typewriter */}
             <div className="relative min-h-[2.5rem] flex items-center justify-center mb-2">
               <p className="text-2xl md:text-3xl lg:text-4xl text-white font-display font-medium drop-shadow-lg">
                 <span className="relative">
@@ -297,7 +325,7 @@ const Hero = () => {
               <div className="h-px w-20" style={{ background: 'linear-gradient(to left, transparent, rgba(245,158,11,0.6), rgba(245,158,11,0.8))' }} />
             </div>
             
-            {/* Social CTA Buttons - Arc Layout with bounce-in */}
+            {/* Social CTA Buttons - Arc Layout with bounce-in + hover sound */}
             <div className="flex items-end justify-center gap-5 md:gap-7 mb-6">
               {/* WhatsApp */}
               <a
@@ -306,6 +334,7 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-2 translate-y-3"
                 style={{ animation: isVisible ? 'bounceIn 0.6s 0.8s both' : 'none' }}
+                onMouseEnter={playClick}
               >
                 <div
                   className="w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-full flex items-center justify-center shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
@@ -325,6 +354,7 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-2 -translate-y-2"
                 style={{ animation: isVisible ? 'bounceIn 0.6s 1.0s both' : 'none' }}
+                onMouseEnter={playClick}
               >
                 <div
                   className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
@@ -344,6 +374,7 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-2 translate-y-3"
                 style={{ animation: isVisible ? 'bounceIn 0.6s 1.2s both' : 'none' }}
+                onMouseEnter={playClick}
               >
                 <div
                   className="w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-full flex items-center justify-center shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
