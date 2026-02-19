@@ -168,9 +168,10 @@ const Hero = () => {
           80% { transform: scale(0.95) translateY(2px); }
           100% { transform: scale(1) translateY(0); opacity: 1; }
         }
-        @keyframes shimmer {
-          0% { transform: translateX(-150%) skewX(-15deg); }
-          100% { transform: translateX(150%) skewX(-15deg); }
+        @keyframes goldenRing {
+          0% { transform: scale(0.8); opacity: 0; box-shadow: 0 0 0 0 rgba(245,158,11,0.6); }
+          50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 30px 10px rgba(245,158,11,0.3); }
+          100% { transform: scale(1.2); opacity: 0; box-shadow: 0 0 0 0 rgba(245,158,11,0); }
         }
         @keyframes gradientShift {
           0% { background-position: 0% 50%; }
@@ -238,20 +239,29 @@ const Hero = () => {
             }`}
           >
             
-            {/* Logo with shimmer */}
+            {/* Logo with golden ring pulse */}
             <div className="relative mb-4">
-              <div className="relative inline-block overflow-hidden">
+              <div className="relative inline-block">
                 <img 
                   src={logo}
                   alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
                   className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl relative z-10"
                 />
-                {/* Shimmer overlay */}
+                {/* Golden ring pulse */}
                 <div
-                  className="absolute inset-0 z-20 pointer-events-none"
+                  className="absolute inset-0 rounded-full z-0 pointer-events-none"
                   style={{
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
-                    animation: 'shimmer 3s ease-in-out infinite',
+                    animation: 'goldenRing 3s ease-out infinite',
+                    border: '2px solid rgba(245,158,11,0.4)',
+                    margin: '-10%',
+                  }}
+                />
+                <div
+                  className="absolute inset-0 rounded-full z-0 pointer-events-none"
+                  style={{
+                    animation: 'goldenRing 3s 1.5s ease-out infinite',
+                    border: '2px solid rgba(245,158,11,0.3)',
+                    margin: '-10%',
                   }}
                 />
               </div>

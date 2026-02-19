@@ -4,59 +4,40 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProfileProvider } from "@/contexts/ProfileContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import { CartProvider } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-
 import FloatingCopyright from "./components/FloatingCopyright";
 
 const queryClient = new QueryClient();
 
-// OAuth callback handler component
 const OAuthHandler = ({ children }: { children: React.ReactNode }) => {
   const [isHandlingOAuth, setIsHandlingOAuth] = useState(false);
 
   useEffect(() => {
-    // Check if this is an OAuth callback (hash contains access_token or error)
     const hash = window.location.hash;
     const isOAuthCallback = hash.includes("access_token") || hash.includes("error");
 
     if (isOAuthCallback) {
       setIsHandlingOAuth(true);
-      console.log("OAuth callback detected, processing...");
-
-      // Supabase client will automatically handle the hash and set the session
-      // We just need to wait for it to complete
       supabase.auth.getSession().then(({ data: { session }, error }) => {
-        if (error) {
-          console.error("OAuth error:", error);
-        }
-        if (session) {
-          console.log("OAuth session established successfully");
-          // Clear the hash from URL for clean look
-          window.history.replaceState(null, "", window.location.pathname);
-        }
+        if (error) console.error("OAuth error:", error);
+        if (session) window.history.replaceState(null, "", window.location.pathname);
         setIsHandlingOAuth(false);
       });
     }
 
-    // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session && isOAuthCallback) {
-        console.log("OAuth sign-in completed");
         window.history.replaceState(null, "", window.location.pathname);
         setIsHandlingOAuth(false);
       }
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => { subscription.unsubscribe(); };
   }, []);
 
   if (isHandlingOAuth) {
@@ -78,22 +59,17 @@ const App = () => (
     <ThemeProvider>
       <LanguageProvider>
         <TooltipProvider>
-          <ProfileProvider>
-            <CartProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                
-                <FloatingCopyright />
-                <OAuthHandler>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </OAuthHandler>
-              </BrowserRouter>
-            </CartProvider>
-          </ProfileProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <FloatingCopyright />
+            <OAuthHandler>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </OAuthHandler>
+          </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>
     </ThemeProvider>
