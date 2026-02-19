@@ -319,6 +319,23 @@ const Hero = () => {
           0%, 100% { text-shadow: 0 0 4px hsla(40,90%,55%,0.3); }
           50% { text-shadow: 0 0 16px hsla(40,90%,55%,0.7), 0 0 40px hsla(40,90%,55%,0.3); }
         }
+        @keyframes scrollRevealText {
+          0% { opacity: 0; transform: translateY(20px); clip-path: inset(0 0 100% 0); }
+          100% { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0% 0); }
+        }
+        @keyframes pulseCTA {
+          0%, 100% { box-shadow: 0 0 0 0 hsla(40,90%,55%,0.5); }
+          50% { box-shadow: 0 0 0 12px hsla(40,90%,55%,0); }
+        }
+        @keyframes movingGradientBg {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes rippleEffect {
+          0% { transform: translate(-50%,-50%) scale(0); opacity: 0.6; }
+          100% { transform: translate(-50%,-50%) scale(4); opacity: 0; }
+        }
         html { scroll-behavior: smooth; }
       `}</style>
 
@@ -367,7 +384,7 @@ const Hero = () => {
         <span className="text-2xl drop-shadow-lg">🍪</span>
       </div>
 
-      <section ref={heroRef} onMouseMove={handleHeroMouse} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8">
+      <section ref={heroRef} onMouseMove={handleHeroMouse} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite' }}>
         {/* Mouse-reactive radial glow */}
         <div
           className="absolute inset-0 z-[1] pointer-events-none transition-opacity duration-500"
@@ -486,32 +503,45 @@ const Hero = () => {
 
             {/* Social Icons */}
             <div className="flex items-end justify-center gap-5 md:gap-7 mb-6">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group flex flex-col items-center gap-2 ${s.y}`}
-                  style={{ animation: isVisible ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
-                  onMouseEnter={playClick}
-                >
-                  <div
-                    className={`${s.size} rounded-full flex items-center justify-center transition-all duration-500 group-hover:scale-110`}
-                    style={{
-                      background: s.bg,
-                      boxShadow: `0 8px 25px ${s.glow}`,
-                      '--glow-color': s.glow,
-                      animation: `socialGlow 3s ease-in-out infinite`,
-                    } as React.CSSProperties}
+              {socials.map((s) => {
+                const handleRipple = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                  const el = e.currentTarget;
+                  const rect = el.getBoundingClientRect();
+                  const ripple = document.createElement('span');
+                  ripple.style.cssText = `position:absolute;border-radius:50%;width:20px;height:20px;background:hsla(0,0%,100%,0.4);pointer-events:none;left:${e.clientX - rect.left}px;top:${e.clientY - rect.top}px;animation:rippleEffect 0.6s ease-out forwards;`;
+                  el.style.position = 'relative';
+                  el.style.overflow = 'hidden';
+                  el.appendChild(ripple);
+                  setTimeout(() => ripple.remove(), 600);
+                };
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group flex flex-col items-center gap-2 ${s.y}`}
+                    style={{ animation: isVisible ? `bounceIn 0.6s ${s.animDelay} both, pulseCTA 2.5s ease-in-out ${s.animDelay} infinite` : 'none' }}
+                    onMouseEnter={playClick}
+                    onClick={handleRipple}
                   >
-                    <svg viewBox="0 0 24 24" className={`${s.iconSize} fill-white relative z-10 drop-shadow-md`}>
-                      <path d={s.path} />
-                    </svg>
-                  </div>
-                  <span className="text-xs text-white/50 font-light tracking-wider uppercase">{s.label}</span>
-                </a>
-              ))}
+                    <div
+                      className={`${s.size} rounded-full flex items-center justify-center transition-all duration-500 group-hover:scale-110`}
+                      style={{
+                        background: s.bg,
+                        boxShadow: `0 8px 25px ${s.glow}`,
+                        '--glow-color': s.glow,
+                        animation: `socialGlow 3s ease-in-out infinite`,
+                      } as React.CSSProperties}
+                    >
+                      <svg viewBox="0 0 24 24" className={`${s.iconSize} fill-white relative z-10 drop-shadow-md`}>
+                        <path d={s.path} />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-white/50 font-light tracking-wider uppercase">{s.label}</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -566,7 +596,13 @@ const Hero = () => {
               );
             })}
           </div>
-          <p className="text-center text-muted-foreground text-base md:text-lg mt-8">
+          <p
+            className="text-center text-muted-foreground text-base md:text-lg mt-8"
+            style={{
+              opacity: 0,
+              animation: highlightsReveal.revealed ? 'scrollRevealText 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s forwards' : 'none',
+            }}
+          >
             {isRTL ? "© מזון האושר 2026 · כל הזכויות שמורות" : "© Mazon HaOsher 2026 · All rights reserved"}
           </p>
         </div>
