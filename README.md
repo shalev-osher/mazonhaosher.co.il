@@ -60,6 +60,27 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+
+## Docker deployment
+
+You can run this landing page in Docker (multi-stage build + Nginx):
+
+```sh
+# Build image
+docker build -t mazonhaosher-landing .
+
+# Run container on port 8080
+docker run -d --name mazonhaosher-web -p 8080:80 mazonhaosher-landing
+```
+
+Or with docker compose:
+
+```sh
+docker compose up -d --build
+```
+
+Then open: `http://localhost:8080`
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
