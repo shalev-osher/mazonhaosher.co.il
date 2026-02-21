@@ -87,24 +87,7 @@ const useCookieCursor = () => {
 };
 
 const useHoverSound = () => {
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const playClick = useCallback(() => {
-    try {
-      if (!audioContextRef.current) audioContextRef.current = new AudioContext();
-      const ctx = audioContextRef.current;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(520, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(680, ctx.currentTime + 0.06);
-      gain.gain.setValueAtTime(0.03, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.08);
-    } catch {}
-  }, []);
+  const playClick = useCallback(() => {}, []);
   return playClick;
 };
 
