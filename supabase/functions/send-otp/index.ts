@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -29,15 +30,6 @@ const RATE_LIMIT_WINDOW_MS = 3600000; // 1 hour
 // Generate 6-digit OTP
 function generateOTP(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-// Simple hash function for OTP (in production, use a proper crypto hash)
-async function hashOTP(code: string, email: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(code + email + "mazon_haosher_secret");
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 // Check and update rate limit
@@ -97,9 +89,9 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Generate OTP and hash it
+      // Generate OTP and hash it with bcrypt
       const otp = generateOTP();
-      const codeHash = await hashOTP(otp, email);
+      const codeHash = await bcrypt.hash(otp, 10);
       const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 minutes expiration
 
       // Delete any existing OTP for this email
@@ -189,38 +181,35 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Hash the provided code
-      const codeHash = await hashOTP(code, email);
-
-      // Find matching OTP in database
+      // Fetch the latest non-verified OTP for this email
       const { data: otpData, error: fetchError } = await supabase
         .from("otp_tokens")
         .select("*")
         .eq("email", email)
-        .eq("code_hash", codeHash)
         .eq("verified", false)
-        .gt("expires_at", new Date().toISOString())
+        .order("created_at", { ascending: false })
+        .limit(1)
         .single();
 
       if (fetchError || !otpData) {
-        // Check if there's an expired token
-        const { data: expiredToken } = await supabase
-          .from("otp_tokens")
-          .select("*")
-          .eq("email", email)
-          .eq("code_hash", codeHash)
-          .lte("expires_at", new Date().toISOString())
-          .single();
+        return new Response(
+          JSON.stringify({ error: "קוד אימות שגוי", valid: false }),
+          { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
 
-        if (expiredToken) {
-          // Delete expired token
-          await supabase.from("otp_tokens").delete().eq("id", expiredToken.id);
-          return new Response(
-            JSON.stringify({ error: "קוד האימות פג תוקף", valid: false }),
-            { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-          );
-        }
+      // Check expiration
+      if (new Date(otpData.expires_at) < new Date()) {
+        await supabase.from("otp_tokens").delete().eq("id", otpData.id);
+        return new Response(
+          JSON.stringify({ error: "קוד האימות פג תוקף", valid: false }),
+          { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
 
+      // Compare using bcrypt
+      const isValid = await bcrypt.compare(code, otpData.code_hash);
+      if (!isValid) {
         return new Response(
           JSON.stringify({ error: "קוד אימות שגוי", valid: false }),
           { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
