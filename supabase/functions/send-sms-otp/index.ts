@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -32,15 +33,6 @@ function isRateLimited(identifier: string): boolean {
 // Generate 6-digit OTP
 function generateOTP(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-// Hash OTP for storage
-async function hashOTP(otp: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(otp);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 // Normalize phone number to E.164 format
@@ -120,9 +112,9 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Generate OTP
+      // Generate OTP and hash with bcrypt
       const otp = generateOTP();
-      const otpHash = await hashOTP(otp);
+      const otpHash = await bcrypt.hash(otp, 10);
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
       // Delete any existing OTP for this phone
@@ -191,19 +183,35 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      const codeHash = await hashOTP(code);
-
-      // Find matching OTP
+      // Fetch the latest non-verified OTP for this phone
       const { data: otpRecord, error: fetchError } = await supabase
         .from("sms_otp_tokens")
         .select("*")
         .eq("phone", normalizedPhone)
-        .eq("code_hash", codeHash)
         .eq("verified", false)
-        .gt("expires_at", new Date().toISOString())
+        .order("created_at", { ascending: false })
+        .limit(1)
         .single();
 
       if (fetchError || !otpRecord) {
+        return new Response(
+          JSON.stringify({ error: "קוד אימות שגוי או פג תוקף" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Check expiration
+      if (new Date(otpRecord.expires_at) < new Date()) {
+        await supabase.from("sms_otp_tokens").delete().eq("id", otpRecord.id);
+        return new Response(
+          JSON.stringify({ error: "קוד אימות שגוי או פג תוקף" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Compare using bcrypt
+      const isValid = await bcrypt.compare(code, otpRecord.code_hash);
+      if (!isValid) {
         return new Response(
           JSON.stringify({ error: "קוד אימות שגוי או פג תוקף" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -236,7 +244,6 @@ const handler = async (req: Request): Promise<Response> => {
       let refreshToken: string;
 
       if (existingUser) {
-        // User exists, sign them in using admin API to generate tokens
         const { data: signInData, error: signInError } = await supabaseAdmin.auth.admin.generateLink({
           type: "magiclink",
           email: phoneEmail,
@@ -247,7 +254,6 @@ const handler = async (req: Request): Promise<Response> => {
           throw new Error("שגיאה ביצירת קישור כניסה");
         }
 
-        // Use the hashed token to sign in
         const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.verifyOtp({
           token_hash: signInData.properties?.hashed_token || "",
           type: "magiclink",
@@ -262,7 +268,6 @@ const handler = async (req: Request): Promise<Response> => {
         accessToken = sessionData.session.access_token;
         refreshToken = sessionData.session.refresh_token;
       } else {
-        // Create new user
         const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
           email: phoneEmail,
           password: tempPassword,
@@ -280,7 +285,6 @@ const handler = async (req: Request): Promise<Response> => {
 
         userId = newUser.user.id;
 
-        // Generate session for the new user
         const { data: signInData, error: signInError } = await supabaseAdmin.auth.admin.generateLink({
           type: "magiclink",
           email: phoneEmail,
