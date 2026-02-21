@@ -321,6 +321,13 @@ const Hero = () => {
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
+        @keyframes kenBurns {
+          0% { transform: scale(1.2) translate(0%, 0%); }
+          25% { transform: scale(1.35) translate(-2%, -1%); }
+          50% { transform: scale(1.25) translate(1%, -2%); }
+          75% { transform: scale(1.3) translate(-1%, 1%); }
+          100% { transform: scale(1.2) translate(0%, 0%); }
+        }
         @keyframes rippleEffect {
           0% { transform: translate(-50%,-50%) scale(0); opacity: 0.6; }
           100% { transform: translate(-50%,-50%) scale(4); opacity: 0; }
@@ -385,9 +392,9 @@ const Hero = () => {
         {/* Background with stronger Parallax */}
         <div
           className="absolute inset-0 z-0 will-change-transform"
-          style={{ transform: `translateY(${parallaxOffset}px) scale(1.2)`, top: '-10%', height: '120%' }}
+          style={{ transform: `translateY(${parallaxOffset}px)`, top: '-10%', height: '120%' }}
         >
-          <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" className="w-full h-full object-cover" />
+          <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" className="w-full h-full object-cover" style={{ animation: 'kenBurns 25s ease-in-out infinite', transformOrigin: 'center center' }} />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)' }} />
         </div>
 
