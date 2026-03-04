@@ -6,59 +6,59 @@
 
 @layer base {
   :root {
-    --background: 30 25% 97%;
-    --foreground: 20 20% 18%;
+    --background: 30 30% 96%;
+    --foreground: 20 25% 12%;
 
-    --card: 30 20% 95%;
-    --card-foreground: 20 20% 18%;
+    --card: 30 25% 93%;
+    --card-foreground: 20 25% 12%;
 
-    --popover: 30 25% 97%;
-    --popover-foreground: 20 20% 18%;
+    --popover: 30 30% 96%;
+    --popover-foreground: 20 25% 12%;
 
-    --primary: 350 65% 55%;
+    --primary: 350 75% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 20% 92%;
-    --secondary-foreground: 20 20% 18%;
+    --secondary: 30 25% 88%;
+    --secondary-foreground: 20 25% 12%;
 
-    --muted: 30 15% 94%;
-    --muted-foreground: 20 10% 45%;
+    --muted: 30 20% 90%;
+    --muted-foreground: 20 15% 35%;
 
-    --accent: 280 60% 60%;
+    --accent: 280 70% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 15% 88%;
-    --input: 30 15% 88%;
-    --ring: 350 65% 55%;
+    --border: 30 20% 82%;
+    --input: 30 20% 82%;
+    --ring: 350 75% 50%;
 
     --radius: 0.75rem;
 
     /* Custom accent colors */
-    --warm-cream: 30 25% 97%;
-    --rose: 350 65% 55%;
-    --coral: 15 75% 60%;
-    --amber: 35 85% 55%;
-    --teal: 175 60% 45%;
-    --violet: 280 60% 60%;
-    --sky: 200 80% 55%;
-    --emerald: 155 60% 45%;
-    --golden-honey: 40 90% 55%;
-    --soft-pink: 350 40% 85%;
+    --warm-cream: 30 30% 96%;
+    --rose: 350 75% 50%;
+    --coral: 15 85% 55%;
+    --amber: 35 90% 50%;
+    --teal: 175 70% 40%;
+    --violet: 280 70% 55%;
+    --sky: 200 85% 50%;
+    --emerald: 155 70% 40%;
+    --golden-honey: 40 95% 50%;
+    --soft-pink: 350 50% 75%;
 
     /* Gradients */
-    --gradient-warm: linear-gradient(135deg, hsl(30 25% 97%) 0%, hsl(30 20% 92%) 100%);
-    --gradient-cookie: linear-gradient(180deg, hsl(35 85% 55% / 0.2) 0%, transparent 100%);
-    --gradient-sunset: linear-gradient(135deg, hsl(350 65% 55%), hsl(35 85% 55%));
-    --gradient-ocean: linear-gradient(135deg, hsl(200 80% 55%), hsl(175 60% 45%));
-    --gradient-berry: linear-gradient(135deg, hsl(350 65% 55%), hsl(280 60% 60%));
+    --gradient-warm: linear-gradient(135deg, hsl(30 30% 96%) 0%, hsl(30 25% 88%) 100%);
+    --gradient-cookie: linear-gradient(180deg, hsl(35 90% 50% / 0.3) 0%, transparent 100%);
+    --gradient-sunset: linear-gradient(135deg, hsl(350 75% 50%), hsl(35 90% 50%));
+    --gradient-ocean: linear-gradient(135deg, hsl(200 85% 50%), hsl(175 70% 40%));
+    --gradient-berry: linear-gradient(135deg, hsl(350 75% 50%), hsl(280 70% 55%));
     
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(20 20% 18% / 0.08);
-    --shadow-warm: 0 8px 30px -8px hsl(350 65% 55% / 0.25);
-    --shadow-elevated: 0 20px 50px -15px hsl(20 20% 18% / 0.12);
+    --shadow-soft: 0 4px 20px -4px hsl(20 25% 12% / 0.12);
+    --shadow-warm: 0 8px 30px -8px hsl(350 75% 50% / 0.35);
+    --shadow-elevated: 0 20px 50px -15px hsl(20 25% 12% / 0.2);
 
     /* Animations */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
