@@ -356,40 +356,7 @@ const Hero = () => {
         html { scroll-behavior: smooth; }
       `}</style>
 
-      {/* Elegant loading animation matching site style */}
-      {!isVisible && (
-        <div
-          className="fixed inset-0 z-[9998] flex items-center justify-center bg-background texture-paper"
-          style={{ animation: 'loaderFade 1.8s ease-out 0.5s forwards' }}
-        >
-          {/* Subtle golden sparkles in background */}
-          {stars.slice(0, 8).map((s) => (
-            <TwinkleStar key={`loader-star-${s.id}`} top={s.top} left={s.left} size={s.size} delay={s.delay} />
-          ))}
-          <div className="flex flex-col items-center gap-6">
-            {/* Logo with cinematic entrance */}
-            <img
-              src={logo}
-              alt="Logo"
-              className="w-28 h-28 md:w-36 md:h-36 object-contain"
-              style={{
-                animation: 'cinematic 1.2s cubic-bezier(0.16,1,0.3,1) forwards, cookieGlow 2.5s ease-in-out 1.2s infinite',
-              }}
-            />
-            {/* Golden loading bar */}
-            <div className="w-40 h-1 rounded-full overflow-hidden" style={{ background: 'hsl(var(--border))' }}>
-              <div
-                className="h-full rounded-full"
-                style={{
-                  background: 'linear-gradient(90deg, hsl(var(--golden-honey)), hsl(var(--coral)), hsl(var(--golden-honey)))',
-                  animation: 'goldWave 1.5s ease-in-out infinite',
-                  width: '100%',
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* No separate loader — elements reveal in place */}
 
       {/* Running marquee banner */}
       <MarqueeBanner isRTL={isRTL} />
