@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 const FloatingCopyright = () => {
   const { isRTL } = useLanguage();
   const [visible, setVisible] = useState(true);
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    // Delay entrance to match staggered reveal
+    const timer = setTimeout(() => setEntered(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
