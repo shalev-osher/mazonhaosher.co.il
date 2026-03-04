@@ -358,8 +358,8 @@ const Hero = () => {
 
       {/* No separate loader — elements reveal in place */}
 
-      {/* Running marquee banner */}
-      <MarqueeBanner isRTL={isRTL} />
+      {/* Running marquee banner — reveals early with background */}
+      {revealStep >= 1 && <MarqueeBanner isRTL={isRTL} />}
 
       {/* Cookie cursor */}
       <div
