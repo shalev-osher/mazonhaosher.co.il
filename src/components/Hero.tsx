@@ -163,7 +163,6 @@ const useScrollReveal = (threshold = 0.2) => {
   return { ref, revealed };
 };
 const Hero = () => {
-
   const { isRTL } = useLanguage();
   const phrases = useMemo(() =>
     isRTL
@@ -174,7 +173,7 @@ const Hero = () => {
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
   const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
-  const [isVisible, setIsVisible] = useState(false);
+  const [revealStep, setRevealStep] = useState(0);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
   
@@ -200,9 +199,13 @@ const Hero = () => {
     })), []
   );
 
+  // Staggered reveal: each step reveals a new element
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 300);
-    return () => clearTimeout(timer);
+    const delays = [100, 400, 800, 1200, 1600, 2000];
+    const timers = delays.map((d, i) =>
+      setTimeout(() => setRevealStep(i + 1), d)
+    );
+    return () => timers.forEach(clearTimeout);
   }, []);
 
 
@@ -353,40 +356,7 @@ const Hero = () => {
         html { scroll-behavior: smooth; }
       `}</style>
 
-      {/* Elegant loading animation matching site style */}
-      {!isVisible && (
-        <div
-          className="fixed inset-0 z-[9998] flex items-center justify-center bg-background texture-paper"
-          style={{ animation: 'loaderFade 1.8s ease-out 0.5s forwards' }}
-        >
-          {/* Subtle golden sparkles in background */}
-          {stars.slice(0, 8).map((s) => (
-            <TwinkleStar key={`loader-star-${s.id}`} top={s.top} left={s.left} size={s.size} delay={s.delay} />
-          ))}
-          <div className="flex flex-col items-center gap-6">
-            {/* Logo with cinematic entrance */}
-            <img
-              src={logo}
-              alt="Logo"
-              className="w-28 h-28 md:w-36 md:h-36 object-contain"
-              style={{
-                animation: 'cinematic 1.2s cubic-bezier(0.16,1,0.3,1) forwards, cookieGlow 2.5s ease-in-out 1.2s infinite',
-              }}
-            />
-            {/* Golden loading bar */}
-            <div className="w-40 h-1 rounded-full overflow-hidden" style={{ background: 'hsl(var(--border))' }}>
-              <div
-                className="h-full rounded-full"
-                style={{
-                  background: 'linear-gradient(90deg, hsl(var(--golden-honey)), hsl(var(--coral)), hsl(var(--golden-honey)))',
-                  animation: 'goldWave 1.5s ease-in-out infinite',
-                  width: '100%',
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* No separate loader — elements reveal in place */}
 
       {/* Running marquee banner */}
       <MarqueeBanner isRTL={isRTL} />
@@ -455,7 +425,7 @@ const Hero = () => {
               className="relative mb-4"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s forwards' : 'none',
+                animation: revealStep >= 1 ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
               }}
             >
               <img
@@ -474,7 +444,7 @@ const Hero = () => {
               className="relative min-h-[2.5rem] flex items-center justify-center mb-2"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) 0.6s forwards' : 'none',
+                animation: revealStep >= 2 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
               }}
             >
               <p
@@ -493,13 +463,13 @@ const Hero = () => {
               className="text-base md:text-lg mb-6 font-light"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) 0.9s forwards' : 'none',
+                animation: revealStep >= 3 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
                 background: 'linear-gradient(90deg, hsla(40,90%,70%,1), hsla(350,65%,70%,1), hsla(280,60%,70%,1), hsla(40,90%,70%,1))',
                 backgroundSize: '300% 100%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                ...(isVisible ? { animationName: 'cinematic, gradientText', animationDuration: '1s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0.9s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
+                ...(revealStep >= 3 ? { animationName: 'cinematic, gradientText', animationDuration: '0.8s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
               }}
             >
               {isRTL ? "עוגיות בוטיק בעבודת יד · טעמים שלא תשכחו" : "Handcrafted boutique cookies · Flavors you won't forget"}
@@ -510,7 +480,7 @@ const Hero = () => {
               className="flex items-center justify-center gap-3 mb-8"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s forwards' : 'none',
+                animation: revealStep >= 4 ? 'cinematic 0.6s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
               }}
             >
               <div className="relative h-px w-24 overflow-hidden">
@@ -533,7 +503,7 @@ const Hero = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex flex-col items-center gap-2"
-                  style={{ animation: isVisible ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
+                  style={{ animation: revealStep >= 5 ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
                   onMouseEnter={playClick}
                 >
                   <svg
