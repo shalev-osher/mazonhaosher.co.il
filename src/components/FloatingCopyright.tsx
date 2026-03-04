@@ -2,12 +2,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 
 const FloatingCopyright = () => {
-  const { isRTL } = useLanguage();
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(true);
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
-    // Delay entrance to match staggered reveal
     const timer = setTimeout(() => setEntered(true), 1500);
     return () => clearTimeout(timer);
   }, []);
@@ -34,7 +33,7 @@ const FloatingCopyright = () => {
     >
       <div className="flex items-center px-5 py-2 bg-card border border-border rounded-full shadow-md">
         <span className="text-sm md:text-base font-medium text-foreground">
-          © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
+          © {t('ui.brandName')} 2026
         </span>
       </div>
     </div>
