@@ -151,7 +151,7 @@ const AccessibilityWidget = () => {
         {/* Toggle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="תפריט נגישות"
+          aria-label={isRTL ? "תפריט נגישות" : "Accessibility Menu"}
           aria-expanded={isOpen}
           className={`relative w-14 h-14 rounded-full flex items-center justify-center
             shadow-lg hover:scale-110 active:scale-95 transition-all duration-200
