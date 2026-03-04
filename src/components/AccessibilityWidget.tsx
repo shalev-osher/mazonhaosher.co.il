@@ -61,7 +61,7 @@ const AccessibilityWidget = () => {
     fontSize === "normal" ? "רגיל" : fontSize === "large" ? "גדול" : "גדול מאוד";
 
   return (
-    <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl">
+    <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl" role="region" aria-label="תפריט נגישות">
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
