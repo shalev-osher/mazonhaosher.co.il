@@ -131,36 +131,12 @@ const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; si
     }}
   />
 );
-const marqueePhrases: Record<string, string[]> = {
-  he: ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"],
-  en: ["🍪 Visit us at Barnea Mall (119 Jerusalem Blvd, Ashkelon) every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
-  ar: ["🍪 زوروا مركز بارنيع (شارع القدس 119، أشكلون) كل يوم جمعة 7:30-14:30", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
-  ru: ["🍪 Посетите нас в ТЦ Барнеа (бульвар Иерусалим 119, Ашкелон) каждую пятницу 7:30-14:30", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
-  es: ["🍪 Visítanos en el centro Barnea (Blvd. Jerusalén 119, Ashkelon) cada viernes 7:30-14:30", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
-};
-
 const heroTypePhrases: Record<string, string[]> = {
   he: ["אופים לכם אושר", "טעם של בית", "כל עוגיה סיפור", "מתוק מהלב"],
   en: ["Baking Happiness", "Taste of Home", "Every Cookie a Story", "Sweet from the Heart"],
   ar: ["نخبز لكم السعادة", "طعم البيت", "كل كوكيز قصة", "حلاوة من القلب"],
   ru: ["Печём счастье", "Вкус дома", "Каждое печенье — история", "Сладость от сердца"],
   es: ["Horneamos felicidad", "Sabor a hogar", "Cada galleta, una historia", "Dulzura del corazón"],
-};
-
-const MarqueeBanner = ({ language, t }: { language: string; t: (key: string) => string }) => {
-  const phrases = useMemo(() => marqueePhrases[language] || marqueePhrases.en, [language]);
-  const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
-
-  return (
-    <nav aria-label={t('ui.infoBanner')} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-      <div className="flex items-center px-5 py-2 bg-card border border-border rounded-full shadow-md min-w-[280px] justify-center" role="status" aria-live="polite">
-        <span className="text-xs md:text-sm lg:text-base font-medium text-foreground whitespace-nowrap">
-          {displayedText}
-          <span className="inline-block w-0.5 h-4 mr-1 align-middle animate-blink bg-foreground" aria-hidden="true" />
-        </span>
-      </div>
-    </nav>
-  );
 };
 
 const useScrollReveal = (threshold = 0.2) => {
@@ -366,8 +342,6 @@ const Hero = () => {
 
       {/* No separate loader — elements reveal in place */}
 
-      {/* Running marquee banner — reveals early with background */}
-      {revealStep >= 1 && <MarqueeBanner language={language} t={t} />}
 
       {/* Cookie cursor — decorative */}
       <div
