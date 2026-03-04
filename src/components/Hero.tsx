@@ -170,7 +170,7 @@ const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
-  const highlightsReveal = useScrollReveal(0.3);
+  
   const heroRef = useRef<HTMLElement>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
