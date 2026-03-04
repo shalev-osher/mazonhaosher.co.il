@@ -50,7 +50,7 @@ const LuxuryFooter = () => {
 
           {/* Delicate copyright */}
           <p className="text-xs text-muted-foreground/40 font-light tracking-widest uppercase">
-            © {new Date().getFullYear()} {isRTL ? "מזון האושר" : "Mazon HaOsher"}
+            © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
           </p>
         </div>
       </div>
