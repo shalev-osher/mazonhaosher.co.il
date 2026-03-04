@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import Hero from "@/components/Hero";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import CinematicEntry from "@/components/CinematicEntry";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Index = () => {
   const [entryDone, setEntryDone] = useState(false);
