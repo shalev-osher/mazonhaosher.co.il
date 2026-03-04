@@ -301,17 +301,17 @@ const AccessibilityWidget = () => {
 
               <div className="grid grid-cols-2 gap-2">
                 <ToggleOption active={state.bigCursor} onClick={() => update("bigCursor", !state.bigCursor)}
-                  icon={<CursorIcon />} label="סמן גדול" />
+                  icon={<CursorIcon />} label={isRTL ? "סמן גדול" : "Big Cursor"} />
                 <ToggleOption active={state.readingGuide} onClick={() => update("readingGuide", !state.readingGuide)}
-                  icon={<GuideIcon />} label="מדריך קריאה" />
+                  icon={<GuideIcon />} label={isRTL ? "מדריך קריאה" : "Reading Guide"} />
                 <ToggleOption active={state.reduceMotion} onClick={() => update("reduceMotion", !state.reduceMotion)}
-                  icon={<MotionIcon />} label="ביטול אנימציות" />
+                  icon={<MotionIcon />} label={isRTL ? "ביטול אנימציות" : "Reduce Motion"} />
                 <ToggleOption active={state.readableFont} onClick={() => update("readableFont", !state.readableFont)}
-                  icon={<FontIcon />} label="פונט קריא" />
+                  icon={<FontIcon />} label={isRTL ? "פונט קריא" : "Readable Font"} />
                 <ToggleOption active={state.textSpacing} onClick={() => update("textSpacing", !state.textSpacing)}
-                  icon={<SpacingIcon />} label="ריווח טקסט" />
+                  icon={<SpacingIcon />} label={isRTL ? "ריווח טקסט" : "Text Spacing"} />
                 <ToggleOption active={state.highlightFocus} onClick={() => update("highlightFocus", !state.highlightFocus)}
-                  icon={<FocusIcon />} label="הדגשת פוקוס" />
+                  icon={<FocusIcon />} label={isRTL ? "הדגשת פוקוס" : "Highlight Focus"} />
               </div>
 
               <div className="h-px bg-border" />
