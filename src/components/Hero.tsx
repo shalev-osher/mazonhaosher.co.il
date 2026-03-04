@@ -519,7 +519,7 @@ const Hero = () => {
                   >
                     <path d={s.path} />
                   </svg>
-                  <span className="text-xs text-white/50 font-light tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">{s.label}</span>
+                  <span className="text-xs text-white font-light tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">{s.label}</span>
                 </a>
               ))}
             </nav>
