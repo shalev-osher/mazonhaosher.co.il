@@ -11,6 +11,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background texture-paper relative">
       {!entryDone && <CinematicEntry onComplete={handleEntryComplete} />}
+      <ThemeToggle />
       <Hero />
       <LuxuryFooter />
     </div>
