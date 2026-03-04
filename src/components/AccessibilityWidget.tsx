@@ -213,7 +213,7 @@ const AccessibilityWidget = () => {
               <SectionTitle>{isRTL ? "תוכן" : "Content"}</SectionTitle>
 
               {/* Font Size */}
-              <StepperRow label="גודל טקסט" valueLabel={fontLabels[state.fontSize]}>
+              <StepperRow label={isRTL ? "גודל טקסט" : "Font Size"} valueLabel={fontLabels[state.fontSize]}>
                 {[0, 1, 2, 3].map(level => (
                   <button
                     key={level}
