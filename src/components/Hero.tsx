@@ -396,22 +396,22 @@ const Hero = () => {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)' }} />
         </div>
 
-        {/* Twinkling stars */}
-        <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
+        {/* Twinkling stars — decorative */}
+        <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden" aria-hidden="true">
           {stars.map((s) => (
             <TwinkleStar key={s.id} top={s.top} left={s.left} size={s.size} delay={s.delay} />
           ))}
         </div>
 
-        {/* Luxury floating gold orbs */}
-        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+        {/* Luxury floating gold orbs — decorative */}
+        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
           <div className="absolute w-72 h-72 rounded-full blur-3xl" style={{ top: '10%', left: '15%', background: 'radial-gradient(circle, hsla(40,90%,55%,0.15) 0%, transparent 70%)', animation: 'goldFloat 8s ease-in-out infinite' }} />
           <div className="absolute w-56 h-56 rounded-full blur-3xl" style={{ bottom: '20%', right: '10%', background: 'radial-gradient(circle, hsla(350,65%,55%,0.12) 0%, transparent 70%)', animation: 'goldFloat 10s ease-in-out 2s infinite' }} />
           <div className="absolute w-40 h-40 rounded-full blur-3xl" style={{ top: '50%', left: '60%', background: 'radial-gradient(circle, hsla(280,60%,60%,0.08) 0%, transparent 70%)', animation: 'goldFloat 12s ease-in-out 4s infinite' }} />
         </div>
 
-        {/* Golden sparkles */}
-        <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
+        {/* Golden sparkles — decorative */}
+        <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none" aria-hidden="true">
           {sparkles.map((c) => (
             <GoldenSparkle key={c.id} delay={c.delay} duration={c.duration} left={c.left} size={c.size} />
           ))}
