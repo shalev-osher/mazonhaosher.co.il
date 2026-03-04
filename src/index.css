@@ -74,41 +74,41 @@
   }
 
   .dark {
-    --background: 30 25% 14%;
-    --foreground: 30 20% 96%;
+    --background: 25 30% 10%;
+    --foreground: 30 25% 96%;
 
-    --card: 25 18% 12%;
-    --card-foreground: 30 20% 96%;
+    --card: 25 25% 8%;
+    --card-foreground: 30 25% 96%;
 
-    --popover: 25 20% 8%;
-    --popover-foreground: 30 20% 96%;
+    --popover: 25 25% 6%;
+    --popover-foreground: 30 25% 96%;
 
-    --primary: 350 70% 62%;
-    --primary-foreground: 25 20% 10%;
+    --primary: 350 80% 60%;
+    --primary-foreground: 25 25% 8%;
 
-    --secondary: 25 18% 18%;
-    --secondary-foreground: 30 20% 96%;
+    --secondary: 25 22% 15%;
+    --secondary-foreground: 30 25% 96%;
 
-    --muted: 25 15% 20%;
-    --muted-foreground: 30 10% 60%;
+    --muted: 25 20% 16%;
+    --muted-foreground: 30 15% 55%;
 
-    --accent: 280 65% 65%;
-    --accent-foreground: 25 20% 10%;
+    --accent: 280 75% 65%;
+    --accent-foreground: 25 25% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 35%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 25 15% 20%;
-    --input: 25 15% 20%;
-    --ring: 350 70% 62%;
+    --border: 25 20% 18%;
+    --input: 25 20% 18%;
+    --ring: 350 80% 60%;
 
     /* Dark mode custom colors */
-    --coral: 15 80% 65%;
-    --amber: 40 90% 60%;
-    --teal: 175 65% 50%;
-    --violet: 280 65% 65%;
-    --sky: 200 85% 60%;
-    --emerald: 155 65% 50%;
+    --coral: 15 85% 60%;
+    --amber: 40 95% 55%;
+    --teal: 175 70% 45%;
+    --violet: 280 75% 65%;
+    --sky: 200 90% 55%;
+    --emerald: 155 70% 45%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
