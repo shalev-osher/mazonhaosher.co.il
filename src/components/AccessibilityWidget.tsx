@@ -297,7 +297,7 @@ const AccessibilityWidget = () => {
               <div className="h-px bg-border" />
 
               {/* === SECTION: Navigation === */}
-              <SectionTitle>ניווט וקריאה</SectionTitle>
+              <SectionTitle>{isRTL ? "ניווט וקריאה" : "Navigation & Reading"}</SectionTitle>
 
               <div className="grid grid-cols-2 gap-2">
                 <ToggleOption active={state.bigCursor} onClick={() => update("bigCursor", !state.bigCursor)}
