@@ -8,9 +8,13 @@ const FloatingCopyright = () => {
   useEffect(() => {
     const handleScroll = () => {
       const footer = document.querySelector("footer");
-      if (!footer) return;
-      const footerTop = footer.getBoundingClientRect().top;
-      setVisible(footerTop > window.innerHeight);
+      if (!footer) {
+        setVisible(true);
+        return;
+      }
+      const footerRect = footer.getBoundingClientRect();
+      const isFooterVisible = footerRect.top < window.innerHeight - 20;
+      setVisible(!isFooterVisible);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
