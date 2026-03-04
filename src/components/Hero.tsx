@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+import GoldenParticles from "@/components/GoldenParticles";
 
 const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pauseTime = 2500, delay = 500) => {
   const [displayedText, setDisplayedText] = useState("");
