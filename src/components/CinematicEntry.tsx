@@ -86,7 +86,7 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
       />
 
       {/* Floating particles */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         {particles.map((p) => (
           <div
             key={p.id}

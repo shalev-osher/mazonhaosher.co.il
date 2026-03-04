@@ -16,7 +16,7 @@ const GoldenParticles = ({ count = 40 }: { count?: number }) => {
   );
 
   return (
-    <div className="absolute inset-0 z-[3] pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 z-[3] pointer-events-none overflow-hidden" aria-hidden="true">
       <style>{`
         @keyframes particleFloat {
           0% { transform: translate(0, 0) scale(1); opacity: 0; }

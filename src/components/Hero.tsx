@@ -526,11 +526,11 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 z-10">
+        {/* Bottom fade — decorative */}
+        <div className="absolute bottom-0 left-0 right-0 z-10" aria-hidden="true">
           <div className="h-24" style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--background)))' }} />
         </div>
-      </section>
+      </main>
 
     </>
   );
