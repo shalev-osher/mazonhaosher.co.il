@@ -505,7 +505,7 @@ const Hero = () => {
             </div>
 
             {/* Social Icons */}
-            <nav aria-label={isRTL ? "רשתות חברתיות" : "Social media"} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
+            <nav aria-label={t('ui.socialMedia')} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
               {socials.map((s) => (
                 <a
                   key={s.label}

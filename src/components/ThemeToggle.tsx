@@ -4,19 +4,19 @@ import { Sun, Moon, Monitor } from "lucide-react";
 
 const ThemeToggle = () => {
   const { mode, toggleTheme } = useTheme();
-  const { isRTL } = useLanguage();
+  const { t } = useLanguage();
 
   const icon = mode === 'light' ? <Sun size={16} /> : mode === 'dark' ? <Moon size={16} /> : <Monitor size={16} />;
   const label = mode === 'light'
-    ? (isRTL ? 'בהיר' : 'Light')
+    ? t('ui.themeLight')
     : mode === 'dark'
-      ? (isRTL ? 'כהה' : 'Dark')
-      : (isRTL ? 'אוטומטי' : 'Auto');
+      ? t('ui.themeDark')
+      : t('ui.themeAuto');
 
   return (
     <button
       onClick={toggleTheme}
-      aria-label={isRTL ? `מצב תצוגה: ${label}` : `Display mode: ${label}`}
+      aria-label={`${t('ui.displayMode')}: ${label}`}
       className="fixed top-4 left-4 z-50 group flex items-center gap-2 
         bg-card border border-border 
         rounded-full px-3 py-2 shadow-[var(--shadow-soft)]
