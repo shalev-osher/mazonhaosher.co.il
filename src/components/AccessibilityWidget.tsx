@@ -325,7 +325,7 @@ const AccessibilityWidget = () => {
                   disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
               >
                 <RotateCcw size={14} />
-                איפוס כל ההגדרות
+                {isRTL ? "איפוס כל ההגדרות" : "Reset All Settings"}
               </button>
 
               {/* WCAG Badge */}
