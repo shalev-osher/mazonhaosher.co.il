@@ -267,7 +267,7 @@ const AccessibilityWidget = () => {
               <div className="h-px bg-border" />
 
               {/* === SECTION: Display === */}
-              <SectionTitle>תצוגה</SectionTitle>
+              <SectionTitle>{isRTL ? "תצוגה" : "Display"}</SectionTitle>
 
               <div className="grid grid-cols-2 gap-2">
                 <ToggleOption active={state.highContrast} onClick={() => update("highContrast", !state.highContrast)}
