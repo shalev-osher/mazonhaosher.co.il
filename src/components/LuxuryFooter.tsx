@@ -41,8 +41,8 @@ const LuxuryFooter = () => {
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"
-                  className="w-7 h-7 transition-all duration-500 opacity-50 group-hover:opacity-100 group-hover:scale-110"
-                  style={{ fill: 'hsla(40,90%,55%,0.8)' }}
+                  className="w-7 h-7 transition-all duration-500 opacity-80 group-hover:opacity-100 group-hover:scale-110"
+                  style={{ fill: 'hsl(40,95%,50%)' }}
                 >
                   <path d={s.path} />
                 </svg>
@@ -51,7 +51,7 @@ const LuxuryFooter = () => {
           </nav>
 
           {/* Copyright */}
-          <p className="text-sm text-muted-foreground/50 font-light tracking-widest uppercase">
+          <p className="text-sm text-muted-foreground font-light tracking-widest uppercase">
             © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
           </p>
         </div>
