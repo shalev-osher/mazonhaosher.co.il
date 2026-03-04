@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import CinematicEntry from "@/components/CinematicEntry";
 import ThemeToggle from "@/components/ThemeToggle";
+import CookieCrumbs from "@/components/CookieCrumbs";
 
 const Index = () => {
   const [entryDone, setEntryDone] = useState(false);
@@ -11,6 +12,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background texture-paper relative">
       {!entryDone && <CinematicEntry onComplete={handleEntryComplete} />}
+      <CookieCrumbs />
       <ThemeToggle />
       <Hero />
       <LuxuryFooter />
