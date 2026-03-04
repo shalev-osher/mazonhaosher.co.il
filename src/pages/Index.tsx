@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import LuxuryFooter from "@/components/LuxuryFooter";
-import ThemeToggle from "@/components/ThemeToggle";
-import LanguageToggle from "@/components/LanguageToggle";
+import TopToolbar from "@/components/TopToolbar";
+import BottomToolbar from "@/components/BottomToolbar";
 import CookieCrumbs from "@/components/CookieCrumbs";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 
@@ -20,11 +20,11 @@ const Index = () => {
         {t('ui.skipToContent')}
       </a>
       <CookieCrumbs />
-      <ThemeToggle />
-      <LanguageToggle />
+      <TopToolbar />
       <AccessibilityWidget />
       <Hero />
       <LuxuryFooter />
+      <BottomToolbar />
     </div>
   );
 };
