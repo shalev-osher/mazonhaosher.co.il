@@ -49,8 +49,14 @@ const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pau
 
 const useParallax = (speed = 0.5) => {
   const [offset, setOffset] = useState(0);
+  const [opacity, setOpacity] = useState(1);
   const handleScroll = useCallback(() => {
-    requestAnimationFrame(() => setOffset(window.scrollY * speed));
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      setOffset(scrollY * speed);
+      // Fade out hero as user scrolls
+      setOpacity(Math.max(0, 1 - scrollY / (window.innerHeight * 0.6)));
+    });
   }, [speed]);
 
   useEffect(() => {
@@ -58,7 +64,7 @@ const useParallax = (speed = 0.5) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  return offset;
+  return { offset, opacity };
 };
 
 const useCookieCursor = () => {
