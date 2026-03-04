@@ -503,7 +503,7 @@ const Hero = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex flex-col items-center gap-2"
-                  style={{ animation: isVisible ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
+                  style={{ animation: revealStep >= 5 ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
                   onMouseEnter={playClick}
                 >
                   <svg
