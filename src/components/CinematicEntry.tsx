@@ -33,6 +33,8 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
 
   return (
     <div
+      role="status"
+      aria-label={isRTL ? "טוען..." : "Loading..."}
       className="fixed inset-0 z-[10000] flex items-center justify-center overflow-hidden"
       style={{
         background: 'hsl(25, 20%, 6%)',
