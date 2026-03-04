@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 const FloatingCopyright = () => {
   const { isRTL } = useLanguage();
   const [visible, setVisible] = useState(true);
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    // Delay entrance to match staggered reveal
+    const timer = setTimeout(() => setEntered(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +30,7 @@ const FloatingCopyright = () => {
 
   return (
     <div
-      className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-50 transition-opacity duration-500 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${visible && entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
     >
       <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm">
         <span className="text-sm md:text-base font-medium text-muted-foreground">
