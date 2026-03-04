@@ -17,6 +17,7 @@ const Index = () => {
       </a>
       <CookieCrumbs />
       <ThemeToggle />
+      <LanguageToggle />
       <AccessibilityWidget />
       <Hero />
       <LuxuryFooter />
