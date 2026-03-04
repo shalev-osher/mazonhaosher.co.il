@@ -3,7 +3,7 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background texture-paper relative">
       <Hero />
       <LuxuryFooter />
     </div>
