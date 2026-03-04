@@ -5,7 +5,11 @@ import LanguageToggle from "@/components/LanguageToggle";
 import CookieCrumbs from "@/components/CookieCrumbs";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 const Index = () => {
+  const { isRTL } = useLanguage();
+
   return (
     <div className="min-h-screen bg-background texture-paper relative">
       {/* Skip to content */}
