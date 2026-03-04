@@ -480,7 +480,7 @@ const Hero = () => {
               className="flex items-center justify-center gap-3 mb-8"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s forwards' : 'none',
+                animation: revealStep >= 4 ? 'cinematic 0.6s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
               }}
             >
               <div className="relative h-px w-24 overflow-hidden">
