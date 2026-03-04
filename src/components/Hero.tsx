@@ -298,10 +298,24 @@ const Hero = () => {
           0%, 100% { opacity: 0.2; transform: scale(0.8); }
           50% { opacity: 1; transform: scale(1.3); }
         }
-        @keyframes luxuryLoader {
-          0% { transform: scale(0.6) rotate(0deg); opacity: 0; filter: blur(10px); }
-          50% { transform: scale(1.1) rotate(180deg); opacity: 1; filter: blur(0); }
-          100% { transform: scale(1) rotate(360deg); opacity: 0; filter: blur(5px); }
+        @keyframes cookieSpin {
+          0% { transform: scale(0.3) rotate(0deg); opacity: 0; filter: blur(10px); }
+          30% { transform: scale(1.1) rotate(180deg); opacity: 1; filter: blur(0); }
+          60% { transform: scale(1) rotate(360deg); opacity: 1; }
+          80% { transform: scale(1.05) rotate(540deg); opacity: 1; }
+          100% { transform: scale(1) rotate(720deg); opacity: 1; }
+        }
+        @keyframes cookieBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+        @keyframes cookieGlow {
+          0%, 100% { filter: drop-shadow(0 0 8px hsla(40,90%,55%,0.3)); }
+          50% { filter: drop-shadow(0 0 25px hsla(40,90%,55%,0.7)) drop-shadow(0 0 50px hsla(40,90%,55%,0.3)); }
+        }
+        @keyframes crumbDrop {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.8; }
+          100% { transform: translate(var(--crumb-x), 60px) rotate(var(--crumb-r)) scale(0.3); opacity: 0; }
         }
         @keyframes loaderFade {
           0% { opacity: 1; }
