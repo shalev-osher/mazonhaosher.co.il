@@ -101,6 +101,7 @@ const useHoverSound = () => {
 const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duration: number; left: string; size: number }) => (
   <div
     className="absolute top-0 pointer-events-none opacity-0"
+    aria-hidden="true"
     style={{ left, animation: `crumbFall ${duration}s ${delay}s ease-in infinite` }}
   >
     <div
@@ -119,6 +120,7 @@ const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duratio
 const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; size: number; delay: number }) => (
   <div
     className="absolute pointer-events-none rounded-full"
+    aria-hidden="true"
     style={{
       top, left,
       width: `${size}px`,
@@ -139,14 +141,14 @@ const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
   const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm min-w-[280px] justify-center">
+    <nav aria-label={isRTL ? "באנר מידע" : "Info banner"} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm min-w-[280px] justify-center" role="status" aria-live="polite">
         <span className="text-xs md:text-sm lg:text-base font-medium text-muted-foreground whitespace-nowrap">
           {displayedText}
-          <span className="inline-block w-0.5 h-4 mr-1 align-middle animate-blink bg-muted-foreground/50" />
+          <span className="inline-block w-0.5 h-4 mr-1 align-middle animate-blink bg-muted-foreground/50" aria-hidden="true" />
         </span>
       </div>
-    </div>
+    </nav>
   );
 };
 
@@ -361,9 +363,10 @@ const Hero = () => {
       {/* Running marquee banner — reveals early with background */}
       {revealStep >= 1 && <MarqueeBanner isRTL={isRTL} />}
 
-      {/* Cookie cursor */}
+      {/* Cookie cursor — decorative */}
       <div
         className="fixed z-[9999] pointer-events-none select-none"
+        aria-hidden="true"
         style={{
           left: cursorPos.x - 12,
           top: cursorPos.y - 12,
@@ -374,10 +377,11 @@ const Hero = () => {
         <span className="text-2xl drop-shadow-lg">🍪</span>
       </div>
 
-      <section ref={heroRef} onMouseMove={handleHeroMouse} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: revealStep < 1 ? 'hsl(25, 20%, 6%)' : 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite', transition: 'background 1s ease' }}>
+      <main id="main-content" ref={heroRef} onMouseMove={handleHeroMouse} role="main" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: revealStep < 1 ? 'hsl(25, 20%, 6%)' : 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite', transition: 'background 1s ease' }}>
         {/* Mouse-reactive radial glow */}
         <div
           className="absolute inset-0 z-[1] pointer-events-none transition-opacity duration-500"
+          aria-hidden="true"
           style={{
             background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, hsla(40,90%,55%,0.12) 0%, transparent 60%)`,
           }}
@@ -392,22 +396,22 @@ const Hero = () => {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)' }} />
         </div>
 
-        {/* Twinkling stars */}
-        <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
+        {/* Twinkling stars — decorative */}
+        <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden" aria-hidden="true">
           {stars.map((s) => (
             <TwinkleStar key={s.id} top={s.top} left={s.left} size={s.size} delay={s.delay} />
           ))}
         </div>
 
-        {/* Luxury floating gold orbs */}
-        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+        {/* Luxury floating gold orbs — decorative */}
+        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
           <div className="absolute w-72 h-72 rounded-full blur-3xl" style={{ top: '10%', left: '15%', background: 'radial-gradient(circle, hsla(40,90%,55%,0.15) 0%, transparent 70%)', animation: 'goldFloat 8s ease-in-out infinite' }} />
           <div className="absolute w-56 h-56 rounded-full blur-3xl" style={{ bottom: '20%', right: '10%', background: 'radial-gradient(circle, hsla(350,65%,55%,0.12) 0%, transparent 70%)', animation: 'goldFloat 10s ease-in-out 2s infinite' }} />
           <div className="absolute w-40 h-40 rounded-full blur-3xl" style={{ top: '50%', left: '60%', background: 'radial-gradient(circle, hsla(280,60%,60%,0.08) 0%, transparent 70%)', animation: 'goldFloat 12s ease-in-out 4s infinite' }} />
         </div>
 
-        {/* Golden sparkles */}
-        <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
+        {/* Golden sparkles — decorative */}
+        <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none" aria-hidden="true">
           {sparkles.map((c) => (
             <GoldenSparkle key={c.id} delay={c.delay} duration={c.duration} left={c.left} size={c.size} />
           ))}
@@ -487,7 +491,7 @@ const Hero = () => {
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent, hsla(40,90%,55%,0.4))' }} />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.9), transparent)', animation: 'goldWave 3s ease-in-out infinite' }} />
               </div>
-              <span className="text-lg">🍪</span>
+              <span className="text-lg" aria-hidden="true">🍪</span>
               <div className="relative h-px w-24 overflow-hidden">
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to left, transparent, hsla(40,90%,55%,0.4))' }} />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.9), transparent)', animation: 'goldWave 3s ease-in-out infinite reverse' }} />
@@ -495,36 +499,38 @@ const Hero = () => {
             </div>
 
             {/* Social Icons */}
-            <div className="flex items-center justify-center gap-7 md:gap-9 mb-6">
+            <nav aria-label={isRTL ? "רשתות חברתיות" : "Social media"} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
               {socials.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={s.label}
                   className="group flex flex-col items-center gap-2"
                   style={{ animation: revealStep >= 5 ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
                   onMouseEnter={playClick}
                 >
                   <svg
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                     className="w-9 h-9 md:w-11 md:h-11 drop-shadow-md transition-all duration-300 group-hover:scale-125"
                     style={{ fill: s.color, filter: `drop-shadow(0 0 8px ${s.color}50)` }}
                   >
                     <path d={s.path} />
                   </svg>
-                  <span className="text-xs text-white/50 font-light tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">{s.label}</span>
+                  <span className="text-xs text-white/50 font-light tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">{s.label}</span>
                 </a>
               ))}
-            </div>
+            </nav>
           </div>
         </div>
 
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 z-10">
+        {/* Bottom fade — decorative */}
+        <div className="absolute bottom-0 left-0 right-0 z-10" aria-hidden="true">
           <div className="h-24" style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--background)))' }} />
         </div>
-      </section>
+      </main>
 
     </>
   );
