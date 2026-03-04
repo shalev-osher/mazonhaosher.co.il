@@ -133,10 +133,10 @@ const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; si
 );
 const marqueePhrases: Record<string, string[]> = {
   he: ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"],
-  en: ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
-  ar: ["🍪 زوروا مركز بارنيع كل يوم جمعة 7:30-14:30", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
-  ru: ["🍪 Посетите нас в ТЦ Барнеа каждую пятницу 7:30-14:30", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
-  es: ["🍪 Visítanos en el centro Barnea cada viernes 7:30-14:30", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
+  en: ["🍪 Visit us at Barnea Mall (119 Jerusalem Blvd, Ashkelon) every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
+  ar: ["🍪 زوروا مركز بارنيع (شارع القدس 119، أشكلون) كل يوم جمعة 7:30-14:30", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
+  ru: ["🍪 Посетите нас в ТЦ Барнеа (бульвар Иерусалим 119, Ашкелон) каждую пятницу 7:30-14:30", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
+  es: ["🍪 Visítanos en el centro Barnea (Blvd. Jerusalén 119, Ashkelon) cada viernes 7:30-14:30", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
 };
 
 const heroTypePhrases: Record<string, string[]> = {
