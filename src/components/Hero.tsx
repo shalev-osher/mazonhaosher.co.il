@@ -170,7 +170,7 @@ const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
-  const highlightsReveal = useScrollReveal(0.3);
+  
   const heroRef = useRef<HTMLElement>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
@@ -198,9 +198,6 @@ const Hero = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const highlights = isRTL
-    ? ["🍪 עוגיות בוטיק", "🎁 מארזי מתנה", "🚚 משלוחים עד הבית", "❤️ אפייה באהבה"]
-    : ["🍪 Boutique Cookies", "🎁 Gift Packages", "🚚 Home Delivery", "❤️ Baked with Love"];
 
   const sparkles = useMemo(() =>
     Array.from({ length: 10 }, (_, i) => ({
@@ -529,108 +526,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Highlights - dramatic animated section */}
-      <section ref={highlightsReveal.ref} className="relative z-20 py-16 overflow-hidden" style={{ background: 'linear-gradient(180deg, hsl(var(--background)) 0%, hsla(40,30%,10%,0.3) 50%, hsl(var(--background)) 100%)' }}>
-        {/* Animated background particles */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full"
-              style={{
-                width: `${60 + i * 30}px`,
-                height: `${60 + i * 30}px`,
-                top: `${10 + i * 15}%`,
-                left: `${10 + i * 14}%`,
-                background: `radial-gradient(circle, hsla(40,90%,55%,${0.08 + i * 0.02}) 0%, transparent 70%)`,
-                animation: `goldFloat ${6 + i * 2}s ease-in-out ${i * 0.5}s infinite`,
-                filter: 'blur(20px)',
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          {/* Section title with reveal */}
-          <h2
-            className="text-center text-2xl md:text-3xl font-bold mb-10"
-            style={{
-              opacity: 0,
-              animation: highlightsReveal.revealed ? 'highlightReveal 0.8s cubic-bezier(0.16,1,0.3,1) 0s forwards' : 'none',
-              background: 'linear-gradient(90deg, hsla(40,90%,65%,1), hsla(40,90%,80%,1), hsla(40,90%,65%,1))',
-              backgroundSize: '200% 100%',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              ...(highlightsReveal.revealed ? { animationName: 'highlightReveal, gradientText', animationDuration: '0.8s, 4s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
-            }}
-          >
-            {isRTL ? '✨ למה לבחור בנו? ✨' : '✨ Why Choose Us? ✨'}
-          </h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto">
-            {highlights.map((item, i) => (
-              <div
-                key={i}
-                className="group relative text-center py-6 px-4 rounded-2xl border border-border/30 cursor-default overflow-hidden"
-                style={{
-                  opacity: 0,
-                  animation: highlightsReveal.revealed ? `highlightReveal 0.7s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.15}s forwards` : 'none',
-                  background: 'linear-gradient(135deg, hsla(var(--card), 0.6), hsla(var(--card), 0.3))',
-                  backdropFilter: 'blur(10px)',
-                  transition: 'transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.03)';
-                  e.currentTarget.style.boxShadow = '0 20px 40px hsla(40,90%,55%,0.15), 0 0 30px hsla(40,90%,55%,0.1)';
-                  e.currentTarget.style.borderColor = 'hsla(40,90%,55%,0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                  e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.borderColor = '';
-                }}
-              >
-                {/* Shimmer effect on hover */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(105deg, transparent 40%, hsla(40,90%,55%,0.08) 45%, hsla(40,90%,55%,0.15) 50%, hsla(40,90%,55%,0.08) 55%, transparent 60%)',
-                    backgroundSize: '200% 100%',
-                    animation: 'goldWave 2s ease-in-out infinite',
-                  }}
-                />
-                <p className="text-base md:text-lg font-semibold text-foreground relative z-10 transition-all duration-300 group-hover:text-amber-300">
-                  {item}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Gold separator */}
-          <div className="flex items-center justify-center gap-3 mt-12 mb-4">
-            <div className="relative h-px w-40 overflow-hidden">
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent, hsla(40,90%,55%,0.4))' }} />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.9), transparent)', animation: 'goldWave 3s ease-in-out infinite' }} />
-            </div>
-            <span className="text-lg">🍪</span>
-            <div className="relative h-px w-40 overflow-hidden">
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to left, transparent, hsla(40,90%,55%,0.4))' }} />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,65%,0.9), transparent)', animation: 'goldWave 3s ease-in-out infinite reverse' }} />
-            </div>
-          </div>
-
-          <p
-            className="text-center text-muted-foreground text-sm mt-4"
-            style={{
-              opacity: 0,
-              animation: highlightsReveal.revealed ? 'scrollRevealText 0.8s cubic-bezier(0.16,1,0.3,1) 0.8s forwards' : 'none',
-            }}
-          >
-            {isRTL ? "© מזון האושר 2026 · כל הזכויות שמורות" : "© Mazon HaOsher 2026 · All rights reserved"}
-          </p>
-        </div>
-      </section>
     </>
   );
 };
