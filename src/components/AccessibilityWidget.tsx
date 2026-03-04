@@ -248,7 +248,7 @@ const AccessibilityWidget = () => {
               </StepperRow>
 
               {/* Text Alignment */}
-              <StepperRow label="יישור טקסט" valueLabel={alignLabels.find(a => a.val === state.textAlign)?.label || ""}>
+              <StepperRow label={isRTL ? "יישור טקסט" : "Text Align"} valueLabel={alignLabels.find(a => a.val === state.textAlign)?.label || ""}>
                 {alignLabels.map(a => (
                   <button
                     key={a.val}
