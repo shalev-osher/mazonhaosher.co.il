@@ -13,7 +13,7 @@ const Index = () => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-1/2 focus:-translate-x-1/2 focus:z-[10000] focus:bg-primary focus:text-primary-foreground focus:px-6 focus:py-3 focus:rounded-lg focus:shadow-lg focus:text-sm focus:font-medium"
       >
-        דלג לתוכן הראשי
+        {isRTL ? "דלג לתוכן הראשי" : "Skip to main content"}
       </a>
       <CookieCrumbs />
       <ThemeToggle />
