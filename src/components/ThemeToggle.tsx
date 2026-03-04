@@ -12,13 +12,13 @@ const ThemeToggle = () => {
       onClick={toggleTheme}
       aria-label={`מצב תצוגה: ${label}`}
       className="fixed top-4 left-4 z-50 group flex items-center gap-2 
-        bg-card/80 backdrop-blur-md border border-border/50 
+        bg-card border border-border 
         rounded-full px-3 py-2 shadow-[var(--shadow-soft)]
-        hover:shadow-[var(--shadow-warm)] hover:border-primary/30
+        hover:shadow-[var(--shadow-warm)] hover:border-primary
         transition-all duration-300 ease-out
         hover:scale-105 active:scale-95"
     >
-      <span className="text-foreground/70 group-hover:text-primary transition-colors duration-300">
+      <span className="text-foreground group-hover:text-primary transition-colors duration-300">
         {icon}
       </span>
       <span className="text-xs font-body text-muted-foreground group-hover:text-foreground transition-colors duration-300 hidden sm:inline">
