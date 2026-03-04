@@ -425,7 +425,7 @@ const Hero = () => {
               className="relative mb-4"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s forwards' : 'none',
+                animation: revealStep >= 1 ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
               }}
             >
               <img
