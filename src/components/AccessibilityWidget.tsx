@@ -71,19 +71,9 @@ const AccessibilityWidget = () => {
         style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
       >
         {isOpen ? <X size={26} strokeWidth={2.5} /> : (
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            {/* Head */}
-            <circle cx="12" cy="4.5" r="2" fill="currentColor" stroke="none" />
-            {/* Body */}
-            <path d="M12 7v5" />
-            {/* Arms */}
-            <path d="M9 9h6" />
-            {/* Wheelchair seat */}
-            <path d="M8 12h7l1.5 5" />
-            {/* Wheel */}
-            <circle cx="10.5" cy="18" r="3" />
-            {/* Small front wheel */}
-            <circle cx="17" cy="18" r="1" />
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="12" cy="4" r="2"/>
+            <path d="M19 13v-2c-1.54.02-3.09-.75-4.07-1.83l-1.29-1.43C13.17 7.23 12.37 7 11.7 7c-.29 0-.57.04-.84.12l-4.37 1.23C5.6 8.61 5 9.45 5 10.4V15h2v-4.26l1.8-.51L7 19h2l1.41-5.49L13 16v6h2v-7.54l-2.09-3.17L13.75 9c1.08 1.08 2.58 2 4.25 2v2h1z"/>
           </svg>
         )}
       </button>
