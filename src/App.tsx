@@ -8,7 +8,6 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import FloatingCopyright from "./components/FloatingCopyright";
 
 const queryClient = new QueryClient();
 
