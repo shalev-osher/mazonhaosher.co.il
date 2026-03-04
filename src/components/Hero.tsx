@@ -440,7 +440,7 @@ const Hero = () => {
             >
               <img
                 src={logo}
-                alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
+                alt={t('ui.brandName')}
                 className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl"
                 style={{ animation: 'logo3D 6s ease-in-out infinite' }}
               />
