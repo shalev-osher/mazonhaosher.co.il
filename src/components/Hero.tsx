@@ -163,7 +163,6 @@ const useScrollReveal = (threshold = 0.2) => {
   return { ref, revealed };
 };
 const Hero = () => {
-
   const { isRTL } = useLanguage();
   const phrases = useMemo(() =>
     isRTL
@@ -174,7 +173,7 @@ const Hero = () => {
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
   const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
-  const [isVisible, setIsVisible] = useState(false);
+  const [revealStep, setRevealStep] = useState(0);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
   
@@ -200,9 +199,13 @@ const Hero = () => {
     })), []
   );
 
+  // Staggered reveal: each step reveals a new element
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 300);
-    return () => clearTimeout(timer);
+    const delays = [100, 400, 800, 1200, 1600, 2000];
+    const timers = delays.map((d, i) =>
+      setTimeout(() => setRevealStep(i + 1), d)
+    );
+    return () => timers.forEach(clearTimeout);
   }, []);
 
 
