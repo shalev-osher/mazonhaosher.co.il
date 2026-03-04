@@ -8,7 +8,6 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import FloatingCopyright from "./components/FloatingCopyright";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +19,6 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <FloatingCopyright />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="*" element={<NotFound />} />
