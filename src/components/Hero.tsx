@@ -199,9 +199,9 @@ const Hero = () => {
     })), []
   );
 
-  // Staggered reveal: each step reveals a new element
+  // Staggered reveal: background shows first, then elements appear one by one
   useEffect(() => {
-    const delays = [100, 400, 800, 1200, 1600, 2000];
+    const delays = [300, 1200, 1800, 2400, 2800, 3200];
     const timers = delays.map((d, i) =>
       setTimeout(() => setRevealStep(i + 1), d)
     );
