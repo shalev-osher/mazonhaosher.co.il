@@ -18,7 +18,7 @@ const ThemeToggle = () => {
         transition-all duration-300 ease-out
         hover:scale-105 active:scale-95"
     >
-      <span className="text-foreground/70 group-hover:text-primary transition-colors duration-300">
+      <span className="text-foreground group-hover:text-primary transition-colors duration-300">
         {icon}
       </span>
       <span className="text-xs font-body text-muted-foreground group-hover:text-foreground transition-colors duration-300 hidden sm:inline">
