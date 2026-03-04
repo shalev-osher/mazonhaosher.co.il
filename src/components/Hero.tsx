@@ -377,7 +377,7 @@ const Hero = () => {
         <span className="text-2xl drop-shadow-lg">🍪</span>
       </div>
 
-      <section ref={heroRef} onMouseMove={handleHeroMouse} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: revealStep < 1 ? 'hsl(25, 20%, 6%)' : 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite', transition: 'background 1s ease' }}>
+      <main id="main-content" ref={heroRef} onMouseMove={handleHeroMouse} role="main" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: revealStep < 1 ? 'hsl(25, 20%, 6%)' : 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite', transition: 'background 1s ease' }}>
         {/* Mouse-reactive radial glow */}
         <div
           className="absolute inset-0 z-[1] pointer-events-none transition-opacity duration-500"
