@@ -147,12 +147,12 @@ const heroTypePhrases: Record<string, string[]> = {
   es: ["Horneamos felicidad", "Sabor a hogar", "Cada galleta, una historia", "Dulzura del corazón"],
 };
 
-const MarqueeBanner = ({ isRTL, language }: { isRTL: boolean; language: string }) => {
+const MarqueeBanner = ({ language, t }: { language: string; t: (key: string) => string }) => {
   const phrases = useMemo(() => marqueePhrases[language] || marqueePhrases.en, [language]);
   const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
 
   return (
-    <nav aria-label={isRTL ? "באנר מידע" : "Info banner"} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+    <nav aria-label={t('ui.infoBanner')} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
       <div className="flex items-center px-5 py-2 bg-card border border-border rounded-full shadow-md min-w-[280px] justify-center" role="status" aria-live="polite">
         <span className="text-xs md:text-sm lg:text-base font-medium text-foreground whitespace-nowrap">
           {displayedText}
