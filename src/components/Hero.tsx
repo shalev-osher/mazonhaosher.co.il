@@ -353,20 +353,44 @@ const Hero = () => {
         html { scroll-behavior: smooth; }
       `}</style>
 
-      {/* Luxury loading overlay */}
+      {/* Custom cookie loading animation */}
       {!isVisible && (
         <div
           className="fixed inset-0 z-[9998] flex items-center justify-center bg-background"
           style={{ animation: 'loaderFade 1.8s ease-out 0.5s forwards' }}
         >
-          <div className="flex flex-col items-center gap-4">
-            <img
-              src={logo}
-              alt=""
-              className="w-24 h-24 object-contain"
-              style={{ animation: 'luxuryLoader 1.6s cubic-bezier(0.16,1,0.3,1) forwards' }}
-            />
-            <div className="flex gap-1.5">
+          <div className="flex flex-col items-center gap-5">
+            {/* Spinning cookie */}
+            <div className="relative">
+              <span
+                className="text-7xl block"
+                style={{
+                  animation: 'cookieSpin 1.6s cubic-bezier(0.16,1,0.3,1) forwards, cookieBounce 1.5s ease-in-out 1.6s infinite, cookieGlow 2s ease-in-out 1.6s infinite',
+                }}
+              >
+                🍪
+              </span>
+              {/* Falling crumbs */}
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute rounded-full"
+                  style={{
+                    width: `${3 + Math.random() * 3}px`,
+                    height: `${3 + Math.random() * 3}px`,
+                    background: 'hsla(30,60%,50%,0.7)',
+                    left: `${20 + i * 10}%`,
+                    bottom: '10%',
+                    '--crumb-x': `${-15 + i * 6}px`,
+                    '--crumb-r': `${Math.random() * 360}deg`,
+                    animation: `crumbDrop 1.2s ${1.6 + i * 0.15}s ease-in infinite`,
+                    opacity: 0,
+                  } as React.CSSProperties}
+                />
+              ))}
+            </div>
+            {/* Loading dots */}
+            <div className="flex gap-2">
               {[0, 1, 2].map((i) => (
                 <div
                   key={i}
