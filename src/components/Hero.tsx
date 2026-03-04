@@ -101,6 +101,7 @@ const useHoverSound = () => {
 const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duration: number; left: string; size: number }) => (
   <div
     className="absolute top-0 pointer-events-none opacity-0"
+    aria-hidden="true"
     style={{ left, animation: `crumbFall ${duration}s ${delay}s ease-in infinite` }}
   >
     <div
@@ -119,6 +120,7 @@ const GoldenSparkle = ({ delay, duration, left, size }: { delay: number; duratio
 const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; size: number; delay: number }) => (
   <div
     className="absolute pointer-events-none rounded-full"
+    aria-hidden="true"
     style={{
       top, left,
       width: `${size}px`,
