@@ -511,3 +511,30 @@
     opacity: 0;
   }
 }
+
+/* Accessibility: High Contrast */
+.high-contrast {
+  --foreground: 0 0% 0% !important;
+  --background: 0 0% 100% !important;
+  --card: 0 0% 100% !important;
+  --card-foreground: 0 0% 0% !important;
+  --muted-foreground: 0 0% 20% !important;
+  --border: 0 0% 30% !important;
+}
+.dark.high-contrast {
+  --foreground: 0 0% 100% !important;
+  --background: 0 0% 0% !important;
+  --card: 0 0% 5% !important;
+  --card-foreground: 0 0% 100% !important;
+  --muted-foreground: 0 0% 80% !important;
+  --border: 0 0% 70% !important;
+}
+
+/* Accessibility: Reduce Motion */
+.reduce-motion,
+.reduce-motion * {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
