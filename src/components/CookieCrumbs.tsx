@@ -132,6 +132,7 @@ const CookieCrumbs = () => {
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       className="fixed inset-0 z-[9998] pointer-events-none"
       style={{ mixBlendMode: 'multiply' }}
     />

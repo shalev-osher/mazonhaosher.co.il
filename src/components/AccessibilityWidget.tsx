@@ -61,7 +61,7 @@ const AccessibilityWidget = () => {
     fontSize === "normal" ? "רגיל" : fontSize === "large" ? "גדול" : "גדול מאוד";
 
   return (
-    <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl">
+    <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl" role="region" aria-label="תפריט נגישות">
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -91,12 +91,15 @@ const AccessibilityWidget = () => {
       {/* Panel */}
       {isOpen && (
         <div
+          role="dialog"
+          aria-labelledby="a11y-panel-title"
+          aria-expanded="true"
           className="absolute bottom-16 left-0 w-64 
             bg-card/95 backdrop-blur-xl border border-border/60 
             rounded-2xl shadow-[var(--shadow-elevated)] p-5
             animate-in fade-in slide-in-from-bottom-3 duration-200"
         >
-          <h3 className="text-sm font-display font-bold text-foreground mb-4">
+          <h3 id="a11y-panel-title" className="text-sm font-display font-bold text-foreground mb-4">
             הגדרות נגישות
           </h3>
 
