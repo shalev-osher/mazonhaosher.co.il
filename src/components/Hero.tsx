@@ -199,9 +199,9 @@ const Hero = () => {
     })), []
   );
 
-  // Staggered reveal: each step reveals a new element
+  // Staggered reveal: background shows first, then elements appear one by one
   useEffect(() => {
-    const delays = [100, 400, 800, 1200, 1600, 2000];
+    const delays = [300, 1200, 1800, 2400, 2800, 3200];
     const timers = delays.map((d, i) =>
       setTimeout(() => setRevealStep(i + 1), d)
     );
@@ -374,7 +374,7 @@ const Hero = () => {
         <span className="text-2xl drop-shadow-lg">🍪</span>
       </div>
 
-      <section ref={heroRef} onMouseMove={handleHeroMouse} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite' }}>
+      <section ref={heroRef} onMouseMove={handleHeroMouse} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: revealStep < 1 ? 'hsl(25, 20%, 6%)' : 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite', transition: 'background 1s ease' }}>
         {/* Mouse-reactive radial glow */}
         <div
           className="absolute inset-0 z-[1] pointer-events-none transition-opacity duration-500"
@@ -383,10 +383,10 @@ const Hero = () => {
           }}
         />
 
-        {/* Background with stronger Parallax */}
+        {/* Background with stronger Parallax — always visible, fades in */}
         <div
-          className="absolute inset-0 z-0 will-change-transform"
-          style={{ transform: `translateY(${parallaxOffset}px)`, top: '-10%', height: '120%' }}
+          className="absolute inset-0 z-0 will-change-transform transition-opacity duration-1000"
+          style={{ transform: `translateY(${parallaxOffset}px)`, top: '-10%', height: '120%', opacity: revealStep >= 1 ? 1 : 0 }}
         >
           <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" className="w-full h-full object-cover" style={{ animation: 'kenBurns 25s ease-in-out infinite', transformOrigin: 'center center' }} />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)' }} />
