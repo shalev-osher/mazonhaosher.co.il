@@ -70,7 +70,22 @@ const AccessibilityWidget = () => {
           shadow-lg hover:scale-110 active:scale-95 transition-transform duration-200"
         style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
       >
-        {isOpen ? <X size={24} strokeWidth={2.5} /> : <Accessibility size={28} strokeWidth={2.5} />}
+        {isOpen ? <X size={26} strokeWidth={2.5} /> : (
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            {/* Head */}
+            <circle cx="12" cy="4.5" r="2" fill="currentColor" stroke="none" />
+            {/* Body */}
+            <path d="M12 7v5" />
+            {/* Arms */}
+            <path d="M9 9h6" />
+            {/* Wheelchair seat */}
+            <path d="M8 12h7l1.5 5" />
+            {/* Wheel */}
+            <circle cx="10.5" cy="18" r="3" />
+            {/* Small front wheel */}
+            <circle cx="17" cy="18" r="1" />
+          </svg>
+        )}
       </button>
 
       {/* Panel */}
