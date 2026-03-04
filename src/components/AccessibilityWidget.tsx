@@ -71,7 +71,9 @@ const AccessibilityWidget = () => {
         style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
       >
         {isOpen ? <X size={26} strokeWidth={2.5} /> : (
-          <span className="text-[28px] leading-none" aria-hidden="true">♿</span>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+            <path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm6 7h-3.8l-.32-.93A2 2 0 0 0 11.99 7h-.02a2 2 0 0 0-1.87 1.07L9.78 9H6a1 1 0 0 0 0 2h3l-.67 2H6.5a.5.5 0 0 0-.45.72l2.1 4.19A3.5 3.5 0 1 0 14.5 18a3.49 3.49 0 0 0-1.4-2.8L14.28 11H18a1 1 0 0 0 0-2zm-7.52 9a1.5 1.5 0 1 1 .02-3 1.5 1.5 0 0 1-.02 3z"/>
+          </svg>
         )}
       </button>
 
