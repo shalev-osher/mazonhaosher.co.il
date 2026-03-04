@@ -195,7 +195,7 @@ const AccessibilityWidget = () => {
                     </svg>
                   </div>
                   <h3 id="a11y-panel-title" className="text-sm font-display font-bold text-foreground">
-                    תפריט נגישות
+                    {isRTL ? "תפריט נגישות" : "Accessibility"}
                   </h3>
                 </div>
                 <button
