@@ -499,28 +499,30 @@ const Hero = () => {
             </div>
 
             {/* Social Icons */}
-            <div className="flex items-center justify-center gap-7 md:gap-9 mb-6">
+            <nav aria-label={isRTL ? "רשתות חברתיות" : "Social media"} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
               {socials.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={s.label}
                   className="group flex flex-col items-center gap-2"
                   style={{ animation: revealStep >= 5 ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
                   onMouseEnter={playClick}
                 >
                   <svg
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                     className="w-9 h-9 md:w-11 md:h-11 drop-shadow-md transition-all duration-300 group-hover:scale-125"
                     style={{ fill: s.color, filter: `drop-shadow(0 0 8px ${s.color}50)` }}
                   >
                     <path d={s.path} />
                   </svg>
-                  <span className="text-xs text-white/50 font-light tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">{s.label}</span>
+                  <span className="text-xs text-white/50 font-light tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">{s.label}</span>
                 </a>
               ))}
-            </div>
+            </nav>
           </div>
         </div>
 
