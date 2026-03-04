@@ -363,9 +363,10 @@ const Hero = () => {
       {/* Running marquee banner — reveals early with background */}
       {revealStep >= 1 && <MarqueeBanner isRTL={isRTL} />}
 
-      {/* Cookie cursor */}
+      {/* Cookie cursor — decorative */}
       <div
         className="fixed z-[9999] pointer-events-none select-none"
+        aria-hidden="true"
         style={{
           left: cursorPos.x - 12,
           top: cursorPos.y - 12,
