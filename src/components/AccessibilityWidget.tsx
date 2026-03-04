@@ -125,14 +125,14 @@ const AccessibilityWidget = () => {
   const hasChanges = JSON.stringify(state) !== JSON.stringify(DEFAULT_STATE);
   const activeCount = Object.entries(state).filter(([, v]) => v !== false && v !== 0 && v !== "default").length;
 
-  const fontLabels = ["רגיל", "גדול", "גדול+", "ענק"];
-  const lineLabels = ["רגיל", "גדול", "XL"];
-  const satLabels = ["רגיל", "רוויה נמוכה", "גווני אפור"];
+  const fontLabels = isRTL ? ["רגיל", "גדול", "גדול+", "ענק"] : ["Normal", "Large", "Larger", "Huge"];
+  const lineLabels = isRTL ? ["רגיל", "גדול", "XL"] : ["Normal", "Large", "XL"];
+  const satLabels = isRTL ? ["רגיל", "רוויה נמוכה", "גווני אפור"] : ["Normal", "Low Sat.", "Grayscale"];
   const alignLabels: { val: TextAlign; label: string }[] = [
-    { val: "default", label: "ברירת מחדל" },
-    { val: "right", label: "ימין" },
-    { val: "center", label: "מרכז" },
-    { val: "left", label: "שמאל" },
+    { val: "default", label: isRTL ? "ברירת מחדל" : "Default" },
+    { val: "right", label: isRTL ? "ימין" : "Right" },
+    { val: "center", label: isRTL ? "מרכז" : "Center" },
+    { val: "left", label: isRTL ? "שמאל" : "Left" },
   ];
 
   return (
