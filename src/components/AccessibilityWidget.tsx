@@ -99,7 +99,7 @@ const AccessibilityWidget = () => {
             rounded-2xl shadow-[var(--shadow-elevated)] p-5
             animate-in fade-in slide-in-from-bottom-3 duration-200"
         >
-          <h3 className="text-sm font-display font-bold text-foreground mb-4">
+          <h3 id="a11y-panel-title" className="text-sm font-display font-bold text-foreground mb-4">
             הגדרות נגישות
           </h3>
 

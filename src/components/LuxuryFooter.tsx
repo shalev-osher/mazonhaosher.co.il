@@ -12,9 +12,9 @@ const LuxuryFooter = () => {
   ];
 
   return (
-    <footer className="relative py-16 overflow-hidden">
-      {/* Top border - golden gradient */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-0.5"
+    <footer role="contentinfo" aria-label={isRTL ? "כותרת תחתונה" : "Footer"} className="relative py-16 overflow-hidden">
+      {/* Top border - golden gradient — decorative */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-0.5" aria-hidden="true"
         style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,55%,0.6), transparent)' }}
       />
 
@@ -23,22 +23,24 @@ const LuxuryFooter = () => {
           {/* Logo */}
           <img
             src={logo}
-            alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
+            alt={isRTL ? "מזון האושר - לוגו" : "Mazon HaOsher - Logo"}
             className="h-20 w-auto opacity-80 hover:opacity-100 transition-opacity duration-500"
           />
 
           {/* Social icons */}
-          <div className="flex items-center gap-7">
+          <nav aria-label={isRTL ? "רשתות חברתיות" : "Social media"} className="flex items-center gap-7">
             {socials.map((s) => (
               <a
                 key={s.label}
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={s.label}
                 className="group"
               >
                 <svg
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                   className="w-7 h-7 transition-all duration-500 opacity-50 group-hover:opacity-100 group-hover:scale-110"
                   style={{ fill: 'hsla(40,90%,55%,0.8)' }}
                 >
@@ -46,7 +48,7 @@ const LuxuryFooter = () => {
                 </svg>
               </a>
             ))}
-          </div>
+          </nav>
 
           {/* Copyright */}
           <p className="text-sm text-muted-foreground/50 font-light tracking-widest uppercase">
