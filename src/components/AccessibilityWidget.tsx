@@ -66,11 +66,11 @@ const AccessibilityWidget = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="תפריט נגישות"
-        className="w-12 h-12 rounded-full bg-primary text-primary-foreground 
-          shadow-[var(--shadow-warm)] flex items-center justify-center
-          hover:scale-110 active:scale-95 transition-transform duration-200"
+        className="w-14 h-14 rounded-full flex items-center justify-center
+          shadow-lg hover:scale-110 active:scale-95 transition-transform duration-200"
+        style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
       >
-        {isOpen ? <X size={20} /> : <Accessibility size={20} />}
+        {isOpen ? <X size={24} strokeWidth={2.5} /> : <Accessibility size={28} strokeWidth={2.5} />}
       </button>
 
       {/* Panel */}
