@@ -12,23 +12,23 @@ const LuxuryFooter = () => {
   ];
 
   return (
-    <footer className="relative py-12 overflow-hidden">
-      {/* Subtle top border - golden gradient */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-px"
-        style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,55%,0.5), transparent)' }}
+    <footer className="relative py-16 overflow-hidden">
+      {/* Top border - golden gradient */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-0.5"
+        style={{ background: 'linear-gradient(90deg, transparent, hsla(40,90%,55%,0.6), transparent)' }}
       />
 
       <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center gap-6">
-          {/* Small logo */}
+        <div className="flex flex-col items-center gap-8">
+          {/* Logo */}
           <img
             src={logo}
             alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
-            className="h-14 w-auto opacity-70 hover:opacity-100 transition-opacity duration-500"
+            className="h-20 w-auto opacity-80 hover:opacity-100 transition-opacity duration-500"
           />
 
-          {/* Minimal social icons */}
-          <div className="flex items-center gap-5">
+          {/* Social icons */}
+          <div className="flex items-center gap-7">
             {socials.map((s) => (
               <a
                 key={s.label}
@@ -39,8 +39,8 @@ const LuxuryFooter = () => {
               >
                 <svg
                   viewBox="0 0 24 24"
-                  className="w-5 h-5 transition-all duration-500 opacity-40 group-hover:opacity-90 group-hover:scale-110"
-                  style={{ fill: 'hsla(40,90%,55%,0.7)' }}
+                  className="w-7 h-7 transition-all duration-500 opacity-50 group-hover:opacity-100 group-hover:scale-110"
+                  style={{ fill: 'hsla(40,90%,55%,0.8)' }}
                 >
                   <path d={s.path} />
                 </svg>
@@ -48,8 +48,8 @@ const LuxuryFooter = () => {
             ))}
           </div>
 
-          {/* Delicate copyright */}
-          <p className="text-xs text-muted-foreground/40 font-light tracking-widest uppercase">
+          {/* Copyright */}
+          <p className="text-sm text-muted-foreground/50 font-light tracking-widest uppercase">
             © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
           </p>
         </div>
