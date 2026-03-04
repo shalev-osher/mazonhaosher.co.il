@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, RotateCcw } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type FontSize = 0 | 1 | 2 | 3;
 type LineHeight = 0 | 1 | 2;
