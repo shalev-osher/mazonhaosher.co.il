@@ -49,8 +49,14 @@ const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pau
 
 const useParallax = (speed = 0.5) => {
   const [offset, setOffset] = useState(0);
+  const [opacity, setOpacity] = useState(1);
   const handleScroll = useCallback(() => {
-    requestAnimationFrame(() => setOffset(window.scrollY * speed));
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      setOffset(scrollY * speed);
+      // Fade out hero as user scrolls
+      setOpacity(Math.max(0, 1 - scrollY / (window.innerHeight * 0.6)));
+    });
   }, [speed]);
 
   useEffect(() => {
@@ -58,7 +64,7 @@ const useParallax = (speed = 0.5) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  return offset;
+  return { offset, opacity };
 };
 
 const useCookieCursor = () => {
@@ -166,7 +172,7 @@ const Hero = () => {
   );
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
-  const parallaxOffset = useParallax(0.7);
+  const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
   const [isVisible, setIsVisible] = useState(false);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
@@ -417,8 +423,8 @@ const Hero = () => {
         </div>
 
         {/* Content with cinematic entrance */}
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl mx-auto text-center">
+        <div className="container mx-auto px-4 relative z-10 transition-opacity duration-100" style={{ opacity: scrollOpacity }}>
+          <div className="max-w-2xl mx-auto text-center" style={{ transform: `translateY(${parallaxOffset * 0.3}px)` }}>
 
             {/* Logo - cinematic entrance */}
             <div
