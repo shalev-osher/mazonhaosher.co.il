@@ -147,7 +147,7 @@ const AccessibilityWidget = () => {
         />
       )}
 
-      <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl" role="region" aria-label="תפריט נגישות">
+      <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir={isRTL ? "rtl" : "ltr"} role="region" aria-label={isRTL ? "תפריט נגישות" : "Accessibility Menu"}>
         {/* Toggle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
