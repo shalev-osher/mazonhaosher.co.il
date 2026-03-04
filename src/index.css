@@ -6,59 +6,59 @@
 
 @layer base {
   :root {
-    --background: 30 25% 97%;
-    --foreground: 20 20% 18%;
+    --background: 30 30% 96%;
+    --foreground: 20 25% 12%;
 
-    --card: 30 20% 95%;
-    --card-foreground: 20 20% 18%;
+    --card: 30 25% 93%;
+    --card-foreground: 20 25% 12%;
 
-    --popover: 30 25% 97%;
-    --popover-foreground: 20 20% 18%;
+    --popover: 30 30% 96%;
+    --popover-foreground: 20 25% 12%;
 
-    --primary: 350 65% 55%;
+    --primary: 350 75% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 20% 92%;
-    --secondary-foreground: 20 20% 18%;
+    --secondary: 30 25% 88%;
+    --secondary-foreground: 20 25% 12%;
 
-    --muted: 30 15% 94%;
-    --muted-foreground: 20 10% 45%;
+    --muted: 30 20% 90%;
+    --muted-foreground: 20 15% 35%;
 
-    --accent: 280 60% 60%;
+    --accent: 280 70% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 15% 88%;
-    --input: 30 15% 88%;
-    --ring: 350 65% 55%;
+    --border: 30 20% 82%;
+    --input: 30 20% 82%;
+    --ring: 350 75% 50%;
 
     --radius: 0.75rem;
 
     /* Custom accent colors */
-    --warm-cream: 30 25% 97%;
-    --rose: 350 65% 55%;
-    --coral: 15 75% 60%;
-    --amber: 35 85% 55%;
-    --teal: 175 60% 45%;
-    --violet: 280 60% 60%;
-    --sky: 200 80% 55%;
-    --emerald: 155 60% 45%;
-    --golden-honey: 40 90% 55%;
-    --soft-pink: 350 40% 85%;
+    --warm-cream: 30 30% 96%;
+    --rose: 350 75% 50%;
+    --coral: 15 85% 55%;
+    --amber: 35 90% 50%;
+    --teal: 175 70% 40%;
+    --violet: 280 70% 55%;
+    --sky: 200 85% 50%;
+    --emerald: 155 70% 40%;
+    --golden-honey: 40 95% 50%;
+    --soft-pink: 350 50% 75%;
 
     /* Gradients */
-    --gradient-warm: linear-gradient(135deg, hsl(30 25% 97%) 0%, hsl(30 20% 92%) 100%);
-    --gradient-cookie: linear-gradient(180deg, hsl(35 85% 55% / 0.2) 0%, transparent 100%);
-    --gradient-sunset: linear-gradient(135deg, hsl(350 65% 55%), hsl(35 85% 55%));
-    --gradient-ocean: linear-gradient(135deg, hsl(200 80% 55%), hsl(175 60% 45%));
-    --gradient-berry: linear-gradient(135deg, hsl(350 65% 55%), hsl(280 60% 60%));
+    --gradient-warm: linear-gradient(135deg, hsl(30 30% 96%) 0%, hsl(30 25% 88%) 100%);
+    --gradient-cookie: linear-gradient(180deg, hsl(35 90% 50% / 0.3) 0%, transparent 100%);
+    --gradient-sunset: linear-gradient(135deg, hsl(350 75% 50%), hsl(35 90% 50%));
+    --gradient-ocean: linear-gradient(135deg, hsl(200 85% 50%), hsl(175 70% 40%));
+    --gradient-berry: linear-gradient(135deg, hsl(350 75% 50%), hsl(280 70% 55%));
     
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(20 20% 18% / 0.08);
-    --shadow-warm: 0 8px 30px -8px hsl(350 65% 55% / 0.25);
-    --shadow-elevated: 0 20px 50px -15px hsl(20 20% 18% / 0.12);
+    --shadow-soft: 0 4px 20px -4px hsl(20 25% 12% / 0.12);
+    --shadow-warm: 0 8px 30px -8px hsl(350 75% 50% / 0.35);
+    --shadow-elevated: 0 20px 50px -15px hsl(20 25% 12% / 0.2);
 
     /* Animations */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -74,41 +74,41 @@
   }
 
   .dark {
-    --background: 30 25% 14%;
-    --foreground: 30 20% 96%;
+    --background: 25 30% 10%;
+    --foreground: 30 25% 96%;
 
-    --card: 25 18% 12%;
-    --card-foreground: 30 20% 96%;
+    --card: 25 25% 8%;
+    --card-foreground: 30 25% 96%;
 
-    --popover: 25 20% 8%;
-    --popover-foreground: 30 20% 96%;
+    --popover: 25 25% 6%;
+    --popover-foreground: 30 25% 96%;
 
-    --primary: 350 70% 62%;
-    --primary-foreground: 25 20% 10%;
+    --primary: 350 80% 60%;
+    --primary-foreground: 25 25% 8%;
 
-    --secondary: 25 18% 18%;
-    --secondary-foreground: 30 20% 96%;
+    --secondary: 25 22% 15%;
+    --secondary-foreground: 30 25% 96%;
 
-    --muted: 25 15% 20%;
-    --muted-foreground: 30 10% 60%;
+    --muted: 25 20% 16%;
+    --muted-foreground: 30 15% 55%;
 
-    --accent: 280 65% 65%;
-    --accent-foreground: 25 20% 10%;
+    --accent: 280 75% 65%;
+    --accent-foreground: 25 25% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 35%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 25 15% 20%;
-    --input: 25 15% 20%;
-    --ring: 350 70% 62%;
+    --border: 25 20% 18%;
+    --input: 25 20% 18%;
+    --ring: 350 80% 60%;
 
     /* Dark mode custom colors */
-    --coral: 15 80% 65%;
-    --amber: 40 90% 60%;
-    --teal: 175 65% 50%;
-    --violet: 280 65% 65%;
-    --sky: 200 85% 60%;
-    --emerald: 155 65% 50%;
+    --coral: 15 85% 60%;
+    --amber: 40 95% 55%;
+    --teal: 175 70% 45%;
+    --violet: 280 75% 65%;
+    --sky: 200 90% 55%;
+    --emerald: 155 70% 45%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -510,4 +510,124 @@
   50% {
     opacity: 0;
   }
+}
+
+/* Accessibility: High Contrast */
+.high-contrast {
+  --foreground: 0 0% 0% !important;
+  --background: 0 0% 100% !important;
+  --card: 0 0% 100% !important;
+  --card-foreground: 0 0% 0% !important;
+  --muted-foreground: 0 0% 20% !important;
+  --border: 0 0% 30% !important;
+}
+.dark.high-contrast {
+  --foreground: 0 0% 100% !important;
+  --background: 0 0% 0% !important;
+  --card: 0 0% 5% !important;
+  --card-foreground: 0 0% 100% !important;
+  --muted-foreground: 0 0% 80% !important;
+  --border: 0 0% 70% !important;
+}
+
+/* Accessibility: Invert Colors */
+.a11y-invert {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+.a11y-invert img,
+.a11y-invert video {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Accessibility: Reduce Motion */
+.reduce-motion,
+.reduce-motion * {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+/* Accessibility: Highlight Links */
+.a11y-highlight-links a {
+  outline: 2px solid #2563eb !important;
+  outline-offset: 2px !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+}
+
+/* Accessibility: Highlight Titles */
+.a11y-highlight-titles h1,
+.a11y-highlight-titles h2,
+.a11y-highlight-titles h3,
+.a11y-highlight-titles h4,
+.a11y-highlight-titles h5,
+.a11y-highlight-titles h6 {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 4px !important;
+}
+
+/* Accessibility: Big Cursor */
+.a11y-big-cursor,
+.a11y-big-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' stroke='%23fff' stroke-width='1' d='M4 4l7.07 17 2.51-7.39L21 11.07z'/%3E%3C/svg%3E") 4 4, auto !important;
+}
+
+/* Accessibility: Readable Font */
+.a11y-readable-font,
+.a11y-readable-font * {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* Accessibility: Text Spacing */
+.a11y-text-spacing {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+.a11y-text-spacing p,
+.a11y-text-spacing li,
+.a11y-text-spacing span,
+.a11y-text-spacing div {
+  line-height: 1.8 !important;
+}
+
+/* Accessibility: Line Height */
+.a11y-line-height-1 p,
+.a11y-line-height-1 li,
+.a11y-line-height-1 span,
+.a11y-line-height-1 div {
+  line-height: 2 !important;
+}
+.a11y-line-height-2 p,
+.a11y-line-height-2 li,
+.a11y-line-height-2 span,
+.a11y-line-height-2 div {
+  line-height: 2.5 !important;
+}
+
+/* Accessibility: Text Alignment */
+.a11y-align-left * { text-align: left !important; }
+.a11y-align-center * { text-align: center !important; }
+.a11y-align-right * { text-align: right !important; }
+
+/* Accessibility: Saturation */
+.a11y-low-saturation {
+  filter: saturate(0.4) !important;
+}
+.a11y-grayscale {
+  filter: grayscale(1) !important;
+}
+
+/* Accessibility: Highlight Focus */
+.a11y-highlight-focus *:focus {
+  outline: 3px solid #f59e0b !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Accessibility: Hide Images */
+.a11y-hide-images img,
+.a11y-hide-images video,
+.a11y-hide-images svg:not([class*="lucide"]) {
+  opacity: 0.05 !important;
 }

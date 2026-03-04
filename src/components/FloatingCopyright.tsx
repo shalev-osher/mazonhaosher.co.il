@@ -32,8 +32,8 @@ const FloatingCopyright = () => {
     <div
       className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${visible && entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
     >
-      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm">
-        <span className="text-sm md:text-base font-medium text-muted-foreground">
+      <div className="flex items-center px-5 py-2 bg-card border border-border rounded-full shadow-md">
+        <span className="text-sm md:text-base font-medium text-foreground">
           © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
         </span>
       </div>
