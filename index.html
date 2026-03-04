@@ -8,42 +8,151 @@
     <meta name="apple-mobile-web-app-title" content="מזון האושר" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#1a0d10" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#faf6f7" media="(prefers-color-scheme: light)" />
     <title>מזון האושר</title>
     <meta name="description" content="עוגיות קראמבל ביתיות אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד. אספקה עד 3 ימי עסקים באזור אשקלון והסביבה." />
     <meta name="author" content="מזון האושר" />
-    <meta name="keywords" content="עוגיות ביתיות, עוגיות קראמבל, עוגיות אפויות, משלוח עוגיות, אשקלון" />
+    <meta name="keywords" content="עוגיות ביתיות, עוגיות קראמבל, עוגיות אפויות, משלוח עוגיות, אשקלון, קינוחי פירות" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="format-detection" content="telephone=yes" />
     <link rel="canonical" href="https://mazonhaosher.co.il" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=Secular+One&display=swap" rel="stylesheet">
 
     <meta property="og:title" content="מזון האושר" />
     <meta property="og:description" content="עוגיות קראמבל ביתיות אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:url" content="https://mazonhaosher.co.il" />
+    <meta property="og:image" content="https://mazonhaosher.co.il/pwa-512x512.png" />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:site_name" content="מזון האושר" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:title" content="מזון האושר — עוגיות קראמבל ביתיות" />
+    <meta name="twitter:description" content="עוגיות קראמבל ביתיות אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד." />
+    <meta name="twitter:image" content="https://mazonhaosher.co.il/pwa-512x512.png" />
+    <meta name="twitter:image:alt" content="עוגיות קראמבל ביתיות מזון האושר" />
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Bakery",
-      "name": "מזון האושר",
-      "description": "עוגיות קראמבל ביתיות אפויות בעבודת יד עם אהבה",
-      "url": "https://mazonhaosher.co.il",
-      "telephone": "054-679-1198",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "שדרות קדש 39",
-        "addressLocality": "אשקלון",
-        "addressCountry": "IL"
-      }
+      "@graph": [
+        {
+          "@type": "Bakery",
+          "@id": "https://mazonhaosher.co.il/#bakery",
+          "name": "מזון האושר",
+          "alternateName": "Mazon HaOsher",
+          "description": "עוגיות קראמבל ביתיות אפויות בעבודת יד עם אהבה. בהזמנה מראש בלבד.",
+          "url": "https://mazonhaosher.co.il",
+          "telephone": "+972-54-679-1198",
+          "image": "https://mazonhaosher.co.il/pwa-512x512.png",
+          "logo": "https://mazonhaosher.co.il/pwa-512x512.png",
+          "priceRange": "₪₪",
+          "servesCuisine": ["עוגיות", "מאפים", "קינוחים", "קינוחי פירות"],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "שדרות ירושלים 119",
+            "addressLocality": "אשקלון",
+            "addressRegion": "דרום",
+            "postalCode": "7878000",
+            "addressCountry": "IL"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "31.6688",
+            "longitude": "34.5742"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": "Friday",
+              "opens": "07:30",
+              "closes": "14:30"
+            }
+          ],
+          "areaServed": {
+            "@type": "City",
+            "name": "אשקלון והסביבה"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "reviewCount": "120",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "sameAs": [
+            "https://www.instagram.com/mazonaosher/",
+            "https://www.facebook.com/profile.php?id=61565573526817",
+            "https://www.tiktok.com/@almogosher27/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://mazonhaosher.co.il/#website",
+          "url": "https://mazonhaosher.co.il",
+          "name": "מזון האושר",
+          "inLanguage": "he-IL",
+          "publisher": { "@id": "https://mazonhaosher.co.il/#bakery" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://mazonhaosher.co.il/#org",
+          "name": "מזון האושר",
+          "url": "https://mazonhaosher.co.il",
+          "logo": "https://mazonhaosher.co.il/pwa-512x512.png",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+972-54-679-1198",
+            "contactType": "customer service",
+            "areaServed": "IL",
+            "availableLanguage": ["Hebrew", "English", "Arabic", "Russian", "Spanish"]
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://mazonhaosher.co.il/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "איך מזמינים?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ניתן להזמין דרך וואטסאפ במספר 054-679-1198. ההזמנה היא מראש בלבד."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "מה זמן האספקה?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "אספקה תוך עד 3 ימי עסקים באזור אשקלון והסביבה."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "איזה מוצרים יש?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "עוגיות קראמבל ביתיות וקינוחי פירות חדשים, אפויים בעבודת יד."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
+    <link rel="alternate" hreflang="he" href="https://mazonhaosher.co.il/" />
+    <link rel="alternate" hreflang="en" href="https://mazonhaosher.co.il/?lang=en" />
+    <link rel="alternate" hreflang="ar" href="https://mazonhaosher.co.il/?lang=ar" />
+    <link rel="alternate" hreflang="ru" href="https://mazonhaosher.co.il/?lang=ru" />
+    <link rel="alternate" hreflang="es" href="https://mazonhaosher.co.il/?lang=es" />
+    <link rel="alternate" hreflang="x-default" href="https://mazonhaosher.co.il/" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5VELC3356"></script>
     <script>

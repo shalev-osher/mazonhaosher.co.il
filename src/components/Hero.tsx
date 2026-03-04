@@ -3,13 +3,36 @@ import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 import GoldenParticles from "@/components/GoldenParticles";
+import CookieRain from "@/components/CookieRain";
+import SpotlightCursor from "@/components/SpotlightCursor";
+import { hapticLight, hapticSuccess } from "@/lib/haptic";
+import { usePerformanceMode } from "@/lib/performanceMode";
+
+const useTimeGreeting = (t: (k: string) => string) => {
+  const [greeting, setGreeting] = useState("");
+  useEffect(() => {
+    const compute = () => {
+      const h = new Date().getHours();
+      let key = "ui.greeting.morning";
+      if (h >= 5 && h < 12) key = "ui.greeting.morning";
+      else if (h >= 12 && h < 17) key = "ui.greeting.afternoon";
+      else if (h >= 17 && h < 22) key = "ui.greeting.evening";
+      else key = "ui.greeting.night";
+      setGreeting(t(key));
+    };
+    compute();
+    const id = setInterval(compute, 60_000);
+    return () => clearInterval(id);
+  }, [t]);
+  return greeting;
+};
 
 const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pauseTime = 2500, delay = 500) => {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -131,25 +154,12 @@ const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; si
     }}
   />
 );
-const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
-  const phrases = useMemo(() =>
-    isRTL
-      ? ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"]
-      : ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
-    [isRTL]
-  );
-  const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
-
-  return (
-    <nav aria-label={isRTL ? "באנר מידע" : "Info banner"} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-      <div className="flex items-center px-5 py-2 bg-card border border-border rounded-full shadow-md min-w-[280px] justify-center" role="status" aria-live="polite">
-        <span className="text-xs md:text-sm lg:text-base font-medium text-foreground whitespace-nowrap">
-          {displayedText}
-          <span className="inline-block w-0.5 h-4 mr-1 align-middle animate-blink bg-foreground" aria-hidden="true" />
-        </span>
-      </div>
-    </nav>
-  );
+const heroTypePhrases: Record<string, string[]> = {
+  he: ["אופים לכם אושר", "טעם של בית", "כל עוגיה סיפור", "מתוק מהלב"],
+  en: ["Baking Happiness", "Taste of Home", "Every Cookie a Story", "Sweet from the Heart"],
+  ar: ["نخبز لكم السعادة", "طعم البيت", "كل كوكيز قصة", "حلاوة من القلب"],
+  ru: ["Печём счастье", "Вкус дома", "Каждое печенье — история", "Сладость от сердца"],
+  es: ["Horneamos felicidad", "Sabor a hogar", "Cada galleta, una historia", "Dulzura del corazón"],
 };
 
 const useScrollReveal = (threshold = 0.2) => {
@@ -165,22 +175,24 @@ const useScrollReveal = (threshold = 0.2) => {
   return { ref, revealed };
 };
 const Hero = () => {
-  const { isRTL } = useLanguage();
-  const phrases = useMemo(() =>
-    isRTL
-      ? ["אופים לכם אושר", "טעם של בית", "כל עוגיה סיפור", "מתוק מהלב"]
-      : ["Baking Happiness", "Taste of Home", "Every Cookie a Story", "Sweet from the Heart"],
-    [isRTL]
-  );
+  const { isRTL, language, t } = useLanguage();
+  const phrases = useMemo(() => heroTypePhrases[language] || heroTypePhrases.en, [language]);
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
   const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
+  const lowPower = usePerformanceMode();
+  const greeting = useTimeGreeting(t);
   const [revealStep, setRevealStep] = useState(0);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
-  
+
   const heroRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [logoTilt, setLogoTilt] = useState({ x: 0, y: 0 });
+  const [rainTrigger, setRainTrigger] = useState(0);
+  const logoClicksRef = useRef(0);
+  const logoClickTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const handleHeroMouse = useCallback((e: React.MouseEvent) => {
     const rect = heroRef.current?.getBoundingClientRect();
@@ -189,6 +201,26 @@ const Hero = () => {
       x: ((e.clientX - rect.left) / rect.width) * 100,
       y: ((e.clientY - rect.top) / rect.height) * 100,
     });
+    const lr = logoRef.current?.getBoundingClientRect();
+    if (lr) {
+      const cx = lr.left + lr.width / 2;
+      const cy = lr.top + lr.height / 2;
+      const dx = (e.clientX - cx) / lr.width;
+      const dy = (e.clientY - cy) / lr.height;
+      setLogoTilt({ x: dy * -10, y: dx * 10 });
+    }
+  }, []);
+
+  const handleLogoClick = useCallback(() => {
+    hapticLight();
+    logoClicksRef.current += 1;
+    if (logoClickTimer.current) clearTimeout(logoClickTimer.current);
+    logoClickTimer.current = setTimeout(() => { logoClicksRef.current = 0; }, 1500);
+    if (logoClicksRef.current >= 5) {
+      setRainTrigger((t) => t + 1);
+      hapticSuccess();
+      logoClicksRef.current = 0;
+    }
   }, []);
 
   const stars = useMemo(() =>
@@ -269,6 +301,10 @@ const Hero = () => {
           50% { transform: perspective(800px) rotateY(0deg); }
           75% { transform: perspective(800px) rotateY(-8deg); }
           100% { transform: perspective(800px) rotateY(0deg); }
+        }
+        @keyframes logoBreathe {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 20px hsla(40,90%,55%,0.25)); }
+          50% { transform: scale(1.025); filter: drop-shadow(0 12px 32px hsla(40,90%,55%,0.45)); }
         }
         @keyframes socialGlow {
           0%, 100% { box-shadow: 0 8px 25px var(--glow-color); }
@@ -360,8 +396,6 @@ const Hero = () => {
 
       {/* No separate loader — elements reveal in place */}
 
-      {/* Running marquee banner — reveals early with background */}
-      {revealStep >= 1 && <MarqueeBanner isRTL={isRTL} />}
 
       {/* Cookie cursor — decorative */}
       <div
@@ -377,7 +411,7 @@ const Hero = () => {
         <span className="text-2xl drop-shadow-lg">🍪</span>
       </div>
 
-      <main id="main-content" ref={heroRef} onMouseMove={handleHeroMouse} role="main" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ background: revealStep < 1 ? 'hsl(25, 20%, 6%)' : 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite', transition: 'background 1s ease' }}>
+      <main id="main-content" ref={heroRef} onMouseMove={handleHeroMouse} role="main" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-8" style={{ backgroundImage: revealStep < 1 ? 'none' : 'linear-gradient(135deg, hsla(40,90%,55%,0.03) 0%, transparent 30%, hsla(350,65%,55%,0.03) 60%, transparent 100%), linear-gradient(225deg, hsla(280,60%,60%,0.03) 0%, transparent 40%)', backgroundColor: revealStep < 1 ? 'hsl(25, 20%, 6%)' : 'transparent', backgroundSize: '400% 400%', animation: 'movingGradientBg 15s ease-in-out infinite', transition: 'background-color 1s ease, background-image 1s ease' }}>
         {/* Mouse-reactive radial glow */}
         <div
           className="absolute inset-0 z-[1] pointer-events-none transition-opacity duration-500"
@@ -392,7 +426,7 @@ const Hero = () => {
           className="absolute inset-0 z-0 will-change-transform transition-opacity duration-1000"
           style={{ transform: `translateY(${parallaxOffset}px)`, top: '-10%', height: '120%', opacity: revealStep >= 1 ? 1 : 0 }}
         >
-          <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" className="w-full h-full object-cover" style={{ animation: 'kenBurns 25s ease-in-out infinite', transformOrigin: 'center center' }} />
+          <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" loading="eager" fetchPriority="high" className="w-full h-full object-cover" style={{ animation: 'kenBurns 25s ease-in-out infinite', transformOrigin: 'center center' }} />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)' }} />
         </div>
 
@@ -424,24 +458,49 @@ const Hero = () => {
         <div className="container mx-auto px-4 relative z-10 transition-opacity duration-100" style={{ opacity: scrollOpacity }}>
           <div className="max-w-2xl mx-auto text-center" style={{ transform: `translateY(${parallaxOffset * 0.3}px)` }}>
 
-            {/* Logo - cinematic entrance */}
+            {/* Logo - cinematic entrance with 3D tilt + easter egg (5 clicks) */}
             <div
-              className="relative mb-4"
+              ref={logoRef}
+              className="relative mb-4 cursor-pointer"
+              onClick={handleLogoClick}
+              role="button"
+              tabIndex={0}
+              aria-label={t('ui.brandName')}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleLogoClick(); }}
               style={{
                 opacity: 0,
                 animation: revealStep >= 1 ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
+                perspective: '1000px',
               }}
             >
               <img
                 src={logo}
-                alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
-                className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl"
-                style={{ animation: 'logo3D 6s ease-in-out infinite' }}
+                alt={t('ui.brandName')}
+                className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl transition-transform duration-200 ease-out"
+                style={{
+                  animation: lowPower ? 'none' : 'logo3D 6s ease-in-out infinite, logoBreathe 4.5s ease-in-out infinite',
+                  transform: `rotateX(${logoTilt.x}deg) rotateY(${logoTilt.y}deg)`,
+                  transformStyle: 'preserve-3d',
+                }}
               />
               <div className="absolute inset-0 flex items-center justify-center -z-10">
                 <div className="w-48 md:w-56 lg:w-64 h-48 md:h-56 lg:h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'radial-gradient(circle, hsla(40,90%,55%,0.2) 0%, transparent 70%)' }} />
               </div>
             </div>
+
+            {/* Time-based greeting */}
+            {greeting && (
+              <p
+                className="text-sm md:text-base font-light tracking-wider mb-2"
+                style={{
+                  color: 'hsla(40, 90%, 75%, 0.85)',
+                  opacity: 0,
+                  animation: revealStep >= 2 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
+                }}
+              >
+                {greeting} ✨
+              </p>
+            )}
 
             {/* Typewriter with golden glow */}
             <div
@@ -476,7 +535,7 @@ const Hero = () => {
                 ...(revealStep >= 3 ? { animationName: 'cinematic, gradientText', animationDuration: '0.8s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
               }}
             >
-              {isRTL ? "עוגיות בוטיק בעבודת יד · טעמים שלא תשכחו" : "Handcrafted boutique cookies · Flavors you won't forget"}
+              {t('ui.boutiqueSubtitle')}
             </p>
 
             {/* Animated gold wave separator */}
@@ -499,7 +558,7 @@ const Hero = () => {
             </div>
 
             {/* Social Icons */}
-            <nav aria-label={isRTL ? "רשתות חברתיות" : "Social media"} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
+            <nav aria-label={t('ui.socialMedia')} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
               {socials.map((s) => (
                 <a
                   key={s.label}
@@ -510,6 +569,7 @@ const Hero = () => {
                   className="group flex flex-col items-center gap-2"
                   style={{ animation: revealStep >= 5 ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
                   onMouseEnter={playClick}
+                  onClick={hapticLight}
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -532,6 +592,8 @@ const Hero = () => {
         </div>
       </main>
 
+      <CookieRain trigger={rainTrigger} />
+      <SpotlightCursor enabled={!lowPower} />
     </>
   );
 };

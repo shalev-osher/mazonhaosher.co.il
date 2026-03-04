@@ -1,11 +1,12 @@
+import { forwardRef } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import logo from "@/assets/logo.png";
 
-const LuxuryFooter = () => {
-  const { isRTL } = useLanguage();
+const LuxuryFooter = forwardRef<HTMLElement>((_, ref) => {
+  const { t } = useLanguage();
 
   return (
-    <footer role="contentinfo" aria-label={isRTL ? "כותרת תחתונה" : "Footer"} className="relative py-16 overflow-hidden">
+    <footer ref={ref} role="contentinfo" aria-label={t('ui.brandName')} className="relative py-16 overflow-hidden">
       {/* Top border - golden gradient — decorative */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-0.5" aria-hidden="true"
         style={{ background: 'linear-gradient(90deg, transparent, hsl(40,95%,50%), transparent)' }}
@@ -16,18 +17,21 @@ const LuxuryFooter = () => {
           {/* Logo */}
           <img
             src={logo}
-            alt={isRTL ? "מזון האושר - לוגו" : "Mazon HaOsher - Logo"}
+            alt={`${t('ui.brandName')} - Logo`}
             className="h-20 w-auto"
+            loading="lazy"
           />
 
           {/* Copyright */}
           <p className="text-sm text-muted-foreground font-light tracking-widest uppercase">
-            © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
+            © {t('ui.brandName')} 2026
           </p>
         </div>
       </div>
     </footer>
   );
-};
+});
+
+LuxuryFooter.displayName = "LuxuryFooter";
 
 export default LuxuryFooter;

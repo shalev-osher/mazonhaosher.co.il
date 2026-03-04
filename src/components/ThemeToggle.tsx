@@ -1,16 +1,18 @@
 import { useTheme } from "@/contexts/ThemeContext";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Sun, Moon } from "lucide-react";
 
 const ThemeToggle = () => {
   const { mode, toggleTheme } = useTheme();
+  const { t } = useLanguage();
 
-  const icon = mode === 'light' ? <Sun size={16} /> : mode === 'dark' ? <Moon size={16} /> : <Monitor size={16} />;
-  const label = mode === 'light' ? 'בהיר' : mode === 'dark' ? 'כהה' : 'אוטומטי';
+  const icon = mode === 'light' ? <Sun size={16} /> : <Moon size={16} />;
+  const label = mode === 'light' ? t('ui.themeLight') : t('ui.themeDark');
 
   return (
     <button
       onClick={toggleTheme}
-      aria-label={`מצב תצוגה: ${label}`}
+      aria-label={`${t('ui.displayMode')}: ${label}`}
       className="fixed top-4 left-4 z-50 group flex items-center gap-2 
         bg-card border border-border 
         rounded-full px-3 py-2 shadow-[var(--shadow-soft)]

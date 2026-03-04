@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/0.9">
+  <url>
+    <loc>https://mazonhaosher.co.il/</loc>
+    <lastmod>2026-04-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://mazonhaosher.co.il/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mazonhaosher.co.il/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mazonhaosher.co.il/?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mazonhaosher.co.il/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mazonhaosher.co.il/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mazonhaosher.co.il/" />
+    <image:image>
+      <image:loc>https://mazonhaosher.co.il/pwa-512x512.png</image:loc>
+      <image:title>מזון האושר — עוגיות קראמבל ביתיות</image:title>
+      <image:caption>עוגיות אמריקאיות ענקיות בעבודת יד</image:caption>
+    </image:image>
+  </url>
+</urlset>
