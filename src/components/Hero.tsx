@@ -176,7 +176,7 @@ const useScrollReveal = (threshold = 0.2) => {
   return { ref, revealed };
 };
 const Hero = () => {
-  const { isRTL, language } = useLanguage();
+  const { isRTL, language, t } = useLanguage();
   const phrases = useMemo(() => heroTypePhrases[language] || heroTypePhrases.en, [language]);
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
