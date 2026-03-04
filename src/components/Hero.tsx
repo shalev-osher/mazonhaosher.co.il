@@ -172,7 +172,7 @@ const Hero = () => {
   );
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
-  const parallaxOffset = useParallax(0.7);
+  const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
   const [isVisible, setIsVisible] = useState(false);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
