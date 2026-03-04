@@ -141,14 +141,14 @@ const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
   const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm min-w-[280px] justify-center">
+    <nav aria-label={isRTL ? "באנר מידע" : "Info banner"} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+      <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm min-w-[280px] justify-center" role="status" aria-live="polite">
         <span className="text-xs md:text-sm lg:text-base font-medium text-muted-foreground whitespace-nowrap">
           {displayedText}
-          <span className="inline-block w-0.5 h-4 mr-1 align-middle animate-blink bg-muted-foreground/50" />
+          <span className="inline-block w-0.5 h-4 mr-1 align-middle animate-blink bg-muted-foreground/50" aria-hidden="true" />
         </span>
       </div>
-    </div>
+    </nav>
   );
 };
 
