@@ -271,15 +271,15 @@ const AccessibilityWidget = () => {
 
               <div className="grid grid-cols-2 gap-2">
                 <ToggleOption active={state.highContrast} onClick={() => update("highContrast", !state.highContrast)}
-                  icon={<ContrastIcon />} label="ניגודיות גבוהה" />
+                  icon={<ContrastIcon />} label={isRTL ? "ניגודיות גבוהה" : "High Contrast"} />
                 <ToggleOption active={state.invertColors} onClick={() => update("invertColors", !state.invertColors)}
-                  icon={<InvertIcon />} label="היפוך צבעים" />
+                  icon={<InvertIcon />} label={isRTL ? "היפוך צבעים" : "Invert Colors"} />
                 <ToggleOption active={state.highlightLinks} onClick={() => update("highlightLinks", !state.highlightLinks)}
-                  icon={<LinkIcon />} label="הדגשת קישורים" />
+                  icon={<LinkIcon />} label={isRTL ? "הדגשת קישורים" : "Highlight Links"} />
                 <ToggleOption active={state.highlightTitles} onClick={() => update("highlightTitles", !state.highlightTitles)}
-                  icon={<TitleIcon />} label="הדגשת כותרות" />
+                  icon={<TitleIcon />} label={isRTL ? "הדגשת כותרות" : "Highlight Titles"} />
                 <ToggleOption active={state.hideImages} onClick={() => update("hideImages", !state.hideImages)}
-                  icon={<ImageOffIcon />} label="הסתרת תמונות" />
+                  icon={<ImageOffIcon />} label={isRTL ? "הסתרת תמונות" : "Hide Images"} />
                 {/* Saturation cycle */}
                 <button
                   onClick={() => update("saturation", ((state.saturation + 1) % 3) as 0 | 1 | 2)}
