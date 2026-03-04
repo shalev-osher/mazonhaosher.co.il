@@ -27,7 +27,7 @@ const FloatingCopyright = () => {
     >
       <div className="flex items-center px-5 py-2 bg-background border border-border rounded-full shadow-sm">
         <span className="text-sm md:text-base font-medium text-muted-foreground">
-          {isRTL ? "© מזון האושר 2026" : "© Mazon HaOsher 2026"}
+          © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
         </span>
       </div>
     </div>
