@@ -381,6 +381,7 @@ const Hero = () => {
         {/* Mouse-reactive radial glow */}
         <div
           className="absolute inset-0 z-[1] pointer-events-none transition-opacity duration-500"
+          aria-hidden="true"
           style={{
             background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, hsla(40,90%,55%,0.12) 0%, transparent 60%)`,
           }}
