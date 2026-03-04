@@ -176,13 +176,8 @@ const useScrollReveal = (threshold = 0.2) => {
   return { ref, revealed };
 };
 const Hero = () => {
-  const { isRTL } = useLanguage();
-  const phrases = useMemo(() =>
-    isRTL
-      ? ["אופים לכם אושר", "טעם של בית", "כל עוגיה סיפור", "מתוק מהלב"]
-      : ["Baking Happiness", "Taste of Home", "Every Cookie a Story", "Sweet from the Heart"],
-    [isRTL]
-  );
+  const { isRTL, language } = useLanguage();
+  const phrases = useMemo(() => heroTypePhrases[language] || heroTypePhrases.en, [language]);
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
   const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
