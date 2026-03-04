@@ -162,7 +162,7 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
             />
 
             <p
-              className="text-sm md:text-base font-light tracking-widest uppercase"
+              className="text-sm md:text-base font-body font-light tracking-widest uppercase"
               style={{
                 color: 'hsla(40,70%,70%,0.7)',
                 opacity: 0,
