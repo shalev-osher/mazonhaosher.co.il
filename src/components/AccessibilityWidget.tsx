@@ -91,6 +91,9 @@ const AccessibilityWidget = () => {
       {/* Panel */}
       {isOpen && (
         <div
+          role="dialog"
+          aria-labelledby="a11y-panel-title"
+          aria-expanded="true"
           className="absolute bottom-16 left-0 w-64 
             bg-card/95 backdrop-blur-xl border border-border/60 
             rounded-2xl shadow-[var(--shadow-elevated)] p-5
