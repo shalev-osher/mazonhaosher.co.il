@@ -19,7 +19,6 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <FloatingCopyright />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="*" element={<NotFound />} />
