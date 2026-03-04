@@ -71,8 +71,16 @@ const AccessibilityWidget = () => {
         style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
       >
         {isOpen ? <X size={26} strokeWidth={2.5} /> : (
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-            <path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm6 7h-3.8l-.32-.93A2 2 0 0 0 11.99 7h-.02a2 2 0 0 0-1.87 1.07L9.78 9H6a1 1 0 0 0 0 2h3l-.67 2H6.5a.5.5 0 0 0-.45.72l2.1 4.19A3.5 3.5 0 1 0 14.5 18a3.49 3.49 0 0 0-1.4-2.8L14.28 11H18a1 1 0 0 0 0-2zm-7.52 9a1.5 1.5 0 1 1 .02-3 1.5 1.5 0 0 1-.02 3z"/>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+            <circle cx="12" cy="4.5" r="2.2"/>
+            <path d="M16.5 18.5a5 5 0 1 1-9.5-2.1l.5-3.4H9l-.8 3a3 3 0 1 0 5.6 1.5l.7-3h1.5l-.5 2a5 5 0 0 1 1 2z" opacity="0"/>
+            <path d="M9 8h6.5a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 9 8z"/>
+            <path d="M12 7v4.5"/>
+            <rect x="11.25" y="6.8" width="1.5" height="4.5" rx=".75"/>
+            <path d="M8.5 11.5h7l-.8 3.2a4.5 4.5 0 1 1-8.2-1l.5-1.5z" fillRule="evenodd"/>
+            <circle cx="10" cy="17.5" r="2.8" fill="none" stroke="white" strokeWidth="1.8"/>
+            <circle cx="10" cy="17.5" r="1" fill="white"/>
+            <path d="M15.2 14.5l1.3 5h2" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         )}
       </button>
