@@ -463,13 +463,13 @@ const Hero = () => {
               className="text-base md:text-lg mb-6 font-light"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) 0.9s forwards' : 'none',
+                animation: revealStep >= 3 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
                 background: 'linear-gradient(90deg, hsla(40,90%,70%,1), hsla(350,65%,70%,1), hsla(280,60%,70%,1), hsla(40,90%,70%,1))',
                 backgroundSize: '300% 100%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                ...(isVisible ? { animationName: 'cinematic, gradientText', animationDuration: '1s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0.9s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
+                ...(revealStep >= 3 ? { animationName: 'cinematic, gradientText', animationDuration: '0.8s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
               }}
             >
               {isRTL ? "עוגיות בוטיק בעבודת יד · טעמים שלא תשכחו" : "Handcrafted boutique cookies · Flavors you won't forget"}
