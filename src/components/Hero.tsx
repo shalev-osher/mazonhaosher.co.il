@@ -444,7 +444,7 @@ const Hero = () => {
               className="relative min-h-[2.5rem] flex items-center justify-center mb-2"
               style={{
                 opacity: 0,
-                animation: isVisible ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) 0.6s forwards' : 'none',
+                animation: revealStep >= 2 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
               }}
             >
               <p
