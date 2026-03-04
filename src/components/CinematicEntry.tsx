@@ -3,7 +3,7 @@ import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
-  const { isRTL } = useLanguage();
+  const { t } = useLanguage();
   const [phase, setPhase] = useState<'particles' | 'logo' | 'text' | 'exit' | 'done'>('particles');
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <div
       role="status"
-      aria-label={isRTL ? "טוען..." : "Loading..."}
+      aria-label={t('ui.loading')}
       className="fixed inset-0 z-[10000] flex items-center justify-center overflow-hidden"
       style={{
         background: 'hsl(25, 20%, 6%)',
@@ -136,7 +136,7 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
                 textShadow: '0 0 40px hsla(35, 80%, 50%, 0.3)',
               }}
             >
-              {isRTL ? "מזון האושר" : "Mazon HaOsher"}
+              {t('ui.brandName')}
             </h1>
 
             {/* Expanding line */}
@@ -157,7 +157,7 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
                 animation: 'entrySubFade 0.8s 0.4s ease-out both',
               }}
             >
-              {isRTL ? "עוגיות בוטיק בעבודת יד" : "Handcrafted Boutique Cookies"}
+              {t('ui.boutiqueShort')}
             </p>
           </div>
         )}

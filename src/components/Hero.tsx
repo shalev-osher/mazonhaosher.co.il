@@ -133,10 +133,10 @@ const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; si
 );
 const marqueePhrases: Record<string, string[]> = {
   he: ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"],
-  en: ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
-  ar: ["🍪 زوروا مركز بارنيع كل يوم جمعة 7:30-14:30", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
-  ru: ["🍪 Посетите нас в ТЦ Барнеа каждую пятницу 7:30-14:30", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
-  es: ["🍪 Visítanos en el centro Barnea cada viernes 7:30-14:30", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
+  en: ["🍪 Visit us at Barnea Mall (119 Jerusalem Blvd, Ashkelon) every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
+  ar: ["🍪 زوروا مركز بارنيع (شارع القدس 119، أشكلون) كل يوم جمعة 7:30-14:30", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
+  ru: ["🍪 Посетите нас в ТЦ Барнеа (бульвар Иерусалим 119, Ашкелон) каждую пятницу 7:30-14:30", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
+  es: ["🍪 Visítanos en el centro Barnea (Blvd. Jerusalén 119, Ashkelon) cada viernes 7:30-14:30", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
 };
 
 const heroTypePhrases: Record<string, string[]> = {
@@ -147,12 +147,12 @@ const heroTypePhrases: Record<string, string[]> = {
   es: ["Horneamos felicidad", "Sabor a hogar", "Cada galleta, una historia", "Dulzura del corazón"],
 };
 
-const MarqueeBanner = ({ isRTL, language }: { isRTL: boolean; language: string }) => {
+const MarqueeBanner = ({ language, t }: { language: string; t: (key: string) => string }) => {
   const phrases = useMemo(() => marqueePhrases[language] || marqueePhrases.en, [language]);
   const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
 
   return (
-    <nav aria-label={isRTL ? "באנר מידע" : "Info banner"} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+    <nav aria-label={t('ui.infoBanner')} className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
       <div className="flex items-center px-5 py-2 bg-card border border-border rounded-full shadow-md min-w-[280px] justify-center" role="status" aria-live="polite">
         <span className="text-xs md:text-sm lg:text-base font-medium text-foreground whitespace-nowrap">
           {displayedText}
@@ -176,7 +176,7 @@ const useScrollReveal = (threshold = 0.2) => {
   return { ref, revealed };
 };
 const Hero = () => {
-  const { isRTL, language } = useLanguage();
+  const { isRTL, language, t } = useLanguage();
   const phrases = useMemo(() => heroTypePhrases[language] || heroTypePhrases.en, [language]);
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
@@ -367,7 +367,7 @@ const Hero = () => {
       {/* No separate loader — elements reveal in place */}
 
       {/* Running marquee banner — reveals early with background */}
-      {revealStep >= 1 && <MarqueeBanner isRTL={isRTL} language={language} />}
+      {revealStep >= 1 && <MarqueeBanner language={language} t={t} />}
 
       {/* Cookie cursor — decorative */}
       <div
@@ -440,7 +440,7 @@ const Hero = () => {
             >
               <img
                 src={logo}
-                alt={isRTL ? "מזון האושר" : "Mazon HaOsher"}
+                alt={t('ui.brandName')}
                 className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl"
                 style={{ animation: 'logo3D 6s ease-in-out infinite' }}
               />
@@ -482,7 +482,7 @@ const Hero = () => {
                 ...(revealStep >= 3 ? { animationName: 'cinematic, gradientText', animationDuration: '0.8s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
               }}
             >
-              {isRTL ? "עוגיות בוטיק בעבודת יד · טעמים שלא תשכחו" : "Handcrafted boutique cookies · Flavors you won't forget"}
+              {t('ui.boutiqueSubtitle')}
             </p>
 
             {/* Animated gold wave separator */}
@@ -505,7 +505,7 @@ const Hero = () => {
             </div>
 
             {/* Social Icons */}
-            <nav aria-label={isRTL ? "רשתות חברתיות" : "Social media"} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
+            <nav aria-label={t('ui.socialMedia')} className="flex items-center justify-center gap-7 md:gap-9 mb-6">
               {socials.map((s) => (
                 <a
                   key={s.label}
