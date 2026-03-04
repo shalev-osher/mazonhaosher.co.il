@@ -482,7 +482,7 @@ const Hero = () => {
                 ...(revealStep >= 3 ? { animationName: 'cinematic, gradientText', animationDuration: '0.8s, 6s', animationTimingFunction: 'cubic-bezier(0.16,1,0.3,1), ease-in-out', animationDelay: '0s, 0s', animationIterationCount: '1, infinite', animationFillMode: 'forwards, none' } : {}),
               }}
             >
-              {isRTL ? "עוגיות בוטיק בעבודת יד · טעמים שלא תשכחו" : "Handcrafted boutique cookies · Flavors you won't forget"}
+              {t('ui.boutiqueSubtitle')}
             </p>
 
             {/* Animated gold wave separator */}
