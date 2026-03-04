@@ -71,16 +71,10 @@ const AccessibilityWidget = () => {
         style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
       >
         {isOpen ? <X size={26} strokeWidth={2.5} /> : (
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-            <circle cx="12" cy="4.5" r="2.2"/>
-            <path d="M16.5 18.5a5 5 0 1 1-9.5-2.1l.5-3.4H9l-.8 3a3 3 0 1 0 5.6 1.5l.7-3h1.5l-.5 2a5 5 0 0 1 1 2z" opacity="0"/>
-            <path d="M9 8h6.5a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 9 8z"/>
-            <path d="M12 7v4.5"/>
-            <rect x="11.25" y="6.8" width="1.5" height="4.5" rx=".75"/>
-            <path d="M8.5 11.5h7l-.8 3.2a4.5 4.5 0 1 1-8.2-1l.5-1.5z" fillRule="evenodd"/>
-            <circle cx="10" cy="17.5" r="2.8" fill="none" stroke="white" strokeWidth="1.8"/>
-            <circle cx="10" cy="17.5" r="1" fill="white"/>
-            <path d="M15.2 14.5l1.3 5h2" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="26" height="26" viewBox="0 0 486.4 486.4" fill="white" aria-hidden="true">
+            <circle cx="243.2" cy="59.6" r="59.6"/>
+            <path d="M403.27 388.49l-50.8-101.6c-6.4-12.8-19.2-20.8-33.6-20.8h-62.4l-4-48h44.8c13.6 0 24-10.4 24-24s-10.4-24-24-24h-49.6l-2.4-28.8c-1.6-16-14.4-27.2-30.4-27.2h-4c-17.6 1.6-30.4 16.8-28.8 33.6l10.4 120c1.6 14.4 13.6 25.6 28.8 25.6h80l46.4 92.8c4 8 12 13.6 21.6 13.6 4 0 8-0.8 11.2-3.2 12-6.4 16.8-21.6 10.4-33.6l11.6 25.6z"/>
+            <path d="M209.6 382.09c-42.4-4-75.2-40-75.2-83.2 0-36 22.4-66.4 54.4-78.4l-4-44.8c-57.6 14.4-100 66.4-100 128.8 0 72 56.8 131.2 128 135.2 38.4 2.4 74.4-12 101.6-36l-36-28c-18.4 12.8-42.4 19.2-68.8 6.4z"/>
           </svg>
         )}
       </button>
