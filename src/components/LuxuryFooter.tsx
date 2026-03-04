@@ -51,7 +51,7 @@ const LuxuryFooter = () => {
           </nav>
 
           {/* Copyright */}
-          <p className="text-sm text-muted-foreground/50 font-light tracking-widest uppercase">
+          <p className="text-sm text-muted-foreground font-light tracking-widest uppercase">
             © {isRTL ? "מזון האושר" : "Mazon HaOsher"} 2026
           </p>
         </div>
