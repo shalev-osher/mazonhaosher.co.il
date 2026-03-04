@@ -198,9 +198,6 @@ const Hero = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const highlights = isRTL
-    ? ["🍪 עוגיות בוטיק", "🎁 מארזי מתנה", "🚚 משלוחים עד הבית", "❤️ אפייה באהבה"]
-    : ["🍪 Boutique Cookies", "🎁 Gift Packages", "🚚 Home Delivery", "❤️ Baked with Love"];
 
   const sparkles = useMemo(() =>
     Array.from({ length: 10 }, (_, i) => ({
