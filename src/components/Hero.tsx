@@ -423,6 +423,9 @@ const Hero = () => {
           ))}
         </div>
 
+        {/* 40 Golden floating particles */}
+        <GoldenParticles count={40} />
+
         {/* Content with cinematic entrance */}
         <div className="container mx-auto px-4 relative z-10 transition-opacity duration-100" style={{ opacity: scrollOpacity }}>
           <div className="max-w-2xl mx-auto text-center" style={{ transform: `translateY(${parallaxOffset * 0.3}px)` }}>
