@@ -107,10 +107,8 @@ const TopToolbar = () => {
           <span className="text-xs font-medium text-muted-foreground hidden sm:inline">{themeLabel}</span>
         </button>
 
-        {/* Copyright — left-center */}
-        <span className="text-xs font-medium text-muted-foreground tracking-wide shrink-0 hidden sm:inline">
-          © {t('ui.brandName')} 2026
-        </span>
+
+
 
         {/* Marquee text — center */}
         <div className="flex-1 overflow-hidden text-center min-w-0" role="status" aria-live="polite">
