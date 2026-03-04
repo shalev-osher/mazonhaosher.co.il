@@ -2,35 +2,50 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { X, RotateCcw } from "lucide-react";
 
 type FontSize = 0 | 1 | 2 | 3;
+type LineHeight = 0 | 1 | 2;
+type TextAlign = "default" | "left" | "center" | "right";
 
 interface A11yState {
   fontSize: FontSize;
+  lineHeight: LineHeight;
+  textAlign: TextAlign;
   highContrast: boolean;
+  invertColors: boolean;
   reduceMotion: boolean;
   highlightLinks: boolean;
+  highlightTitles: boolean;
   bigCursor: boolean;
   readableFont: boolean;
   textSpacing: boolean;
-  saturation: 0 | 1 | 2; // 0=normal, 1=low, 2=grayscale
+  saturation: 0 | 1 | 2;
   highlightFocus: boolean;
+  hideImages: boolean;
+  readingGuide: boolean;
 }
 
 const DEFAULT_STATE: A11yState = {
   fontSize: 0,
+  lineHeight: 0,
+  textAlign: "default",
   highContrast: false,
+  invertColors: false,
   reduceMotion: false,
   highlightLinks: false,
+  highlightTitles: false,
   bigCursor: false,
   readableFont: false,
   textSpacing: false,
   saturation: 0,
   highlightFocus: false,
+  hideImages: false,
+  readingGuide: false,
 };
 
 const AccessibilityWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState<A11yState>(DEFAULT_STATE);
   const panelRef = useRef<HTMLDivElement>(null);
+  const guideRef = useRef<HTMLDivElement>(null);
 
   const update = useCallback((key: keyof A11yState, value: unknown) => {
     setState(prev => ({ ...prev, [key]: value }));
@@ -42,35 +57,37 @@ const AccessibilityWidget = () => {
     document.documentElement.style.fontSize = sizes[state.fontSize];
   }, [state.fontSize]);
 
-  // High contrast
+  // Line height
   useEffect(() => {
-    document.documentElement.classList.toggle("high-contrast", state.highContrast);
-  }, [state.highContrast]);
+    document.documentElement.classList.remove("a11y-line-height-1", "a11y-line-height-2");
+    if (state.lineHeight === 1) document.documentElement.classList.add("a11y-line-height-1");
+    if (state.lineHeight === 2) document.documentElement.classList.add("a11y-line-height-2");
+  }, [state.lineHeight]);
 
-  // Reduce motion
+  // Text alignment
   useEffect(() => {
-    document.documentElement.classList.toggle("reduce-motion", state.reduceMotion);
-  }, [state.reduceMotion]);
+    document.documentElement.classList.remove("a11y-align-left", "a11y-align-center", "a11y-align-right");
+    if (state.textAlign !== "default") document.documentElement.classList.add(`a11y-align-${state.textAlign}`);
+  }, [state.textAlign]);
 
-  // Highlight links
+  // Boolean toggles
   useEffect(() => {
-    document.documentElement.classList.toggle("a11y-highlight-links", state.highlightLinks);
-  }, [state.highlightLinks]);
-
-  // Big cursor
-  useEffect(() => {
-    document.documentElement.classList.toggle("a11y-big-cursor", state.bigCursor);
-  }, [state.bigCursor]);
-
-  // Readable font
-  useEffect(() => {
-    document.documentElement.classList.toggle("a11y-readable-font", state.readableFont);
-  }, [state.readableFont]);
-
-  // Text spacing
-  useEffect(() => {
-    document.documentElement.classList.toggle("a11y-text-spacing", state.textSpacing);
-  }, [state.textSpacing]);
+    const toggles: [keyof A11yState, string][] = [
+      ["highContrast", "high-contrast"],
+      ["invertColors", "a11y-invert"],
+      ["reduceMotion", "reduce-motion"],
+      ["highlightLinks", "a11y-highlight-links"],
+      ["highlightTitles", "a11y-highlight-titles"],
+      ["bigCursor", "a11y-big-cursor"],
+      ["readableFont", "a11y-readable-font"],
+      ["textSpacing", "a11y-text-spacing"],
+      ["highlightFocus", "a11y-highlight-focus"],
+      ["hideImages", "a11y-hide-images"],
+    ];
+    toggles.forEach(([key, cls]) => {
+      document.documentElement.classList.toggle(cls, state[key] as boolean);
+    });
+  }, [state.highContrast, state.invertColors, state.reduceMotion, state.highlightLinks, state.highlightTitles, state.bigCursor, state.readableFont, state.textSpacing, state.highlightFocus, state.hideImages]);
 
   // Saturation
   useEffect(() => {
@@ -79,10 +96,17 @@ const AccessibilityWidget = () => {
     if (state.saturation === 2) document.documentElement.classList.add("a11y-grayscale");
   }, [state.saturation]);
 
-  // Focus highlight
+  // Reading guide
   useEffect(() => {
-    document.documentElement.classList.toggle("a11y-highlight-focus", state.highlightFocus);
-  }, [state.highlightFocus]);
+    if (!state.readingGuide) return;
+    const guide = guideRef.current;
+    if (!guide) return;
+    const onMove = (e: MouseEvent) => {
+      guide.style.top = `${e.clientY - 20}px`;
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [state.readingGuide]);
 
   // Close on outside click
   useEffect(() => {
@@ -96,189 +120,244 @@ const AccessibilityWidget = () => {
   }, [isOpen]);
 
   const resetAll = () => setState(DEFAULT_STATE);
-
   const hasChanges = JSON.stringify(state) !== JSON.stringify(DEFAULT_STATE);
+  const activeCount = Object.entries(state).filter(([, v]) => v !== false && v !== 0 && v !== "default").length;
 
-  const fontLabels = ["רגיל", "גדול", "גדול מאוד", "ענק"];
+  const fontLabels = ["רגיל", "גדול", "גדול+", "ענק"];
+  const lineLabels = ["רגיל", "גדול", "XL"];
   const satLabels = ["רגיל", "רוויה נמוכה", "גווני אפור"];
+  const alignLabels: { val: TextAlign; label: string }[] = [
+    { val: "default", label: "ברירת מחדל" },
+    { val: "right", label: "ימין" },
+    { val: "center", label: "מרכז" },
+    { val: "left", label: "שמאל" },
+  ];
 
   return (
-    <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl" role="region" aria-label="תפריט נגישות">
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="תפריט נגישות"
-        aria-expanded={isOpen}
-        className={`w-14 h-14 rounded-full flex items-center justify-center
-          shadow-lg hover:scale-110 active:scale-95 transition-all duration-200
-          ${hasChanges ? 'ring-2 ring-offset-2 ring-yellow-400' : ''}`}
-        style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
-      >
-        {isOpen ? <X size={26} strokeWidth={2.5} /> : (
-          <svg width="26" height="26" viewBox="0 0 486.4 486.4" fill="white" aria-hidden="true">
-            <circle cx="243.2" cy="59.6" r="59.6"/>
-            <path d="M403.27 388.49l-50.8-101.6c-6.4-12.8-19.2-20.8-33.6-20.8h-62.4l-4-48h44.8c13.6 0 24-10.4 24-24s-10.4-24-24-24h-49.6l-2.4-28.8c-1.6-16-14.4-27.2-30.4-27.2h-4c-17.6 1.6-30.4 16.8-28.8 33.6l10.4 120c1.6 14.4 13.6 25.6 28.8 25.6h80l46.4 92.8c4 8 12 13.6 21.6 13.6 4 0 8-0.8 11.2-3.2 12-6.4 16.8-21.6 10.4-33.6l11.6 25.6z"/>
-            <path d="M209.6 382.09c-42.4-4-75.2-40-75.2-83.2 0-36 22.4-66.4 54.4-78.4l-4-44.8c-57.6 14.4-100 66.4-100 128.8 0 72 56.8 131.2 128 135.2 38.4 2.4 74.4-12 101.6-36l-36-28c-18.4 12.8-42.4 19.2-68.8 6.4z"/>
-          </svg>
-        )}
-      </button>
-
-      {/* Panel */}
-      {isOpen && (
+    <>
+      {/* Reading Guide */}
+      {state.readingGuide && (
         <div
-          role="dialog"
-          aria-labelledby="a11y-panel-title"
-          className="absolute bottom-16 left-0 w-80
-            bg-card/98 backdrop-blur-xl border border-border/60 
-            rounded-2xl shadow-[var(--shadow-elevated)]
-            animate-in fade-in slide-in-from-bottom-3 duration-200
-            max-h-[80vh] overflow-y-auto"
-        >
-          {/* Header */}
-          <div className="sticky top-0 z-10 bg-card/98 backdrop-blur-xl px-5 pt-5 pb-3 border-b border-border/30">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#2563eb' }}>
-                  <svg width="16" height="16" viewBox="0 0 486.4 486.4" fill="white" aria-hidden="true">
-                    <circle cx="243.2" cy="59.6" r="59.6"/>
-                    <path d="M403.27 388.49l-50.8-101.6c-6.4-12.8-19.2-20.8-33.6-20.8h-62.4l-4-48h44.8c13.6 0 24-10.4 24-24s-10.4-24-24-24h-49.6l-2.4-28.8c-1.6-16-14.4-27.2-30.4-27.2h-4c-17.6 1.6-30.4 16.8-28.8 33.6l10.4 120c1.6 14.4 13.6 25.6 28.8 25.6h80l46.4 92.8c4 8 12 13.6 21.6 13.6 4 0 8-0.8 11.2-3.2 12-6.4 16.8-21.6 10.4-33.6l11.6 25.6z"/>
-                    <path d="M209.6 382.09c-42.4-4-75.2-40-75.2-83.2 0-36 22.4-66.4 54.4-78.4l-4-44.8c-57.6 14.4-100 66.4-100 128.8 0 72 56.8 131.2 128 135.2 38.4 2.4 74.4-12 101.6-36l-36-28c-18.4 12.8-42.4 19.2-68.8 6.4z"/>
-                  </svg>
-                </div>
-                <h3 id="a11y-panel-title" className="text-sm font-display font-bold text-foreground">
-                  תפריט נגישות
-                </h3>
-              </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                aria-label="סגור תפריט נגישות"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-              >
-                <X size={16} />
-              </button>
-            </div>
-          </div>
+          ref={guideRef}
+          className="fixed left-0 right-0 z-[9997] pointer-events-none"
+          style={{ height: "40px", background: "hsla(210, 100%, 50%, 0.12)", borderTop: "2px solid hsl(210, 100%, 50%)", borderBottom: "2px solid hsl(210, 100%, 50%)" }}
+          aria-hidden="true"
+        />
+      )}
 
-          <div className="p-5 space-y-5">
-            {/* Font Size — Stepper */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium text-foreground flex items-center gap-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                    <path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/>
-                  </svg>
-                  גודל טקסט
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
-                  {fontLabels[state.fontSize]}
-                </span>
+      <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl" role="region" aria-label="תפריט נגישות">
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="תפריט נגישות"
+          aria-expanded={isOpen}
+          className={`relative w-14 h-14 rounded-full flex items-center justify-center
+            shadow-lg hover:scale-110 active:scale-95 transition-all duration-200
+            ${hasChanges ? 'ring-2 ring-offset-2 ring-yellow-400' : ''}`}
+          style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+        >
+          {isOpen ? <X size={26} strokeWidth={2.5} /> : (
+            <svg width="26" height="26" viewBox="0 0 486.4 486.4" fill="white" aria-hidden="true">
+              <circle cx="243.2" cy="59.6" r="59.6"/>
+              <path d="M403.27 388.49l-50.8-101.6c-6.4-12.8-19.2-20.8-33.6-20.8h-62.4l-4-48h44.8c13.6 0 24-10.4 24-24s-10.4-24-24-24h-49.6l-2.4-28.8c-1.6-16-14.4-27.2-30.4-27.2h-4c-17.6 1.6-30.4 16.8-28.8 33.6l10.4 120c1.6 14.4 13.6 25.6 28.8 25.6h80l46.4 92.8c4 8 12 13.6 21.6 13.6 4 0 8-0.8 11.2-3.2 12-6.4 16.8-21.6 10.4-33.6l11.6 25.6z"/>
+              <path d="M209.6 382.09c-42.4-4-75.2-40-75.2-83.2 0-36 22.4-66.4 54.4-78.4l-4-44.8c-57.6 14.4-100 66.4-100 128.8 0 72 56.8 131.2 128 135.2 38.4 2.4 74.4-12 101.6-36l-36-28c-18.4 12.8-42.4 19.2-68.8 6.4z"/>
+            </svg>
+          )}
+          {activeCount > 0 && !isOpen && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-yellow-400 text-black text-[10px] font-bold flex items-center justify-center">
+              {activeCount}
+            </span>
+          )}
+        </button>
+
+        {/* Panel */}
+        {isOpen && (
+          <div
+            role="dialog"
+            aria-labelledby="a11y-panel-title"
+            className="absolute bottom-16 left-0 w-80
+              bg-card border border-border
+              rounded-2xl shadow-[var(--shadow-elevated)]
+              animate-in fade-in slide-in-from-bottom-3 duration-200
+              max-h-[80vh] overflow-y-auto"
+          >
+            {/* Header */}
+            <div className="sticky top-0 z-10 bg-card px-5 pt-5 pb-3 border-b border-border rounded-t-2xl">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#2563eb' }}>
+                    <svg width="16" height="16" viewBox="0 0 486.4 486.4" fill="white" aria-hidden="true">
+                      <circle cx="243.2" cy="59.6" r="59.6"/>
+                      <path d="M403.27 388.49l-50.8-101.6c-6.4-12.8-19.2-20.8-33.6-20.8h-62.4l-4-48h44.8c13.6 0 24-10.4 24-24s-10.4-24-24-24h-49.6l-2.4-28.8c-1.6-16-14.4-27.2-30.4-27.2h-4c-17.6 1.6-30.4 16.8-28.8 33.6l10.4 120c1.6 14.4 13.6 25.6 28.8 25.6h80l46.4 92.8c4 8 12 13.6 21.6 13.6 4 0 8-0.8 11.2-3.2 12-6.4 16.8-21.6 10.4-33.6l11.6 25.6z"/>
+                      <path d="M209.6 382.09c-42.4-4-75.2-40-75.2-83.2 0-36 22.4-66.4 54.4-78.4l-4-44.8c-57.6 14.4-100 66.4-100 128.8 0 72 56.8 131.2 128 135.2 38.4 2.4 74.4-12 101.6-36l-36-28c-18.4 12.8-42.4 19.2-68.8 6.4z"/>
+                    </svg>
+                  </div>
+                  <h3 id="a11y-panel-title" className="text-sm font-display font-bold text-foreground">
+                    תפריט נגישות
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  aria-label="סגור תפריט נגישות"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  <X size={16} />
+                </button>
               </div>
-              <div className="flex gap-1">
+            </div>
+
+            <div className="p-5 space-y-4">
+              {/* === SECTION: Content === */}
+              <SectionTitle>תוכן</SectionTitle>
+
+              {/* Font Size */}
+              <StepperRow label="גודל טקסט" valueLabel={fontLabels[state.fontSize]}>
                 {[0, 1, 2, 3].map(level => (
                   <button
                     key={level}
                     onClick={() => update("fontSize", level as FontSize)}
-                    className={`flex-1 h-9 rounded-lg text-xs font-medium transition-all duration-200
+                    className={`flex-1 h-9 rounded-lg font-bold transition-all duration-200
                       ${state.fontSize === level
                         ? 'bg-blue-600 text-white shadow-sm'
-                        : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-secondary hover:text-foreground'
                       }`}
                     style={{ fontSize: `${11 + level * 2}px` }}
                   >
                     א
                   </button>
                 ))}
+              </StepperRow>
+
+              {/* Line Height */}
+              <StepperRow label="גובה שורה" valueLabel={lineLabels[state.lineHeight]}>
+                {[0, 1, 2].map(level => (
+                  <button
+                    key={level}
+                    onClick={() => update("lineHeight", level as LineHeight)}
+                    className={`flex-1 h-9 rounded-lg text-xs font-medium transition-all duration-200
+                      ${state.lineHeight === level
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'bg-muted text-muted-foreground hover:bg-secondary hover:text-foreground'
+                      }`}
+                  >
+                    {lineLabels[level]}
+                  </button>
+                ))}
+              </StepperRow>
+
+              {/* Text Alignment */}
+              <StepperRow label="יישור טקסט" valueLabel={alignLabels.find(a => a.val === state.textAlign)?.label || ""}>
+                {alignLabels.map(a => (
+                  <button
+                    key={a.val}
+                    onClick={() => update("textAlign", a.val)}
+                    className={`flex-1 h-9 rounded-lg text-[10px] font-medium transition-all duration-200
+                      ${state.textAlign === a.val
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'bg-muted text-muted-foreground hover:bg-secondary hover:text-foreground'
+                      }`}
+                  >
+                    {a.label}
+                  </button>
+                ))}
+              </StepperRow>
+
+              <div className="h-px bg-border" />
+
+              {/* === SECTION: Display === */}
+              <SectionTitle>תצוגה</SectionTitle>
+
+              <div className="grid grid-cols-2 gap-2">
+                <ToggleOption active={state.highContrast} onClick={() => update("highContrast", !state.highContrast)}
+                  icon={<ContrastIcon />} label="ניגודיות גבוהה" />
+                <ToggleOption active={state.invertColors} onClick={() => update("invertColors", !state.invertColors)}
+                  icon={<InvertIcon />} label="היפוך צבעים" />
+                <ToggleOption active={state.highlightLinks} onClick={() => update("highlightLinks", !state.highlightLinks)}
+                  icon={<LinkIcon />} label="הדגשת קישורים" />
+                <ToggleOption active={state.highlightTitles} onClick={() => update("highlightTitles", !state.highlightTitles)}
+                  icon={<TitleIcon />} label="הדגשת כותרות" />
+                <ToggleOption active={state.hideImages} onClick={() => update("hideImages", !state.hideImages)}
+                  icon={<ImageOffIcon />} label="הסתרת תמונות" />
+                {/* Saturation cycle */}
+                <button
+                  onClick={() => update("saturation", ((state.saturation + 1) % 3) as 0 | 1 | 2)}
+                  className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-medium transition-all duration-200
+                    ${state.saturation > 0
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                      : 'bg-muted text-muted-foreground border-border hover:bg-secondary hover:text-foreground'
+                    }`}
+                >
+                  <SaturationIcon />
+                  <span>{satLabels[state.saturation]}</span>
+                </button>
+              </div>
+
+              <div className="h-px bg-border" />
+
+              {/* === SECTION: Navigation === */}
+              <SectionTitle>ניווט וקריאה</SectionTitle>
+
+              <div className="grid grid-cols-2 gap-2">
+                <ToggleOption active={state.bigCursor} onClick={() => update("bigCursor", !state.bigCursor)}
+                  icon={<CursorIcon />} label="סמן גדול" />
+                <ToggleOption active={state.readingGuide} onClick={() => update("readingGuide", !state.readingGuide)}
+                  icon={<GuideIcon />} label="מדריך קריאה" />
+                <ToggleOption active={state.reduceMotion} onClick={() => update("reduceMotion", !state.reduceMotion)}
+                  icon={<MotionIcon />} label="ביטול אנימציות" />
+                <ToggleOption active={state.readableFont} onClick={() => update("readableFont", !state.readableFont)}
+                  icon={<FontIcon />} label="פונט קריא" />
+                <ToggleOption active={state.textSpacing} onClick={() => update("textSpacing", !state.textSpacing)}
+                  icon={<SpacingIcon />} label="ריווח טקסט" />
+                <ToggleOption active={state.highlightFocus} onClick={() => update("highlightFocus", !state.highlightFocus)}
+                  icon={<FocusIcon />} label="הדגשת פוקוס" />
+              </div>
+
+              <div className="h-px bg-border" />
+
+              {/* Reset */}
+              <button
+                onClick={resetAll}
+                disabled={!hasChanges}
+                className="w-full h-10 rounded-xl flex items-center justify-center gap-2 text-xs font-medium
+                  bg-muted text-muted-foreground hover:bg-destructive hover:text-destructive-foreground
+                  disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+              >
+                <RotateCcw size={14} />
+                איפוס כל ההגדרות
+              </button>
+
+              {/* WCAG Badge */}
+              <div className="flex items-center justify-center gap-2 py-2">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true" className="text-green-600">
+                    <path d="M20 6 9 17l-5-5"/>
+                  </svg>
+                  <span className="text-[10px] font-bold text-foreground tracking-wide">WCAG 2.1 AA</span>
+                </div>
               </div>
             </div>
-
-            {/* Divider */}
-            <div className="h-px bg-border/40" />
-
-            {/* Toggle Grid */}
-            <div className="grid grid-cols-2 gap-2">
-              <ToggleOption
-                active={state.highContrast}
-                onClick={() => update("highContrast", !state.highContrast)}
-                icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"/></svg>}
-                label="ניגודיות גבוהה"
-              />
-              <ToggleOption
-                active={state.highlightLinks}
-                onClick={() => update("highlightLinks", !state.highlightLinks)}
-                icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>}
-                label="הדגשת קישורים"
-              />
-              <ToggleOption
-                active={state.bigCursor}
-                onClick={() => update("bigCursor", !state.bigCursor)}
-                icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z"/></svg>}
-                label="סמן גדול"
-              />
-              <ToggleOption
-                active={state.reduceMotion}
-                onClick={() => update("reduceMotion", !state.reduceMotion)}
-                icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M18.36 18.36A9 9 0 0 0 21 12c0-5-4-9-9-9s-9 4-9 9 4 9 9 9"/><path d="m1 1 22 22"/></svg>}
-                label="ביטול אנימציות"
-              />
-              <ToggleOption
-                active={state.readableFont}
-                onClick={() => update("readableFont", !state.readableFont)}
-                icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>}
-                label="פונט קריא"
-              />
-              <ToggleOption
-                active={state.textSpacing}
-                onClick={() => update("textSpacing", !state.textSpacing)}
-                icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/></svg>}
-                label="ריווח טקסט"
-              />
-              <ToggleOption
-                active={state.highlightFocus}
-                onClick={() => update("highlightFocus", !state.highlightFocus)}
-                icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8"/></svg>}
-                label="הדגשת פוקוס"
-              />
-              {/* Saturation cycle */}
-              <button
-                onClick={() => update("saturation", ((state.saturation + 1) % 3) as 0 | 1 | 2)}
-                className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-medium transition-all duration-200
-                  ${state.saturation > 0
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                    : 'bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/60 hover:text-foreground'
-                  }`}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/>
-                </svg>
-                <span>{satLabels[state.saturation]}</span>
-              </button>
-            </div>
-
-            {/* Divider */}
-            <div className="h-px bg-border/40" />
-
-            {/* Reset */}
-            <button
-              onClick={resetAll}
-              disabled={!hasChanges}
-              className="w-full h-10 rounded-xl flex items-center justify-center gap-2 text-xs font-medium
-                bg-muted/40 text-muted-foreground hover:bg-destructive/10 hover:text-destructive 
-                disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
-            >
-              <RotateCcw size={14} />
-              איפוס כל ההגדרות
-            </button>
-
-            {/* Branding */}
-            <p className="text-[10px] text-muted-foreground/50 text-center">
-              תפריט נגישות · תקן WCAG 2.1
-            </p>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
+
+/* === Sub-components === */
+
+const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+  <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">{children}</p>
+);
+
+const StepperRow = ({ label, valueLabel, children }: { label: string; valueLabel: string; children: React.ReactNode }) => (
+  <div>
+    <div className="flex items-center justify-between mb-2">
+      <span className="text-xs font-medium text-foreground">{label}</span>
+      <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">{valueLabel}</span>
+    </div>
+    <div className="flex gap-1">{children}</div>
+  </div>
+);
 
 const ToggleOption = ({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) => (
   <button
@@ -287,12 +366,26 @@ const ToggleOption = ({ active, onClick, icon, label }: { active: boolean; onCli
     className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-medium transition-all duration-200
       ${active
         ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-        : 'bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/60 hover:text-foreground'
+        : 'bg-muted text-muted-foreground border-border hover:bg-secondary hover:text-foreground'
       }`}
   >
     {icon}
     <span>{label}</span>
   </button>
 );
+
+/* === Icons === */
+const ContrastIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"/></svg>;
+const InvertIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20" strokeDasharray="2 2"/></svg>;
+const LinkIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
+const TitleIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 12h12"/><path d="M6 4h12"/><path d="M9 20h6"/></svg>;
+const ImageOffIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="m2 2 20 20"/><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5"/></svg>;
+const SaturationIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>;
+const CursorIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z"/></svg>;
+const GuideIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M2 12h20"/><path d="M2 6h20"/><path d="M2 18h20"/></svg>;
+const MotionIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>;
+const FontIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>;
+const SpacingIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/></svg>;
+const FocusIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>;
 
 export default AccessibilityWidget;
