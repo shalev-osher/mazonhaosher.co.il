@@ -71,25 +71,23 @@ const AccessibilityWidget = () => {
   }, [state.textAlign]);
 
   // Boolean toggles
-  const boolToggles: [keyof A11yState, string][] = [
-    ["highContrast", "high-contrast"],
-    ["invertColors", "a11y-invert"],
-    ["reduceMotion", "reduce-motion"],
-    ["highlightLinks", "a11y-highlight-links"],
-    ["highlightTitles", "a11y-highlight-titles"],
-    ["bigCursor", "a11y-big-cursor"],
-    ["readableFont", "a11y-readable-font"],
-    ["textSpacing", "a11y-text-spacing"],
-    ["highlightFocus", "a11y-highlight-focus"],
-    ["hideImages", "a11y-hide-images"],
-  ];
-
-  boolToggles.forEach(([key, cls]) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
+  useEffect(() => {
+    const toggles: [keyof A11yState, string][] = [
+      ["highContrast", "high-contrast"],
+      ["invertColors", "a11y-invert"],
+      ["reduceMotion", "reduce-motion"],
+      ["highlightLinks", "a11y-highlight-links"],
+      ["highlightTitles", "a11y-highlight-titles"],
+      ["bigCursor", "a11y-big-cursor"],
+      ["readableFont", "a11y-readable-font"],
+      ["textSpacing", "a11y-text-spacing"],
+      ["highlightFocus", "a11y-highlight-focus"],
+      ["hideImages", "a11y-hide-images"],
+    ];
+    toggles.forEach(([key, cls]) => {
       document.documentElement.classList.toggle(cls, state[key] as boolean);
-    }, [state[key]]);
-  });
+    });
+  }, [state.highContrast, state.invertColors, state.reduceMotion, state.highlightLinks, state.highlightTitles, state.bigCursor, state.readableFont, state.textSpacing, state.highlightFocus, state.hideImages]);
 
   // Saturation
   useEffect(() => {
