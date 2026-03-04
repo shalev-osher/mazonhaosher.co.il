@@ -210,7 +210,7 @@ const AccessibilityWidget = () => {
 
             <div className="p-5 space-y-4">
               {/* === SECTION: Content === */}
-              <SectionTitle>תוכן</SectionTitle>
+              <SectionTitle>{isRTL ? "תוכן" : "Content"}</SectionTitle>
 
               {/* Font Size */}
               <StepperRow label="גודל טקסט" valueLabel={fontLabels[state.fontSize]}>
