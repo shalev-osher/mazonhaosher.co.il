@@ -47,6 +47,7 @@ const AccessibilityWidget = () => {
   const [state, setState] = useState<A11yState>(DEFAULT_STATE);
   const panelRef = useRef<HTMLDivElement>(null);
   const guideRef = useRef<HTMLDivElement>(null);
+  const { isRTL } = useLanguage();
 
   const update = useCallback((key: keyof A11yState, value: unknown) => {
     setState(prev => ({ ...prev, [key]: value }));
