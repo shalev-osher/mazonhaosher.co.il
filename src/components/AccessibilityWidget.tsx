@@ -231,7 +231,7 @@ const AccessibilityWidget = () => {
               </StepperRow>
 
               {/* Line Height */}
-              <StepperRow label="גובה שורה" valueLabel={lineLabels[state.lineHeight]}>
+              <StepperRow label={isRTL ? "גובה שורה" : "Line Height"} valueLabel={lineLabels[state.lineHeight]}>
                 {[0, 1, 2].map(level => (
                   <button
                     key={level}
