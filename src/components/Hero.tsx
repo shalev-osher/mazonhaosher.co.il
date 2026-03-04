@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import heroImage from "@/assets/hero-cookies.jpg";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+import GoldenParticles from "@/components/GoldenParticles";
 
 const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pauseTime = 2500, delay = 500) => {
   const [displayedText, setDisplayedText] = useState("");
@@ -421,6 +422,9 @@ const Hero = () => {
             <GoldenSparkle key={c.id} delay={c.delay} duration={c.duration} left={c.left} size={c.size} />
           ))}
         </div>
+
+        {/* 40 Golden floating particles */}
+        <GoldenParticles count={40} />
 
         {/* Content with cinematic entrance */}
         <div className="container mx-auto px-4 relative z-10 transition-opacity duration-100" style={{ opacity: scrollOpacity }}>
