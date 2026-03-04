@@ -131,13 +131,24 @@ const TwinkleStar = ({ top, left, size, delay }: { top: string; left: string; si
     }}
   />
 );
-const MarqueeBanner = ({ isRTL }: { isRTL: boolean }) => {
-  const phrases = useMemo(() =>
-    isRTL
-      ? ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"]
-      : ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
-    [isRTL]
-  );
+const marqueePhrases: Record<string, string[]> = {
+  he: ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"],
+  en: ["🍪 Visit us at Barnea Mall every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
+  ar: ["🍪 زوروا مركز بارنيع كل يوم جمعة 7:30-14:30", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
+  ru: ["🍪 Посетите нас в ТЦ Барнеа каждую пятницу 7:30-14:30", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
+  es: ["🍪 Visítanos en el centro Barnea cada viernes 7:30-14:30", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
+};
+
+const heroTypePhrases: Record<string, string[]> = {
+  he: ["אופים לכם אושר", "טעם של בית", "כל עוגיה סיפור", "מתוק מהלב"],
+  en: ["Baking Happiness", "Taste of Home", "Every Cookie a Story", "Sweet from the Heart"],
+  ar: ["نخبز لكم السعادة", "طعم البيت", "كل كوكيز قصة", "حلاوة من القلب"],
+  ru: ["Печём счастье", "Вкус дома", "Каждое печенье — история", "Сладость от сердца"],
+  es: ["Horneamos felicidad", "Sabor a hogar", "Cada galleta, una historia", "Dulzura del corazón"],
+};
+
+const MarqueeBanner = ({ isRTL, language }: { isRTL: boolean; language: string }) => {
+  const phrases = useMemo(() => marqueePhrases[language] || marqueePhrases.en, [language]);
   const { displayedText } = useMultiTypewriter(phrases, 50, 25, 3000, 400);
 
   return (
@@ -165,13 +176,8 @@ const useScrollReveal = (threshold = 0.2) => {
   return { ref, revealed };
 };
 const Hero = () => {
-  const { isRTL } = useLanguage();
-  const phrases = useMemo(() =>
-    isRTL
-      ? ["אופים לכם אושר", "טעם של בית", "כל עוגיה סיפור", "מתוק מהלב"]
-      : ["Baking Happiness", "Taste of Home", "Every Cookie a Story", "Sweet from the Heart"],
-    [isRTL]
-  );
+  const { isRTL, language } = useLanguage();
+  const phrases = useMemo(() => heroTypePhrases[language] || heroTypePhrases.en, [language]);
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
   const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
@@ -361,7 +367,7 @@ const Hero = () => {
       {/* No separate loader — elements reveal in place */}
 
       {/* Running marquee banner — reveals early with background */}
-      {revealStep >= 1 && <MarqueeBanner isRTL={isRTL} />}
+      {revealStep >= 1 && <MarqueeBanner isRTL={isRTL} language={language} />}
 
       {/* Cookie cursor — decorative */}
       <div
