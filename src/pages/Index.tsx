@@ -1,7 +1,6 @@
 import Hero from "@/components/Hero";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import TopToolbar from "@/components/TopToolbar";
-import BottomToolbar from "@/components/BottomToolbar";
 import CookieCrumbs from "@/components/CookieCrumbs";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 
@@ -24,7 +23,6 @@ const Index = () => {
       <AccessibilityWidget />
       <Hero />
       <LuxuryFooter />
-      <BottomToolbar />
     </div>
   );
 };
