@@ -71,19 +71,9 @@ const AccessibilityWidget = () => {
         style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
       >
         {isOpen ? <X size={26} strokeWidth={2.5} /> : (
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            {/* Head */}
-            <circle cx="12" cy="4.5" r="2" fill="currentColor" stroke="none" />
-            {/* Body */}
-            <path d="M12 7v5" />
-            {/* Arms */}
-            <path d="M9 9h6" />
-            {/* Wheelchair seat */}
-            <path d="M8 12h7l1.5 5" />
-            {/* Wheel */}
-            <circle cx="10.5" cy="18" r="3" />
-            {/* Small front wheel */}
-            <circle cx="17" cy="18" r="1" />
+          <svg width="28" height="28" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
+            <circle cx="256" cy="56" r="56"/>
+            <path d="M432 112H320c-8.8 0-16 7.2-16 16v112h-96V128c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h80v128c0 8.8 7.2 16 16 16h128v96c0 44.2 35.8 80 80 80s80-35.8 80-80-35.8-80-80-80c-22.8 0-43.4 9.6-58 24.8V272h96c8.8 0 16-7.2 16-16v-16c0-8.8-7.2-16-16-16h-96V160h96c8.8 0 16-7.2 16-16v-16c0-8.8-7.2-16-16-16zM384 448a32 32 0 1 1 0-64 32 32 0 0 1 0 64zM192 448c-44.2 0-80-35.8-80-80s35.8-80 80-80c22.8 0 43.4 9.6 58 24.8V240H176v-48h128v176c0 44.2-35.8 80-80 80h-32zm0-48a32 32 0 1 0 0-64 32 32 0 0 0 0 64z"/>
           </svg>
         )}
       </button>
