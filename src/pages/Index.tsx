@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageToggle from "@/components/LanguageToggle";
 import CookieCrumbs from "@/components/CookieCrumbs";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 
@@ -16,6 +17,7 @@ const Index = () => {
       </a>
       <CookieCrumbs />
       <ThemeToggle />
+      <LanguageToggle />
       <AccessibilityWidget />
       <Hero />
       <LuxuryFooter />

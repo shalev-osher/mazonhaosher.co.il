@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, RotateCcw } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type FontSize = 0 | 1 | 2 | 3;
 type LineHeight = 0 | 1 | 2;
@@ -46,6 +47,7 @@ const AccessibilityWidget = () => {
   const [state, setState] = useState<A11yState>(DEFAULT_STATE);
   const panelRef = useRef<HTMLDivElement>(null);
   const guideRef = useRef<HTMLDivElement>(null);
+  const { isRTL } = useLanguage();
 
   const update = useCallback((key: keyof A11yState, value: unknown) => {
     setState(prev => ({ ...prev, [key]: value }));
@@ -123,14 +125,14 @@ const AccessibilityWidget = () => {
   const hasChanges = JSON.stringify(state) !== JSON.stringify(DEFAULT_STATE);
   const activeCount = Object.entries(state).filter(([, v]) => v !== false && v !== 0 && v !== "default").length;
 
-  const fontLabels = ["רגיל", "גדול", "גדול+", "ענק"];
-  const lineLabels = ["רגיל", "גדול", "XL"];
-  const satLabels = ["רגיל", "רוויה נמוכה", "גווני אפור"];
+  const fontLabels = isRTL ? ["רגיל", "גדול", "גדול+", "ענק"] : ["Normal", "Large", "Larger", "Huge"];
+  const lineLabels = isRTL ? ["רגיל", "גדול", "XL"] : ["Normal", "Large", "XL"];
+  const satLabels = isRTL ? ["רגיל", "רוויה נמוכה", "גווני אפור"] : ["Normal", "Low Sat.", "Grayscale"];
   const alignLabels: { val: TextAlign; label: string }[] = [
-    { val: "default", label: "ברירת מחדל" },
-    { val: "right", label: "ימין" },
-    { val: "center", label: "מרכז" },
-    { val: "left", label: "שמאל" },
+    { val: "default", label: isRTL ? "ברירת מחדל" : "Default" },
+    { val: "right", label: isRTL ? "ימין" : "Right" },
+    { val: "center", label: isRTL ? "מרכז" : "Center" },
+    { val: "left", label: isRTL ? "שמאל" : "Left" },
   ];
 
   return (
@@ -145,11 +147,11 @@ const AccessibilityWidget = () => {
         />
       )}
 
-      <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir="rtl" role="region" aria-label="תפריט נגישות">
+      <div ref={panelRef} className="fixed bottom-4 left-4 z-50" dir={isRTL ? "rtl" : "ltr"} role="region" aria-label={isRTL ? "תפריט נגישות" : "Accessibility Menu"}>
         {/* Toggle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="תפריט נגישות"
+          aria-label={isRTL ? "תפריט נגישות" : "Accessibility Menu"}
           aria-expanded={isOpen}
           className={`relative w-14 h-14 rounded-full flex items-center justify-center
             shadow-lg hover:scale-110 active:scale-95 transition-all duration-200
@@ -193,12 +195,12 @@ const AccessibilityWidget = () => {
                     </svg>
                   </div>
                   <h3 id="a11y-panel-title" className="text-sm font-display font-bold text-foreground">
-                    תפריט נגישות
+                    {isRTL ? "תפריט נגישות" : "Accessibility"}
                   </h3>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  aria-label="סגור תפריט נגישות"
+                  aria-label={isRTL ? "סגור תפריט נגישות" : "Close accessibility menu"}
                   className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   <X size={16} />
@@ -208,10 +210,10 @@ const AccessibilityWidget = () => {
 
             <div className="p-5 space-y-4">
               {/* === SECTION: Content === */}
-              <SectionTitle>תוכן</SectionTitle>
+              <SectionTitle>{isRTL ? "תוכן" : "Content"}</SectionTitle>
 
               {/* Font Size */}
-              <StepperRow label="גודל טקסט" valueLabel={fontLabels[state.fontSize]}>
+              <StepperRow label={isRTL ? "גודל טקסט" : "Font Size"} valueLabel={fontLabels[state.fontSize]}>
                 {[0, 1, 2, 3].map(level => (
                   <button
                     key={level}
@@ -229,7 +231,7 @@ const AccessibilityWidget = () => {
               </StepperRow>
 
               {/* Line Height */}
-              <StepperRow label="גובה שורה" valueLabel={lineLabels[state.lineHeight]}>
+              <StepperRow label={isRTL ? "גובה שורה" : "Line Height"} valueLabel={lineLabels[state.lineHeight]}>
                 {[0, 1, 2].map(level => (
                   <button
                     key={level}
@@ -246,7 +248,7 @@ const AccessibilityWidget = () => {
               </StepperRow>
 
               {/* Text Alignment */}
-              <StepperRow label="יישור טקסט" valueLabel={alignLabels.find(a => a.val === state.textAlign)?.label || ""}>
+              <StepperRow label={isRTL ? "יישור טקסט" : "Text Align"} valueLabel={alignLabels.find(a => a.val === state.textAlign)?.label || ""}>
                 {alignLabels.map(a => (
                   <button
                     key={a.val}
@@ -265,19 +267,19 @@ const AccessibilityWidget = () => {
               <div className="h-px bg-border" />
 
               {/* === SECTION: Display === */}
-              <SectionTitle>תצוגה</SectionTitle>
+              <SectionTitle>{isRTL ? "תצוגה" : "Display"}</SectionTitle>
 
               <div className="grid grid-cols-2 gap-2">
                 <ToggleOption active={state.highContrast} onClick={() => update("highContrast", !state.highContrast)}
-                  icon={<ContrastIcon />} label="ניגודיות גבוהה" />
+                  icon={<ContrastIcon />} label={isRTL ? "ניגודיות גבוהה" : "High Contrast"} />
                 <ToggleOption active={state.invertColors} onClick={() => update("invertColors", !state.invertColors)}
-                  icon={<InvertIcon />} label="היפוך צבעים" />
+                  icon={<InvertIcon />} label={isRTL ? "היפוך צבעים" : "Invert Colors"} />
                 <ToggleOption active={state.highlightLinks} onClick={() => update("highlightLinks", !state.highlightLinks)}
-                  icon={<LinkIcon />} label="הדגשת קישורים" />
+                  icon={<LinkIcon />} label={isRTL ? "הדגשת קישורים" : "Highlight Links"} />
                 <ToggleOption active={state.highlightTitles} onClick={() => update("highlightTitles", !state.highlightTitles)}
-                  icon={<TitleIcon />} label="הדגשת כותרות" />
+                  icon={<TitleIcon />} label={isRTL ? "הדגשת כותרות" : "Highlight Titles"} />
                 <ToggleOption active={state.hideImages} onClick={() => update("hideImages", !state.hideImages)}
-                  icon={<ImageOffIcon />} label="הסתרת תמונות" />
+                  icon={<ImageOffIcon />} label={isRTL ? "הסתרת תמונות" : "Hide Images"} />
                 {/* Saturation cycle */}
                 <button
                   onClick={() => update("saturation", ((state.saturation + 1) % 3) as 0 | 1 | 2)}
@@ -295,21 +297,21 @@ const AccessibilityWidget = () => {
               <div className="h-px bg-border" />
 
               {/* === SECTION: Navigation === */}
-              <SectionTitle>ניווט וקריאה</SectionTitle>
+              <SectionTitle>{isRTL ? "ניווט וקריאה" : "Navigation & Reading"}</SectionTitle>
 
               <div className="grid grid-cols-2 gap-2">
                 <ToggleOption active={state.bigCursor} onClick={() => update("bigCursor", !state.bigCursor)}
-                  icon={<CursorIcon />} label="סמן גדול" />
+                  icon={<CursorIcon />} label={isRTL ? "סמן גדול" : "Big Cursor"} />
                 <ToggleOption active={state.readingGuide} onClick={() => update("readingGuide", !state.readingGuide)}
-                  icon={<GuideIcon />} label="מדריך קריאה" />
+                  icon={<GuideIcon />} label={isRTL ? "מדריך קריאה" : "Reading Guide"} />
                 <ToggleOption active={state.reduceMotion} onClick={() => update("reduceMotion", !state.reduceMotion)}
-                  icon={<MotionIcon />} label="ביטול אנימציות" />
+                  icon={<MotionIcon />} label={isRTL ? "ביטול אנימציות" : "Reduce Motion"} />
                 <ToggleOption active={state.readableFont} onClick={() => update("readableFont", !state.readableFont)}
-                  icon={<FontIcon />} label="פונט קריא" />
+                  icon={<FontIcon />} label={isRTL ? "פונט קריא" : "Readable Font"} />
                 <ToggleOption active={state.textSpacing} onClick={() => update("textSpacing", !state.textSpacing)}
-                  icon={<SpacingIcon />} label="ריווח טקסט" />
+                  icon={<SpacingIcon />} label={isRTL ? "ריווח טקסט" : "Text Spacing"} />
                 <ToggleOption active={state.highlightFocus} onClick={() => update("highlightFocus", !state.highlightFocus)}
-                  icon={<FocusIcon />} label="הדגשת פוקוס" />
+                  icon={<FocusIcon />} label={isRTL ? "הדגשת פוקוס" : "Highlight Focus"} />
               </div>
 
               <div className="h-px bg-border" />
