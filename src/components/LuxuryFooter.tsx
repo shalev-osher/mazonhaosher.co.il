@@ -19,6 +19,7 @@ const LuxuryFooter = forwardRef<HTMLElement>((_, ref) => {
             src={logo}
             alt={`${t('ui.brandName')} - Logo`}
             className="h-20 w-auto"
+            loading="lazy"
           />
 
           {/* Copyright */}
