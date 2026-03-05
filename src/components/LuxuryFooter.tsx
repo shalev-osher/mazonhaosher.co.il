@@ -1,7 +1,8 @@
+import { forwardRef } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import logo from "@/assets/logo.png";
 
-const LuxuryFooter = () => {
+const LuxuryFooter = forwardRef<HTMLElement>((_, ref) => {
   const { t } = useLanguage();
 
   return (
