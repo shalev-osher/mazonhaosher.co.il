@@ -29,6 +29,8 @@ const LuxuryFooter = forwardRef<HTMLElement>((_, ref) => {
       </div>
     </footer>
   );
-};
+});
+
+LuxuryFooter.displayName = "LuxuryFooter";
 
 export default LuxuryFooter;
