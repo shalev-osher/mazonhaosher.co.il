@@ -6,7 +6,7 @@ const LuxuryFooter = forwardRef<HTMLElement>((_, ref) => {
   const { t } = useLanguage();
 
   return (
-    <footer role="contentinfo" aria-label={t('ui.brandName')} className="relative py-16 overflow-hidden">
+    <footer ref={ref} role="contentinfo" aria-label={t('ui.brandName')} className="relative py-16 overflow-hidden">
       {/* Top border - golden gradient — decorative */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-0.5" aria-hidden="true"
         style={{ background: 'linear-gradient(90deg, transparent, hsl(40,95%,50%), transparent)' }}
