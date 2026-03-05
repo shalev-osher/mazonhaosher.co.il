@@ -372,7 +372,7 @@ const Hero = () => {
           className="absolute inset-0 z-0 will-change-transform transition-opacity duration-1000"
           style={{ transform: `translateY(${parallaxOffset}px)`, top: '-10%', height: '120%', opacity: revealStep >= 1 ? 1 : 0 }}
         >
-          <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" className="w-full h-full object-cover" style={{ animation: 'kenBurns 25s ease-in-out infinite', transformOrigin: 'center center' }} />
+          <img src={heroImage} alt="עוגיות קראמבל טריות מהתנור" loading="eager" fetchPriority="high" className="w-full h-full object-cover" style={{ animation: 'kenBurns 25s ease-in-out infinite', transformOrigin: 'center center' }} />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)' }} />
         </div>
 
