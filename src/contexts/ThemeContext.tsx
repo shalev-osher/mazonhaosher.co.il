@@ -72,8 +72,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const root = document.documentElement;
+    
+    // Add smooth transition class before changing theme
+    root.style.setProperty('--theme-transition', 'background-color 0.4s ease, color 0.3s ease, border-color 0.3s ease');
+    root.classList.add('theme-transitioning');
+    
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
+    
+    // Remove transition class after animation completes
+    const timer = setTimeout(() => {
+      root.classList.remove('theme-transitioning');
+    }, 500);
     
     // Update theme-color meta tag for status bar
     const themeColor = theme === 'dark' ? '#1a0d10' : '#faf6f7';
@@ -83,6 +93,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     meta.name = 'theme-color';
     meta.content = themeColor;
     document.head.appendChild(meta);
+    
+    return () => clearTimeout(timer);
   }, [theme]);
 
   const toggleTheme = () => {
