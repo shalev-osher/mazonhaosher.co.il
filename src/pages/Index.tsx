@@ -3,6 +3,8 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 import TopToolbar from "@/components/TopToolbar";
 import CookieCrumbs from "@/components/CookieCrumbs";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
+import BackToTop from "@/components/BackToTop";
+import CinematicPreloader from "@/components/CinematicPreloader";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -11,6 +13,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background texture-paper relative">
+      <CinematicPreloader />
       {/* Skip to content */}
       <a
         href="#main-content"
@@ -21,10 +24,10 @@ const Index = () => {
       <CookieCrumbs />
       <TopToolbar />
       <AccessibilityWidget />
+      <BackToTop />
       <Hero />
       <LuxuryFooter />
     </div>
   );
-};
 
 export default Index;
