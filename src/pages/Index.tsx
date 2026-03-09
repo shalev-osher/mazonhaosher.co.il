@@ -29,5 +29,6 @@ const Index = () => {
       <LuxuryFooter />
     </div>
   );
+};
 
 export default Index;
