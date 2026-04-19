@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Globe, Check, Sun, Moon, Monitor } from "lucide-react";
+import { Globe, Check, Sun, Moon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useRef, useEffect } from "react";
@@ -76,8 +76,8 @@ const TopToolbar = () => {
 
   const currentLang = languages.find(l => l.code === language) || languages[0];
 
-  const themeIcon = mode === 'light' ? <Sun size={15} /> : mode === 'dark' ? <Moon size={15} /> : <Monitor size={15} />;
-  const themeLabel = mode === 'light' ? t('ui.themeLight') : mode === 'dark' ? t('ui.themeDark') : t('ui.themeAuto');
+  const themeIcon = mode === 'light' ? <Sun size={15} /> : <Moon size={15} />;
+  const themeLabel = mode === 'light' ? t('ui.themeLight') : t('ui.themeDark');
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
