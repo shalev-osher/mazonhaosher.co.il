@@ -9,7 +9,7 @@ const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pau
   const [isTyping, setIsTyping] = useState(true);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
