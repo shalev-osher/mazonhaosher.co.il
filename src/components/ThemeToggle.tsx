@@ -1,17 +1,13 @@
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 
 const ThemeToggle = () => {
   const { mode, toggleTheme } = useTheme();
   const { t } = useLanguage();
 
-  const icon = mode === 'light' ? <Sun size={16} /> : mode === 'dark' ? <Moon size={16} /> : <Monitor size={16} />;
-  const label = mode === 'light'
-    ? t('ui.themeLight')
-    : mode === 'dark'
-      ? t('ui.themeDark')
-      : t('ui.themeAuto');
+  const icon = mode === 'light' ? <Sun size={16} /> : <Moon size={16} />;
+  const label = mode === 'light' ? t('ui.themeLight') : t('ui.themeDark');
 
   return (
     <button
