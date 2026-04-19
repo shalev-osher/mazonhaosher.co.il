@@ -2,9 +2,9 @@ import Hero from "@/components/Hero";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import TopToolbar from "@/components/TopToolbar";
 import CookieCrumbs from "@/components/CookieCrumbs";
-import AccessibilityWidget from "@/components/AccessibilityWidget";
 import BackToTop from "@/components/BackToTop";
 import CinematicPreloader from "@/components/CinematicPreloader";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -21,9 +21,9 @@ const Index = () => {
       >
         {t('ui.skipToContent')}
       </a>
+      <ScrollProgressBar />
       <CookieCrumbs />
       <TopToolbar />
-      <AccessibilityWidget />
       <BackToTop />
       <Hero />
       <LuxuryFooter />
