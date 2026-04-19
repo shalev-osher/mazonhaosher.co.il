@@ -44,11 +44,11 @@ const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pau
 };
 
 const marqueePhrases: Record<string, string[]> = {
-  he: ["✨ חדש! קינוחי פירות במגוון טעמים מרעננים", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"],
-  en: ["✨ New! Fresh fruit desserts in a variety of refreshing flavors", "❤️ Freshly baked by hand", "🎁 Special event packages"],
-  ar: ["✨ جديد! حلويات الفواكه بنكهات منعشة متنوعة", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
-  ru: ["✨ Новинка! Фруктовые десерты в ассортименте свежих вкусов", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
-  es: ["✨ ¡Nuevo! Postres de frutas en una variedad de sabores refrescantes", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
+  he: ["✨ חדש! קינוחי פירות במגוון טעמים מרעננים"],
+  en: ["✨ New! Fresh fruit desserts in a variety of refreshing flavors"],
+  ar: ["✨ جديد! حلويات الفواكه بنكهات منعشة متنوعة"],
+  ru: ["✨ Новинка! Фруктовые десерты в ассортименте свежих вкусов"],
+  es: ["✨ ¡Nuevo! Postres de frutas en una variedad de sabores refrescantes"],
 };
 
 type LangOption = {
@@ -94,42 +94,39 @@ const TopToolbar = () => {
       aria-label={t('ui.infoBanner')}
       className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-border shadow-sm"
     >
-      <div className="flex items-center justify-between px-3 py-2 max-w-screen-xl mx-auto gap-2">
-        {/* Theme toggle */}
+      <div className="flex items-center justify-between px-2 py-1.5 max-w-screen-xl mx-auto gap-1.5">
+        {/* Theme toggle — compact icon button */}
         <button
           onClick={toggleTheme}
           aria-label={`${t('ui.displayMode')}: ${themeLabel}`}
-          className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5
+          title={themeLabel}
+          className="flex items-center justify-center rounded-full w-8 h-8
             hover:bg-accent/50 transition-colors duration-200
             text-foreground hover:text-primary shrink-0"
         >
           {themeIcon}
-          <span className="text-xs font-medium text-muted-foreground hidden sm:inline">{themeLabel}</span>
         </button>
-
-
-
 
         {/* Marquee text — center */}
         <div className="flex-1 overflow-hidden text-center min-w-0" role="status" aria-live="polite">
-          <span className="text-xs md:text-sm font-medium text-foreground whitespace-nowrap block truncate">
+          <span className="text-[11px] sm:text-xs md:text-sm font-medium text-foreground whitespace-nowrap block truncate">
             {displayedText}
-            <span className="inline-block w-0.5 h-3.5 align-middle animate-blink bg-foreground ms-1" aria-hidden="true" />
+            <span className="inline-block w-0.5 h-3 align-middle animate-blink bg-foreground ms-1" aria-hidden="true" />
           </span>
         </div>
 
-        {/* Language toggle */}
+        {/* Language toggle — compact icon button */}
         <div ref={langRef} className="relative shrink-0">
           <button
             onClick={() => setLangOpen(!langOpen)}
             aria-label="Select language"
             aria-expanded={langOpen}
-            className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5
+            title={currentLang.label}
+            className="flex items-center justify-center gap-1 rounded-full w-8 h-8
               hover:bg-accent/50 transition-colors duration-200
               text-foreground hover:text-primary"
           >
-            <Globe size={15} />
-            <span className="text-sm">{currentLang.flag}</span>
+            <span className="text-base leading-none">{currentLang.flag}</span>
           </button>
 
           {langOpen && (
