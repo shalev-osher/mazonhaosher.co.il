@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Globe, Check, Sun, Moon } from "lucide-react";
+import { Check, Sun, Moon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useRef, useEffect } from "react";
