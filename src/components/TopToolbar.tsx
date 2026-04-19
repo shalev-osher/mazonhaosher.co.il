@@ -8,7 +8,7 @@ const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pau
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -44,11 +44,11 @@ const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pau
 };
 
 const marqueePhrases: Record<string, string[]> = {
-  he: ["🍪 מוזמנים לקניון ברנע (שד׳ ירושלים 119 אשקלון) מדי יום ו׳ בין השעות 7:30-14:30", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"],
-  en: ["🍪 Visit us at Barnea Mall (119 Jerusalem Blvd, Ashkelon) every Friday 7:30-14:30", "❤️ Freshly baked by hand", "🎁 Special event packages"],
-  ar: ["🍪 زوروا مركز بارنيع (شارع القدس 119، أشكلون) كل يوم جمعة 7:30-14:30", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
-  ru: ["🍪 Посетите нас в ТЦ Барнеа (бульвар Иерусалим 119, Ашкелон) каждую пятницу 7:30-14:30", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
-  es: ["🍪 Visítanos en el centro Barnea (Blvd. Jerusalén 119, Ashkelon) cada viernes 7:30-14:30", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
+  he: ["✨ חדש! קינוחי פירות במגוון טעמים מרעננים", "❤️ אפייה טרייה בעבודת יד", "🎁 מארזים מיוחדים לאירועים"],
+  en: ["✨ New! Fresh fruit desserts in a variety of refreshing flavors", "❤️ Freshly baked by hand", "🎁 Special event packages"],
+  ar: ["✨ جديد! حلويات الفواكه بنكهات منعشة متنوعة", "❤️ خبز طازج يدوي الصنع", "🎁 باقات خاصة للمناسبات"],
+  ru: ["✨ Новинка! Фруктовые десерты в ассортименте свежих вкусов", "❤️ Свежая выпечка ручной работы", "🎁 Специальные наборы для мероприятий"],
+  es: ["✨ ¡Nuevo! Postres de frutas en una variedad de sabores refrescantes", "❤️ Horneado fresco a mano", "🎁 Paquetes especiales para eventos"],
 };
 
 type LangOption = {
