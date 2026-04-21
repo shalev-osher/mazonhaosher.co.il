@@ -29,7 +29,6 @@ const Index = () => {
       <BackToTop />
       <FloatingCTA />
       <Hero />
-      <SectionDivider variant="ornament" />
       <LuxuryFooter />
     </div>
   );
