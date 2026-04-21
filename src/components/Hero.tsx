@@ -162,9 +162,14 @@ const Hero = () => {
   const [revealStep, setRevealStep] = useState(0);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
-  
+
   const heroRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [logoTilt, setLogoTilt] = useState({ x: 0, y: 0 });
+  const [rainTrigger, setRainTrigger] = useState(0);
+  const logoClicksRef = useRef(0);
+  const logoClickTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const handleHeroMouse = useCallback((e: React.MouseEvent) => {
     const rect = heroRef.current?.getBoundingClientRect();
@@ -173,6 +178,26 @@ const Hero = () => {
       x: ((e.clientX - rect.left) / rect.width) * 100,
       y: ((e.clientY - rect.top) / rect.height) * 100,
     });
+    const lr = logoRef.current?.getBoundingClientRect();
+    if (lr) {
+      const cx = lr.left + lr.width / 2;
+      const cy = lr.top + lr.height / 2;
+      const dx = (e.clientX - cx) / lr.width;
+      const dy = (e.clientY - cy) / lr.height;
+      setLogoTilt({ x: dy * -10, y: dx * 10 });
+    }
+  }, []);
+
+  const handleLogoClick = useCallback(() => {
+    hapticLight();
+    logoClicksRef.current += 1;
+    if (logoClickTimer.current) clearTimeout(logoClickTimer.current);
+    logoClickTimer.current = setTimeout(() => { logoClicksRef.current = 0; }, 1500);
+    if (logoClicksRef.current >= 5) {
+      setRainTrigger((t) => t + 1);
+      hapticSuccess();
+      logoClicksRef.current = 0;
+    }
   }, []);
 
   const stars = useMemo(() =>
@@ -406,19 +431,30 @@ const Hero = () => {
         <div className="container mx-auto px-4 relative z-10 transition-opacity duration-100" style={{ opacity: scrollOpacity }}>
           <div className="max-w-2xl mx-auto text-center" style={{ transform: `translateY(${parallaxOffset * 0.3}px)` }}>
 
-            {/* Logo - cinematic entrance */}
+            {/* Logo - cinematic entrance with 3D tilt + easter egg (5 clicks) */}
             <div
-              className="relative mb-4"
+              ref={logoRef}
+              className="relative mb-4 cursor-pointer"
+              onClick={handleLogoClick}
+              role="button"
+              tabIndex={0}
+              aria-label={t('ui.brandName')}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleLogoClick(); }}
               style={{
                 opacity: 0,
                 animation: revealStep >= 1 ? 'cinematic 1s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
+                perspective: '1000px',
               }}
             >
               <img
                 src={logo}
                 alt={t('ui.brandName')}
-                className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl"
-                style={{ animation: 'logo3D 6s ease-in-out infinite' }}
+                className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl transition-transform duration-200 ease-out"
+                style={{
+                  animation: 'logo3D 6s ease-in-out infinite',
+                  transform: `rotateX(${logoTilt.x}deg) rotateY(${logoTilt.y}deg)`,
+                  transformStyle: 'preserve-3d',
+                }}
               />
               <div className="absolute inset-0 flex items-center justify-center -z-10">
                 <div className="w-48 md:w-56 lg:w-64 h-48 md:h-56 lg:h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'radial-gradient(circle, hsla(40,90%,55%,0.2) 0%, transparent 70%)' }} />
@@ -492,6 +528,7 @@ const Hero = () => {
                   className="group flex flex-col items-center gap-2"
                   style={{ animation: revealStep >= 5 ? `bounceIn 0.6s ${s.animDelay} both` : 'none' }}
                   onMouseEnter={playClick}
+                  onClick={hapticLight}
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -514,6 +551,7 @@ const Hero = () => {
         </div>
       </main>
 
+      <CookieRain trigger={rainTrigger} />
     </>
   );
 };
