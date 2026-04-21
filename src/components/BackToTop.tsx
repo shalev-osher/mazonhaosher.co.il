@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChevronUp } from "lucide-react";
+import { hapticLight } from "@/lib/haptic";
 
 const BackToTop = () => {
   const [visible, setVisible] = useState(false);
@@ -18,6 +19,7 @@ const BackToTop = () => {
   }, [handleScroll]);
 
   const scrollToTop = () => {
+    hapticLight();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
