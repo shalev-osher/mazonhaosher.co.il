@@ -1,0 +1,49 @@
+{
+  "name": "מזון האושר",
+  "short_name": "מזון האושר",
+  "description": "עוגיות קראמבל ביתיות אפויות בעבודת יד עם אהבה",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a0d10",
+  "theme_color": "#1a0d10",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["food", "lifestyle", "shopping"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "הזמנה בוואטסאפ",
+      "short_name": "וואטסאפ",
+      "description": "פתיחת צ'אט הזמנה",
+      "url": "https://wa.me/972546791198",
+      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "ניווט לכתובת",
+      "short_name": "ניווט",
+      "description": "ניווט לסניף באשקלון",
+      "url": "https://maps.google.com/?q=שדרות+ירושלים+119+אשקלון",
+      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
