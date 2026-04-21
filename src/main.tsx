@@ -12,11 +12,10 @@ createRoot(document.getElementById("root")!).render(
 
 initWebVitals();
 
-// Register Service Worker for offline support (production only)
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {
-      // Silent fail — SW is enhancement, not required
-    });
+// Unregister any previously registered service workers
+// (PWA SW interferes with Lovable preview iframes)
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then((regs) => {
+    regs.forEach((r) => r.unregister());
   });
 }
