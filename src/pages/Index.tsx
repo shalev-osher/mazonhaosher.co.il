@@ -5,6 +5,8 @@ import CookieCrumbs from "@/components/CookieCrumbs";
 import BackToTop from "@/components/BackToTop";
 import CinematicPreloader from "@/components/CinematicPreloader";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+import SectionDivider from "@/components/SectionDivider";
+import FloatingCTA from "@/components/FloatingCTA";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -25,7 +27,9 @@ const Index = () => {
       <CookieCrumbs />
       <TopToolbar />
       <BackToTop />
+      <FloatingCTA />
       <Hero />
+      <SectionDivider variant="ornament" />
       <LuxuryFooter />
     </div>
   );
