@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { hapticMedium } from "@/lib/haptic";
 
 /**
  * Floating Call-To-Action button.
@@ -38,6 +39,7 @@ const FloatingCTA = () => {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={labels[language] || labels.en}
+      onClick={hapticMedium}
       className={`fixed z-[60] bottom-24 ${isRTL ? "left-5" : "right-5"} flex items-center gap-2 px-5 py-3 rounded-full font-medium text-sm shadow-2xl transition-all duration-500 ease-out ${
         visible
           ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
