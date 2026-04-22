@@ -180,6 +180,8 @@ const Hero = () => {
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
   const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
+  const lowPower = usePerformanceMode();
+  const greeting = useTimeGreeting(t);
   const [revealStep, setRevealStep] = useState(0);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
