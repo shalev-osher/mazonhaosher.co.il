@@ -478,7 +478,7 @@ const Hero = () => {
                 alt={t('ui.brandName')}
                 className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl transition-transform duration-200 ease-out"
                 style={{
-                  animation: 'logo3D 6s ease-in-out infinite',
+                  animation: lowPower ? 'none' : 'logo3D 6s ease-in-out infinite, logoBreathe 4.5s ease-in-out infinite',
                   transform: `rotateX(${logoTilt.x}deg) rotateY(${logoTilt.y}deg)`,
                   transformStyle: 'preserve-3d',
                 }}
@@ -487,6 +487,19 @@ const Hero = () => {
                 <div className="w-48 md:w-56 lg:w-64 h-48 md:h-56 lg:h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'radial-gradient(circle, hsla(40,90%,55%,0.2) 0%, transparent 70%)' }} />
               </div>
             </div>
+
+            {/* Time-based greeting */}
+            {greeting && (
+              <p
+                className="text-sm md:text-base text-amber-200/80 font-light tracking-wider mb-2"
+                style={{
+                  opacity: 0,
+                  animation: revealStep >= 2 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
+                }}
+              >
+                {greeting} ✨
+              </p>
+            )}
 
             {/* Typewriter with golden glow */}
             <div
@@ -579,6 +592,7 @@ const Hero = () => {
       </main>
 
       <CookieRain trigger={rainTrigger} />
+      <SpotlightCursor enabled={!lowPower} />
     </>
   );
 };
