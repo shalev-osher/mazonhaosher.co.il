@@ -491,8 +491,9 @@ const Hero = () => {
             {/* Time-based greeting */}
             {greeting && (
               <p
-                className="text-sm md:text-base text-amber-200/80 font-light tracking-wider mb-2"
+                className="text-sm md:text-base font-light tracking-wider mb-2"
                 style={{
+                  color: 'hsla(40, 90%, 75%, 0.85)',
                   opacity: 0,
                   animation: revealStep >= 2 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
                 }}
