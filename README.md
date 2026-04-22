@@ -1,169 +1,105 @@
-```markdown
-# מזון האושר (mazonhaosher.co.il)
+# vite_react_shadcn_ts
 
-A modern, RTL-first, Hebrew-language bakery website for "מזון האושר" (Mazon HaOsher), specializing in handmade crumble cookies. The site is a fast, mobile-friendly, installable Progressive Web App (PWA) built with React, Vite, TypeScript, Tailwind CSS, and shadcn/ui.
+## Overview
 
----
+Production-ready React application scaffolded with Vite, TypeScript, and shadcn/ui. Implements modern UI/UX patterns, PWA support, RTL (Hebrew) layout, and integrates with Supabase and Lovable Auth. Designed for extensibility and performance.
 
-## What This Project Does
+## Tech Stack
 
-- **Landing page** for a bakery business, optimized for Hebrew and right-to-left (RTL) layout.
-- **PWA**: Installable on mobile/desktop, with offline support and custom icons.
-- **Responsive design**: Looks and works well on all device sizes.
-- **Animated, interactive UI**: Includes parallax hero, floating call-to-action, scroll progress, and more.
-- **Accessibility**: Skip links, semantic HTML, and keyboard navigation.
-- **Multi-language support**: Uses a language context (currently focused on Hebrew).
-- **Theming**: Light/dark mode support.
-- **Web Vitals reporting**: Sends performance metrics to Google Analytics if configured.
-- **OAuth-aware 404 handling**: Special logic for handling authentication callback routes.
+- React 18 (with Suspense, StrictMode)
+- Vite 5
+- TypeScript
+- Tailwind CSS (with custom design tokens)
+- shadcn/ui (Radix UI primitives)
+- Supabase (database & auth)
+- @lovable.dev/cloud-auth-js (OAuth)
+- React Router v6
+- TanStack React Query
+- Framer Motion
+- PWA via vite-plugin-pwa
+- Web Vitals reporting
+- RTL support
 
----
+## Key Features
 
-## Stack & Architecture
+- **PWA**: Offline support, installable, auto-updating service worker, custom manifest (RTL, Hebrew).
+- **Auth**: Supabase and Lovable OAuth integration, with robust OAuth callback handling.
+- **Theming**: Dynamic theme provider, dark/light modes, custom color system.
+- **RTL**: Full right-to-left layout support; not limited to Hebrew.
+- **Performance**: Web Vitals analytics, performance mode detection (reduced motion, save-data, low battery).
+- **UI/UX**:
+  - Accessible skip-to-content
+  - Animated page transitions
+  - Skeleton loading states
+  - Floating CTA, scroll progress, back-to-top
+  - Responsive, mobile-first design
+  - Haptic feedback utilities
+- **State/Data**:
+  - React Query for async state
+  - Supabase typed client for DB access
+- **Error Handling**: Global error boundary
+- **Dev Experience**:
+  - ESLint, TypeScript strict mode
+  - Component tagger for Lovable in dev
+  - Hot reload, code splitting via React.lazy/Suspense
 
-- **Frontend**: [React 18](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Vite](https://vitejs.dev/)
-- **UI**: [shadcn/ui](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com/), [Radix UI](https://www.radix-ui.com/)
-- **State/Data**: [@tanstack/react-query](https://tanstack.com/query/latest), [react-hook-form](https://react-hook-form.com/)
-- **PWA**: [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)
-- **Auth**: [@supabase/supabase-js](https://supabase.com/docs/reference/javascript/auth-signin)
-- **Other**: Framer Motion, Embla Carousel, Lucide Icons, date-fns, etc.
+## Architecture
 
-**Routing**: Client-side routing via [react-router-dom](https://reactrouter.com/).
+- **Entry**: `src/main.tsx` mounts `<App />` and initializes web vitals.
+- **App Shell**: Providers for theme, language, query, error boundary, and routing.
+- **Routing**: React Router, code-split routes (`/`, fallback 404 with OAuth handling).
+- **State**: Contexts for theme and language; React Query for server state.
+- **Integrations**: Supabase client (`src/integrations/supabase`), Lovable Auth.
+- **UI Layer**: shadcn/ui, Radix primitives, Tailwind CSS, custom components.
+- **PWA**: Service worker, manifest, runtime caching, navigation fallback denylist for OAuth.
 
-**Project structure**: All source code is under `src/`, with components, pages, hooks, and utilities organized by feature.
+## Development
 
----
+- **Start Dev Server**:  
+  ```sh
+  npm run dev
+  ```
+- **Lint**:  
+  ```sh
+  npm run lint
+  ```
+- **Type Checking**:  
+  TypeScript runs automatically; strict mode enforced.
 
-## Running Locally
+- **Directory Aliases**:  
+  Use `@/` for `src/` imports.
 
-### Prerequisites
+- **Component Tagging**:  
+  Lovable component tagger enabled in development mode only.
 
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
+## Build & Deployment
 
-### Steps
+- **Build**:  
+  ```sh
+  npm run build
+  ```
+- **Preview**:  
+  ```sh
+  npm run preview
+  ```
+- **PWA**:  
+  Service worker auto-registers in production.  
+  In development, all service workers are unregistered to avoid conflicts.
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/shalev-osher/mazonhaosher.co.il.git
-cd mazonhaosher.co.il
+- **Environment Variables**:  
+  - `VITE_SUPABASE_URL`
+  - `VITE_SUPABASE_PUBLISHABLE_KEY`
 
-# 2. Install dependencies
-npm install
+## Notes
 
-# 3. Start the development server
-npm run dev
-
-# The app will be available at http://localhost:8080
-```
-
----
-
-## Build & Deploy
-
-### Build for Production
-
-```bash
-npm run build
-```
-- Output is generated in the `dist/` folder.
-
-### Preview Production Build
-
-```bash
-npm run preview
-```
-- Serves the built app locally for testing.
-
-### Deployment
-
-- The output in `dist/` is a static site and can be deployed to any static hosting (e.g., Vercel, Netlify, Firebase Hosting, traditional web servers).
-- The PWA manifest and service worker are automatically generated via `vite-plugin-pwa`.
-
----
-
-## PWA Features
-
-- **Manifest**: Configured for RTL, Hebrew, custom icons, and theme colors.
-- **Service Worker**: Caches assets and Google Fonts for offline use.
-- **Auto-update**: Service worker updates automatically when new versions are deployed.
-- **Installable**: Users can add the app to their home screen.
-
----
-
-## Important Folders & Files
-
-- `src/`
-  - `main.tsx` — App entry point, mounts React and initializes web vitals.
-  - `App.tsx` — Main app component, sets up providers and routing.
-  - `pages/`
-    - `Index.tsx` — The homepage, composed of animated and interactive sections.
-    - `NotFound.tsx` — Custom 404 page with OAuth callback handling.
-  - `components/` — UI and feature components (e.g., Hero, Footer, CookieCrumbs, FloatingCTA).
-  - `contexts/` — React contexts for theme and language.
-  - `lib/` — Utility functions (e.g., haptic feedback, performance mode, web vitals).
-  - `hooks/` — Custom React hooks.
-- `index.html` — HTML template, sets up meta tags, fonts, PWA manifest, and RTL direction.
-- `vite.config.ts` — Vite configuration, including PWA and path aliases.
-- `tailwind.config.ts` — Tailwind CSS configuration (not shown, but referenced).
-- `postcss.config.js` — PostCSS setup for Tailwind.
+- **RTL**: Manifest and layout support RTL; not restricted to Hebrew.
+- **OAuth**: 404 route detects OAuth callbacks and waits for session before redirecting.
+- **Performance Mode**: Components can use `usePerformanceMode` to disable expensive effects for low-power users.
+- **Web Vitals**: Metrics sent to Google Analytics if `gtag` is present; logs in dev.
+- **Haptics**: Utility functions for triggering device vibration (no-op on unsupported devices).
+- **Custom Design Tokens**: Extensive color and gradient system in Tailwind config.
+- **No server-side rendering**: Pure SPA.
 
 ---
 
-## Environment Variables
-
-- **Supabase**: The code references Supabase for authentication. You will need to configure Supabase credentials (URL, anon key) for full auth functionality.
-  - These are typically set via Vite's environment variables (e.g., `.env` file with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`), but the exact variable names are not shown in the provided code.
-- **Google Analytics**: If `window.gtag` is present, web vitals will be sent to GA.
-
----
-
-## Main Pages & Components
-
-### `/` (Homepage)
-
-- **Hero**: Animated, parallax hero section with bakery branding and interactive effects.
-- **TopToolbar**: Navigation and quick actions.
-- **CookieCrumbs**: Decorative/branding element.
-- **CinematicPreloader**: Animated loading screen.
-- **ScrollProgressBar**: Visual indicator of scroll position.
-- **FloatingCTA**: Floating call-to-action button.
-- **LuxuryFooter**: Footer with contact and social links.
-- **Accessibility**: Includes skip-to-content link.
-
-### `*` (Not Found)
-
-- **NotFound**: Custom 404 page. If the route looks like an OAuth callback, attempts to handle authentication and redirect home.
-
----
-
-## Development Notes
-
-- **RTL & Hebrew**: The app is designed for right-to-left languages and Hebrew content.
-- **Theming**: Light/dark mode is supported and can be toggled.
-- **Performance**: Animations and effects are reduced on low-power devices or when "prefers-reduced-motion" is set.
-- **Accessibility**: Focus management, skip links, and semantic markup are included.
-
----
-
-## Linting
-
-```bash
-npm run lint
-```
-- Uses ESLint with TypeScript and React rules.
-
----
-
-## Docker
-
-No Dockerfile or Docker configuration is present in this repository.
-
----
-
-## License
-
-No explicit license file is present. Please contact the repository owner for usage terms.
-
----
-```
+For further details, see code comments and individual module documentation.
