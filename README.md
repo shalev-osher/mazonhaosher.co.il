@@ -1,74 +1,68 @@
-# Welcome to your Lovable project
+# mazonhaosher.co.il
 
-## Project info
+## Overview
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+A high-performance, mobile-first Progressive Web Application built for a real bakery business.
 
-## How can I edit this code?
+This is not a static marketing page — it is a fully engineered frontend system optimized for conversion, performance, and real-world user behavior.
 
-There are several ways of editing your application.
+The application delivers a fast, immersive experience tailored for RTL languages while remaining fully adaptable to multilingual use cases.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Product Goals
 
-Changes made via Lovable will be committed automatically to this repo.
+- Convert visitors into customers (mobile-first UX)
+- Deliver instant load times under real network conditions
+- Provide an installable app-like experience (PWA)
+- Maintain accessibility and usability across all devices
+- Support RTL and multilingual expansion without architectural changes
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Core Capabilities
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### UX & Conversion Design
 
-Follow these steps:
+- Mobile-first layout
+- Floating CTA optimized for thumb reach
+- Scroll-driven engagement
+- Clear visual hierarchy
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Performance Engineering
 
-# Step 3: Install the necessary dependencies.
-npm i
+- Vite-based fast builds
+- Lazy loading and route splitting
+- Runtime performance mode
+- Web Vitals tracking
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+### Progressive Web App
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- Installable
+- Offline support
+- Auto updates
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### RTL & Localization
 
-## What technologies are used for this project?
+- Native RTL support
+- Hebrew-first but multilingual-ready
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Tech Stack
 
-## How can I deploy this project?
+React, TypeScript, Vite, Tailwind, shadcn/ui, Framer Motion, React Query, Supabase, PWA
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## Summary
 
-Yes, you can!
+A conversion-focused frontend system designed to behave like a real product.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-# trigger workflow
+Fast. Adaptive. Scalable.
