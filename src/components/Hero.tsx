@@ -4,7 +4,28 @@ import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 import GoldenParticles from "@/components/GoldenParticles";
 import CookieRain from "@/components/CookieRain";
+import SpotlightCursor from "@/components/SpotlightCursor";
 import { hapticLight, hapticSuccess } from "@/lib/haptic";
+import { usePerformanceMode } from "@/lib/performanceMode";
+
+const useTimeGreeting = (t: (k: string) => string) => {
+  const [greeting, setGreeting] = useState("");
+  useEffect(() => {
+    const compute = () => {
+      const h = new Date().getHours();
+      let key = "ui.greeting.morning";
+      if (h >= 5 && h < 12) key = "ui.greeting.morning";
+      else if (h >= 12 && h < 17) key = "ui.greeting.afternoon";
+      else if (h >= 17 && h < 22) key = "ui.greeting.evening";
+      else key = "ui.greeting.night";
+      setGreeting(t(key));
+    };
+    compute();
+    const id = setInterval(compute, 60_000);
+    return () => clearInterval(id);
+  }, [t]);
+  return greeting;
+};
 
 const useMultiTypewriter = (phrases: string[], speed = 50, deleteSpeed = 30, pauseTime = 2500, delay = 500) => {
   const [displayedText, setDisplayedText] = useState("");
@@ -159,6 +180,8 @@ const Hero = () => {
 
   const { displayedText } = useMultiTypewriter(phrases, 60, 30, 2500, 500);
   const { offset: parallaxOffset, opacity: scrollOpacity } = useParallax(0.7);
+  const lowPower = usePerformanceMode();
+  const greeting = useTimeGreeting(t);
   const [revealStep, setRevealStep] = useState(0);
   const cursorPos = useCookieCursor();
   const playClick = useHoverSound();
@@ -278,6 +301,10 @@ const Hero = () => {
           50% { transform: perspective(800px) rotateY(0deg); }
           75% { transform: perspective(800px) rotateY(-8deg); }
           100% { transform: perspective(800px) rotateY(0deg); }
+        }
+        @keyframes logoBreathe {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 20px hsla(40,90%,55%,0.25)); }
+          50% { transform: scale(1.025); filter: drop-shadow(0 12px 32px hsla(40,90%,55%,0.45)); }
         }
         @keyframes socialGlow {
           0%, 100% { box-shadow: 0 8px 25px var(--glow-color); }
@@ -451,7 +478,7 @@ const Hero = () => {
                 alt={t('ui.brandName')}
                 className="h-36 md:h-44 lg:h-52 w-auto mx-auto drop-shadow-2xl transition-transform duration-200 ease-out"
                 style={{
-                  animation: 'logo3D 6s ease-in-out infinite',
+                  animation: lowPower ? 'none' : 'logo3D 6s ease-in-out infinite, logoBreathe 4.5s ease-in-out infinite',
                   transform: `rotateX(${logoTilt.x}deg) rotateY(${logoTilt.y}deg)`,
                   transformStyle: 'preserve-3d',
                 }}
@@ -460,6 +487,20 @@ const Hero = () => {
                 <div className="w-48 md:w-56 lg:w-64 h-48 md:h-56 lg:h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'radial-gradient(circle, hsla(40,90%,55%,0.2) 0%, transparent 70%)' }} />
               </div>
             </div>
+
+            {/* Time-based greeting */}
+            {greeting && (
+              <p
+                className="text-sm md:text-base font-light tracking-wider mb-2"
+                style={{
+                  color: 'hsla(40, 90%, 75%, 0.85)',
+                  opacity: 0,
+                  animation: revealStep >= 2 ? 'cinematic 0.8s cubic-bezier(0.16,1,0.3,1) forwards' : 'none',
+                }}
+              >
+                {greeting} ✨
+              </p>
+            )}
 
             {/* Typewriter with golden glow */}
             <div
@@ -552,6 +593,7 @@ const Hero = () => {
       </main>
 
       <CookieRain trigger={rainTrigger} />
+      <SpotlightCursor enabled={!lowPower} />
     </>
   );
 };
