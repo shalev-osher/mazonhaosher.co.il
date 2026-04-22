@@ -302,6 +302,10 @@ const Hero = () => {
           75% { transform: perspective(800px) rotateY(-8deg); }
           100% { transform: perspective(800px) rotateY(0deg); }
         }
+        @keyframes logoBreathe {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 20px hsla(40,90%,55%,0.25)); }
+          50% { transform: scale(1.025); filter: drop-shadow(0 12px 32px hsla(40,90%,55%,0.45)); }
+        }
         @keyframes socialGlow {
           0%, 100% { box-shadow: 0 8px 25px var(--glow-color); }
           50% { box-shadow: 0 8px 40px var(--glow-color), 0 0 60px var(--glow-color); }
