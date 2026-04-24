@@ -151,11 +151,9 @@ const NotFound = () => {
               חזרה לדף הבית
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="gap-2" onClick={() => navigate(-1)}>
-            <button>
-              <ArrowRight className="h-4 w-4" />
-              חזור אחורה
-            </button>
+          <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate(-1)}>
+            <ArrowRight className="h-4 w-4" />
+            חזור אחורה
           </Button>
         </motion.div>
 
