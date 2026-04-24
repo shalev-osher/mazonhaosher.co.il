@@ -15,6 +15,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
