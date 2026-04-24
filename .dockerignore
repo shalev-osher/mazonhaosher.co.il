@@ -1,0 +1,16 @@
+node_modules
+dist
+.git
+.github
+.lovable
+.vscode
+.idea
+*.log
+npm-debug.log*
+.DS_Store
+README.md
+README.md.bak
+.env.local
+.env.*.local
+coverage
+.cache
