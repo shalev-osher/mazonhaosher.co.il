@@ -4,6 +4,13 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Loader2, Home, ArrowRight, Cookie } from "lucide-react";
+import LuxuryFooter from "@/components/LuxuryFooter";
+import TopToolbar from "@/components/TopToolbar";
+import CookieCrumbs from "@/components/CookieCrumbs";
+import BackToTop from "@/components/BackToTop";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
+import FloatingCTA from "@/components/FloatingCTA";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const NotFound = () => {
   const location = useLocation();
