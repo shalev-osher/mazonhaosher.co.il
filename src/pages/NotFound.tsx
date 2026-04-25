@@ -152,7 +152,7 @@ const NotFound = () => {
             transition={{ delay: 0.6 }}
             className="text-3xl md:text-4xl font-bold mb-3 text-foreground"
           >
-            אופס! העוגייה הזו נאכלה
+            {t('notFound.title')}
           </motion.h1>
 
           <motion.p
