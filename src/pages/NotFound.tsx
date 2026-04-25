@@ -188,7 +188,7 @@ const NotFound = () => {
             transition={{ delay: 1 }}
             className="mt-8 text-xs text-muted-foreground/70"
           >
-            נתיב מבוקש: <code className="bg-muted px-2 py-0.5 rounded">{location.pathname}</code>
+            {t('notFound.requestedPath')} <code className="bg-muted px-2 py-0.5 rounded">{location.pathname}</code>
           </motion.p>
         </motion.div>
       </main>
