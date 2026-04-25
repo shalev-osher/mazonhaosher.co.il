@@ -49,7 +49,7 @@ const NotFound = () => {
       setIsCheckingAuth(false);
       console.error("404 Error: User attempted to access non-existent route:", location.pathname);
     }
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, t]);
 
   if (isCheckingAuth) {
     return (
