@@ -161,7 +161,7 @@ const NotFound = () => {
             transition={{ delay: 0.7 }}
             className="text-muted-foreground mb-8 text-lg"
           >
-            הדף שחיפשת לא קיים, אבל יש לנו המון עוגיות טריות בדף הבית
+            {t('notFound.subtitle')}
           </motion.p>
 
           <motion.div
