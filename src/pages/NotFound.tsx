@@ -19,9 +19,9 @@ const NotFound = () => {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
-    document.title = "404 | הדף לא נמצא — מזון האושר";
+    document.title = t('notFound.metaTitle');
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "הדף שחיפשת לא נמצא. חזור לדף הבית של מזון האושר ליהנות מעוגיות אמריקאיות בעבודת יד.");
+    if (meta) meta.setAttribute("content", t('notFound.metaDescription'));
 
     const hash = window.location.hash;
     const search = window.location.search;
