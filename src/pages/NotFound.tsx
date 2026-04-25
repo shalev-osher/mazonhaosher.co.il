@@ -15,13 +15,13 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
-    document.title = "404 | הדף לא נמצא — מזון האושר";
+    document.title = t('notFound.metaTitle');
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "הדף שחיפשת לא נמצא. חזור לדף הבית של מזון האושר ליהנות מעוגיות אמריקאיות בעבודת יד.");
+    if (meta) meta.setAttribute("content", t('notFound.metaDescription'));
 
     const hash = window.location.hash;
     const search = window.location.search;
@@ -49,21 +49,21 @@ const NotFound = () => {
       setIsCheckingAuth(false);
       console.error("404 Error: User attempted to access non-existent route:", location.pathname);
     }
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, t]);
 
   if (isCheckingAuth) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background" dir="rtl">
+      <div className="flex min-h-screen items-center justify-center bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
-          <p className="text-muted-foreground">מתחבר...</p>
+          <p className="text-muted-foreground">{t('notFound.connecting')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background texture-paper relative" dir="rtl">
+    <div className="min-h-screen bg-background texture-paper relative" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Skip to content */}
       <a
         href="#main-content"
@@ -152,7 +152,7 @@ const NotFound = () => {
             transition={{ delay: 0.6 }}
             className="text-3xl md:text-4xl font-bold mb-3 text-foreground"
           >
-            אופס! העוגייה הזו נאכלה
+            {t('notFound.title')}
           </motion.h1>
 
           <motion.p
@@ -161,7 +161,7 @@ const NotFound = () => {
             transition={{ delay: 0.7 }}
             className="text-muted-foreground mb-8 text-lg"
           >
-            הדף שחיפשת לא קיים, אבל יש לנו המון עוגיות טריות בדף הבית
+            {t('notFound.subtitle')}
           </motion.p>
 
           <motion.div
@@ -173,12 +173,12 @@ const NotFound = () => {
             <Button asChild size="lg" className="gap-2">
               <Link to="/">
                 <Home className="h-4 w-4" />
-                חזרה לדף הבית
+                {t('notFound.home')}
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate(-1)}>
               <ArrowRight className="h-4 w-4" />
-              חזור אחורה
+              {t('notFound.back')}
             </Button>
           </motion.div>
 
@@ -188,7 +188,7 @@ const NotFound = () => {
             transition={{ delay: 1 }}
             className="mt-8 text-xs text-muted-foreground/70"
           >
-            נתיב מבוקש: <code className="bg-muted px-2 py-0.5 rounded">{location.pathname}</code>
+            {t('notFound.requestedPath')} <code className="bg-muted px-2 py-0.5 rounded">{location.pathname}</code>
           </motion.p>
         </motion.div>
       </main>
