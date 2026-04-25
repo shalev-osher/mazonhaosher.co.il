@@ -79,7 +79,7 @@ const NotFound = () => {
 
       <main
         id="main-content"
-        className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-background via-secondary/40 to-background overflow-hidden relative px-4 pt-24 pb-16"
+        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/40 to-background overflow-hidden relative px-4 pt-24 pb-16"
       >
         {/* Floating cookies background */}
         {[...Array(6)].map((_, i) => (
