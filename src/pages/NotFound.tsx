@@ -173,7 +173,7 @@ const NotFound = () => {
             <Button asChild size="lg" className="gap-2">
               <Link to="/">
                 <Home className="h-4 w-4" />
-                חזרה לדף הבית
+                {t('notFound.home')}
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate(-1)}>
