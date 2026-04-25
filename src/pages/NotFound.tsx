@@ -178,7 +178,7 @@ const NotFound = () => {
             </Button>
             <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate(-1)}>
               <ArrowRight className="h-4 w-4" />
-              חזור אחורה
+              {t('notFound.back')}
             </Button>
           </motion.div>
 
