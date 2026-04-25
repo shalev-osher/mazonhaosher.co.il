@@ -63,7 +63,7 @@ const NotFound = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background texture-paper relative" dir={t('ui.dir') === 'ltr' ? 'ltr' : 'rtl'}>
+    <div className="min-h-screen bg-background texture-paper relative" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Skip to content */}
       <a
         href="#main-content"
