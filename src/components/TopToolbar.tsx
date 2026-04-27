@@ -139,7 +139,6 @@ const TopToolbar = () => {
                     hover:bg-accent/50
                     ${language === lang.code ? 'bg-accent/30 font-bold text-foreground' : 'text-muted-foreground'}`}
                 >
-                  <span>{lang.flag}</span>
                   <span className="flex-1 text-start">{lang.label}</span>
                   {language === lang.code && <Check size={13} className="text-primary" />}
                 </button>
