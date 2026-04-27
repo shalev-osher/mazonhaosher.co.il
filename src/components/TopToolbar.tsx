@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Check, Sun, Moon } from "lucide-react";
+import { Check, Sun, Moon, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useRef, useEffect } from "react";
@@ -126,7 +126,7 @@ const TopToolbar = () => {
                 hover:bg-accent/50 transition-colors duration-200
                 text-foreground hover:text-primary"
             >
-              <span className="text-base leading-none">{currentLang.flag}</span>
+              <Globe size={15} aria-hidden="true" />
             </button>
 
           {langOpen && (
