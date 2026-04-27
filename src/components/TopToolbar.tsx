@@ -95,19 +95,7 @@ const TopToolbar = () => {
       className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-border shadow-sm"
     >
       <div className="flex items-center justify-between px-2 py-1.5 max-w-screen-xl mx-auto gap-1.5">
-        {/* Theme toggle — compact icon button */}
-        <button
-          onClick={toggleTheme}
-          aria-label={`${t('ui.displayMode')}: ${themeLabel}`}
-          title={themeLabel}
-          className="flex items-center justify-center rounded-full w-8 h-8
-            hover:bg-accent/50 transition-colors duration-200
-            text-foreground hover:text-primary shrink-0"
-        >
-          {themeIcon}
-        </button>
-
-        {/* Marquee text — center */}
+        {/* Marquee text — fills available space */}
         <div className="flex-1 overflow-hidden text-center min-w-0" role="status" aria-live="polite">
           <span className="text-[11px] sm:text-xs md:text-sm font-medium text-foreground whitespace-nowrap block truncate">
             {displayedText}
@@ -115,19 +103,31 @@ const TopToolbar = () => {
           </span>
         </div>
 
-        {/* Language toggle — compact icon button */}
-        <div ref={langRef} className="relative shrink-0">
+        {/* Controls cluster — theme + language stuck together */}
+        <div className="flex items-center gap-0.5 shrink-0">
           <button
-            onClick={() => setLangOpen(!langOpen)}
-            aria-label="Select language"
-            aria-expanded={langOpen}
-            title={currentLang.label}
-            className="flex items-center justify-center gap-1 rounded-full w-8 h-8
+            onClick={toggleTheme}
+            aria-label={`${t('ui.displayMode')}: ${themeLabel}`}
+            title={themeLabel}
+            className="flex items-center justify-center rounded-full w-8 h-8
               hover:bg-accent/50 transition-colors duration-200
               text-foreground hover:text-primary"
           >
-            <span className="text-base leading-none">{currentLang.flag}</span>
+            {themeIcon}
           </button>
+
+          <div ref={langRef} className="relative">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              aria-label="Select language"
+              aria-expanded={langOpen}
+              title={currentLang.label}
+              className="flex items-center justify-center gap-1 rounded-full w-8 h-8
+                hover:bg-accent/50 transition-colors duration-200
+                text-foreground hover:text-primary"
+            >
+              <span className="text-base leading-none">{currentLang.flag}</span>
+            </button>
 
           {langOpen && (
             <div className="absolute top-full mt-1 end-0 bg-card border border-border rounded-xl shadow-lg overflow-hidden min-w-[150px] animate-in fade-in slide-in-from-top-2 duration-200 z-50">
